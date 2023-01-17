@@ -7,7 +7,7 @@
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
-[![R-CMD-check](https://github.com/CornellLabofOrnithology/ebirdst/workflows/R-CMD-check/badge.svg)](https://github.com/CornellLabofOrnithology/ebirdst/actions)
+[![R-CMD-check](https://github.com/ebird/ebirdst/workflows/R-CMD-check/badge.svg)](https://github.com/ebird/ebirdst/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ebirdst)](https://cran.r-project.org/package=ebirdst)
 <!-- badges: end -->
@@ -39,13 +39,13 @@ Install `ebirdst` from GitHub with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("cornelllabofornithology/ebirdst", build = FALSE)
+remotes::install_github("ebird/ebirdst", build = FALSE)
 ```
 
 This version of `ebirdst` is designed to work with the eBird Status Data
 Products estimated for the year 2021, with visualizations being released
 on the web in November 2021, and data access being made available in
-June 2022 **Users are strongly discouraged from comparing Status and
+June 2022. **Users are strongly discouraged from comparing Status and
 Trends results between years due to methodological differences between
 versions.** If you have accessed and used previous versions and/or may
 need access to previous versions for reasons related to reproducibility,
@@ -104,22 +104,22 @@ A. Spencer. 2022. eBird Status and Trends, Data Version: 2021; Released:
 </blockquote>
 
 [Download
-BibTeX](https://raw.githubusercontent.com/CornellLabofOrnithology/ebirdst/main/ebirdst-citation.bib).
+BibTeX](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation.bib).
 
 ## Vignettes
 
 For full package documentation, including a series of vignettes covering
 the full spectrum from introductory to advanced usage, please see the
-package [website](https://cornelllabofornithology.github.io/ebirdst).
-The available vignettes are:
+package [website](https://ebird.github.io/ebirdst). The available
+vignettes are:
 
 - [Introduction to eBird Status & Trends
-  Data](https://cornelllabofornithology.github.io/ebirdst/articles/ebirdst.html):
-  covers data access, available data products, and structure and format
-  of data files.
+  Data](https://ebird.github.io/ebirdst/articles/ebirdst.html): covers
+  data access, available data products, and structure and format of data
+  files.
 - [Working with Raster
-  Data](https://cornelllabofornithology.github.io/ebirdst/articles/rasters.html):
-  loading and analyzing the raster data products.
+  Data](https://ebird.github.io/ebirdst/articles/rasters.html): loading
+  and analyzing the raster data products.
 
 ## Quick Start
 
@@ -162,14 +162,15 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- parse_raster_dates(abd)
 print(weeks)
-#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08" "2021-02-15"
-#>  [8] "2021-02-22" "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22" "2021-03-29" "2021-04-05"
-#> [15] "2021-04-12" "2021-04-19" "2021-04-26" "2021-05-03" "2021-05-10" "2021-05-17" "2021-05-24"
-#> [22] "2021-05-31" "2021-06-07" "2021-06-14" "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13"
-#> [29] "2021-07-20" "2021-07-27" "2021-08-03" "2021-08-10" "2021-08-17" "2021-08-24" "2021-08-31"
-#> [36] "2021-09-07" "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05" "2021-10-12" "2021-10-19"
-#> [43] "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30" "2021-12-07"
-#> [50] "2021-12-14" "2021-12-21" "2021-12-28"
+#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08"
+#>  [7] "2021-02-15" "2021-02-22" "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22"
+#> [13] "2021-03-29" "2021-04-05" "2021-04-12" "2021-04-19" "2021-04-26" "2021-05-03"
+#> [19] "2021-05-10" "2021-05-17" "2021-05-24" "2021-05-31" "2021-06-07" "2021-06-14"
+#> [25] "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13" "2021-07-20" "2021-07-27"
+#> [31] "2021-08-03" "2021-08-10" "2021-08-17" "2021-08-24" "2021-08-31" "2021-09-07"
+#> [37] "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05" "2021-10-12" "2021-10-19"
+#> [43] "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30"
+#> [49] "2021-12-07" "2021-12-14" "2021-12-21" "2021-12-28"
 
 # select a week in the middle of the year
 abd <- abd[[26]]
@@ -217,4 +218,4 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
                             cex.axis = 0.9, lwd.ticks = 0))
 ```
 
-<img src="man/figures/README-quick_start-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-quick_start-1.png" width="100%" />

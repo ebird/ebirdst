@@ -38,7 +38,7 @@ Install `ebirdst` from GitHub with:
 remotes::install_github("ebird/ebirdst", build = FALSE)
 ```
 
-This version of `ebirdst` is designed to work with the eBird Status Data Products estimated for the year `r ebirdst::ebirdst_version()[["version_year"]]`, with visualizations being released on the web in November 2021, and data access being made available in June 2022 **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.
+This version of `ebirdst` is designed to work with the eBird Status Data Products estimated for the year `r ebirdst::ebirdst_version()[["version_year"]]`, with visualizations being released on the web in November 2021, and data access being made available in June 2022. **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.
 
 ## Data access
 
@@ -60,7 +60,7 @@ If you use the the eBird Status & Trends data please cite it with:
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. Hochachka, L. Jaromczyk, A. Rodewald, C. Wood, I. Davies, A. Spencer. 2022. eBird Status and Trends, Data Version: 2021; Released: 2022. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2021" class="uri">https://doi.org/10.2173/ebirdst.2021</a>
 </blockquote>
 
-[Download BibTeX](https://raw.githubusercontent.com/CornellLabofOrnithology/ebirdst/main/ebirdst-citation.bib).
+[Download BibTeX](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation.bib).
 
 ## Vignettes
 
