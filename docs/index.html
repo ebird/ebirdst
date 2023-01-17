@@ -112,6 +112,18 @@
 <p>This version of <code>ebirdst</code> is designed to work with the eBird Status Data Products estimated for the year 2021, with visualizations being released on the web in November 2021, and data access being made available in June 2022. <strong>Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.</strong> If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact <a href="mailto:ebird@cornell.edu" class="email">ebird@cornell.edu</a> and your request will be considered.</p>
 </div>
 <div class="section level2">
+<h2 id="transition-from-raster-to-terra">Transition from <code>raster</code> to <code>terra</code>
+<a class="anchor" aria-label="anchor" href="#transition-from-raster-to-terra"></a>
+</h2>
+<p>The majority of the eBird Status and Trends data products are raster spatial data stored in GeoTIFF format. Traditionally R users have used the <a href="https://rspatial.org/raster/" class="external-link">raster</a> package to work with data in this format and <code>ebirdst</code> used <code>raster</code> extensively. However, <code>raster</code> has been replaced by the <a href="https://rspatial.org/index.html" class="external-link">terra</a> package, which offers a much improved and more efficient set of tools for working with raster data. With this in mind, <code>ebirdst</code> has transitioned to using <code>terra</code> rather than <code>raster</code> as of verison <code>2.2021.0</code>. This change may break your existing code and you have three options for dealing with this:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Transition all code to <code>terra</code> and use the most recent version of <code>ebirdst</code></strong>. This approach is <strong>strongly encouraged</strong> because <code>terra</code> is much more efficient than <code>raster</code> and <code>raster</code> is no longer being actively developed. Consult the documentation for <code>terra</code> to learn how to use it.</li>
+<li>Install an older version of <code>ebirdst</code> that still uses <code>raster</code>. For example, you can use <code>remotes::install_version("ebirdst", version = "1.2021.3")</code>.</li>
+<li>Convert <code>terra</code> objects to <code>raster</code> objects. In the current version of <code>ebirdst</code>, <code><a href="reference/load_raster.html">load_raster()</a></code> returns objects in <code>SpatRaster</code> format, you can convert those for use with <code>raster</code> using the function <code><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster::raster()</a></code>.</li>
+</ol>
+</div>
+<div class="section level2">
 <h2 id="data-access">Data access<a class="anchor" aria-label="anchor" href="#data-access"></a>
 </h2>
 <p>Data access is granted through an Access Request Form at: <a href="https://ebird.org/st/request" class="external-link uri">https://ebird.org/st/request</a>. Access with this form generates a key to be used with this R package and is provided immediately (as long as commercial use is not requested). Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.</p>

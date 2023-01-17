@@ -51,6 +51,32 @@ versions.** If you have accessed and used previous versions and/or may
 need access to previous versions for reasons related to reproducibility,
 please contact <ebird@cornell.edu> and your request will be considered.
 
+## Transition from `raster` to `terra`
+
+The majority of the eBird Status and Trends data products are raster
+spatial data stored in GeoTIFF format. Traditionally R users have used
+the [raster](https://rspatial.org/raster/) package to work with data in
+this format and `ebirdst` used `raster` extensively. However, `raster`
+has been replaced by the [terra](https://rspatial.org/index.html)
+package, which offers a much improved and more efficient set of tools
+for working with raster data. With this in mind, `ebirdst` has
+transitioned to using `terra` rather than `raster` as of verison
+`2.2021.0`. This change may break your existing code and you have three
+options for dealing with this:
+
+1.  **Transition all code to `terra` and use the most recent version of
+    `ebirdst`**. This approach is **strongly encouraged** because
+    `terra` is much more efficient than `raster` and `raster` is no
+    longer being actively developed. Consult the documentation for
+    `terra` to learn how to use it.
+2.  Install an older version of `ebirdst` that still uses `raster`. For
+    example, you can use
+    `remotes::install_version("ebirdst", version = "1.2021.3")`.
+3.  Convert `terra` objects to `raster` objects. In the current version
+    of `ebirdst`, `load_raster()` returns objects in `SpatRaster`
+    format, you can convert those for use with `raster` using the
+    function `raster::raster()`.
+
 ## Data access
 
 Data access is granted through an Access Request Form at:
