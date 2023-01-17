@@ -1,0 +1,39 @@
+url: https://ebird.github.io/ebirdst/
+
+navbar:
+  structure:
+    left: [home, intro, articles, reference, statuschanges, news]
+    right: [github]
+  components:
+    intro:
+      text: Get Started
+      href: articles/ebirdst.html
+    articles:
+      text: Vignettes
+      menu:
+      - text: Introduction to eBird Status & Trends Data
+        href: articles/ebirdst.html
+      - text: Working with Raster Data
+        href: articles/rasters.html
+    reference:
+      text: Function Reference
+      href: reference/index.html
+    statuschanges:
+      text: Changelog
+      href: articles/product-changelog.html#2020-changelog
+    news:
+      text: Version History
+      href: news/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/ebird/ebirdst/
+      aria-label: github
+
+authors:
+  Matthew Strimas-Mackey:
+    href: http://strimas.com
+  Shawn Ligocki:
+  Tom Auer:
+    href: http://twitter.com/tom_auer
+  Daniel Fink:
+

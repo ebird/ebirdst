@@ -1,0 +1,62 @@
+Type: Package
+Package: ebirdst
+Title: Access and Analyze eBird Status and Trends Data
+Version: 2.2021.0
+Authors@R: c(
+    person("Matthew", "Strimas-Mackey", , "mes335@cornell.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8929-7776")),
+    person("Shawn", "Ligocki", , "sligocki@cornell.edu", role = "aut"),
+    person("Tom", "Auer", , "mta45@cornell.edu", role = "aut",
+           comment = c(ORCID = "0000-0001-8619-7147")),
+    person("Daniel", "Fink", , "df36@cornell.edu", role = "aut",
+           comment = c(ORCID = "0000-0002-8368-1248")),
+    person("Cornell Lab of Ornithology", role = "cph")
+  )
+Description: Tools to download, load, plot, and analyze eBird Status and
+    Trends Data Products
+    (<https://science.ebird.org/en/status-and-trends>). eBird
+    (<https://ebird.org/home>) is a global database of bird observations
+    collected by member of the public. eBird Status and Trends uses these
+    data to model global bird abundances, range boundaries, and habitat
+    associations at a high spatial and temporal resolution.
+License: GPL-3
+URL: https://github.com/ebird/ebirdst
+BugReports: https://github.com/ebird/ebirdst/issues
+Depends: 
+    R (>= 4.0.0)
+Imports: 
+    DBI,
+    dplyr (>= 1.0.0),
+    gbm,
+    ggplot2,
+    grDevices,
+    gridExtra,
+    jsonlite,
+    magrittr,
+    mgcv,
+    precrec,
+    PresenceAbsence,
+    rlang,
+    RSQLite,
+    sf (>= 1.0-0),
+    stats,
+    stringr,
+    terra,
+    tidyr (>= 1.0.0),
+    tools,
+    utils,
+    viridisLite
+Suggests: 
+    fields,
+    geodata,
+    knitr,
+    rmarkdown,
+    rnaturalearth,
+    testthat,
+    withr
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1

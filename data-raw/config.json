@@ -1,0 +1,133 @@
+{
+  "FOLD_N": [200],
+  "NUM_PD_FOLDS": [50],
+  "NUM_SHARDS_SUMMARIZE": [100],
+  "SRD_PRED_YEAR": [2021],
+  "IS_CCI": [false],
+  "ENSEMBLE_SUPPORT": [false],
+  "SRD_DATE_VEC": [0.0096, 0.0288, 0.0481, 0.0673, 0.0865, 0.1058, 0.125, 0.1442, 0.1635, 0.1827, 0.2019, 0.2212, 0.2404, 0.2596, 0.2788, 0.2981, 0.3173, 0.3365, 0.3558, 0.375, 0.3942, 0.4135, 0.4327, 0.4519, 0.4712, 0.4904, 0.5096, 0.5288, 0.5481, 0.5673, 0.5865, 0.6058, 0.625, 0.6442, 0.6635, 0.6827, 0.7019, 0.7212, 0.7404, 0.7596, 0.7788, 0.7981, 0.8173, 0.8365, 0.8558, 0.875, 0.8942, 0.9135, 0.9327, 0.9519, 0.9712, 0.9904],
+  "DATE_NAMES": ["01-04", "01-11", "01-18", "01-25", "02-01", "02-08", "02-15", "02-22", "03-01", "03-08", "03-15", "03-22", "03-29", "04-05", "04-12", "04-19", "04-26", "05-03", "05-10", "05-17", "05-24", "05-31", "06-07", "06-14", "06-21", "06-28", "07-06", "07-13", "07-20", "07-27", "08-03", "08-10", "08-17", "08-24", "08-31", "09-07", "09-14", "09-21", "09-28", "10-05", "10-12", "10-19", "10-26", "11-02", "11-09", "11-16", "11-23", "11-30", "12-07", "12-14", "12-21", "12-28"],
+  "WEEK_WINDOW": [0.0191],
+  "OBS_COVARS": ["is_stationary", "year", "day_of_year", "solar_noon_diff_mid", "effort_hrs", "effort_distance_km", "num_observers", "cci"],
+  "WEATHER_COVARS": ["cds_u10", "cds_v10", "cds_d2m", "cds_t2m", "cds_hcc", "cds_i10fg", "cds_mcc", "cds_lcc", "cds_sf", "cds_rf", "cds_slc", "cds_msl"],
+  "HABITAT_COVARS": ["eastness_1km_median", "eastness_1km_sd", "eastness_90m_median", "eastness_90m_sd", "northness_1km_median", "northness_1km_sd", "northness_90m_median", "northness_90m_sd", "elev_250m_median", "elev_250m_sd", "island", "astwbd_fs_c1_1500_ed", "astwbd_fs_c1_1500_pland", "astwbd_fs_c2_1500_ed", "astwbd_fs_c2_1500_pland", "astwbd_fs_c3_1500_ed", "astwbd_fs_c3_1500_pland", "gp_rtp_1", "gp_rtp_2", "gp_rtp_3", "gp_rtp_4", "gp_rtp_5", "intertidal_fs_c1_1500_ed", "intertidal_fs_c1_1500_pland", "ntl_mean", "ntl_sd", "mcd12q1_lccs1_fs_c1_1500_ed", "mcd12q1_lccs1_fs_c1_1500_pland", "mcd12q1_lccs1_fs_c2_1500_ed", "mcd12q1_lccs1_fs_c2_1500_pland", "mcd12q1_lccs1_fs_c11_1500_ed", "mcd12q1_lccs1_fs_c11_1500_pland", "mcd12q1_lccs1_fs_c12_1500_ed", "mcd12q1_lccs1_fs_c12_1500_pland", "mcd12q1_lccs1_fs_c13_1500_ed", "mcd12q1_lccs1_fs_c13_1500_pland", "mcd12q1_lccs1_fs_c14_1500_ed", "mcd12q1_lccs1_fs_c14_1500_pland", "mcd12q1_lccs1_fs_c15_1500_ed", "mcd12q1_lccs1_fs_c15_1500_pland", "mcd12q1_lccs1_fs_c16_1500_ed", "mcd12q1_lccs1_fs_c16_1500_pland", "mcd12q1_lccs1_fs_c21_1500_ed", "mcd12q1_lccs1_fs_c21_1500_pland", "mcd12q1_lccs1_fs_c22_1500_ed", "mcd12q1_lccs1_fs_c22_1500_pland", "mcd12q1_lccs1_fs_c31_1500_ed", "mcd12q1_lccs1_fs_c31_1500_pland", "mcd12q1_lccs1_fs_c32_1500_ed", "mcd12q1_lccs1_fs_c32_1500_pland", "mcd12q1_lccs1_fs_c41_1500_ed", "mcd12q1_lccs1_fs_c41_1500_pland", "mcd12q1_lccs1_fs_c42_1500_ed", "mcd12q1_lccs1_fs_c42_1500_pland", "mcd12q1_lccs1_fs_c43_1500_ed", "mcd12q1_lccs1_fs_c43_1500_pland", "mcd12q1_lccs1_fs_c255_1500_ed", "mcd12q1_lccs1_fs_c255_1500_pland", "mcd12q1_lccs2_fs_c25_1500_ed", "mcd12q1_lccs2_fs_c25_1500_pland", "mcd12q1_lccs2_fs_c35_1500_ed", "mcd12q1_lccs2_fs_c35_1500_pland", "mcd12q1_lccs2_fs_c36_1500_ed", "mcd12q1_lccs2_fs_c36_1500_pland", "mcd12q1_lccs3_fs_c27_1500_ed", "mcd12q1_lccs3_fs_c27_1500_pland", "mcd12q1_lccs3_fs_c50_1500_ed", "mcd12q1_lccs3_fs_c50_1500_pland", "mcd12q1_lccs3_fs_c51_1500_ed", "mcd12q1_lccs3_fs_c51_1500_pland"],
+  "PREDICTOR_LIST": ["is_stationary", "year", "day_of_year", "solar_noon_diff_mid", "effort_hrs", "effort_distance_km", "num_observers", "cci", "cds_u10", "cds_v10", "cds_d2m", "cds_t2m", "cds_hcc", "cds_i10fg", "cds_mcc", "cds_lcc", "cds_sf", "cds_rf", "cds_slc", "cds_msl", "eastness_1km_median", "eastness_1km_sd", "eastness_90m_median", "eastness_90m_sd", "northness_1km_median", "northness_1km_sd", "northness_90m_median", "northness_90m_sd", "elev_250m_median", "elev_250m_sd", "island", "astwbd_fs_c1_1500_ed", "astwbd_fs_c1_1500_pland", "astwbd_fs_c2_1500_ed", "astwbd_fs_c2_1500_pland", "astwbd_fs_c3_1500_ed", "astwbd_fs_c3_1500_pland", "gp_rtp_1", "gp_rtp_2", "gp_rtp_3", "gp_rtp_4", "gp_rtp_5", "intertidal_fs_c1_1500_ed", "intertidal_fs_c1_1500_pland", "ntl_mean", "ntl_sd", "mcd12q1_lccs1_fs_c1_1500_ed", "mcd12q1_lccs1_fs_c1_1500_pland", "mcd12q1_lccs1_fs_c2_1500_ed", "mcd12q1_lccs1_fs_c2_1500_pland", "mcd12q1_lccs1_fs_c11_1500_ed", "mcd12q1_lccs1_fs_c11_1500_pland", "mcd12q1_lccs1_fs_c12_1500_ed", "mcd12q1_lccs1_fs_c12_1500_pland", "mcd12q1_lccs1_fs_c13_1500_ed", "mcd12q1_lccs1_fs_c13_1500_pland", "mcd12q1_lccs1_fs_c14_1500_ed", "mcd12q1_lccs1_fs_c14_1500_pland", "mcd12q1_lccs1_fs_c15_1500_ed", "mcd12q1_lccs1_fs_c15_1500_pland", "mcd12q1_lccs1_fs_c16_1500_ed", "mcd12q1_lccs1_fs_c16_1500_pland", "mcd12q1_lccs1_fs_c21_1500_ed", "mcd12q1_lccs1_fs_c21_1500_pland", "mcd12q1_lccs1_fs_c22_1500_ed", "mcd12q1_lccs1_fs_c22_1500_pland", "mcd12q1_lccs1_fs_c31_1500_ed", "mcd12q1_lccs1_fs_c31_1500_pland", "mcd12q1_lccs1_fs_c32_1500_ed", "mcd12q1_lccs1_fs_c32_1500_pland", "mcd12q1_lccs1_fs_c41_1500_ed", "mcd12q1_lccs1_fs_c41_1500_pland", "mcd12q1_lccs1_fs_c42_1500_ed", "mcd12q1_lccs1_fs_c42_1500_pland", "mcd12q1_lccs1_fs_c43_1500_ed", "mcd12q1_lccs1_fs_c43_1500_pland", "mcd12q1_lccs1_fs_c255_1500_ed", "mcd12q1_lccs1_fs_c255_1500_pland", "mcd12q1_lccs2_fs_c25_1500_ed", "mcd12q1_lccs2_fs_c25_1500_pland", "mcd12q1_lccs2_fs_c35_1500_ed", "mcd12q1_lccs2_fs_c35_1500_pland", "mcd12q1_lccs2_fs_c36_1500_ed", "mcd12q1_lccs2_fs_c36_1500_pland", "mcd12q1_lccs3_fs_c27_1500_ed", "mcd12q1_lccs3_fs_c27_1500_pland", "mcd12q1_lccs3_fs_c50_1500_ed", "mcd12q1_lccs3_fs_c50_1500_pland", "mcd12q1_lccs3_fs_c51_1500_ed", "mcd12q1_lccs3_fs_c51_1500_pland"],
+  "COVARS_TO_JITTER": ["eastness_1km_median", "eastness_1km_sd", "eastness_90m_median", "eastness_90m_sd", "northness_1km_median", "northness_1km_sd", "northness_90m_median", "northness_90m_sd", "elev_250m_median", "elev_250m_sd", "astwbd_fs_c1_1500_ed", "astwbd_fs_c1_1500_pland", "astwbd_fs_c2_1500_ed", "astwbd_fs_c2_1500_pland", "astwbd_fs_c3_1500_ed", "astwbd_fs_c3_1500_pland", "gp_rtp_1", "gp_rtp_2", "gp_rtp_3", "gp_rtp_4", "gp_rtp_5", "intertidal_fs_c1_1500_ed", "intertidal_fs_c1_1500_pland", "ntl_mean", "ntl_sd", "mcd12q1_lccs1_fs_c1_1500_ed", "mcd12q1_lccs1_fs_c1_1500_pland", "mcd12q1_lccs1_fs_c2_1500_ed", "mcd12q1_lccs1_fs_c2_1500_pland", "mcd12q1_lccs1_fs_c11_1500_ed", "mcd12q1_lccs1_fs_c11_1500_pland", "mcd12q1_lccs1_fs_c12_1500_ed", "mcd12q1_lccs1_fs_c12_1500_pland", "mcd12q1_lccs1_fs_c13_1500_ed", "mcd12q1_lccs1_fs_c13_1500_pland", "mcd12q1_lccs1_fs_c14_1500_ed", "mcd12q1_lccs1_fs_c14_1500_pland", "mcd12q1_lccs1_fs_c15_1500_ed", "mcd12q1_lccs1_fs_c15_1500_pland", "mcd12q1_lccs1_fs_c16_1500_ed", "mcd12q1_lccs1_fs_c16_1500_pland", "mcd12q1_lccs1_fs_c21_1500_ed", "mcd12q1_lccs1_fs_c21_1500_pland", "mcd12q1_lccs1_fs_c22_1500_ed", "mcd12q1_lccs1_fs_c22_1500_pland", "mcd12q1_lccs1_fs_c31_1500_ed", "mcd12q1_lccs1_fs_c31_1500_pland", "mcd12q1_lccs1_fs_c32_1500_ed", "mcd12q1_lccs1_fs_c32_1500_pland", "mcd12q1_lccs1_fs_c41_1500_ed", "mcd12q1_lccs1_fs_c41_1500_pland", "mcd12q1_lccs1_fs_c42_1500_ed", "mcd12q1_lccs1_fs_c42_1500_pland", "mcd12q1_lccs1_fs_c43_1500_ed", "mcd12q1_lccs1_fs_c43_1500_pland", "mcd12q1_lccs1_fs_c255_1500_ed", "mcd12q1_lccs1_fs_c255_1500_pland", "mcd12q1_lccs2_fs_c25_1500_ed", "mcd12q1_lccs2_fs_c25_1500_pland", "mcd12q1_lccs2_fs_c35_1500_ed", "mcd12q1_lccs2_fs_c35_1500_pland", "mcd12q1_lccs2_fs_c36_1500_ed", "mcd12q1_lccs2_fs_c36_1500_pland", "mcd12q1_lccs3_fs_c27_1500_ed", "mcd12q1_lccs3_fs_c27_1500_pland", "mcd12q1_lccs3_fs_c50_1500_ed", "mcd12q1_lccs3_fs_c50_1500_pland", "mcd12q1_lccs3_fs_c51_1500_ed", "mcd12q1_lccs3_fs_c51_1500_pland"],
+  "PIPD_EFFORT_VARS": ["effort_hrs", "effort_distance_km", "num_observers"],
+  "COVARS_FOR_DB": ["is_stationary", "year", "day_of_year", "solar_noon_diff_mid", "effort_hrs", "effort_distance_km", "num_observers", "cci", "cds_u10", "cds_v10", "cds_d2m", "cds_t2m", "cds_hcc", "cds_i10fg", "cds_mcc", "cds_lcc", "cds_sf", "cds_rf", "cds_slc", "cds_msl", "eastness_1km_median", "eastness_1km_sd", "eastness_90m_median", "eastness_90m_sd", "northness_1km_median", "northness_1km_sd", "northness_90m_median", "northness_90m_sd", "elev_250m_median", "elev_250m_sd", "island", "astwbd_fs_c1_1500_ed", "astwbd_fs_c1_1500_pland", "astwbd_fs_c2_1500_ed", "astwbd_fs_c2_1500_pland", "astwbd_fs_c3_1500_ed", "astwbd_fs_c3_1500_pland", "gp_rtp_1", "gp_rtp_2", "gp_rtp_3", "gp_rtp_4", "gp_rtp_5", "intertidal_fs_c1_1500_ed", "intertidal_fs_c1_1500_pland", "ntl_mean", "ntl_sd", "mcd12q1_lccs1_fs_c1_1500_ed", "mcd12q1_lccs1_fs_c1_1500_pland", "mcd12q1_lccs1_fs_c2_1500_ed", "mcd12q1_lccs1_fs_c2_1500_pland", "mcd12q1_lccs1_fs_c11_1500_ed", "mcd12q1_lccs1_fs_c11_1500_pland", "mcd12q1_lccs1_fs_c12_1500_ed", "mcd12q1_lccs1_fs_c12_1500_pland", "mcd12q1_lccs1_fs_c13_1500_ed", "mcd12q1_lccs1_fs_c13_1500_pland", "mcd12q1_lccs1_fs_c14_1500_ed", "mcd12q1_lccs1_fs_c14_1500_pland", "mcd12q1_lccs1_fs_c15_1500_ed", "mcd12q1_lccs1_fs_c15_1500_pland", "mcd12q1_lccs1_fs_c16_1500_ed", "mcd12q1_lccs1_fs_c16_1500_pland", "mcd12q1_lccs1_fs_c21_1500_ed", "mcd12q1_lccs1_fs_c21_1500_pland", "mcd12q1_lccs1_fs_c22_1500_ed", "mcd12q1_lccs1_fs_c22_1500_pland", "mcd12q1_lccs1_fs_c31_1500_ed", "mcd12q1_lccs1_fs_c31_1500_pland", "mcd12q1_lccs1_fs_c32_1500_ed", "mcd12q1_lccs1_fs_c32_1500_pland", "mcd12q1_lccs1_fs_c41_1500_ed", "mcd12q1_lccs1_fs_c41_1500_pland", "mcd12q1_lccs1_fs_c42_1500_ed", "mcd12q1_lccs1_fs_c42_1500_pland", "mcd12q1_lccs1_fs_c43_1500_ed", "mcd12q1_lccs1_fs_c43_1500_pland", "mcd12q1_lccs1_fs_c255_1500_ed", "mcd12q1_lccs1_fs_c255_1500_pland", "mcd12q1_lccs2_fs_c25_1500_ed", "mcd12q1_lccs2_fs_c25_1500_pland", "mcd12q1_lccs2_fs_c35_1500_ed", "mcd12q1_lccs2_fs_c35_1500_pland", "mcd12q1_lccs2_fs_c36_1500_ed", "mcd12q1_lccs2_fs_c36_1500_pland", "mcd12q1_lccs3_fs_c27_1500_ed", "mcd12q1_lccs3_fs_c27_1500_pland", "mcd12q1_lccs3_fs_c50_1500_ed", "mcd12q1_lccs3_fs_c50_1500_pland", "mcd12q1_lccs3_fs_c51_1500_ed", "mcd12q1_lccs3_fs_c51_1500_pland", "mod44w_oic_fs_c1_1500_ed", "mod44w_oic_fs_c1_1500_pland", "mod44w_oic_fs_c2_1500_ed", "mod44w_oic_fs_c2_1500_pland", "mod44w_oic_fs_c3_1500_ed", "mod44w_oic_fs_c3_1500_pland", "mcd12q1_lccs2_fs_c9_1500_ed", "mcd12q1_lccs2_fs_c9_1500_pland"],
+  "SPECIES_CODE": ["yebsap-example"],
+  "IS_RESIDENT": [false],
+  "SRD_TYPE": ["land"],
+  "USE_SINGLE_SPECIES_STIXELS": [false],
+  "STIXEL_SUBDIR": ["default"],
+  "PAT_CUTOFF": [0.1429],
+  "es_threshold": {
+    "week": ["01-04", "01-11", "01-18", "01-25", "02-01", "02-08", "02-15", "02-22", "03-01", "03-08", "03-15", "03-22", "03-29", "04-05", "04-12", "04-19", "04-26", "05-03", "05-10", "05-17", "05-24", "05-31", "06-07", "06-14", "06-21", "06-28", "07-06", "07-13", "07-20", "07-27", "08-03", "08-10", "08-17", "08-24", "08-31", "09-07", "09-14", "09-21", "09-28", "10-05", "10-12", "10-19", "10-26", "11-02", "11-09", "11-16", "11-23", "11-30", "12-07", "12-14", "12-21", "12-28"],
+    "threshold": [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9]
+  },
+  "pat_threshold": {
+    "week": ["01-04", "01-11", "01-18", "01-25", "02-01", "02-08", "02-15", "02-22", "03-01", "03-08", "03-15", "03-22", "03-29", "04-05", "04-12", "04-19", "04-26", "05-03", "05-10", "05-17", "05-24", "05-31", "06-07", "06-14", "06-21", "06-28", "07-06", "07-13", "07-20", "07-27", "08-03", "08-10", "08-17", "08-24", "08-31", "09-07", "09-14", "09-21", "09-28", "10-05", "10-12", "10-19", "10-26", "11-02", "11-09", "11-16", "11-23", "11-30", "12-07", "12-14", "12-21", "12-28"],
+    "threshold": [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+  },
+  "has_predictions": [true],
+  "projection": {
+    "extent": [-2471192.5, 3649977.5, -2950779, 3590105],
+    "res": [2970, 2957],
+    "crs": ["+proj=laea +lat_0=36.404 +lon_0=-101.333 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"]
+  },
+  "projection_diagnostic": {
+    "extent": [-3408229.5, 5528500.5, -3106271, 4075753],
+    "res": [2970, 2958],
+    "crs": ["+proj=laea +lat_0=39.76 +lon_0=-113.61 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"]
+  },
+  "bbox_ll": {
+    "xmin": [-146.787],
+    "ymin": [8.226],
+    "xmax": [-55.878],
+    "ymax": [64.581]
+  },
+  "bbox_sinu": {
+    "xmin": [-11042249],
+    "ymin": [901361],
+    "xmax": [-4189278],
+    "ymax": [7194368]
+  },
+  "display_resolution": ["hr"],
+  "bins": {
+    "hr": {
+      "breaks": [5.095e-06, 0.04306, 0.06041, 0.073, 0.08421, 0.09483, 0.105, 0.115, 0.125, 0.1352, 0.1458, 0.1572, 0.17, 0.1848, 0.2029, 0.2261, 0.2577, 0.3047, 0.3823, 0.5303, 4],
+      "labels": [0.04306, 0.1458, 0.5303],
+      "bivariate": [0.01867, 0.4776, 0.5435, 0.5953, 0.6413, 0.6864, 0.7344, 0.7909, 0.8666, 0.9906, 11]
+    },
+    "mr": {
+      "breaks": [9.73e-07, 0.006814, 0.01224, 0.0192, 0.02822, 0.03864, 0.05052, 0.06328, 0.07639, 0.09004, 0.1044, 0.1192, 0.135, 0.1518, 0.1705, 0.1926, 0.2201, 0.2572, 0.3141, 0.4269, 2],
+      "labels": [0.006814, 0.1044, 0.4269],
+      "bivariate": [0.00229, 0.1318, 0.2603, 0.3882, 0.4772, 0.5452, 0.6084, 0.6746, 0.7514, 0.8692, 4]
+    },
+    "lr": {
+      "breaks": [1.556e-07, 0.0009048, 0.00221, 0.004644, 0.008516, 0.01404, 0.02149, 0.03096, 0.04239, 0.05546, 0.07014, 0.08609, 0.103, 0.1215, 0.1423, 0.1647, 0.1916, 0.225, 0.2746, 0.3689, 2],
+      "labels": [0.0009048, 0.07014, 0.3689],
+      "bivariate": [0.0003152, 0.02971, 0.09307, 0.1968, 0.3249, 0.4352, 0.5213, 0.5978, 0.6846, 0.7989, 3]
+    }
+  },
+  "has_seasonal": [true],
+  "resident_review": [false],
+  "season_dates": [
+    {
+      "season": "nonbreeding",
+      "pass": true,
+      "quality": 3,
+      "modeled": true,
+      "start_date": "2021-11-23",
+      "end_date": "2021-03-08"
+    },
+    {
+      "season": "prebreeding_migration",
+      "pass": true,
+      "quality": 3,
+      "modeled": true,
+      "start_date": "2021-03-15",
+      "end_date": "2021-05-17"
+    },
+    {
+      "season": "breeding",
+      "pass": true,
+      "quality": 3,
+      "modeled": true,
+      "start_date": "2021-05-24",
+      "end_date": "2021-08-17"
+    },
+    {
+      "season": "postbreeding_migration",
+      "pass": true,
+      "quality": 3,
+      "modeled": true,
+      "start_date": "2021-08-24",
+      "end_date": "2021-11-16"
+    }
+  ],
+  "quality": {
+    "animation": [3],
+    "full_year": [3],
+    "nonbreeding": [3],
+    "prebreeding_migration": [3],
+    "breeding": [3],
+    "postbreeding_migration": [3]
+  },
+  "show_yearround": [true],
+  "split_migration": [false],
+  "bins_seasonal": {
+    "hr": {
+      "breaks": [2.276e-06, 0.01437, 0.02624, 0.03678, 0.04679, 0.05704, 0.06797, 0.08001, 0.09306, 0.1067, 0.121, 0.1358, 0.1513, 0.1682, 0.1877, 0.2122, 0.245, 0.2929, 0.3702, 0.5194, 4],
+      "labels": [0.01437, 0.121, 0.5194]
+    },
+    "mr": {
+      "breaks": [2.528e-07, 0.002618, 0.006357, 0.01129, 0.01759, 0.02525, 0.03379, 0.0431, 0.05306, 0.06437, 0.07795, 0.09378, 0.1115, 0.1315, 0.1538, 0.1785, 0.2088, 0.2494, 0.3102, 0.4283, 2],
+      "labels": [0.002618, 0.07795, 0.4283]
+    },
+    "lr": {
+      "breaks": [2.809e-08, 0.0004193, 0.001336, 0.003096, 0.006129, 0.01056, 0.01664, 0.02431, 0.03298, 0.04277, 0.05399, 0.06693, 0.08401, 0.1031, 0.1254, 0.1525, 0.1828, 0.2213, 0.2754, 0.3794, 2],
+      "labels": [0.0004193, 0.05399, 0.3794]
+    }
+  }
+}
