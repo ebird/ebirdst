@@ -16,12 +16,12 @@ status](https://www.r-pkg.org/badges/version/ebirdst)](https://cran.r-project.or
 
 The [eBird Status and Trends
 project](https://science.ebird.org/en/status-and-trends) project at the
-[Cornell Lab of Ornithology](https://www.birds.cornell.edu/) uses
+[Cornell Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to produce estimates of range boundaries,
 occurrence rate, and relative abundance at high spatial and temporal
 resolution across the full annual cycle of 2,070 bird species globally.
 These models learn the relationships between bird observations collected
-through [eBird](https://ebird.org/) and a suite of remotely sensed
+through [eBird](https://ebird.org/home) and a suite of remotely sensed
 habitat variables, while accounting for the noise and bias inherent in
 community science datasets, including variation in observer behavior and
 effort. Interactive maps and visualizations of these model estimates can
@@ -98,9 +98,9 @@ access key provided to you. **Restart R after setting the access key.**
 **For those interested in accessing these data outside of R**, the most
 widely used data products are available for direct download through the
 [Status and Trends
-website](%5Bhttps://science.ebird.org/en/status-and-trends). Spatial
-data are accessible in widely adopted GeoTIFF and GeoPackage formats,
-which can be opened in QGIS, ArcGIS, or other GIS software.
+website](https://science.ebird.org/en/status-and-trends). Spatial data
+are accessible in widely adopted GeoTIFF and GeoPackage formats, which
+can be opened in QGIS, ArcGIS, or other GIS software.
 
 ## Versions
 
@@ -138,7 +138,7 @@ BibTeX](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation.bi
 
 For full package documentation, including a series of vignettes covering
 the full spectrum from introductory to advanced usage, please see the
-package [website](https://ebird.github.io/ebirdst). The available
+package [website](https://ebird.github.io/ebirdst/). The available
 vignettes are:
 
 - [Introduction to eBird Status & Trends
@@ -190,14 +190,12 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- parse_raster_dates(abd)
 print(weeks)
-#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08"
-#>  [7] "2021-02-15" "2021-02-22" "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22"
-#> [13] "2021-03-29" "2021-04-05" "2021-04-12" "2021-04-19" "2021-04-26" "2021-05-03"
-#> [19] "2021-05-10" "2021-05-17" "2021-05-24" "2021-05-31" "2021-06-07" "2021-06-14"
-#> [25] "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13" "2021-07-20" "2021-07-27"
-#> [31] "2021-08-03" "2021-08-10" "2021-08-17" "2021-08-24" "2021-08-31" "2021-09-07"
-#> [37] "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05" "2021-10-12" "2021-10-19"
-#> [43] "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30"
+#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08" "2021-02-15" "2021-02-22"
+#>  [9] "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22" "2021-03-29" "2021-04-05" "2021-04-12" "2021-04-19"
+#> [17] "2021-04-26" "2021-05-03" "2021-05-10" "2021-05-17" "2021-05-24" "2021-05-31" "2021-06-07" "2021-06-14"
+#> [25] "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13" "2021-07-20" "2021-07-27" "2021-08-03" "2021-08-10"
+#> [33] "2021-08-17" "2021-08-24" "2021-08-31" "2021-09-07" "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05"
+#> [41] "2021-10-12" "2021-10-19" "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30"
 #> [49] "2021-12-07" "2021-12-14" "2021-12-21" "2021-12-28"
 
 # select a week in the middle of the year

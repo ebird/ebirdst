@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The [eBird Status and Trends project](https://science.ebird.org/en/status-and-trends) project at the [Cornell Lab of Ornithology](https://www.birds.cornell.edu/) uses machine-learning models to produce estimates of range boundaries, occurrence rate, and relative abundance at high spatial and temporal resolution across the full annual cycle of `r scales::comma(nrow(ebirdst::ebirdst_runs))` bird species globally. These models learn the relationships between bird observations collected through [eBird](https://ebird.org/) and a suite of remotely sensed habitat variables, while accounting for the noise and bias inherent in community science datasets, including variation in observer behavior and effort. Interactive maps and visualizations of these model estimates can be explored [online](https://science.ebird.org/en/status-and-trends), and the [Status and Trends Data Products](https://science.ebird.org/en/status-and-trends/download-data) provide access to the data behind these maps and visualizations. The `ebirdst` R package provides a set of tools for downloading these data products, loading them into R, and using them for visualizing and analysis.
+The [eBird Status and Trends project](https://science.ebird.org/en/status-and-trends) project at the [Cornell Lab of Ornithology](https://www.birds.cornell.edu/home) uses machine-learning models to produce estimates of range boundaries, occurrence rate, and relative abundance at high spatial and temporal resolution across the full annual cycle of `r scales::comma(nrow(ebirdst::ebirdst_runs))` bird species globally. These models learn the relationships between bird observations collected through [eBird](https://ebird.org/home) and a suite of remotely sensed habitat variables, while accounting for the noise and bias inherent in community science datasets, including variation in observer behavior and effort. Interactive maps and visualizations of these model estimates can be explored [online](https://science.ebird.org/en/status-and-trends), and the [Status and Trends Data Products](https://science.ebird.org/en/status-and-trends/download-data) provide access to the data behind these maps and visualizations. The `ebirdst` R package provides a set of tools for downloading these data products, loading them into R, and using them for visualizing and analysis.
 
 ## Installation
 
@@ -56,7 +56,7 @@ Data access is granted through an Access Request Form at: https://ebird.org/st/r
 
 After completing the Access Request Form, you will be provided a Status and Trends access key, which you will need when downloading data. To store the key so the package can access it when downloading data, use the function `set_ebirdst_access_key("XXXXX")`, where `"XXXXX"` is the access key provided to you. **Restart R after setting the access key.**
 
-**For those interested in accessing these data outside of R**, the most widely used data products are available for direct download through the [Status and Trends website]([https://science.ebird.org/en/status-and-trends). Spatial data are accessible in widely adopted GeoTIFF and GeoPackage formats, which can be opened in QGIS, ArcGIS, or other GIS software.
+**For those interested in accessing these data outside of R**, the most widely used data products are available for direct download through the [Status and Trends website](https://science.ebird.org/en/status-and-trends). Spatial data are accessible in widely adopted GeoTIFF and GeoPackage formats, which can be opened in QGIS, ArcGIS, or other GIS software.
 
 ## Versions
 
@@ -74,7 +74,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 
 ## Vignettes
 
-For full package documentation, including a series of vignettes covering the full spectrum from introductory to advanced usage, please see the package [website](https://ebird.github.io/ebirdst). The available vignettes are:
+For full package documentation, including a series of vignettes covering the full spectrum from introductory to advanced usage, please see the package [website](https://ebird.github.io/ebirdst/). The available vignettes are:
 
 - [Introduction to eBird Status & Trends Data](https://ebird.github.io/ebirdst/articles/ebirdst.html): covers data access, available data products, and structure and format of data files.
 - [Working with Raster Data](https://ebird.github.io/ebirdst/articles/rasters.html): loading and analyzing the raster data products. 
