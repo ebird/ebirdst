@@ -1,6 +1,8 @@
 # ebirdst 2.2021.0
 
 - transition from using raster to terra for handling raster data
+- move the following packages from Imports to Suggests: gbm, mgcv, precrec, PresenceAbsence
+- move package to the eBird GitHub organization https://github.com/ebird/ebirdst
 
 # ebirdst 1.2021.3
 

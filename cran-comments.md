@@ -1,14 +1,17 @@
 # ebirdst 2.2021.0
 
 - transition from using raster to terra for handling raster data
+- move the following packages from Imports to Suggests: gbm, mgcv, precrec, PresenceAbsence
+- move package to the eBird GitHub organization https://github.com/ebird/ebirdst
 
 ## Test environments
 
-- local OS X install, R 4.2
+- local MacOS install, R 4.2
 - Windows (github actions), R 4.2
-- ubuntu 20.04 (github actions), R 4.2
+- MacOS (github actions), R 4.2
+- ubuntu 22.04.1 (github actions), R release, devel, and oldrel-1
 - win-builder (devel and release)
-- R-hub (Solaris), R 4.2
+- R-hub
 
 ## R CMD check results
 

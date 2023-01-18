@@ -27,15 +27,11 @@ Depends:
 Imports: 
     DBI,
     dplyr (>= 1.0.0),
-    gbm,
     ggplot2,
     grDevices,
     gridExtra,
     jsonlite,
     magrittr,
-    mgcv,
-    precrec,
-    PresenceAbsence,
     rlang,
     RSQLite,
     sf (>= 1.0-0),
@@ -48,8 +44,12 @@ Imports:
     viridisLite
 Suggests: 
     fields,
+    gbm,
     geodata,
     knitr,
+    mgcv,
+    precrec,
+    PresenceAbsence,
     rmarkdown,
     rnaturalearth,
     testthat,

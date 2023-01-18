@@ -38,8 +38,10 @@ analysis.
 Install `ebirdst` from GitHub with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("ebird/ebirdst", build = FALSE)
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github("ebird/ebirdst")
 ```
 
 This version of `ebirdst` is designed to work with the eBird Status Data
@@ -54,7 +56,7 @@ please contact <ebird@cornell.edu> and your request will be considered.
 ## Transition from `raster` to `terra`
 
 The majority of the eBird Status and Trends data products are raster
-spatial data stored in GeoTIFF format. Traditionally R users have used
+spatial data stored in GeoTIFF format. Traditionally, R users have used
 the [raster](https://rspatial.org/raster/) package to work with data in
 this format and `ebirdst` used `raster` extensively. However, `raster`
 has been replaced by the [terra](https://rspatial.org/index.html)

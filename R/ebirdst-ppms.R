@@ -72,6 +72,13 @@
 #' plot(ppms)
 #' }
 ebirdst_ppms <- function(path, ext, es_cutoff, pat_cutoff) {
+  if (!requireNamespace("precrec", quietly = TRUE)) {
+    stop("Package 'precrec' must be installed to use this function.")
+  }
+  if (!requireNamespace("PresenceAbsence", quietly = TRUE)) {
+    stop("Package 'PresenceAbsence' must be installed to use this function.")
+  }
+
   stopifnot(is.character(path), length(path) == 1, dir.exists(path))
   if (!missing(ext)) {
     stopifnot(inherits(ext, "ebirdst_extent"))

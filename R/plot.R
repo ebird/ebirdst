@@ -198,6 +198,10 @@ plot_pds <- function(pds, predictor, ext,
                      gbm_n_trees = 500,
                      ylim = NULL,
                      plot = TRUE) {
+  if (!requireNamespace("mgcv", quietly = TRUE)) {
+    stop("Package 'mgcv' must be installed to use this function.")
+  }
+
   stopifnot(is.data.frame(pds), "predictor" %in% names(pds))
   stopifnot(is.character(predictor), length(predictor) == 1)
   stopifnot(inherits(ext, "ebirdst_extent"))
@@ -303,6 +307,10 @@ plot_pds <- function(pds, predictor, ext,
 
   # gbm quantiles
   if (isTRUE(show_quantiles)) {
+    if (!requireNamespace("gbm", quietly = TRUE)) {
+      stop("Package 'gbm' must be installed to if show_quantiles is TRUE.")
+    }
+
     gam_ul <- gbm::gbm(y ~ x,
                        data = pds,
                        distribution = list(name = "quantile", alpha = 0.9),
