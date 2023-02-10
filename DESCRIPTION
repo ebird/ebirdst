@@ -37,7 +37,7 @@ Imports:
     sf (>= 1.0-0),
     stats,
     stringr,
-    terra,
+    terra (>= 1.6-3),
     tidyr (>= 1.0.0),
     tools,
     utils,
