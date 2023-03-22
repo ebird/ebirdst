@@ -67,7 +67,7 @@ date_to_st_week <- function(dates) {
 #' @examples
 #' get_species(c("Black-capped Chickadee", "Poecile gambeli", "carchi"))
 get_species <- function(x) {
-  stopifnot(is.character(x), all(!is.na(x)))
+  stopifnot(is.character(x))
   r <- ebirdst::ebirdst_runs
   x <- tolower(trimws(x))
 
