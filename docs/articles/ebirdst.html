@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ebirdst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.1</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@ Data</h1>
                         <h4 data-toc-skip class="author">Matt
 Strimas-Mackey, Tom Auer, Daniel Fink</h4>
             
-            <h4 data-toc-skip class="date">2023-01-18</h4>
+            <h4 data-toc-skip class="date">2023-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/ebirdst.Rmd" class="external-link"><code>vignettes/ebirdst.Rmd</code></a></small>
       <div class="hidden name"><code>ebirdst.Rmd</code></div>
@@ -205,7 +205,7 @@ R.</strong></p>
 available in the data frame <code>ebirdst_runs</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">ebirdst_runs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 2,070</span></span>
+<span><span class="co">#&gt; Rows: 2,282</span></span>
 <span><span class="co">#&gt; Columns: 23</span></span>
 <span><span class="co">#&gt; $ species_code                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "grerhe1", "higtin1", "gretin1", …</span></span>
 <span><span class="co">#&gt; $ scientific_name                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Rhea americana", "Nothocercus bo…</span></span>
@@ -499,14 +499,14 @@ range polygons can be loaded with <code><a href="../reference/load_ranges.html">
 <span><span class="co">#&gt; Bounding box:  xmin: -146.8346 ymin: 8.264292 xmax: -57.58661 ymax: 64.5614</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
-<span><span class="co">#&gt;   species_code scientific_n…¹ commo…² predi…³ type  season start_date end_date  </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> yebsap       Sphyrapicus v… Yellow…    <span style="text-decoration: underline;">2</span>021 range breed… 2021-05-24 2021-08-17</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> yebsap       Sphyrapicus v… Yellow…    <span style="text-decoration: underline;">2</span>021 range nonbr… 2021-11-23 2021-03-08</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> yebsap       Sphyrapicus v… Yellow…    <span style="text-decoration: underline;">2</span>021 range postb… 2021-08-24 2021-11-16</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> yebsap       Sphyrapicus v… Yellow…    <span style="text-decoration: underline;">2</span>021 range prebr… 2021-03-15 2021-05-17</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: geom &lt;MULTIPOLYGON [°]&gt;, and abbreviated variable</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​scientific_name, ²​common_name, ³​prediction_year</span></span></span>
+<span><span class="co">#&gt;   species_code scientific_name    common_name       prediction_year type  season</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>021 range breed…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>021 range nonbr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>021 range postb…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>021 range prebr…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: start_date &lt;date&gt;, end_date &lt;date&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   geom &lt;MULTIPOLYGON [°]&gt;</span></span></span>
 <span></span>
 <span><span class="co"># subset to just the breeding season range using dplyr</span></span>
 <span><span class="va">range_breeding</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ranges</span>, <span class="va">season</span> <span class="op">==</span> <span class="st">"breeding"</span><span class="op">)</span></span></code></pre></div>

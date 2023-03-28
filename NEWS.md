@@ -1,3 +1,7 @@
+# ebirdst 2.2021.1
+
+- release the final batch of 300 species for 2021 bringing the total to 2,282
+
 # ebirdst 2.2021.0
 
 - transition from using raster to terra for handling raster data
