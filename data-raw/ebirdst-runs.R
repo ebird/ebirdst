@@ -44,9 +44,13 @@ for (s in seasons) {
   if (s == "resident") {
     runs[[paste0(s, "_start")]][!runs$resident] <- NA_character_
     runs[[paste0(s, "_end")]][!runs$resident] <- NA_character_
+    runs[[paste0(s, "_quality")]][!runs$resident] <- NA_character_
   } else {
+    # remove any seasonal information for residents
     runs[[paste0(s, "_start")]][runs$resident] <- NA_character_
     runs[[paste0(s, "_end")]][runs$resident] <- NA_character_
+    runs[[paste0(s, "_quality")]][runs$resident] <- NA_character_
+    runs[[paste0(s, "_range_modeled")]][runs$resident] <- NA_character_
   }
 }
 
