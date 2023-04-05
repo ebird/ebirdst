@@ -1,7 +1,7 @@
 citHeader("To cite ebirdst in publications use:")
 
-citEntry(
-  entry        = "Manual",
+bibentry(
+  bibtype      = "Manual",
   title        = "ebirdst: Tools for loading, plotting, mapping and analysis of eBird Status and Trends data products",
   author       = c(
                    as.person("Matthew Strimas-Mackey"),
@@ -10,12 +10,12 @@ citEntry(
                    as.person("Daniel Fink")
                  ),
   year         = "2022",
-  note         = "R package version 2.2021.0",
+  note         = "R package version 2.2021.1",
   url          = "https://ebird.github.io/ebirdst/",
 
   textVersion  =
   paste("Matthew Strimas-Mackey, Shawn Ligocki, Tom Auer, Daniel Fink (2022).",
         "ebirdst: Tools for loading, plotting, mapping and analysis of eBird Status and Trends data products.",
-        "R package version 2.2021.0.",
+        "R package version 2.2021.1.",
         "https://ebird.github.io/ebirdst/")
 )
