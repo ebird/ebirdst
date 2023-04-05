@@ -3,7 +3,7 @@ citHeader("To cite ebirdst in publications use:")
 citEntry(
   entry        = "Manual",
   title        = "ebirdst: Tools for loading, plotting, mapping and analysis of eBird Status and Trends data products",
-  author       = personList(
+  author       = c(
                    as.person("Matthew Strimas-Mackey"),
                    as.person("Shawn Ligocki"),
                    as.person("Tom Auer"),
