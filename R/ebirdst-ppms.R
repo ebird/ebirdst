@@ -232,15 +232,12 @@ ebirdst_ppms <- function(path, ext, es_cutoff, pat_cutoff) {
 
   for (i_mc in seq_len(n_mc)) {
     # case control sampling
-    sampled <- sample_case_control(preds,
-                                   res = c(3000, 3000),
-                                   t_res = 7 / 365,
-                                   n = 1,
-                                   jitter = TRUE,
-                                   replace = FALSE)
-
-    # index back to full vector
-    test_sample <- preds[sampled, ]
+    test_sample <- grid_sample_stratified(preds,
+                                      res = c(3000, 3000, 7),
+                                      by_year = FALSE,
+                                      sample_size_per_cell = 1,
+                                      cell_sample_prop = 1,
+                                      jitter_grid = TRUE)
 
     # binary occurrence ppms
     bs$mc_iteration[i_mc] <- i_mc

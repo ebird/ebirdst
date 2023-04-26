@@ -128,5 +128,13 @@ from_srd_date <- function(x, year, iso_date = TRUE) {
 }
 
 is_integer <- function(x) {
-  is.integer(x) || (is.numeric(x) && all(x == as.integer(x)))
+  return(isTRUE(is.integer(x) || (is.numeric(x) && all(x == as.integer(x)))))
+}
+
+is_count <- function(x) {
+  return(isTRUE(is_integer(x) && length(x) == 1 && x >= 0))
+}
+
+is_flag <- function(x) {
+  return(isTRUE(is.logical(x) && length(x) == 1 && !is.na(x)))
 }

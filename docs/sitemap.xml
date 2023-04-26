@@ -37,6 +37,9 @@
     <loc>https://ebird.github.io/ebirdst/reference/abundance_palette.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/reference/assign_to_grid.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/reference/bernoulli_dev.html</loc>
   </url>
   <url>
@@ -76,9 +79,6 @@
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_runs.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_sample.html</loc>
-  </url>
-  <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_subset.html</loc>
   </url>
   <url>
@@ -92,6 +92,9 @@
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/get_species_path.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/grid_sample.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/index.html</loc>

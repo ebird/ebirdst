@@ -1,3 +1,7 @@
+# ebirdst 2.2021.2
+
+- add a more robust grid sampling function.
+
 # ebirdst 2.2021.1
 
 - release the final batch of 300 species for 2021 bringing the total to 2,282
