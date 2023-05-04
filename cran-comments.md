@@ -1,3 +1,7 @@
+# ebirdst 2.2021.3
+
+- add a function to estimate MCC-F1 for `ebirdst_ppms()`
+
 # ebirdst 2.2021.2
 
 - add a more robust grid sampling function.

@@ -124,11 +124,7 @@ ebirdst_habitat <- function(path, ext, data = NULL,
     ext_poly <- sf::st_transform(ext_poly, crs = 4326)
 
     # generate stixel polygons
-    if (!missing(path)) {
-      stixels <- load_stixels(path = path, ext = ext)
-    } else {
-      stixels <- ebirdst_subset(stixels, ext = ext)
-    }
+    stixels <- load_stixels(path = path, ext = ext)
 
     if (nrow(stixels) == 0) {
       warning("No stixels within the provided extent.")

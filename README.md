@@ -108,7 +108,7 @@ The Status and Trends Data Products provide estimates of relative
 abundance, and other variables, for a particular year. This estimation
 year is used to identify the version of the data products. Each version
 of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 2.2021.2 and, as
+For example, the current version of the R package is 2.2021.3 and, as
 indicated by the year in the version number, it is designed to work with
 the 2021 data products. Every year, typically in November, the Status
 and Trends Data Products are updated, and users are encouraged to update
@@ -190,15 +190,14 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- parse_raster_dates(abd)
 print(weeks)
-#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08"
-#>  [7] "2021-02-15" "2021-02-22" "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22"
-#> [13] "2021-03-29" "2021-04-05" "2021-04-12" "2021-04-19" "2021-04-26" "2021-05-03"
-#> [19] "2021-05-10" "2021-05-17" "2021-05-24" "2021-05-31" "2021-06-07" "2021-06-14"
-#> [25] "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13" "2021-07-20" "2021-07-27"
-#> [31] "2021-08-03" "2021-08-10" "2021-08-17" "2021-08-24" "2021-08-31" "2021-09-07"
-#> [37] "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05" "2021-10-12" "2021-10-19"
-#> [43] "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30"
-#> [49] "2021-12-07" "2021-12-14" "2021-12-21" "2021-12-28"
+#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08" "2021-02-15"
+#>  [8] "2021-02-22" "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22" "2021-03-29" "2021-04-05"
+#> [15] "2021-04-12" "2021-04-19" "2021-04-26" "2021-05-03" "2021-05-10" "2021-05-17" "2021-05-24"
+#> [22] "2021-05-31" "2021-06-07" "2021-06-14" "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13"
+#> [29] "2021-07-20" "2021-07-27" "2021-08-03" "2021-08-10" "2021-08-17" "2021-08-24" "2021-08-31"
+#> [36] "2021-09-07" "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05" "2021-10-12" "2021-10-19"
+#> [43] "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30" "2021-12-07"
+#> [50] "2021-12-14" "2021-12-21" "2021-12-28"
 
 # select a week in the middle of the year
 abd <- abd[[26]]
@@ -213,23 +212,6 @@ wh_states <- ne_states(country = c("United States of America", "Canada"),
                        returnclass = "sf") %>% 
   st_transform(crs = crs) %>% 
   st_geometry()
-#> Install the rnaturalearthhires package? 
-#> 
-#> 1: Yes
-#> 2: No
-#> 
-#> Enter an item from the menu, or 0 to exit
-#> ── R CMD build ────────────────────────────────────────────────────────────────────
-#>      checking for file ‘/private/var/folders/mg/qh40qmqd7376xn8qxd6hm5lwjyy0h2/T/Rtmp82QhVy/remotes229932b8f327/ropensci-rnaturalearthhires-c3785a8/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/mg/qh40qmqd7376xn8qxd6hm5lwjyy0h2/T/Rtmp82QhVy/remotes229932b8f327/ropensci-rnaturalearthhires-c3785a8/DESCRIPTION’
-#>   ─  preparing ‘rnaturalearthhires’:
-#>      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-#>   ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#> ─  building ‘rnaturalearthhires_0.2.1.tar.gz’
-#>      Warning: invalid uid value replaced by that for user 'nobody'
-#>    Warning: invalid gid value replaced by that for user 'nobody'
-#>      
-#> 
 
 # start plotting
 par(mfrow = c(1, 1), mar = c(0, 0, 0, 0))
