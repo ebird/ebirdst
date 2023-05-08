@@ -1,5 +1,6 @@
 # ebirdst 2.2021.3
 
+- fix bug causing stixels with missing bounds to raise an error in `ebirdst_habitat()`
 - add a function to estimate MCC-F1 for `ebirdst_ppms()`
 
 # ebirdst 2.2021.2

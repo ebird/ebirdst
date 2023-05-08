@@ -32,8 +32,11 @@
 #' stixelize(stixels)
 #' }
 stixelize <- function(x) {
-  stopifnot(all(c("longitude_min", "longitude_max",
-                  "latitude_min", "latitude_max") %in% names(x)))
+  lnglat_bound_cols <- c("longitude_min", "longitude_max",
+                         "latitude_min", "latitude_max")
+  stopifnot(lnglat_bound_cols %in% names(x))
+  # drop stixels with missing bounds
+  x <- x[stats::complete.cases(x[, lnglat_bound_cols]), ]
 
   # function to make a single stixel
   f <- function(lon_min, lon_max, lat_min, lat_max) {
