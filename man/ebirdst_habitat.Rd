@@ -5,7 +5,13 @@
 \alias{plot.ebirdst_habitat}
 \title{eBird Status and Trends predictive habitat associations}
 \usage{
-ebirdst_habitat(path, ext, data = NULL, stationary_associations = FALSE)
+ebirdst_habitat(
+  path,
+  ext,
+  data = NULL,
+  stationary_associations = FALSE,
+  max_ss_smooth = Inf
+)
 
 \method{plot}{ebirdst_habitat}(x, n_habitat_types = 15, ...)
 }
@@ -37,6 +43,9 @@ each week of the year (the default) or habitat associations should be
 assumed constant throughout the year and a single set of estimates made for
 the full year. Annual estimates should only be made when you expect the
 associations to be constant throughout the year, e.g. for resident species.}
+
+\item{max_ss_smooth}{integer; maximum sample size to use for the training the
+temporal smooth.}
 
 \item{x}{\link{ebirdst_habitat} object; habitat relationships as calculated by
 \code{\link[=ebirdst_habitat]{ebirdst_habitat()}}.}

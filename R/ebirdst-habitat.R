@@ -28,6 +28,8 @@
 #'   assumed constant throughout the year and a single set of estimates made for
 #'   the full year. Annual estimates should only be made when you expect the
 #'   associations to be constant throughout the year, e.g. for resident species.
+#' @param max_ss_smooth integer; maximum sample size to use for the training the
+#'   temporal smooth.
 #'
 #' @details The Status and Trends models use both effort (e.g. number of
 #'   observers, length of checklist) and habitat (e.g. elevation, percent forest
@@ -82,9 +84,12 @@
 #' plot(habitat)
 #' }
 ebirdst_habitat <- function(path, ext, data = NULL,
-                            stationary_associations = FALSE) {
+                            stationary_associations = FALSE,
+                            max_ss_smooth = Inf) {
   stopifnot(is.logical(stationary_associations),
             length(stationary_associations) == 1)
+  stopifnot(is.numeric(max_ss_smooth), length(max_ss_smooth) == 1,
+            max_ss_smooth > 0)
   if (missing(path)) {
     stopifnot(is.list(data), all(c("pis", "pds", "stixels") %in% names(data)))
     pis <- data[["pis"]]
@@ -219,7 +224,8 @@ ebirdst_habitat <- function(path, ext, data = NULL,
                                FUN = loess_smooth,
                                predict_to = pred_weeks,
                                na_value = NA_real_,
-                               check_width = 7 / 366)
+                               check_width = 7 / 366,
+                               max_ss_smooth = max_ss_smooth)
     pd_smooth$data <- NULL
     pd_smooth <- tidyr::unnest(pd_smooth, "smooth")
     names(pd_smooth) <- c("predictor", "week_midpoint", "prob_pos_slope")
@@ -256,7 +262,8 @@ ebirdst_habitat <- function(path, ext, data = NULL,
                                FUN = loess_smooth,
                                predict_to = pred_weeks,
                                na_value = 0,
-                               check_width = 7 / 366)
+                               check_width = 7 / 366,
+                               max_ss_smooth = max_ss_smooth)
     pi_smooth$data <- NULL
     pi_smooth <- tidyr::unnest(pi_smooth, "smooth")
     # back transform
@@ -375,10 +382,13 @@ lm_slope <- function(data) {
   stats::coef(stats::lm(y ~ x, data = data))[[2]]
 }
 
-loess_smooth <- function(x, predict_to, na_value = NA_real_, check_width) {
+loess_smooth <- function(x, predict_to, na_value = NA_real_, check_width,
+                         max_ss_smooth = nrow(x)) {
   stopifnot(is.data.frame(x), all(c("x", "y") %in% names(x)))
   stopifnot(is.numeric(predict_to))
   stopifnot(is.numeric(na_value), length(na_value) == 1)
+  stopifnot(is.numeric(max_ss_smooth), length(max_ss_smooth) == 1,
+            max_ss_smooth > 0)
   if (!"weight" %in% names(x)) {
     x$weight <- rep(1, times = nrow(x))
   }
@@ -390,8 +400,9 @@ loess_smooth <- function(x, predict_to, na_value = NA_real_, check_width) {
 
   }
 
-  if (nrow(x) > 100000) {
-    x <- dplyr::slice_sample(x, n = 100000)
+  max_ss_smooth <- min(round(max_ss_smooth), nrow(x))
+  if (nrow(x) > max_ss_smooth) {
+    x <- dplyr::slice_sample(x, n = max_ss_smooth)
   }
 
   # safety check to make sure input x range is as wide as predict range
