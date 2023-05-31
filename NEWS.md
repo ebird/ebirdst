@@ -1,3 +1,7 @@
+# ebirdst 2.2021.4
+
+- 
+
 # ebirdst 2.2021.3
 
 - fix bug causing stixels with missing bounds to raise an error in `ebirdst_habitat()`

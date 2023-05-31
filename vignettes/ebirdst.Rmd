@@ -174,9 +174,9 @@ occ_seasonal_max <- load_raster(path, product = "occurrence",
                                 resolution = "lr")
 ```
 
-Finally, as a convenience, the data products include year-round rasters summarizing the mean or max across all weeks that fall within a season that passed the expert review process.  These can be accessed similarly to the seasonal products, just with `period = "full-year"` instead. For example, these can layers be used in conservation planning to assess the most important sites across the full range and full annual cycle of a species.
+Finally, as a convenience, the data products include year-round rasters summarizing the mean or max across all weeks that fall within a season that passed the expert review process.  These can be accessed similarly to the seasonal products, just with `period = "full-year"` instead. For example, these layers can be used in conservation planning to assess the most important sites across the full range and full annual cycle of a species.
 
-```{rtypes_fullyear}
+```{r types_fullyear}
 # full year, low res, maximum relative abundance
 abd_fy_max <- load_raster(path, product = "abundance", 
                            period = "full-year", metric = "max", 

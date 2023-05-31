@@ -390,6 +390,10 @@ loess_smooth <- function(x, predict_to, na_value = NA_real_, check_width) {
 
   }
 
+  if (nrow(x) > 100000) {
+    x <- dplyr::slice_sample(x, n = 100000)
+  }
+
   # safety check to make sure input x range is as wide as predict range
   if (min(x$x, na.rm = TRUE) > min(predict_to)) {
     if (max(x$x, na.rm = TRUE) == 1) {
