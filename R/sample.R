@@ -263,7 +263,7 @@ grid_sample_stratified <- function(
     stopifnot(is.numeric(jitter_sd), length(jitter_sd) == 1, jitter_sd >= 0)
 
     # ensure columns to jitter are numeric
-    col_types <- apply(x, MARGIN = 2, FUN = class)
+    col_types <- vapply(x, class, character(1))
     col_types <- col_types[jitter_columns]
     not_numeric <- names(col_types)[!col_types %in% c("numeric", "integer")]
     if (length(not_numeric) > 0) {
