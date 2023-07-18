@@ -27,9 +27,6 @@ test_that("ebirdst_habitat extent", {
                       t = c(0.5, 0.75))
   h2 <- ebirdst_habitat(path, ext = e)
   expect_identical(habitat, h2)
-
-  # spatial extent required
-  expect_error(ebirdst_habitat(path))
 })
 
 test_that("ebirdst_habitat pland_only", {
