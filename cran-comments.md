@@ -1,6 +1,6 @@
 # ebirdst 2.2021.4
 
-- 
+- performance improvements to `ebirdst_habitat()`
 
 ## Test environments
 

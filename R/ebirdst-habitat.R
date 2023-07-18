@@ -7,10 +7,10 @@
 #' operations in the package.
 #'
 #' @inheritParams load_pis
-#' @param ext [ebirdst_extent] object; the spatiotemporal extent over which to
-#'   calculate the habitat associations. Note that **temporal component of `ext`
-#'   is ignored is this function**, habitat associations are always calculated
-#'   for the full year.
+#' @param ext [ebirdst_extent] object (optional); the spatiotemporal extent over
+#'   which to calculate the habitat associations. Note that **temporal component
+#'   of `ext` is ignored is this function**, habitat associations are always
+#'   calculated for the full year.
 #' @param data as an alternative to providing the `path` argument specifying the
 #'   location of the data package, the data required to calculate habitat
 #'   associations can be provided explicitly as a named list of three data
@@ -112,6 +112,7 @@ ebirdst_habitat <- function(path, ext, data = NULL,
     stopifnot(is.character(path), length(path) == 1, dir.exists(path))
 
     if (missing(ext)) {
+      ext <- NULL
       stixel_coverage <- load_stixels(path = path)
       stixel_coverage$weight <- 1
       stixel_coverage <- dplyr::select(stixel_coverage, "stixel_id", "weight")

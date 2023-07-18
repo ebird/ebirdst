@@ -20,10 +20,10 @@ ebirdst_habitat(
 species was downloaded to. This path is returned by \code{ebirdst_download()}
 or \code{get_species_path()}.}
 
-\item{ext}{\link{ebirdst_extent} object; the spatiotemporal extent over which to
-calculate the habitat associations. Note that \strong{temporal component of \code{ext}
-is ignored is this function}, habitat associations are always calculated
-for the full year.}
+\item{ext}{\link{ebirdst_extent} object (optional); the spatiotemporal extent over
+which to calculate the habitat associations. Note that \strong{temporal component
+of \code{ext} is ignored is this function}, habitat associations are always
+calculated for the full year.}
 
 \item{data}{as an alternative to providing the \code{path} argument specifying the
 location of the data package, the data required to calculate habitat
