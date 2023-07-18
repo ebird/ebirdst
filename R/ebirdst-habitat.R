@@ -112,48 +112,53 @@ ebirdst_habitat <- function(path, ext, data = NULL,
     stopifnot(is.character(path), length(path) == 1, dir.exists(path))
 
     if (missing(ext)) {
-      stop("A spatiotemporal extent must be provided.")
+      stixel_coverage <- load_stixels(path = path)
+      stixel_coverage$weight <- 1
+      stixel_coverage <- dplyr::select(stixel_coverage, "stixel_id", "weight")
+      # load pis and pds, occurrence only
+      pis <- load_pis(path = path, model = "occurrence")
+      pds <- load_pds(path = path, model = "occurrence")
     } else {
       stopifnot(inherits(ext, "ebirdst_extent"))
       if (!sf::st_is_longlat(ext$extent)) {
         stop("Extent must provided in WGS84 lon-lat coordinates.")
       }
+      # remove temporal component of extent
+      ext$t <- c(0, 1)
+      # spatial extent polygon
+      ext_poly <- ext$extent
+      if (ext$type == "bbox") {
+        ext_poly <- sf::st_as_sfc(ext_poly)
+      }
+      ext_poly <- sf::st_transform(ext_poly, crs = 4326)
+
+      # generate stixel polygons
+      stixels <- load_stixels(path = path, ext = ext)
+
+      if (nrow(stixels) == 0) {
+        warning("No stixels within the provided extent.")
+        return(NULL)
+      }
+
+      # convert stixels to polygons
+      stixels <- stixelize(stixels)
+      stixels$area <- sf::st_area(stixels)
+      stixels <- dplyr::select(stixels, "stixel_id", "area")
+
+      # calculate % of stixel within focal extent
+      stixels <- suppressWarnings(suppressMessages(
+        sf::st_make_valid(sf::st_intersection(stixels, ext_poly))
+      ))
+      stixels$area_in_extent <- sf::st_area(stixels)
+      stixels$weight <- as.numeric(stixels$area_in_extent / stixels$area)
+      stixel_coverage <- sf::st_drop_geometry(stixels)
+      stixel_coverage <- dplyr::select(stixel_coverage, "stixel_id", "weight")
+      rm(stixels)
+
+      # load pis and pds, occurrence only
+      pis <- load_pis(path = path, ext = ext, model = "occurrence")
+      pds <- load_pds(path = path, ext = ext, model = "occurrence")
     }
-    # remove temporal component of extent
-    ext$t <- c(0, 1)
-    # spatial extent polygon
-    ext_poly <- ext$extent
-    if (ext$type == "bbox") {
-      ext_poly <- sf::st_as_sfc(ext_poly)
-    }
-    ext_poly <- sf::st_transform(ext_poly, crs = 4326)
-
-    # generate stixel polygons
-    stixels <- load_stixels(path = path, ext = ext)
-
-    if (nrow(stixels) == 0) {
-      warning("No stixels within the provided extent.")
-      return(NULL)
-    }
-
-    # convert stixels to polygons
-    stixels <- stixelize(stixels)
-    stixels$area <- sf::st_area(stixels)
-    stixels <- dplyr::select(stixels, "stixel_id", "area")
-
-    # calculate % of stixel within focal extent
-    stixels <- suppressWarnings(suppressMessages(
-      sf::st_make_valid(sf::st_intersection(stixels, ext_poly))
-    ))
-    stixels$area_in_extent <- sf::st_area(stixels)
-    stixels$weight <- as.numeric(stixels$area_in_extent / stixels$area)
-    stixel_coverage <- sf::st_drop_geometry(stixels)
-    stixel_coverage <- dplyr::select(stixel_coverage, "stixel_id", "weight")
-    rm(stixels)
-
-    # load pis and pds, occurrence only
-    pis <- load_pis(path = path, ext = ext, model = "occurrence")
-    pds <- load_pds(path = path, ext = ext, model = "occurrence")
   }
 
   # drop stixels not in region
