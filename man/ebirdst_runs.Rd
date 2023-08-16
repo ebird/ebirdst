@@ -3,7 +3,7 @@
 \docType{data}
 \name{ebirdst_runs}
 \alias{ebirdst_runs}
-\title{Data frame of available eBird Status and Trends species}
+\title{Data frame of species with eBird Status Data Products}
 \format{
 A data frame with 15 variables:
 \describe{
@@ -36,7 +36,7 @@ A data frame with 15 variables:
 ebirdst_runs
 }
 \description{
-A dataset containing the species for which eBird Status and Trends data are
+A dataset containing the species for which eBird Status Data Products are
 available In addition, the dates defining the boundaries of the seasons are
 provided. These seasons are defined on a species-specific basis through
 expert review. For information on the details of defining seasons, please see

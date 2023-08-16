@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ebirdst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.4</span>
       </span>
     </div>
 
@@ -32,10 +32,13 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/ebirdst.html">Introduction to eBird Status &amp; Trends Data</a>
+      <a href="../articles/ebirdst.html">Introduction to eBird Status Data Products</a>
     </li>
     <li>
       <a href="../articles/rasters.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="../articles/trends.html">eBird Trends Data Products</a>
     </li>
   </ul></li>
 <li>
@@ -94,6 +97,10 @@
         </td>
         <td><p>Get the Status and Trends week that a date falls into</p></td>
       </tr><tr><td>
+          <p><code><a href="download_ebird_trends.html">download_ebird_trends()</a></code> </p>
+        </td>
+        <td><p>Download eBird Trends Data Products</p></td>
+      </tr><tr><td>
           <p><code><a href="ebirdst.html">ebirdst</a></code> </p>
         </td>
         <td><p><code>ebirdst</code>: Tools to Load, Map, Plot, and Analyze eBird Status and Trends
@@ -105,7 +112,7 @@ Data Products</p></td>
       </tr><tr><td>
           <p><code><a href="ebirdst_download.html">ebirdst_download()</a></code> </p>
         </td>
-        <td><p>Download eBird Status and Trends Data Products</p></td>
+        <td><p>Download eBird Status Data Products</p></td>
       </tr><tr><td>
           <p><code><a href="ebirdst_extent.html">ebirdst_extent()</a></code> </p>
         </td>
@@ -129,11 +136,15 @@ Data Products</p></td>
       </tr><tr><td>
           <p><code><a href="ebirdst_runs.html">ebirdst_runs</a></code> </p>
         </td>
-        <td><p>Data frame of available eBird Status and Trends species</p></td>
+        <td><p>Data frame of species with eBird Status Data Products</p></td>
       </tr><tr><td>
           <p><code><a href="ebirdst_subset.html">ebirdst_subset()</a></code> </p>
         </td>
         <td><p>Subset eBird Status and Trends data spatiotemporally</p></td>
+      </tr><tr><td>
+          <p><code><a href="ebirdst_trends_runs.html">ebirdst_trends_runs</a></code> </p>
+        </td>
+        <td><p>Data frame of species with eBird Trends Data Products</p></td>
       </tr><tr><td>
           <p><code><a href="ebirdst_version.html">ebirdst_version()</a></code> </p>
         </td>
@@ -150,6 +161,10 @@ Data Products</p></td>
           <p><code><a href="get_species_path.html">get_species_path()</a></code> </p>
         </td>
         <td><p>Get the path to the data package for a given species</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_trends_path.html">get_trends_path()</a></code> </p>
+        </td>
+        <td><p>Get the path to the trends data parquet file</p></td>
       </tr><tr><td>
           <p><code><a href="grid_sample.html">grid_sample()</a></code> <code><a href="grid_sample.html">grid_sample_stratified()</a></code> </p>
         </td>
@@ -187,6 +202,10 @@ Data Products</p></td>
         </td>
         <td><p>Load summary data for eBird Status and Trends stixels</p></td>
       </tr><tr><td>
+          <p><code><a href="load_trends.html">load_trends()</a></code> </p>
+        </td>
+        <td><p>Load eBird Trends Data Products for a set of species</p></td>
+      </tr><tr><td>
           <p><code><a href="parse_raster_dates.html">parse_raster_dates()</a></code> </p>
         </td>
         <td><p>Parse weekly dates from raster layer names</p></td>
@@ -207,6 +226,10 @@ Data Products</p></td>
         </td>
         <td><p>Transform a spatiotemporal extent to a different CRS</p></td>
       </tr><tr><td>
+          <p><code><a href="rasterize_trends.html">rasterize_trends()</a></code> </p>
+        </td>
+        <td><p>Convert eBird Trends Data Products to raster format</p></td>
+      </tr><tr><td>
           <p><code><a href="set_ebirdst_access_key.html">set_ebirdst_access_key()</a></code> </p>
         </td>
         <td><p>Store the eBird Status and Trends access key</p></td>
@@ -214,6 +237,10 @@ Data Products</p></td>
           <p><code><a href="stixelize.html">stixelize()</a></code> </p>
         </td>
         <td><p>Generate polygons for eBird Status and Trends stixels</p></td>
+      </tr><tr><td>
+          <p><code><a href="trends_palette.html">trends_palette()</a></code> </p>
+        </td>
+        <td><p>eBird Trends color palette for mapping</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -42,6 +42,10 @@ remotes::install_github("ebird/ebirdst")
 
 This version of `ebirdst` is designed to work with the eBird Status Data Products estimated for the year `r ebirdst::ebirdst_version()[["version_year"]]`, with visualizations being released on the web in November 2021, and data access being made available in June 2022. **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.
 
+## eBird Trends Data Products
+
+In August 2023, [eBird Trends](https://science.ebird.org/en/status-and-trends/trends-maps) Data Products were released. For further details on the downloading and using the trends data consult the [associated vignette](articles/trends.html).
+
 ## Transition from `raster` to `terra`
 
 The majority of the eBird Status and Trends data products are raster spatial data stored in GeoTIFF format. Traditionally, R users have used the [raster](https://rspatial.org/raster/) package to work with data in this format and `ebirdst` used `raster` extensively. However, `raster` has been replaced by the [terra](https://rspatial.org/index.html) package, which offers a much improved and more efficient set of tools for working with raster data. With this in mind, `ebirdst` has transitioned to using `terra` rather than `raster` as of verison `2.2021.0`. This change may break your existing code and you have three options for dealing with this:
@@ -76,8 +80,9 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 
 For full package documentation, including a series of vignettes covering the full spectrum from introductory to advanced usage, please see the package [website](https://ebird.github.io/ebirdst/). The available vignettes are:
 
-- [Introduction to eBird Status & Trends Data](https://ebird.github.io/ebirdst/articles/ebirdst.html): covers data access, available data products, and structure and format of data files.
-- [Working with Raster Data](https://ebird.github.io/ebirdst/articles/rasters.html): loading and analyzing the raster data products. 
+- [Introduction to eBird Status & Trends Data](articles/ebirdst.html): covers data access, available data products, and structure and format of data files.
+- [Working with Raster Data](articles/rasters.html): loading and analyzing the raster data products.
+- [eBird Trends Data Products](articles/trends.html): downloading and working with eBird Trends Data Products.
 
 ## Quick Start
 

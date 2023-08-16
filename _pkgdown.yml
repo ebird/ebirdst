@@ -11,10 +11,12 @@ navbar:
     articles:
       text: Vignettes
       menu:
-      - text: Introduction to eBird Status & Trends Data
+      - text: Introduction to eBird Status Data Products
         href: articles/ebirdst.html
       - text: Working with Raster Data
         href: articles/rasters.html
+      - text: eBird Trends Data Products
+        href: articles/trends.html
     reference:
       text: Function Reference
       href: reference/index.html

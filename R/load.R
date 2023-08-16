@@ -176,6 +176,82 @@ load_raster <- function(path,
 }
 
 
+#' Load eBird Trends Data Products for a set of species
+#'
+#' Load the eBird Trends data for a single species or a set of species. Ttrends
+#' are estimated on a 27km by 27km grid for a single season per species
+#' (breeding, non-breeding, or resident). For further details on the methodology
+#' consult Fink et al. 2023.
+#'
+#' @param run_names character; one or more trends run names, which are a
+#'   combination of species code and season (e.g. "woothr_breeding"). The full
+#'   list of valid run names can be viewed in the [ebirdst_trends_runs] data
+#'   frame included in this package. Set this to NULL to load all species.
+#' @param path character; path to the eBird trends data parquet file, which can
+#'   be found with [get_trends_path()].
+#'
+#' @references
+#'   Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M.,
+#'   Ligocki, S., Oldham Jaromczyk, L., Robinson, O., Wood, C., Kelling, S., &
+#'   Rodewald, A. D. (2023). A Double machine learning trend model for citizen
+#'   science data. Methods in Ecology and Evolution, 00, 1–14.
+#'   https://doi.org/10.1111/2041-210X.14186
+#'
+#' @return A data frame containing the trends estimates for a set of species.
+#'   The following columns are included:
+#'   - `srd_id`: unique integer identifier for the grid cell.
+#'   - `longitude/latitude`: longitude and latitude of the grid cell center.
+#'   - `abd`: relative abundance estimate for the middle of the trend time
+#'   period (e.g. 2014 for a 2007-2021 trend).
+#'   - `abd_ppy`: the median estimated percent per year change in relative
+#'   abundance.
+#'   - `abd_ppy_lower/abd_ppy_upper`: the 80% confidence interval for the
+#'   estimated percent per year change in relative abundance.
+#'   - `abd_ppy_nonzero`: a logical (TRUE/FALSE) value indicating if the 80%
+#'   confidence limits overlap zero (FALSE) or don't overlap zero (TRUE)
+#'   - `abd_trend`: the median estimated cumulative change in relative
+#'   abundance over the trend time period.
+#'   - `abd_trend_lower/abd_trend_upper`: the 80% confidence interval for the
+#'   estimated cumulative change in relative abundance over the trend time period.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download the trends data
+#' download_ebird_trends()
+#'
+#' # load breeding season trends for sage thrasher and sagebrush sparrow
+#' trends <- load_trends(c("sagthr_breeding", "sagspa1_breeding"))
+#' }
+load_trends <- function(run_names = NULL, path = get_trends_path()) {
+  stopifnot(is.character(path), length(path) == 1)
+  if (!file.exists(path)) {
+    stop("The trends data could not be found. You may need to download the ",
+         "data with download_ebird_trends().")
+  }
+
+  # load data
+  data <- dplyr::tibble(arrow::read_parquet(path))
+  if (is.null(run_names)) {
+    return(data)
+  }
+
+  # subset runs
+  stopifnot(is.character(run_names), length(run_names) > 0,
+            all(!is.na(run_names)))
+  if (!all(run_names %in% ebirdst::ebirdst_trends_runs$run_name)) {
+    inv <- run_names[!run_names %in% ebirdst::ebirdst_trends_runs$run_name]
+    inv <- paste(inv, collapse = ", ")
+    stop("Invalid run_names:\n", inv,
+         "\nFor a list of valid run_names consult ebirdst_trends_runs.")
+  }
+  target_rn <- paste(data$species_code, data$season, sep = "_")
+  data <- data[target_rn %in% run_names, ]
+  return(data)
+}
+
+
 #' Load seasonal eBird Status and Trends range polygons
 #'
 #' Range polygons are defined as the boundaries of non-zero seasonal relative

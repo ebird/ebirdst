@@ -1,7 +1,5 @@
 ---
 title: "Working with Raster Data"
-author: "Matt Strimas-Mackey, Tom Auer, Daniel Fink"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}

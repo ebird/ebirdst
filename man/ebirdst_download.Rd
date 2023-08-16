@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{ebirdst_download}
 \alias{ebirdst_download}
-\title{Download eBird Status and Trends Data Products}
+\title{Download eBird Status Data Products}
 \usage{
 ebirdst_download(
   species,
@@ -16,7 +16,7 @@ ebirdst_download(
 }
 \arguments{
 \item{species}{character; a single species given as a scientific name, common
-name or six-letter species code (e.g. woothr). The full list of valid
+name or six-letter species code (e.g. "woothr"). The full list of valid
 species is can be viewed in the \link{ebirdst_runs} data frame included in this
 package. To download the example dataset, use "example_data".}
 
@@ -51,7 +51,7 @@ given species. If \code{dry_run = TRUE} a list of files to download will be
 returned.
 }
 \description{
-Download an eBird Status and Trends data package for a single species, or for
+Download an eBird Status Data Products for a single species, or for
 an example species. Accessing Status and Trends data requires an access key,
 consult \code{\link[=set_ebirdst_access_key]{set_ebirdst_access_key()}} for instructions on how to obtain and
 store this key. The example data consist of the results for Yellow-bellied

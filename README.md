@@ -53,6 +53,13 @@ versions.** If you have accessed and used previous versions and/or may
 need access to previous versions for reasons related to reproducibility,
 please contact <ebird@cornell.edu> and your request will be considered.
 
+## eBird Trends Data Products
+
+In August 2023, [eBird
+Trends](https://science.ebird.org/en/status-and-trends/trends-maps) Data
+Products were released. For further details on the downloading and using
+the trends data consult the [associated vignette](articles/trends.html).
+
 ## Transition from `raster` to `terra`
 
 The majority of the eBird Status and Trends data products are raster
@@ -108,7 +115,7 @@ The Status and Trends Data Products provide estimates of relative
 abundance, and other variables, for a particular year. This estimation
 year is used to identify the version of the data products. Each version
 of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 2.2021.3 and, as
+For example, the current version of the R package is 2.2021.4 and, as
 indicated by the year in the version number, it is designed to work with
 the 2021 data products. Every year, typically in November, the Status
 and Trends Data Products are updated, and users are encouraged to update
@@ -141,13 +148,13 @@ the full spectrum from introductory to advanced usage, please see the
 package [website](https://ebird.github.io/ebirdst/). The available
 vignettes are:
 
-- [Introduction to eBird Status & Trends
-  Data](https://ebird.github.io/ebirdst/articles/ebirdst.html): covers
-  data access, available data products, and structure and format of data
-  files.
-- [Working with Raster
-  Data](https://ebird.github.io/ebirdst/articles/rasters.html): loading
-  and analyzing the raster data products.
+- [Introduction to eBird Status & Trends Data](articles/ebirdst.html):
+  covers data access, available data products, and structure and format
+  of data files.
+- [Working with Raster Data](articles/rasters.html): loading and
+  analyzing the raster data products.
+- [eBird Trends Data Products](articles/trends.html): downloading and
+  working with eBird Trends Data Products.
 
 ## Quick Start
 

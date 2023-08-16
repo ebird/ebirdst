@@ -1,5 +1,6 @@
 # ebirdst 2.2021.4
 
+- trends data released!
 - performance improvements to `ebirdst_habitat()`
 
 ## Test environments

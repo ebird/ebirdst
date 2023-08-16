@@ -1,11 +1,9 @@
 ---
-title: "Introduction to eBird Status & Trends Data"
-author: "Matt Strimas-Mackey, Tom Auer, Daniel Fink"
-date: "`r Sys.Date()`"
+title: "Introduction to eBird Status Data Products"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Introduction to eBird Status & Trends Data}
+  %\VignetteIndexEntry{Introduction to eBird Status Data Products}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console

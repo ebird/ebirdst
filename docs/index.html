@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ebirdst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.4</span>
       </span>
     </div>
 
@@ -56,10 +56,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/ebirdst.html">Introduction to eBird Status &amp; Trends Data</a>
+      <a href="articles/ebirdst.html">Introduction to eBird Status Data Products</a>
     </li>
     <li>
       <a href="articles/rasters.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="articles/trends.html">eBird Trends Data Products</a>
     </li>
   </ul>
 </li>
@@ -114,6 +117,11 @@
 <p>This version of <code>ebirdst</code> is designed to work with the eBird Status Data Products estimated for the year 2021, with visualizations being released on the web in November 2021, and data access being made available in June 2022. <strong>Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.</strong> If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact <a href="mailto:ebird@cornell.edu" class="email">ebird@cornell.edu</a> and your request will be considered.</p>
 </div>
 <div class="section level2">
+<h2 id="ebird-trends-data-products">eBird Trends Data Products<a class="anchor" aria-label="anchor" href="#ebird-trends-data-products"></a>
+</h2>
+<p>In August 2023, <a href="https://science.ebird.org/en/status-and-trends/trends-maps" class="external-link">eBird Trends</a> Data Products were released. For further details on the downloading and using the trends data consult the <a href="articles/trends.html">associated vignette</a>.</p>
+</div>
+<div class="section level2">
 <h2 id="transition-from-raster-to-terra">Transition from <code>raster</code> to <code>terra</code>
 <a class="anchor" aria-label="anchor" href="#transition-from-raster-to-terra"></a>
 </h2>
@@ -135,7 +143,7 @@
 <div class="section level2">
 <h2 id="versions">Versions<a class="anchor" aria-label="anchor" href="#versions"></a>
 </h2>
-<p>The Status and Trends Data Products provide estimates of relative abundance, and other variables, for a particular year. This estimation year is used to identify the version of the data products. Each version of this R package is associated with a particular version of the data. For example, the current version of the R package is 2.2021.3 and, as indicated by the year in the version number, it is designed to work with the 2021 data products. Every year, typically in November, the Status and Trends Data Products are updated, and users are encouraged to update this R package and transition to using the new version of the data products. After the data products are updated, there will be a brief period where access to the previous version is also provided, allowing users to finish any analyses with this previous version. If you intended to continue using the older data products during this period you must not update the R package.</p>
+<p>The Status and Trends Data Products provide estimates of relative abundance, and other variables, for a particular year. This estimation year is used to identify the version of the data products. Each version of this R package is associated with a particular version of the data. For example, the current version of the R package is 2.2021.4 and, as indicated by the year in the version number, it is designed to work with the 2021 data products. Every year, typically in November, the Status and Trends Data Products are updated, and users are encouraged to update this R package and transition to using the new version of the data products. After the data products are updated, there will be a brief period where access to the previous version is also provided, allowing users to finish any analyses with this previous version. If you intended to continue using the older data products during this period you must not update the R package.</p>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
@@ -152,9 +160,11 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <p>For full package documentation, including a series of vignettes covering the full spectrum from introductory to advanced usage, please see the package <a href="https://ebird.github.io/ebirdst/">website</a>. The available vignettes are:</p>
 <ul>
 <li>
-<a href="https://ebird.github.io/ebirdst/articles/ebirdst.html">Introduction to eBird Status &amp; Trends Data</a>: covers data access, available data products, and structure and format of data files.</li>
+<a href="articles/ebirdst.html">Introduction to eBird Status &amp; Trends Data</a>: covers data access, available data products, and structure and format of data files.</li>
 <li>
-<a href="https://ebird.github.io/ebirdst/articles/rasters.html">Working with Raster Data</a>: loading and analyzing the raster data products.</li>
+<a href="articles/rasters.html">Working with Raster Data</a>: loading and analyzing the raster data products.</li>
+<li>
+<a href="articles/trends.html">eBird Trends Data Products</a>: downloading and working with eBird Trends Data Products.</li>
 </ul>
 </div>
 <div class="section level2">

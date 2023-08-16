@@ -1,6 +1,6 @@
-#' Data frame of available eBird Status and Trends species
+#' Data frame of species with eBird Status Data Products
 #'
-#' A dataset containing the species for which eBird Status and Trends data are
+#' A dataset containing the species for which eBird Status Data Products are
 #' available In addition, the dates defining the boundaries of the seasons are
 #' provided. These seasons are defined on a species-specific basis through
 #' expert review. For information on the details of defining seasons, please see
@@ -36,6 +36,40 @@
 #'   \item{resident_end}{For resident species, the year-round end date}
 #' }
 "ebirdst_runs"
+
+#' Data frame of species with eBird Trends Data Products
+#'
+#' This data frame contains a list of species for which eBird Trends Data
+#' Products are available including model-level information for the trend model.
+#' The two predictive performance metrics (`rsquared` and `beta0`) are based
+#' on a comparison of actual and estimated percent per year trends for a suite
+#' of simulations (see Fink et al. 2023 for further details).
+#'
+#' @format A data frame with 11 variables:
+#' \describe{
+#'   \item{run_name}{Combination of species code and run name.}
+#'   \item{species_code}{The alphanumeric eBird species code uniquely
+#'         identifying the species.}
+#'   \item{common_name}{The English common name of the species.}
+#'   \item{season}{Season that the trend was estimated for: breeding,
+#'         nonbreeding, or resident.}
+#'   \item{region}{The geographic region that the trend model was run for. Note
+#'         that broadly distributed species (e.g. Barn Swallow) will only have
+#'         trend estimates for a regional subset of their full range.}
+#'   \item{start_date}{The start date (`MM-DD` format) of the season for which
+#'         the trend was estimated.}
+#'   \item{end_date}{The end date (`MM-DD` format) of the season for which the
+#'         trend was estimated.}
+#'   \item{start_year}{The start date of the trend time period.}
+#'   \item{end_year}{The end date of the trend time period.}
+#'   \item{rsquared}{R-squared value comparing the actual and estimated trends
+#'         from the simulations.}
+#'   \item{beta0}{The slope of a linear model fitting actual vs. estimated
+#'         trends (`actual ~ estimated`) for the simulations. Positive values
+#'         of `beta0` indicate that the models are systematically
+#'         *underestimating* the simulated trend for this species.}
+#' }
+"ebirdst_trends_runs"
 
 #' eBird Status and Trends predictors
 #'

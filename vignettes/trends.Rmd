@@ -1,0 +1,240 @@
+---
+title: "eBird Trends Data Products"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{eBird Trends Data Products}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<style type="text/css">
+.table {
+    width: 75%;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE,
+                      collapse = TRUE,
+                      comment = "#>",
+                      out.width = "100%",
+                      fig.height = 4, 
+                      fig.width = 7, 
+                      fig.align = "center")
+# only build vignettes locally and not for R CMD check
+knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
+```
+
+The eBird Trends Data Products provide estimates of trends in relative abundance based on eBird data. Trend estimates are made on a 27km by 27km grid for a single season per species (breeding, non-breeding, or resident). For further details on the methodology used to estimate these trends consult the associated paper:
+
+
+> Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki, S., Oldham Jaromczyk, L., Robinson, O., Wood, C., Kelling, S., & Rodewald, A. D. (2023). A Double machine learning trend model for citizen science data. Methods in Ecology and Evolution, 00, 1–14. https://doi.org/10.1111/2041-210X.14186
+
+Data users who are not comfortable in R can either download the data from the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/download-data) or jump to the section of [exporting data to CSV](#export).
+
+For a list of the available trends for species/season combinations consult the data frame `ebirdst_trends_runs` that is provided with this R package.
+
+```{r runs}
+library(ebirdst)
+library(dplyr)
+library(rnaturalearth)
+library(sf)
+library(terra)
+
+glimpse(ebirdst_trends_runs)
+```
+
+Information is provided on the model run for each species including two measures of two predictive performance metrics (`rsquared` and `beta0`) that are based on a comparison of actual and estimated trends for a suite of simulations (see Fink et al. 2023 for further details). The columns in this data frame are as follows:
+
+- `species_code`: the alphanumeric eBird species code uniquely identifying the species.
+- `common_name`: the English common name of the species.
+-  `season`: season that the trend was estimated for: breeding, nonbreeding, or resident.
+- `region`: the geographic region that the trend model was run for. Note that broadly distributed species (e.g. Barn Swallow) will only have trend estimates for a regional subset of their full range.
+- `start_year/end_year`: the start and end years of the trend time period.
+- `start_date/end_date`: the start and end dates (`MM-DD` format) of the season for which the trend was estimated.
+- `rsquared`: R-squared value comparing the actual and estimated trends from the simulations.
+- `beta0`: the slope of a linear model fitting actual vs. estimated trends (`actual ~ estimated`) for the simulations. Positive values of `beta0` indicate that the models are systematically *underestimating* the simulated trend for this species.
+
+# Downloading data {#download}
+
+Trends data access is granted through an Access Request Form at: https://ebird.org/st/request. Access with this form generates a key to be used with this R package and is provided immediately (as long as commercial use is not requested). Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.
+
+After completing the Access Request Form, you will be provided a Status and Trends access key, which you will need when downloading data. To store the key so the package can access it when downloading data, use the function `set_ebirdst_access_key("XXXXX")`, where `"XXXXX"` is the access key provided to you. **Restart R after setting the access key.**
+
+Trends data can be downloaded for all species using `download_ebird_trends()`. Note that trends data are much smaller in size so are downloaded all at once in contrast to the Status Data Products, which are downloaded on a per-species basis.
+
+```{r download, eval=FALSE}
+download_ebird_trends()
+```
+
+The data are stored in a [parquet file](https://parquet.apache.org/), a open source format for efficiently storing tabular data. By default, the location of this file is chosen by the R package and can be viewed with:
+
+```{r path}
+get_trends_path()
+```
+
+# Loading data into R {#load}
+
+The trends data for all species, or a subset of species, can be loaded into R using the function `load_trends()`. This function takes a list of run names, which can be found in `ebirdst_trends_runs`, and the path to the trends data parquet file. For example, we'll load the breeding season trends data for Sage Thrasher, a migratory species native to Western North American [sagebrush steppe](https://en.wikipedia.org/wiki/Sagebrush_steppe).
+
+```{r load}
+# identify the run for sage thrasher
+sagthr_run <- filter(ebirdst_trends_runs, common_name == "Sage Thrasher")
+
+# sage thrasher has a breeding season trends
+# load the data into R
+sagthr_trends <- load_trends(sagthr_run$run_name)
+glimpse(sagthr_trends)
+```
+
+Columns beginning with `abd_ppy` provide estimates of the percent per year trend and 80% confidence intervals, while those beginning with `abd_trend` provide estiamtes of the cumulative trend and 80% confidence intervals over the time period. For a full list of column descriptions see the function documentation `?load_trends`.
+
+# Exporting to CSV {#export}
+
+For those data users who would prefer to access the data in more traditional CSV format for use outside of R the following code chunks can be used. For users who are comfortable with R, **we strongly encourage skipping this section** and using the `load_trends()` function described above to load the data into R; **working with the trends data in R will be much easier**. To download and export the full trends dataset to CSV use:
+
+```{r export-all, eval=FALSE}
+library(ebirdst)
+library(readr)
+
+# download data
+download_ebird_trends()
+# load into R
+trends <- load_trends()
+# write to csv
+# be sure to modify the path to the csv file to save the file to directory of 
+# your choice on your hard drive
+write_csv(trends, "ebird-trends_all-species_2021.csv")
+```
+
+To download the trends dataset and export a subset of species based on common names to CSV use:
+
+```{r export-subset, eval=FALSE}
+library(ebirdst)
+library(dplyr)
+library(readr)
+
+# modify this list of common names
+common_names <- c("Sage Thrasher", "Sagebrush Sparrow")
+
+# download data
+download_ebird_trends()
+# load into R
+trends <- load_trends()
+# subset to chosen species 
+species_codes <- ebirdst_trends_runs[
+  ebirdst_trends_runs$common_name %in% common_names,
+  "species_code", drop = TRUE]
+# write to csv
+# be sure to modify the path to the csv file to save the file to directory of 
+# your choice on your hard drive
+write_csv(trends[trends$species_code %in% species_codes, ], 
+          "ebird-trends_selected-species_2021.csv")
+```
+
+# Conversion to spatial formats {#spatial}
+
+The eBird trends data are stored in a tabular format, where each row gives the trend estimate for a single cell in a 27km x 27km equal area grid. For each grid cell, the coordinates (longitude and latitude) are provided for the center of the grid cell. For many applications, an explicitly spatial format is more useful and these coordinates can be use to convert from the tabular format to either a vector or raster format.
+
+## Vector (points) {#spatial-points}
+
+The tabular trend data can be converted into point vector featurs for use with the `sf` package using the `sf` function `st_as_sf()`.
+
+```{r spatial-points}
+trends_sf <- st_as_sf(sagthr_trends, coords = c("longitude", "latitude"), 
+                      crs = 4326)
+print(trends_sf)
+```
+
+These points can then be exported to GeoPackage for use in a GIS such as QGIS or ArcGIS with
+
+```{r spatial-points-export, eval=FALSE}
+# be sure to modify the path to the file to save the file to directory of 
+# your choice on your hard drive
+write_sf(trends_sf, "ebird-trends_sagthr_2021.gpkg",
+         layer = "sagthr_trends")
+```
+
+## Raster {#spatial-raster}
+
+The tabular trend estimates can most easily be converted to raster format for use with the `terra` package using the function `rasterize_trends()`. Any of the columns in the trends data frame can be selected using the `layers` argument and converted into layers in the resulting raster object.
+
+```{r spatial-raster}
+# rasterize the percent per year trend with confidence limits (default)
+ppy_raster <- rasterize_trends(sagthr_trends)
+print(ppy_raster)
+# rasterize the cumulative trend estimate
+trends_raster <- rasterize_trends(sagthr_trends, layers = "abd_trend")
+print(ppy_raster)
+```
+
+These raster objects can be exported to GeoTIFF files for use in a GIS such as QGIS or ArcGIS with
+
+```{r spatial-raster-export, eval=FALSE}
+writeRaster(trends_raster, filename = "ebird-trends_sagthr_2021.tif")
+```
+
+A simple map of these data can be produced from the raster data. For example, we'll make a map of percent per year change in relative abundance for Sage Thrasher. Note that this is slightly different than the trends maps on the Status and Trends website, which show the cumulative trend rather than the annual trend.
+
+```{r spatial-raster-map}
+# define breaks and palettes similar to those on s&t website
+breaks <- seq(0, 4, by = 1)
+breaks[1] <- global(abs(ppy_raster[["abd_ppy"]]), 
+                    min, na.rm = TRUE)[[1]] / 2
+breaks[length(breaks)] <- Inf
+breaks <- c(-rev(breaks), breaks)
+pal <- trends_palette(length(breaks) - 1)
+# make a simple map
+plot(ppy_raster[["abd_ppy"]], 
+     col = pal, breaks =  breaks,
+     main = "Sage Thrasher abundance trend 2007-2021 [% change per year]",
+     axes = FALSE, legend = FALSE)
+```
+
+# Applications {#applications}
+
+## Regional trends {#applications-regional}
+
+eBird trend estimates are made on a 27km by 27km grid, which allows summarization over broader regions. The goal of summarization is typically to produce a mean trend in relative abundance for a region such as a state. Since the relative abundance of a species varies throughout it's range, we need to weight the mean trend calculation by relative abundance (`abd` in the trends data frame). For example, let's calculate the state-level mean percent per year trends in relative abundance for Sage Thrasher.
+
+```{r applications-regional}
+# boundaries of states in the united states
+states <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
+  transmute(state_code = iso_3166_2,
+            state_name = name) %>%
+  st_transform(crs = st_crs(trends_sf))
+# attach state to the trends data
+trends_states <- st_join(trends_sf, states, left = FALSE)
+# abundance-weighted average in region
+trends_states %>%
+  st_drop_geometry() %>%
+  group_by(state_code, state_name) %>%
+  summarize(abd_ppy = sum(abd * abd_ppy) / sum(abd),
+            .groups = "drop") %>%
+  arrange(abd_ppy)
+```
+
+Based on these data, Sage Thrasher populations appear to be in decline throughout their entire range; however, some states (e.g. Washington) are experiencing much steeper declines than others (e.g. Arizona).
+
+## Multi-species trends {#applications-multi}
+
+In some cases, we may be interested in the trend for an entire community of birds, which can be estimated by calculating the cell-wise mean trend across a suite of species. For example, the eBird Trends Data Products contain trend estimates for three species that breedin sabrush [sagebrush](https://en.wikipedia.org/wiki/Sagebrush_steppe): Brewer's Sparrow, Sagebrush Sparrow, and Sage Thrasher. We can calculate an average trend for this group of species, which will provide an estimate of the trend in the sagebrush bird community.
+
+```{r}
+# load trends for sagebrush species
+sagebrush_species <- c("Brewer's Sparrow", "Sagebrush Sparrow", "Sage Thrasher")
+sagebrush_runs <- filter(ebirdst_trends_runs, 
+                         common_name %in% sagebrush_species)
+trends_sagebrush_species <- load_trends(sagebrush_runs$run_name)
+
+# calculate mean trend for each cell
+trends_sagebrush <- trends_sagebrush_species %>% 
+  group_by(srd_id, latitude, longitude) %>% 
+  summarize(n_species = n(),
+            abd_ppy = mean(abd_ppy, na.rm = TRUE),
+            .groups = "drop")
+head(trends_sagebrush)
+```

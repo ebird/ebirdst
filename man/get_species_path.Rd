@@ -8,7 +8,7 @@ get_species_path(species, path = ebirdst_data_dir())
 }
 \arguments{
 \item{species}{character; a single species given as a scientific name, common
-name or six-letter species code (e.g. woothr). The full list of valid
+name or six-letter species code (e.g. "woothr"). The full list of valid
 species is can be viewed in the \link{ebirdst_runs} data frame included in this
 package. To download the example dataset, use "example_data".}
 

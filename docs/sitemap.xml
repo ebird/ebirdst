@@ -25,6 +25,9 @@
     <loc>https://ebird.github.io/ebirdst/articles/rasters.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/articles/trends.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/authors.html</loc>
   </url>
   <url>
@@ -53,6 +56,9 @@
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/date_to_st_week.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/download_ebird_trends.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst.html</loc>
@@ -85,6 +91,9 @@
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_subset.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_trends_runs.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_version.html</loc>
   </url>
   <url>
@@ -95,6 +104,9 @@
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/get_species_path.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/get_trends_path.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/grid_sample.html</loc>
@@ -127,6 +139,9 @@
     <loc>https://ebird.github.io/ebirdst/reference/load_stixels.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/reference/load_trends.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/reference/parse_raster_dates.html</loc>
   </url>
   <url>
@@ -145,9 +160,15 @@
     <loc>https://ebird.github.io/ebirdst/reference/project_extent.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/reference/rasterize_trends.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/stixelize.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/trends_palette.html</loc>
   </url>
 </urlset>

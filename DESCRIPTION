@@ -25,6 +25,7 @@ BugReports: https://github.com/ebird/ebirdst/issues
 Depends: 
     R (>= 4.0.0)
 Imports: 
+    arrow,
     DBI,
     dplyr (>= 1.0.0),
     ggplot2,
@@ -32,6 +33,7 @@ Imports:
     gridExtra,
     jsonlite,
     magrittr,
+    RColorBrewer,
     rlang,
     RSQLite,
     sf (>= 1.0-0),

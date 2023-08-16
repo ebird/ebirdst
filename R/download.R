@@ -1,6 +1,6 @@
-#' Download eBird Status and Trends Data Products
+#' Download eBird Status Data Products
 #'
-#' Download an eBird Status and Trends data package for a single species, or for
+#' Download an eBird Status Data Products for a single species, or for
 #' an example species. Accessing Status and Trends data requires an access key,
 #' consult [set_ebirdst_access_key()] for instructions on how to obtain and
 #' store this key. The example data consist of the results for Yellow-bellied
@@ -10,7 +10,7 @@
 #' accessible without an access key.
 #'
 #' @param species character; a single species given as a scientific name, common
-#'   name or six-letter species code (e.g. woothr). The full list of valid
+#'   name or six-letter species code (e.g. "woothr"). The full list of valid
 #'   species is can be viewed in the [ebirdst_runs] data frame included in this
 #'   package. To download the example dataset, use "example_data".
 #' @param path character; directory to download the data to. All downloaded
@@ -106,7 +106,7 @@ ebirdst_download <- function(species,
     if (is.null(files)) {
       stop("Cannot access Status and Trends data URL. Ensure that you have ",
            "a working internet connection and a valid API key for the Status ",
-           "and Trends data. Note that the API keys expire after 1 month, so ",
+           "and Trends data. Note that the API keys expire after 6 month, so ",
            "may need to update your key. Visit https://ebird.org/st/request")
     }
 
@@ -205,6 +205,91 @@ ebirdst_download <- function(species,
 }
 
 
+#' Download eBird Trends Data Products
+#'
+#' Download eBird Trends Data Products parquet file for all species. Accessing
+#' Status and Trends data requires an access key, consult
+#' [set_ebirdst_access_key()] for instructions on how to obtain and store this
+#' key. Use [load_trends()] to load the data into the R session after
+#' downloading it or the parquet file can be loaded directly using
+#' [read_parquet()][arrow::read_parquet()] from the `arrow` package.
+#'
+#' @param path character; directory to download the data to. The downloaded file
+#'   containing the trends data will be placed in a sub-directory of this
+#'   directory named for the data version year, e.g. "2021" for the 2007-2021
+#'   Trends Data Products. Defaults to a persistent data directory, which can be
+#'   found by calling `ebirdst_data_dir()`.
+#' @param force logical; if the data have already been downloaded, should a
+#'   fresh copy be downloaded anyway.
+#' @param show_progress logical; whether to print download progress information.
+#'
+#' @return Path to the trends data file.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' path <- download_ebird_trends()
+#' }
+download_ebird_trends <- function(path = ebirdst_data_dir(),
+                                  force = FALSE,
+                                  show_progress = TRUE) {
+  stopifnot(is.character(path), length(path) == 1)
+  stopifnot(is.logical(force), length(force) == 1)
+  stopifnot(is.logical(show_progress), length(show_progress) == 1)
+
+  # version of the data products that this package version corresponds to
+  version_year <- ebirdst_version()[["version_year"]]
+
+  # api url and key
+  key <- get_ebirdst_access_key()
+  api_url <- "https://st-download.ebird.org/v1/fetch?objKey="
+  trends_file <- "ebird-trends_2021.parquet"
+  trends_src <- stringr::str_glue("{api_url}{version_year}/trends/{trends_file}",
+                                  "&key={key}")
+
+  # path to data package
+  trends_dst <- file.path(path, version_year, "trends", trends_file)
+  trends_dst <- normalizePath(trends_dst, mustWork = FALSE)
+  dir.create(dirname(trends_dst), showWarnings = FALSE, recursive = TRUE)
+
+  # check if already exists
+  if (file.exists(trends_dst)) {
+    if (!isTRUE(force)) {
+      message("Trends data already exists, use force = TRUE to re-download.")
+      return(invisible(normalizePath(trends_dst)))
+    } else {
+      message("Trends data already exists, deleting and re-downloading.")
+      unlink(trends_dst)
+    }
+  }
+
+  # download
+  old_timeout <- getOption("timeout")
+  options(timeout = max(3000, old_timeout))
+  if (isTRUE(show_progress)) {
+    message("Downloading eBird Trends data (162MB)")
+  }
+  dl_response <- tryCatch(suppressWarnings({
+    utils::download.file(trends_src, trends_dst,
+                         quiet = !show_progress, mode = "wb")
+  }), error = function(e) NULL)
+  if (is.null(dl_response) || dl_response != 0) {
+    stop("Cannot access eBird Trends data URL. Ensure that you have ",
+         "a working internet connection and a valid API key for the Status ",
+         "and Trends data. Note that the API keys expire after 6 month, so ",
+         "may need to update your key. Visit https://ebird.org/st/request")
+  }
+  options(timeout = old_timeout)
+
+  if (isTRUE(show_progress)) {
+    message("eBird trends data downloaded to:\n", trends_dst)
+  }
+
+  return(invisible(trends_dst))
+}
+
+
 #' Get the path to the data package for a given species
 #'
 #' This helper function can be used to get the path to a data package for a
@@ -257,6 +342,40 @@ get_species_path <- function(species, path = ebirdst_data_dir()) {
   return(species_path)
 }
 
+#' Get the path to the trends data parquet file
+#'
+#' This helper function can be used to get the path to trends data parquet file.
+#' This path can be passed to [load_trends()] to load the data into the R
+#' session or the parquet file can be loaded directly using
+#' [read_parquet()][arrow::read_parquet()] from the `arrow` package.
+#'
+#' @inheritParams download_ebird_trends
+#'
+#' @return The path to the data package directory.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download the trends data
+#' download_ebird_trends()
+#'
+#' # get the path to the parquet file
+#' path <- get_trends_path()
+#' }
+get_trends_path <- function(path = ebirdst_data_dir()) {
+  stopifnot(is.character(path), length(path) == 1, dir.exists(path))
+
+  version_year <- ebirdst_version()[["version_year"]]
+  trends_file <- "ebird-trends_2021.parquet"
+  trends_path <- file.path(path, version_year, "trends", trends_file)
+  trends_path <- normalizePath(trends_path, mustWork = FALSE)
+
+  if (!file.exists(trends_path)) {
+    stop("The trends data could not be found. You may need to download the ",
+         "data with download_ebird_trends().")
+  }
+  return(trends_path)
+}
 
 #' Path to eBird Status and Trends data download directory
 #'
