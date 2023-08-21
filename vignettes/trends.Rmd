@@ -190,7 +190,7 @@ pal <- trends_palette(length(breaks) - 1)
 # make a simple map
 plot(ppy_raster[["abd_ppy"]], 
      col = pal, breaks =  breaks,
-     main = "Sage Thrasher abundance trend 2007-2021 [% change per year]",
+     main = "Sage Thrasher abundance trend\n2007-2021 [% change per year]",
      axes = FALSE, legend = FALSE)
 ```
 
@@ -198,7 +198,7 @@ plot(ppy_raster[["abd_ppy"]],
 
 ## Regional trends {#applications-regional}
 
-eBird trend estimates are made on a 27km by 27km grid, which allows summarization over broader regions. The goal of summarization is typically to produce a mean trend in relative abundance for a region such as a state. Since the relative abundance of a species varies throughout it's range, we need to weight the mean trend calculation by relative abundance (`abd` in the trends data frame). For example, let's calculate the state-level mean percent per year trends in relative abundance for Sage Thrasher.
+eBird trend estimates are made on a 27km by 27km grid, which allows summarization over broader regions. The goal of summarization is typically to produce a mean trend in relative abundance for a region such as a state. Since the relative abundance of a species varies throughout its range, we need to weight the mean trend calculation by relative abundance (`abd` in the trends data frame). For example, let's calculate the state-level mean percent per year trends in relative abundance for Sage Thrasher.
 
 ```{r applications-regional}
 # boundaries of states in the united states
