@@ -21,7 +21,7 @@ operations in the package."><!-- mathjax --><script src="https://cdnjs.cloudflar
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ebirdst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.4</span>
       </span>
     </div>
 
@@ -80,7 +80,13 @@ operations in the package.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ebirdst_habitat</span><span class="op">(</span><span class="va">path</span>, <span class="va">ext</span>, data <span class="op">=</span> <span class="cn">NULL</span>, stationary_associations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ebirdst_habitat</span><span class="op">(</span></span>
+<span>  <span class="va">path</span>,</span>
+<span>  <span class="va">ext</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  stationary_associations <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  max_ss_smooth <span class="op">=</span> <span class="cn">Inf</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for ebirdst_habitat</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, n_habitat_types <span class="op">=</span> <span class="fl">15</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -95,10 +101,10 @@ or <code><a href="get_species_path.html">get_species_path()</a></code>.</p></dd>
 
 
 <dt>ext</dt>
-<dd><p><a href="ebirdst_extent.html">ebirdst_extent</a> object; the spatiotemporal extent over which to
-calculate the habitat associations. Note that <strong>temporal component of <code>ext</code>
-is ignored is this function</strong>, habitat associations are always calculated
-for the full year.</p></dd>
+<dd><p><a href="ebirdst_extent.html">ebirdst_extent</a> object (optional); the spatiotemporal extent over
+which to calculate the habitat associations. Note that <strong>temporal component
+of <code>ext</code> is ignored is this function</strong>, habitat associations are always
+calculated for the full year.</p></dd>
 
 
 <dt>data</dt>
@@ -122,6 +128,11 @@ each week of the year (the default) or habitat associations should be
 assumed constant throughout the year and a single set of estimates made for
 the full year. Annual estimates should only be made when you expect the
 associations to be constant throughout the year, e.g. for resident species.</p></dd>
+
+
+<dt>max_ss_smooth</dt>
+<dd><p>integer; maximum sample size to use for the training the
+temporal smooth.</p></dd>
 
 
 <dt>x</dt>

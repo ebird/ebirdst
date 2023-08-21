@@ -4,7 +4,10 @@
 #' Tools to load, map, plot, and analyze [eBird Status and
 #' Trends](https://ebird.org/science/status-and-trends) data products
 #'
-#' @name ebirdst
-#' @docType package
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
 #' @importFrom rlang .data
+## usethis namespace: end
 NULL

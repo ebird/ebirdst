@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ebirdst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.4</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@ Data</h1>
                         <h4 data-toc-skip class="author">Matt
 Strimas-Mackey, Tom Auer, Daniel Fink</h4>
             
-            <h4 data-toc-skip class="date">2023-05-08</h4>
+            <h4 data-toc-skip class="date">2023-08-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/ebirdst.Rmd" class="external-link"><code>vignettes/ebirdst.Rmd</code></a></small>
       <div class="hidden name"><code>ebirdst.Rmd</code></div>
@@ -468,13 +468,14 @@ example,</p>
 rasters summarizing the mean or max across all weeks that fall within a
 season that passed the expert review process. These can be accessed
 similarly to the seasonal products, just with
-<code>period = "full-year"</code> instead. For example, these can layers
+<code>period = "full-year"</code> instead. For example, these layers can
 be used in conservation planning to assess the most important sites
 across the full range and full annual cycle of a species.</p>
-<pre class="rtypes_fullyear"><code><span><span class="co"># full year, low res, maximum relative abundance</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># full year, low res, maximum relative abundance</span></span>
 <span><span class="va">abd_fy_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">path</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
 <span>                           period <span class="op">=</span> <span class="st">"full-year"</span>, metric <span class="op">=</span> <span class="st">"max"</span>, </span>
-<span>                           resolution <span class="op">=</span> <span class="st">"lr"</span><span class="op">)</span></span></code></pre>
+<span>                           resolution <span class="op">=</span> <span class="st">"lr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="range-boundaries">Range boundaries<a class="anchor" aria-label="anchor" href="#range-boundaries"></a>
