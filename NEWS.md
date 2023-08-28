@@ -1,6 +1,7 @@
 # ebirdst 2.2021.4
 
 - performance improvements to `ebirdst_habitat()`
+- change package-level documentation as per roxygen2 suggestions
 
 # ebirdst 2.2021.3
 
