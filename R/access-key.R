@@ -52,8 +52,11 @@ set_ebirdst_access_key <- function(key, overwrite = FALSE) {
   } else {
     write(paste0("\n", key_line, "\n"), renv_path, append = TRUE)
   }
-  message("eBird Status and Trends access key stored in: ", renv_path,
-          "\nYou must RESTART R to load the saved access key.")
+
+  # set key in memory - for current R session
+  Sys.setenv(EBIRDST_KEY = key)
+
+  message("eBird Status and Trends access key stored in: ", renv_path)
   invisible(renv_path)
 }
 
@@ -64,8 +67,7 @@ get_ebirdst_access_key <- function() {
     message("An access key is required to download eBird Status and Trends ",
             "data\n1. Get a key by filling out the request form at ",
             "https://ebird.org/st/request\n",
-            "2. Save the key using set_ebirdst_access_key()\n",
-            "3. Restart R to load the key")
+            "2. Save the key using set_ebirdst_access_key()\n")
     stop("Valid eBird Status and Trends access key not found. ",
          "Note that keys expire after 1 month, you may need a new key.")
   }
