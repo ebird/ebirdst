@@ -1,12 +1,105 @@
 ---
-title: "eBird Status Data Products Changelog"
+title: "eBird Status & Trends Data Products Changelog"
 author: "Tom Auer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{eBird Status Data Products Changelog}
+  %\VignetteIndexEntry{eBird Status & Trends Data Products Changelog}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
+
+## 2022 Changelog
+
+**Data Version:** 2022 (available November 2023)
+
+**Citation:** 
+<blockquote>
+Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, I. Davies, A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023. eBird Status and Trends, Data Version: 2022; Released: 2023. Cornell Lab of Ornithology, Ithaca, New York. https://doi.org/10.2173/ebirdst.2022
+</blockquote>
+
+### Status
+
+#### Data Inputs
+
+##### eBird Checklists 
+- CHANGED: Checklists are included for January 1 2008 through December 31 2022, updated from January 1 2007 through December 31 2021.
+- CHANGED: Checklists up to 30 km in length are now included for species that are run for the ocean only (e.g., Northern Gannet).
+- CHANGED: Checklists with duration less than 0.0167 hours (1 minute) are dropped. These are primarily checklists with incorrect duration information.
+- CHANGED: Checklist centroids derived from tracks are now calculated using great circle distance, not sinusoidal distance.
+- CHANGED: The maximum allowable number of observers on a checklist is 50. All other checklists are dropped.
+
+##### Effort Covariates
+- ADDED: Rate (as kilometers per hour) has been added as an effort covariate. Prediction is made to a value of 2 kmph, as the units for duration is 1 hour and distance is 2 kilometers. For the range boundary prediction, rate is set as the result of `effort_hrs` and `effort_distance_km` having been maximized with partial dependence values separately.
+- FIXED: Rainfall and Snowfall had a bug that resulted in them often being all 0s, due to precision errors. This has been corrected and tested.
+- CHANGED: CCI
+**Summary:** The main changes to the calculation of CCI are in 
+1. What kind of model is fit to checklist species richness using predictive features, and 
+2. How deviations in model predictions are attributed to  particular observers and checklists. 
+
+**Details**
+The foundation of CCI is a predictive model of checklist-level species richness ($S$; i.e. number of species). In updating CCI, changes were made to both the form of the predictive model of $S$ and to the method that attributes variation in richness to particular observers. 
+
+Prior to Version 2022, predictive features comprised weather, landcover, habitat diversity, protocol, day of year, and variables that are particular to the observer: observer_id and checklist_number (i.e., index of how many checklists a user has ever submitted from any stixel to eBird; not to be confused with checklist_id). A mixed-effects generalized additive model (GAM) was fit to $S$. This GAM used as predictive features the natural log of `checklist_number`, a smooth spline of `solar_noon_diff`, and the raw values of all other predictors, with a random effect specification for `observer_id` and `checklist_number`. The model was used to make predictions $p_{i}$ of $S$ to data representing a “standardized search”, in which all features except `observer_id` and `checklist_number` were held constant (at the column-wise mean) across observations. CCI was derived from the variation in resulting predictions, and scaled to have mean 0 and variance 1.
+
+$$
+CCI_{i} = \\(pi - mean(p)\\) / sd(p)
+$$
+
+Version 2022 changed the functional form of the predictive model from a (mostly) linear mixed-effects model to a random forest. Further, it removed `observer_id` and `checklist_number` from the suite of predictive features; the model is now blind to person-specific effects. Instead, predictions to real data absent any personal information establish conditional expectations of richness given habitat, effort, weather, etc. Each expected value parameterizes a Poisson distribution, which is used to compute the exceedance probability of the actually-observed `S`, which is then mapped to a standard-normal quantile. A GAM with a “factor smooth” basis for `checklist_number` and `observer_id` is applied to smooth the raw values for each observer. CCI currently comprises these smoothed values.
+
+##### Environmental Covariates
+- CHANGED: Covariate assignment now uses proper circular buffers for neighborhood calculations (with 1.5 km radius) instead of the previously used sinusoidal buffer, which had many locations of high skew across the globe.
+- ADDED: Information about the moon has been added using two covariates from the R suncalc package. Moon fraction represents the fraction of the disk of the moon that was illuminated at a given time and location and Moon altitude represents the altitude of the moon (above or below the horizon, in radians) at a given location and time.
+- ADDED: The [Joint Research Center Global Surface Water](https://global-surface-water.appspot.com/download) data has been added as yearly variables, representing the binary presence of either seasonal or permanent water (JRC/GSW1_4/YearlyHistory), calculated as percent land cover and edge density within a neighborhood. This dataset is 30 m in spatial resolution.
+- ADDED: Elevation data at 30 m resolution has been added from the [ASTER Global Digital Elevation Model](https://lpdaac.usgs.gov/products/astgtmv003). This is represented as mean and standard deviation within neighborhoods.
+- ADDED: MODIS 16-day Enhanced Vegetation Index (EVI) has been added from [MOD13Q1](https://lpdaac.usgs.gov/products/mod13q1v061/). This has been summarized as mean and standard deviation within neighborhoods. As this dataset is not available for water and has an artificial boundary at the northern and southern latitudes based on availability of light, we have added a boolean covariate `has_evi` that describes whether the covariate was available at a given date and location.
+- ADDED: Data describing shorelines from [Sayre et al. 2021](https://www.jstor.org/stable/27085043) has been included. This includes means and standard deviations for: wave height, tidal range, chlorophyll, turbidity, sinuosity, slope, and outflow density; class densities (as km of coast per square km of area in neighborhood) for for four classes of erodibility, and class densities (as km of coast per square km of area in neighborhood) for 23 Ecological Marine Units (EMUs) that describe the sea surface temperature, salinity, and dissolved oxygen, as well as covariates describing the unique number of erodibility and EMU classes in each neighborhood. As with EVI, we have included a boolean `has_shoreline` covariate, as the shoreline covariates are not spatially exhaustive, describing whether the covariate was available at a given location.
+- UPDATED: MCD12Q1 LCCS land cover, land use, and hydrology data were updated to version 6.1.
+
+#### Workflow and Code Changes
+
+##### Base Model
+- CHANGED: Both migrants and residents use circularized time as the covariates for day of year, as sine and cosine of day normalized within a stixel. 
+- CHANGED: The binary presence/absence occurrence threshold at the base model level now uses mccf1, replacing Cohen’s Kappa.
+
+##### Prediction
+- CHANGED: The calendar dates for grid prediction have changed as a result of converting the prediction values to integers (formerly they included fractional day information).
+- CHANGED: The prediction values for both `effort_distance_km` and `effort_hrs` are set to their 90th quantiles when making predictions to determine the range boundary. Previously these were chosen to maximize the partial dependence (PD) curve.	
+- CHANGED: The prediction values for CCI and time of day (`solar_noon_diff`) are now chosen to maximize the abundance partial dependence (PD) constrained to values where the species was detected. Previously they were chosen using the occurrence partial dependence curve and were not constrained to detections.
+-CHANGED: When maximizing the prediction value for CCI at a stixel level, the allowable range of values is now 0-2, up from 0-1.85, based on the range of the new version of CCI values overall.
+- CHANGED: The prediction value for `effort_distance_km` is now 2 km, to more closely reflect the distribution of checklists and to increase overall signal.
+- CHANGED: weather optimization arise now done for relative abundance, not occurrence.
+- CHANGED: PD maximization of solar_noon_diff allows the full range of quantiles to allow selection of the highest and lowest quantile values which are often nocturnal. Previously the outermost quantile values were not allowed for selection.
+
+##### Ensemble
+- CHANGED: With the replacement of the base model binary presence/absence occurrence threshold with MCC-F1, the ensemble level percent above threshold (PAT) cutoff value has been fixed at 0.14 (interpreted as a species being found at least once a week).
+- ADDED: In the ensemble support calculation, a new product has been added, spatial coverage. This represents the fraction of 3 km grid cell-weeks that have checklists within a given stixel, averaged across the ensemble (essentially a spatial smooth. This weekly layer is then used to mask all predictions from all species values where the spatial coverage value is below 0.00025. This helps control extrapolation in places like Russia and central Africa.
+- CHANGED: The ensemble support site selection probability is now 0 for unsampled islands.
+- CHANGED: The ensemble support-based site selection probability mask has been changed to 0.0025. Ocean run species no longer use the site selection probability mask.
+ 
+##### Data Products
+- UPDATED: The prediction definition is now: the {occurrence, count, or relative abundance} of individuals of a given species detected by an expert eBirder on a 1 hour, 2 kilometer traveling checklist at the optimal time of day. Predictions have been optimized for user skill, hourly weather and moon conditions, specific for the given region, season, and species, in order to maximize detection rates.
+- REMOVED: Partial dependence values are no longer calculated or distributed.
+
+### Trends
+
+#### Covariates
+- ADDED: New and modified Status covariates have been added to the trends model. New covariates include speed (distance / duration), moon fraction and altitude, shoreline, and 30 m elevation.
+- CHANGED: Water cover is now represented by the static [ASTER water bodies dataset](https://lpdaac.usgs.gov/products/astwbdv001/) instead of the annual [MODIS MOD44W dataset](https://lpdaac.usgs.gov/products/mod44wv006/).
+
+#### Ensemble
+- CHANGED: The residual confounding adjustment now includes two components: a global adjustment and a spatially explicit adjustment. Both adjustments are linear transformations derived by comparing the actual and estimated trends for the simulations. The global trend is calculated and applied across the entire species range, while the spatially explicit adjustment is calculated and applied separately for each pixel.
+Regions, Years, and Seasons
+- CHANGED: Trends regions now have variable start years, with all trends now being run for a shorter time series, to ensure all years in the time series have sufficient data to model trends. For example, North American trends will now start in 2012 rather than 2007.
+- CHANGED: Seasonal dates for Trends are now identical to Status seasonal dates.
+- CHANGED: For species with trends estimated for a season crossing the year end (e.g. December to January), the time series will be shifted back by one year to ensure the same number of years for the trend for all species in a given region. For example, a North American breeding trend (e.g. May to June) will be for 2012 to 2022, while a non-breeding trend (e.g. December to January) will be for 2011/12 to 2021/22.
+
+#### Web Products
+- ADDED: Regional trends with CIs.
+
+#### Data Products
+- ADDED: Trends data released for the first time this year. Web download will include GeoPackages of the abundance-scaled trend circles. R package download will include ensemble-level trend estimates as well as fold-level estimates.
+
 
 ## 2021 Changelog
 

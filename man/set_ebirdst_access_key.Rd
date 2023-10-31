@@ -18,14 +18,15 @@ Edits .Renviron, then returns the path to this file invisibly.
 }
 \description{
 Accessing eBird Status and Trends data requires an access key, which can be
-obtained by visiting https://ebird.org/st/request. This key must be
-stored as the environment variable \code{EBIRDST_KEY} in order for
-\code{\link[=ebirdst_download]{ebirdst_download()}} to use it. The easiest approach is to store the key in
-your \code{.Renviron} file so it can always be accessed in your R sessions. Use
-this function to set \code{EBIRDST_KEY} in your \code{.Renviron} file provided that it
-is located in the standard location in your home directory. It is also
-possible to manually edit the \code{.Renviron} file. \strong{The access key is specific
-to you and should never be shared or made publicly accessible.}
+obtained by visiting https://ebird.org/st/request. This key must be stored as
+the environment variable \code{EBIRDST_KEY} in order for
+\code{\link[=ebirdst_download_status]{ebirdst_download_status()}} and \code{\link[=ebirdst_download_trends]{ebirdst_download_trends()}} to use it. The
+easiest approach is to store the key in your \code{.Renviron} file so it can
+always be accessed in your R sessions. Use this function to set \code{EBIRDST_KEY}
+in your \code{.Renviron} file provided that it is located in the standard location
+in your home directory. It is also possible to manually edit the \code{.Renviron}
+file. \strong{The access key is specific to you and should never be shared or made
+publicly accessible.}
 }
 \examples{
 \dontrun{

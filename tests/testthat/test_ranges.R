@@ -4,7 +4,9 @@ skip_on_cran()
 
 test_that("load_ranges", {
   # raw
-  range_raw <- load_ranges(path, resolution = "lr", smoothed = FALSE)
+  range_raw <- load_ranges("yebsap-example",
+                           resolution = "27km",
+                           smoothed = FALSE)
   expect_s3_class(range_raw, "sf")
   expect_equal(nrow(range_raw), 4)
   expect_named(range_raw,
@@ -13,7 +15,7 @@ test_that("load_ranges", {
                  "geom"))
 
   # smoothed
-  range_smooth <- load_ranges(path, resolution = "lr")
+  range_smooth <- load_ranges("yebsap-example", resolution = "27km")
   expect_s3_class(range_smooth, "sf")
   expect_equal(nrow(range_smooth), 4)
   expect_named(range_smooth,
@@ -23,6 +25,6 @@ test_that("load_ranges", {
 })
 
 test_that("load_ranges error", {
-  expect_error(load_ranges(path, "error"))
-  expect_error(load_ranges("/invalid/path/"))
+  expect_error(load_ranges("Yellow Warbler"))
+  expect_error(load_ranges("XXXX"))
 })

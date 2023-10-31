@@ -7,9 +7,10 @@ dir.create(temp_dir, recursive = TRUE, showWarnings = FALSE)
 Sys.setenv(EBIRDST_DATA_DIR = temp_dir)
 
 # download example data
-path <- ebirdst_download("example_data",
-                         tifs_only = FALSE,
-                         show_progress = FALSE)
+path <- ebirdst_download_status("yebsap-example",
+                                download_all = TRUE,
+                                show_progress = FALSE)
+path <- ebirdst_download_trends("yebsap-example", show_progress = FALSE)
 
 # cleanup the mess we made above
 cleanup <- function() {

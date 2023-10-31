@@ -2,23 +2,39 @@
 % Please edit documentation in R/load.R
 \name{load_trends}
 \alias{load_trends}
-\title{Load eBird Trends Data Products for a set of species}
+\title{Load eBird Trends estimates for a set of species}
 \usage{
-load_trends(run_names = NULL, path = get_trends_path())
+load_trends(species, fold_estimates = FALSE, path = ebirdst_data_dir())
 }
 \arguments{
-\item{run_names}{character; one or more trends run names, which are a
-combination of species code and season (e.g. "woothr_breeding"). The full
-list of valid run names can be viewed in the \link{ebirdst_trends_runs} data
-frame included in this package. Set this to NULL to load all species.}
+\item{species}{character; one or more species given as scientific names,
+common names or six-letter species codes (e.g. "woothr"). The full list of
+valid species can be viewed in the \link{ebirdst_runs} data frame included in
+this package; species with trends estimates are indicated by the
+\code{has_trends} column. To access the example dataset, use "yebsap-example".}
 
-\item{path}{character; path to the eBird trends data parquet file, which can
-be found with \code{\link[=get_trends_path]{get_trends_path()}}.}
+\item{fold_estimates}{logical; by default, the trends summarized across the
+100-fold ensemble are returned; however, by setting \code{fold_estimates = TRUE}
+the individual fold-level estimates are returned.}
+
+\item{path}{character; directory to download the data to. All downloaded
+files will be placed in a sub-directory of this directory named for the
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling \code{ebirdst_data_dir()}.}
 }
 \value{
 A data frame containing the trends estimates for a set of species.
 The following columns are included:
 \itemize{
+\item \code{species_code}: the alphanumeric eBird species code uniquely identifying
+the species.
+\item \code{season}:  season that the trend was estimated for: breeding,
+nonbreeding, or resident.
+\item \code{start_year/end_year}: the start and end years of the trend time period.
+\item \code{start_date/end_date}: the start and end dates (\code{MM-DD} format) of the
+season for which the trend was estimated.
 \item \code{srd_id}: unique integer identifier for the grid cell.
 \item \code{longitude/latitude}: longitude and latitude of the grid cell center.
 \item \code{abd}: relative abundance estimate for the middle of the trend time
@@ -32,22 +48,52 @@ confidence limits overlap zero (FALSE) or don't overlap zero (TRUE)
 \item \code{abd_trend}: the median estimated cumulative change in relative
 abundance over the trend time period.
 \item \code{abd_trend_lower/abd_trend_upper}: the 80\% confidence interval for the
-estimated cumulative change in relative abundance over the trend time period.
+estimated cumulative change in relative abundance over the trend time
+period.
+}
+
+If \code{fold_estimates = TRUE}, a data frame of fold-level trend estimates is
+returned with the following columns:
+\itemize{
+\item \code{species_code}: the alphanumeric eBird species code uniquely identifying
+the species.
+\item \code{season}:  season that the trend was estimated for: breeding,
+nonbreeding, or resident.
+\item \code{srd_id}: unique integer identifier for the grid cell.
+\item \code{abd}: relative abundance estimate for the middle of the trend time
+period (e.g. 2014 for a 2007-2021 trend).
+\item \code{abd_ppy}: the estimated percent per year change in relative abundance.
 }
 }
 \description{
-Load the eBird Trends data for a single species or a set of species. Ttrends
-are estimated on a 27km by 27km grid for a single season per species
-(breeding, non-breeding, or resident). For further details on the methodology
-consult Fink et al. 2023.
+Load the relative abundance trend estimates for a single species or a set of
+species. Trends are estimated on a 27 km by 27 km grid for a single season
+per species (breeding, non-breeding, or resident).  Note that data must be
+download using \code{\link[=ebirdst_download_trends]{ebirdst_download_trends()}} prior to loading it using this
+function.
+}
+\details{
+The trends in relative abundance are estimated using a double machine
+learning model. To quantify uncertainty, an ensemble of 100 estimates is made
+at each location, each based on a random subsample of eBird data. The
+estimated trend is the median across the ensemble, and the 80\% confidence
+intervals are the lower 10th and upper 90th percentiles across the ensemble.
+To access estimates from the individual folds making up the ensemble use
+\code{fold_estimates = TRUE}. These fold-level estimates can be used to quantify
+uncertainty, for example, when calculating the trend for a given region. For
+further details on the methodology used to estimate trends consult Fink et
+al. 2023.
 }
 \examples{
 \dontrun{
-# download the trends data
-download_ebird_trends()
+# download example trends data if it hasn't already been downloaded
+ebirdst_download_trends("yebsap-example")
 
-# load breeding season trends for sage thrasher and sagebrush sparrow
-trends <- load_trends(c("sagthr_breeding", "sagspa1_breeding"))
+# load trends
+trends <- load_trends("yebsap-example")
+
+# load fold-level estimates
+trends_folds <- load_trends("yebsap-example", fold_estimates = TRUE)
 }
 }
 \references{

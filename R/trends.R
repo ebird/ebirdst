@@ -1,7 +1,7 @@
 #' Convert eBird Trends Data Products to raster format
 #'
 #' The eBird trends data are stored in a tabular format, where each row gives
-#' the trend estimate for a single cell in a 27km x 27km equal area grid. For
+#' the trend estimate for a single cell in a 27 km x 27 km equal area grid. For
 #' many applications, an explicitly spatial format is more useful. This function
 #' uses the cell center coordinates to convert the tabular trend estimates to
 #' raster format in `terra` [SpatRaster][terra::SpatRaster] format.
@@ -20,11 +20,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' # download the trends data
-#' download_ebird_trends()
+#' # download example trends data if it hasn't already been downloaded
+#' ebirdst_download_trends("yebsap-example")
 #'
-#' # load breeding season trends for sage thrasher and sagebrush sparrow
-#' trends <- load_trends("sagthr_breeding")
+#' # load trends
+#' trends <- load_trends("yebsap-example")
 #'
 #' # rasterize percent per year trend
 #' rasterize_trends(trends, "abd_ppy")
@@ -55,6 +55,12 @@ rasterize_trends <- function(trends,
          paste(missing, collapse = ", "))
   }
 
+  # check that we don't have fold-level estimates
+  if ("fold" %in% names(trends)) {
+    stop("Fold-level trend estimates cannot be rasterized. Try loading the ",
+         "trends with `fold_estimates = FALSE`.")
+  }
+
   # check that only one species data is present
   n_runs <- nrow(dplyr::distinct(trends, .data$species_code, .data$season))
   if (n_runs > 1) {
@@ -63,7 +69,13 @@ rasterize_trends <- function(trends,
          "at a time.")
   }
 
-  # raster tempalte
+  # check for duplicate srd cell estimates
+  if (nrow(trends) != dplyr::n_distinct(trends$srd_id)) {
+    stop("There are multiple rows for some cell estimates. Check that there ",
+         "are not multiple rows for the same srd_id value.")
+  }
+
+  # raster template
   r <- trends_raster_template()
 
   # convert to vector format
@@ -85,27 +97,7 @@ rasterize_trends <- function(trends,
   return(trends_raster)
 }
 
-#' eBird Trends color palette for mapping
-#'
-#' A diverging red to blue color palette for mapping eBird Trends. Reds are
-#' typically assigned to declining trends and blues for increasing trends.
-#'
-#' @inheritParams abundance_palette
-#'
-#' @return A character vector of hex color codes.
-#' @export
-#'
-#' @examples
-#' trends_palette(9)
-trends_palette <- function(n) {
-  stopifnot(is.numeric(n), length(n) == 1, n >= 1)
-  trend_reds <- RColorBrewer::brewer.pal(9, "Reds")[3:7]
-  trend_blues <- RColorBrewer::brewer.pal(9, "Blues")[3:7]
-  trend_cols <- c(rev(trend_reds), "#cfcfcf", trend_blues)
-  pal_fun <- grDevices::colorRampPalette(trend_cols)
-  return(pal_fun(n))
-}
-abundance_palette
+
 # internal functions ----
 
 trends_raster_template <- function() {

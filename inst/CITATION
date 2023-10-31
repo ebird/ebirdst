@@ -9,13 +9,13 @@ bibentry(
                    as.person("Tom Auer"),
                    as.person("Daniel Fink")
                  ),
-  year         = "2022",
-  note         = "R package version 2.2021.1",
+  year         = "2023",
+  note         = "R package version 3.2022.0",
   url          = "https://ebird.github.io/ebirdst/",
 
   textVersion  =
-  paste("Matthew Strimas-Mackey, Shawn Ligocki, Tom Auer, Daniel Fink (2022).",
+  paste("Matthew Strimas-Mackey, Shawn Ligocki, Tom Auer, Daniel Fink (2023).",
         "ebirdst: Tools for loading, plotting, mapping and analysis of eBird Status and Trends data products.",
-        "R package version 2.2021.1.",
+        "R package version 3.2022.0.",
         "https://ebird.github.io/ebirdst/")
 )

@@ -15,18 +15,18 @@ status](https://www.r-pkg.org/badges/version/ebirdst)](https://cran.r-project.or
 ## Overview
 
 The [eBird Status and Trends
-project](https://science.ebird.org/en/status-and-trends) project at the
-[Cornell Lab of Ornithology](https://www.birds.cornell.edu/home) uses
-machine-learning models to produce estimates of range boundaries,
-occurrence rate, and relative abundance at high spatial and temporal
-resolution across the full annual cycle of 2,282 bird species globally.
-These models learn the relationships between bird observations collected
-through [eBird](https://ebird.org/home) and a suite of remotely sensed
-habitat variables, while accounting for the noise and bias inherent in
-community science datasets, including variation in observer behavior and
-effort. Interactive maps and visualizations of these model estimates can
-be explored [online](https://science.ebird.org/en/status-and-trends),
-and the [Status and Trends Data
+project](https://science.ebird.org/en/status-and-trends) at the [Cornell
+Lab of Ornithology](https://www.birds.cornell.edu/home) uses
+machine-learning models to estimate distributions, relative abundances,
+and population trends at high spatial and temporal resolution across the
+full annual cycle of 1,112 bird species globally. These models learn the
+relationships between bird observations collected through
+[eBird](https://ebird.org/home) and a suite of remotely sensed habitat
+variables, while accounting for the noise and bias inherent in community
+science datasets, including variation in observer behavior and effort.
+Interactive maps and visualizations of these model estimates can be
+explored [online](https://science.ebird.org/en/status-and-trends), and
+the [Status and Trends Data
 Products](https://science.ebird.org/en/status-and-trends/download-data)
 provide access to the data behind these maps and visualizations. The
 `ebirdst` R package provides a set of tools for downloading these data
@@ -44,47 +44,13 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("ebird/ebirdst")
 ```
 
-This version of `ebirdst` is designed to work with the eBird Status Data
-Products estimated for the year 2021, with visualizations being released
-on the web in November 2021, and data access being made available in
-June 2022. **Users are strongly discouraged from comparing Status and
-Trends results between years due to methodological differences between
+This version of `ebirdst` is designed to work with the eBird Status &
+Trends Data Products estimated for the year 2022 released in 2023.
+**Users are strongly discouraged from comparing Status and Trends
+results between years due to methodological differences between
 versions.** If you have accessed and used previous versions and/or may
 need access to previous versions for reasons related to reproducibility,
 please contact <ebird@cornell.edu> and your request will be considered.
-
-## eBird Trends Data Products
-
-In August 2023, [eBird
-Trends](https://science.ebird.org/en/status-and-trends/trends-maps) Data
-Products were released. For further details on the downloading and using
-the trends data consult the [associated vignette](articles/trends.html).
-
-## Transition from `raster` to `terra`
-
-The majority of the eBird Status and Trends data products are raster
-spatial data stored in GeoTIFF format. Traditionally, R users have used
-the [raster](https://rspatial.org/raster/) package to work with data in
-this format and `ebirdst` used `raster` extensively. However, `raster`
-has been replaced by the [terra](https://rspatial.org/index.html)
-package, which offers a much improved and more efficient set of tools
-for working with raster data. With this in mind, `ebirdst` has
-transitioned to using `terra` rather than `raster` as of verison
-`2.2021.0`. This change may break your existing code and you have three
-options for dealing with this:
-
-1.  **Transition all code to `terra` and use the most recent version of
-    `ebirdst`**. This approach is **strongly encouraged** because
-    `terra` is much more efficient than `raster` and `raster` is no
-    longer being actively developed. Consult the documentation for
-    `terra` to learn how to use it.
-2.  Install an older version of `ebirdst` that still uses `raster`. For
-    example, you can use
-    `remotes::install_version("ebirdst", version = "1.2021.3")`.
-3.  Convert `terra` objects to `raster` objects. In the current version
-    of `ebirdst`, `load_raster()` returns objects in `SpatRaster`
-    format, you can convert those for use with `raster` using the
-    function `raster::raster()`.
 
 ## Data access
 
@@ -100,7 +66,7 @@ After completing the Access Request Form, you will be provided a Status
 and Trends access key, which you will need when downloading data. To
 store the key so the package can access it when downloading data, use
 the function `set_ebirdst_access_key("XXXXX")`, where `"XXXXX"` is the
-access key provided to you. **Restart R after setting the access key.**
+access key provided to you.
 
 **For those interested in accessing these data outside of R**, the most
 widely used data products are available for direct download through the
@@ -111,14 +77,14 @@ can be opened in QGIS, ArcGIS, or other GIS software.
 
 ## Versions
 
-The Status and Trends Data Products provide estimates of relative
-abundance, and other variables, for a particular year. This estimation
-year is used to identify the version of the data products. Each version
-of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 2.2021.4 and, as
+The eBird Status Data Products provide estimates of relative abundance,
+and other variables, for a particular year. This estimation year is used
+to identify the version of the data products. Each version of this R
+package is associated with a particular version of the data. For
+example, the current version of the R package is 3.2022.0 and, as
 indicated by the year in the version number, it is designed to work with
-the 2021 data products. Every year, typically in November, the Status
-and Trends Data Products are updated, and users are encouraged to update
+the 2022 data products. Every year, typically in November, the Status &
+Trends Data Products are updated, and users are encouraged to update
 this R package and transition to using the new version of the data
 products. After the data products are updated, there will be a brief
 period where access to the previous version is also provided, allowing
@@ -132,10 +98,11 @@ If you use the the eBird Status & Trends data please cite it with:
 
 <blockquote>
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O.
-Robinson, W. Hochachka, L. Jaromczyk, A. Rodewald, C. Wood, I. Davies,
-A. Spencer. 2022. eBird Status and Trends, Data Version: 2021; Released:
-2022. Cornell Lab of Ornithology, Ithaca, New York.
-<a href="https://doi.org/10.2173/ebirdst.2021" class="uri">https://doi.org/10.2173/ebirdst.2021</a>
+Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A.
+Stillman, I. Davies, A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023.
+eBird Status and Trends, Data Version: 2022; Released: 2023. Cornell Lab
+of Ornithology, Ithaca, New York.
+<a href="https://doi.org/10.2173/ebirdst.2022" class="uri">https://doi.org/10.2173/ebirdst.2022</a>
 </blockquote>
 
 [Download
@@ -148,19 +115,20 @@ the full spectrum from introductory to advanced usage, please see the
 package [website](https://ebird.github.io/ebirdst/). The available
 vignettes are:
 
-- [Introduction to eBird Status & Trends Data](articles/ebirdst.html):
+- [Introduction to eBird Status Data Products](articles/status.html):
   covers data access, available data products, and structure and format
   of data files.
-- [Working with Raster Data](articles/rasters.html): loading and
-  analyzing the raster data products.
-- [eBird Trends Data Products](articles/trends.html): downloading and
-  working with eBird Trends Data Products.
+- [eBird Status Data Products Applications](articles/applications.html):
+  demonstrates how to work with the raster data products and use them
+  for a variety of common applications.
+- [eBird Trends Data Products](articles/trends.html): covers downloading
+  and working with the eBird Trends Data Products.
 
 ## Quick Start
 
-This quick start guide shows how to download data and plot abundance
-values similar to how they are plotted for the [eBird Status and Trends
-weekly abundance
+This quick start guide shows how to download data and plot relative
+abundance values similar to how they are plotted for the [eBird Status
+and Trends weekly abundance
 animations](https://ebird.org/science/status-and-trends/yebsap/abundance-map-weekly).
 In this guide, and throughout all package documentation, a simplified
 example dataset is used consisting of Yellow-bellied Sapsucker in
@@ -173,20 +141,20 @@ inherent in the delivered results. Changing the folder and file
 structure will cause errors with this package.
 
 ``` r
-library(ebirdst)
-library(terra)
-library(sf)
 library(fields)
 library(rnaturalearth)
+library(sf)
+library(terra)
+library(ebirdst)
 
 # download example data, yellow-bellied sapsucker in michigan
-path <- ebirdst_download(species = "example_data")
+ebirdst_download_status(species = "yebsap-example")
 
 # load relative abundance raster stack with 52 layers, one for each week
-abd <- load_raster(path = path, resolution = "lr")
+abd <- load_raster("yebsap-example", resolution = "27km")
 
 # load species specific mapping parameters
-pars <- load_fac_map_parameters(path)
+pars <- load_fac_map_parameters("yebsap-example")
 # custom coordinate reference system
 crs <- st_crs(pars$custom_projection)
 # legend breaks
@@ -195,16 +163,14 @@ breaks <- pars$weekly_bins
 labels <- pars$weekly_labels
 
 # the date that each raster layer corresponds to is stored within the labels
-weeks <- parse_raster_dates(abd)
+weeks <- as.Date(names(abd))
 print(weeks)
-#>  [1] "2021-01-04" "2021-01-11" "2021-01-18" "2021-01-25" "2021-02-01" "2021-02-08" "2021-02-15"
-#>  [8] "2021-02-22" "2021-03-01" "2021-03-08" "2021-03-15" "2021-03-22" "2021-03-29" "2021-04-05"
-#> [15] "2021-04-12" "2021-04-19" "2021-04-26" "2021-05-03" "2021-05-10" "2021-05-17" "2021-05-24"
-#> [22] "2021-05-31" "2021-06-07" "2021-06-14" "2021-06-21" "2021-06-28" "2021-07-06" "2021-07-13"
-#> [29] "2021-07-20" "2021-07-27" "2021-08-03" "2021-08-10" "2021-08-17" "2021-08-24" "2021-08-31"
-#> [36] "2021-09-07" "2021-09-14" "2021-09-21" "2021-09-28" "2021-10-05" "2021-10-12" "2021-10-19"
-#> [43] "2021-10-26" "2021-11-02" "2021-11-09" "2021-11-16" "2021-11-23" "2021-11-30" "2021-12-07"
-#> [50] "2021-12-14" "2021-12-21" "2021-12-28"
+#>  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01" "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01"
+#> [10] "2022-03-08" "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12" "2022-04-19" "2022-04-26" "2022-05-03"
+#> [19] "2022-05-10" "2022-05-17" "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14" "2022-06-21" "2022-06-28" "2022-07-05"
+#> [28] "2022-07-12" "2022-07-19" "2022-07-26" "2022-08-02" "2022-08-09" "2022-08-16" "2022-08-23" "2022-08-30" "2022-09-06"
+#> [37] "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04" "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"
+#> [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13" "2022-12-20" "2022-12-27"
 
 # select a week in the middle of the year
 abd <- abd[[26]]
@@ -234,7 +200,7 @@ plot(abd_prj, col = "#e6e6e6", maxpixels = ncell(abd_prj),
      axes = FALSE, legend = FALSE, add = TRUE)
 
 # define color palette
-pal <- abundance_palette(length(breaks) - 1, "weekly")
+pal <- ebirdst_palettes(length(breaks) - 1, type = "weekly")
 # plot abundance
 plot(abd_prj, col = pal, breaks = breaks, maxpixels = ncell(abd_prj),
      axes = FALSE, legend = FALSE, add = TRUE)

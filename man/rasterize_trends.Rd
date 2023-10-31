@@ -27,18 +27,18 @@ A \link[terra:SpatRaster-class]{SpatRaster} object.
 }
 \description{
 The eBird trends data are stored in a tabular format, where each row gives
-the trend estimate for a single cell in a 27km x 27km equal area grid. For
+the trend estimate for a single cell in a 27 km x 27 km equal area grid. For
 many applications, an explicitly spatial format is more useful. This function
 uses the cell center coordinates to convert the tabular trend estimates to
 raster format in \code{terra} \link[terra:SpatRaster-class]{SpatRaster} format.
 }
 \examples{
 \dontrun{
-# download the trends data
-download_ebird_trends()
+# download example trends data if it hasn't already been downloaded
+ebirdst_download_trends("yebsap-example")
 
-# load breeding season trends for sage thrasher and sagebrush sparrow
-trends <- load_trends("sagthr_breeding")
+# load trends
+trends <- load_trends("yebsap-example")
 
 # rasterize percent per year trend
 rasterize_trends(trends, "abd_ppy")

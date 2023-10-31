@@ -19,7 +19,7 @@ aesthetically pleasing polygons using the smoothr package."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ebirdst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2021.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2022.0</span>
       </span>
     </div>
 
@@ -34,7 +34,7 @@ aesthetically pleasing polygons using the smoothr package."><!-- mathjax --><scr
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/ebirdst.html">Introduction to eBird Status Data Products</a>
+      <a href="../articles/status.html">Introduction to eBird Status Data Products</a>
     </li>
     <li>
       <a href="../articles/rasters.html">Working with Raster Data</a>
@@ -79,15 +79,21 @@ aesthetically pleasing polygons using the <code>smoothr</code> package.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">load_ranges</span><span class="op">(</span><span class="va">path</span>, resolution <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mr"</span>, <span class="st">"lr"</span><span class="op">)</span>, smoothed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">load_ranges</span><span class="op">(</span></span>
+<span>  <span class="va">species</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9km"</span>, <span class="st">"27km"</span><span class="op">)</span>,</span>
+<span>  smoothed <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="ebirdst_data_dir.html">ebirdst_data_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>path</dt>
-<dd><p>character; directory that the Status and Trends data for a given
-species was downloaded to. This path is returned by <code><a href="ebirdst_download.html">ebirdst_download()</a></code>
-or <code><a href="get_species_path.html">get_species_path()</a></code>.</p></dd>
+    <dl><dt>species</dt>
+<dd><p>character; the species to load data for, given as a scientific
+name, common name or six-letter species code (e.g. "woothr"). The full list
+of valid species is in the <a href="ebirdst_runs.html">ebirdst_runs</a> data frame included in this
+package. To download the example dataset, use <code>"yebsap-example"</code>.</p></dd>
 
 
 <dt>resolution</dt>
@@ -98,6 +104,15 @@ polygons were derived.</p></dd>
 <dt>smoothed</dt>
 <dd><p>logical; whether smoothed or unsmoothed ranges should be
 loaded.</p></dd>
+
+
+<dt>path</dt>
+<dd><p>character; directory to download the data to. All downloaded
+files will be placed in a sub-directory of this directory named for the
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling <code><a href="ebirdst_data_dir.html">ebirdst_data_dir()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -111,14 +126,12 @@ season provided as a different feature.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># download example data</span></span></span>
-<span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="ebirdst_download.html">ebirdst_download</a></span><span class="op">(</span><span class="st">"example_data"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># or get the path if you already have the data downloaded</span></span></span>
-<span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_species_path.html">get_species_path</a></span><span class="op">(</span><span class="st">"example_data"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># download example data if hasn't already been downloaded</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load smoothed ranges</span></span></span>
-<span class="r-in"><span><span class="co"># note that only low res data are provided for the example data</span></span></span>
-<span class="r-in"><span><span class="va">ranges</span> <span class="op">&lt;-</span> <span class="fu">load_range</span><span class="op">(</span><span class="va">path</span>, resolution <span class="op">=</span> <span class="st">"lr"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note that only 27 km data are provided for the example data</span></span></span>
+<span class="r-in"><span><span class="va">ranges</span> <span class="op">&lt;-</span> <span class="fu">load_ranges</span><span class="op">(</span><span class="st">"yebsap-example"</span>, resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

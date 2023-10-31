@@ -13,7 +13,7 @@
     <loc>https://ebird.github.io/ebirdst/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/articles/ebirdst.html</loc>
+    <loc>https://ebird.github.io/ebirdst/articles/applications.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/articles/index.html</loc>
@@ -22,7 +22,7 @@
     <loc>https://ebird.github.io/ebirdst/articles/product-changelog.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/articles/rasters.html</loc>
+    <loc>https://ebird.github.io/ebirdst/articles/status.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/articles/trends.html</loc>
@@ -37,76 +37,40 @@
     <loc>https://ebird.github.io/ebirdst/news/index.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/abundance_palette.html</loc>
-  </url>
-  <url>
     <loc>https://ebird.github.io/ebirdst/reference/assign_to_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/bernoulli_dev.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/binom_test_p.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/calculate_mcc_f1.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/convert_classes.html</loc>
-  </url>
-  <url>
     <loc>https://ebird.github.io/ebirdst/reference/date_to_st_week.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/download_ebird_trends.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst.html</loc>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst-package.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_download.html</loc>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_download_status.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_extent.html</loc>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_download_trends.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_habitat.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_ppms.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_ppms_ts.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_predictors.html</loc>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_palettes.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_runs.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_subset.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_trends_runs.html</loc>
-  </url>
-  <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_version.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_weeks.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/get_species.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/get_species_path.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/get_trends_path.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/grid_sample.html</loc>
@@ -121,54 +85,24 @@
     <loc>https://ebird.github.io/ebirdst/reference/load_fac_map_parameters.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/load_pds.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/load_pis.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/load_predictions.html</loc>
-  </url>
-  <url>
     <loc>https://ebird.github.io/ebirdst/reference/load_ranges.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/load_raster.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/load_stixels.html</loc>
+    <loc>https://ebird.github.io/ebirdst/reference/load_regional_stats.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/load_trends.html</loc>
   </url>
   <url>
-    <loc>https://ebird.github.io/ebirdst/reference/parse_raster_dates.html</loc>
-  </url>
-  <url>
     <loc>https://ebird.github.io/ebirdst/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/plot_pds.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/plot_pis.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/poisson_dev.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/project_extent.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/rasterize_trends.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/stixelize.html</loc>
-  </url>
-  <url>
-    <loc>https://ebird.github.io/ebirdst/reference/trends_palette.html</loc>
   </url>
 </urlset>

@@ -1,7 +1,7 @@
 Type: Package
 Package: ebirdst
 Title: Access and Analyze eBird Status and Trends Data
-Version: 2.2021.4
+Version: 3.2022.0
 Authors@R: c(
     person("Matthew", "Strimas-Mackey", , "mes335@cornell.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8929-7776")),
@@ -17,8 +17,8 @@ Description: Tools to download, load, plot, and analyze eBird Status and
     (<https://science.ebird.org/en/status-and-trends>). eBird
     (<https://ebird.org/home>) is a global database of bird observations
     collected by member of the public. eBird Status and Trends uses these
-    data to model global bird abundances, range boundaries, and habitat
-    associations at a high spatial and temporal resolution.
+    data to model global bird distributions, abundances, and population trends 
+    at a high spatial and temporal resolution.
 License: GPL-3
 URL: https://github.com/ebird/ebirdst
 BugReports: https://github.com/ebird/ebirdst/issues
@@ -26,31 +26,23 @@ Depends:
     R (>= 4.0.0)
 Imports: 
     arrow,
-    DBI,
     dplyr (>= 1.0.0),
-    ggplot2,
     grDevices,
-    gridExtra,
     jsonlite,
     magrittr,
     RColorBrewer,
     rlang,
-    RSQLite,
     sf (>= 1.0-0),
     stats,
     stringr,
     terra (>= 1.6-3),
-    tidyr (>= 1.0.0),
     tools,
     utils,
     viridisLite
 Suggests: 
     fields,
-    gbm,
-    geodata,
+    ggplot2,
     knitr,
-    mgcv,
-    precrec,
     PresenceAbsence,
     rmarkdown,
     rnaturalearth,

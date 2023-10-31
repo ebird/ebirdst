@@ -2,22 +2,18 @@ context("Loading functions")
 
 skip_on_cran()
 
-test_that("get_species_path", {
-  p <- get_species_path("example_data")
-  expect_true(dir.exists(p))
-  expect_error(get_species_path("not-a-real-species"))
-})
-
-test_that("load_config", {
-  p <- load_config(path)
+test_that("load_config()", {
+  p <- load_config("yebsap-example")
   expect_is(p, "list")
   expect_true(all(c("bins", "bins_seasonal", "srd_pred_year") %in% names(p)))
-  expect_error(load_config("/invalid/path/"))
+
+  expect_error(load_config("Yellow Warbler"))
+  expect_error(load_config("XXXX"))
 })
 
 
-test_that("load_fac_map_parameters", {
-  p <- load_fac_map_parameters(path)
+test_that("load_fac_map_parameters()", {
+  p <- load_fac_map_parameters("yebsap-example")
   expect_is(p, "list")
   expect_named(p, c("custom_projection", "fa_extent", "res", "fa_extent_sinu",
                     "weekly_bins", "weekly_labels",
@@ -36,5 +32,6 @@ test_that("load_fac_map_parameters", {
   expect_is(p$weekly_bins, "numeric")
   expect_is(p$seasonal_bins, "numeric")
 
-  expect_error(load_config("/invalid/path/"))
+  expect_error(load_fac_map_parameters("Yellow Warbler"))
+  expect_error(load_fac_map_parameters("XXXX"))
 })
