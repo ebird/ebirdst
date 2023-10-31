@@ -13,7 +13,7 @@ navbar:
       menu:
       - text: Introduction to eBird Status Data Products
         href: articles/status.html
-      - text: Working with Raster Data
+      - text: eBird Status Data Products Applications
         href: articles/rasters.html
       - text: eBird Trends Data Products
         href: articles/trends.html

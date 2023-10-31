@@ -53,7 +53,7 @@
       <a href="../articles/status.html">Introduction to eBird Status Data Products</a>
     </li>
     <li>
-      <a href="../articles/rasters.html">Working with Raster Data</a>
+      <a href="../articles/rasters.html">eBird Status Data Products Applications</a>
     </li>
     <li>
       <a href="../articles/trends.html">eBird Trends Data Products</a>
@@ -364,7 +364,8 @@ cumulative trend rather than the annual trend.</p>
 <span><span class="co"># make a simple map</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ppy_raster</span><span class="op">[[</span><span class="st">"abd_ppy"</span><span class="op">]</span><span class="op">]</span>, </span>
 <span>     col <span class="op">=</span> <span class="va">pal</span>, breaks <span class="op">=</span>  <span class="va">breaks</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"Sage Thrasher abundance trend\n2007-2021 [% change per year]"</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"Sage Thrasher relative abundance trend\n2012-2022 [% change per year]"</span>,</span>
+<span>     cex.main <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>     axes <span class="op">=</span> <span class="cn">FALSE</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="trends_files/figure-html/spatial-raster-map-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>

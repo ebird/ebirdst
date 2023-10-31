@@ -158,7 +158,8 @@ pal <- ebirdst_palettes(length(breaks) - 1, type = "trends")
 # make a simple map
 plot(ppy_raster[["abd_ppy"]], 
      col = pal, breaks =  breaks,
-     main = "Sage Thrasher abundance trend\n2007-2021 [% change per year]",
+     main = "Sage Thrasher relative abundance trend\n2012-2022 [% change per year]",
+     cex.main = 0.75,
      axes = FALSE, legend = FALSE)
 ```
 
