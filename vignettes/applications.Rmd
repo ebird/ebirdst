@@ -37,7 +37,7 @@ knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 
 # Loading raster data {#load}
 
-As covered in the [Introduction to eBird Status Data Products vignette](articles/status.html), the function `load_raster()` loads raster data products in R as `SpatRaster` objects, which we can work with using the `terra` package. Let's start by loading the seasonal relative abundance raster for the example Yellow-bellied Sapsucker data. We'll work with the low resolution (27 km) data in this vignette to ensure fast processing times.
+As covered in the [Introduction to eBird Status Data Products vignette](articles/status.html), the function `load_raster()` loads raster data products into R as `SpatRaster` objects, which we can work with using the `terra` package. Let's start by loading the seasonal relative abundance raster for the example Yellow-bellied Sapsucker data. We'll work with the low resolution (27 km) data in this vignette to ensure fast processing times.
 
 ```{r load}
 library(ebirdst)
@@ -53,7 +53,7 @@ extract <- terra::extract
 
 # download the example yellow-bellied sapsucker data
 # this simplified dataset doesn't require an access key
-ebirdst_download_status("yebsap-example")
+ebirdst_download_status("yebsap-example", download_ranges = TRUE)
 
 # load seasonal mean relative abundance at 27km resolution
 abd_seasonal <- load_raster("yebsap-example", 

@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Access and Analyze eBird Status and Trends Data • ebirdst</title>
+<title>Access and Analyze eBird Status and Trends Data Products • ebirdst</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Access and Analyze eBird Status and Trends Data">
-<meta property="og:description" content="Tools to download, load, plot, and analyze eBird Status and
+<script src="pkgdown.js"></script><meta property="og:title" content="Access and Analyze eBird Status and Trends Data Products">
+<meta property="og:description" content="Tools for accessing and analyzing eBird Status and
     Trends Data Products
     (&lt;https://science.ebird.org/en/status-and-trends&gt;). eBird
     (&lt;https://ebird.org/home&gt;) is a global database of bird observations
@@ -96,14 +96,14 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="ebirdst-access-and-analyze-ebird-status-and-trends-data">ebirdst: Access and Analyze eBird Status and Trends Data<a class="anchor" aria-label="anchor" href="#ebirdst-access-and-analyze-ebird-status-and-trends-data"></a>
+<div class="page-header"><h1 id="ebird-status-and-trends-data-products">eBird Status and Trends Data Products<a class="anchor" aria-label="anchor" href="#ebird-status-and-trends-data-products"></a>
 </h1></div>
 <!-- badges: start -->
 
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <a href="https://science.ebird.org/en/status-and-trends" class="external-link">eBird Status and Trends project</a> at the <a href="https://www.birds.cornell.edu/home" class="external-link">Cornell Lab of Ornithology</a> uses machine-learning models to estimate distributions, relative abundances, and population trends at high spatial and temporal resolution across the full annual cycle of 1,112 bird species globally. These models learn the relationships between bird observations collected through <a href="https://ebird.org/home" class="external-link">eBird</a> and a suite of remotely sensed habitat variables, while accounting for the noise and bias inherent in community science datasets, including variation in observer behavior and effort. Interactive maps and visualizations of these model estimates can be explored <a href="https://science.ebird.org/en/status-and-trends" class="external-link">online</a>, and the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">Status and Trends Data Products</a> provide access to the data behind these maps and visualizations. The <code>ebirdst</code> R package provides a set of tools for downloading these data products, loading them into R, and using them for visualizing and analysis.</p>
+<p>The <a href="https://science.ebird.org/en/status-and-trends" class="external-link">eBird Status and Trends project</a> at the <a href="https://www.birds.cornell.edu/home" class="external-link">Cornell Lab of Ornithology</a> uses machine-learning models to estimate distributions, relative abundances, and population trends at high spatial and temporal resolution across the full annual cycle of 1,112 bird species globally. These models learn the relationships between bird observations collected through <a href="https://ebird.org/home" class="external-link">eBird</a> and a suite of remotely sensed habitat variables, while accounting for the noise and bias inherent in community science datasets, including variation in observer behavior and effort. Interactive maps and visualizations of these model estimates can be explored <a href="https://science.ebird.org/en/status-and-trends" class="external-link">online</a>, and the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">Status and Trends Data Products</a> provide access to the data behind these maps and visualizations. The <code>ebirdst</code> R package provides a set of tools for downloading these data products, loading them into R, and using them for visualization and analysis.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -114,24 +114,24 @@
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ebird/ebirdst"</span><span class="op">)</span></span></code></pre></div>
-<p>This version of <code>ebirdst</code> is designed to work with the eBird Status &amp; Trends Data Products estimated for the year 2022 released in 2023. <strong>Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.</strong> If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact <a href="mailto:ebird@cornell.edu" class="email">ebird@cornell.edu</a> and your request will be considered.</p>
+<p>This version of <code>ebirdst</code> is designed to work with the eBird Status and Trends Data Products estimated for the year 2022 released in 2023. <strong>Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.</strong> If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact <a href="mailto:ebird@cornell.edu" class="email">ebird@cornell.edu</a> and your request will be considered.</p>
 </div>
 <div class="section level2">
 <h2 id="data-access">Data access<a class="anchor" aria-label="anchor" href="#data-access"></a>
 </h2>
 <p>Data access is granted through an Access Request Form at: <a href="https://ebird.org/st/request" class="external-link uri">https://ebird.org/st/request</a>. Access with this form generates a key to be used with this R package and is provided immediately (as long as commercial use is not requested). Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.</p>
-<p>After completing the Access Request Form, you will be provided a Status and Trends access key, which you will need when downloading data. To store the key so the package can access it when downloading data, use the function <code>set_ebirdst_access_key("XXXXX")</code>, where <code>"XXXXX"</code> is the access key provided to you.</p>
+<p>After completing the Access Request Form, you will be provided a Status and Trends Data Products access key, which you will need when downloading data. To store the key so the package can access it when downloading data, use the function <code>set_ebirdst_access_key("XXXXX")</code>, where <code>"XXXXX"</code> is the access key provided to you.</p>
 <p><strong>For those interested in accessing these data outside of R</strong>, the most widely used data products are available for direct download through the <a href="https://science.ebird.org/en/status-and-trends" class="external-link">Status and Trends website</a>. Spatial data are accessible in widely adopted GeoTIFF and GeoPackage formats, which can be opened in QGIS, ArcGIS, or other GIS software.</p>
 </div>
 <div class="section level2">
 <h2 id="versions">Versions<a class="anchor" aria-label="anchor" href="#versions"></a>
 </h2>
-<p>The eBird Status Data Products provide estimates of relative abundance, and other variables, for a particular year. This estimation year is used to identify the version of the data products. Each version of this R package is associated with a particular version of the data. For example, the current version of the R package is 3.2022.0 and, as indicated by the year in the version number, it is designed to work with the 2022 data products. Every year, typically in November, the Status &amp; Trends Data Products are updated, and users are encouraged to update this R package and transition to using the new version of the data products. After the data products are updated, there will be a brief period where access to the previous version is also provided, allowing users to finish any analyses with this previous version. If you intended to continue using the older data products during this period you must not update the R package.</p>
+<p>The eBird Status and Trends Data Products provide estimates of relative abundance, and other variables, for a particular year. This estimation year is used to identify the version of the data products. Each version of this R package is associated with a particular version of the data. For example, the current version of the R package is 3.2022.0 and, as indicated by the year in the version number, it is designed to work with the 2022 data products. Every year, typically in November, the Status and Trends Data Products are updated, and users are encouraged to update this R package and transition to using the new version of the data products. After the data products are updated, there will be a brief period where access to the previous version is also provided, allowing users to finish any analyses with this previous version. If you intended to continue using the older data products during this period you must not update the R package.</p>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>If you use the the eBird Status &amp; Trends data please cite it with:</p>
+<p>If you use the the eBird Status and Trends data please cite it with:</p>
 <blockquote>
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, I. Davies, A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023. eBird Status and Trends, Data Version: 2022; Released: 2023. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2022" class="external-link uri">https://doi.org/10.2173/ebirdst.2022</a>
 </blockquote>
@@ -154,7 +154,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p>This quick start guide shows how to download data and plot relative abundance values similar to how they are plotted for the <a href="https://ebird.org/science/status-and-trends/yebsap/abundance-map-weekly" class="external-link">eBird Status and Trends weekly abundance animations</a>. In this guide, and throughout all package documentation, a simplified example dataset is used consisting of Yellow-bellied Sapsucker in Michigan. For a full list of the species available for download, look at the data frame <code>ebirst_runs</code>, which is included in this package.</p>
-<p><strong>Important note: after downloading the results, do not change the file structure.</strong> All functionality in this package relies on the structure inherent in the delivered results. Changing the folder and file structure will cause errors with this package.</p>
+<p><strong>IMPORTANT: eBird Status and Trends Data Products are designed to be downloaded and accessed using this R package. Downloaded data have a specific file structure and changing file names or locations will disrupt the ability of functions in this package to access the data. If you prefer to access data for use outside of R, consider downloading data via the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird Status and Trends website</a>.</strong></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dnychka/fieldsRPackage" class="external-link">fields</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
@@ -180,6 +180,12 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <span><span class="co"># the date that each raster layer corresponds to is stored within the labels</span></span>
 <span><span class="va">weeks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">weeks</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01" "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01"</span></span>
+<span><span class="co">#&gt; [10] "2022-03-08" "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12" "2022-04-19" "2022-04-26" "2022-05-03"</span></span>
+<span><span class="co">#&gt; [19] "2022-05-10" "2022-05-17" "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14" "2022-06-21" "2022-06-28" "2022-07-05"</span></span>
+<span><span class="co">#&gt; [28] "2022-07-12" "2022-07-19" "2022-07-26" "2022-08-02" "2022-08-09" "2022-08-16" "2022-08-23" "2022-08-30" "2022-09-06"</span></span>
+<span><span class="co">#&gt; [37] "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04" "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"</span></span>
+<span><span class="co">#&gt; [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13" "2022-12-20" "2022-12-27"</span></span>
 <span></span>
 <span><span class="co"># select a week in the middle of the year</span></span>
 <span><span class="va">abd</span> <span class="op">&lt;-</span> <span class="va">abd</span><span class="op">[[</span><span class="fl">26</span><span class="op">]</span><span class="op">]</span></span>
@@ -225,6 +231,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <span>           axis.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, </span>
 <span>                            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">labels</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>                            cex.axis <span class="op">=</span> <span class="fl">0.9</span>, lwd.ticks <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-quick_start-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </div>

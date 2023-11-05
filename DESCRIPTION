@@ -1,6 +1,6 @@
 Type: Package
 Package: ebirdst
-Title: Access and Analyze eBird Status and Trends Data
+Title: Access and Analyze eBird Status and Trends Data Products
 Version: 3.2022.0
 Authors@R: c(
     person("Matthew", "Strimas-Mackey", , "mes335@cornell.edu", role = c("aut", "cre"),
@@ -12,7 +12,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8368-1248")),
     person("Cornell Lab of Ornithology", role = "cph")
   )
-Description: Tools to download, load, plot, and analyze eBird Status and
+Description: Tools for accessing and analyzing eBird Status and
     Trends Data Products
     (<https://science.ebird.org/en/status-and-trends>). eBird
     (<https://ebird.org/home>) is a global database of bird observations

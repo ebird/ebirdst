@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ebirdst: Access and Analyze eBird Status and Trends Data
+# eBird Status and Trends Data Products
 
 <!-- badges: start -->
 
@@ -30,7 +30,7 @@ the [Status and Trends Data
 Products](https://science.ebird.org/en/status-and-trends/download-data)
 provide access to the data behind these maps and visualizations. The
 `ebirdst` R package provides a set of tools for downloading these data
-products, loading them into R, and using them for visualizing and
+products, loading them into R, and using them for visualization and
 analysis.
 
 ## Installation
@@ -44,7 +44,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("ebird/ebirdst")
 ```
 
-This version of `ebirdst` is designed to work with the eBird Status &
+This version of `ebirdst` is designed to work with the eBird Status and
 Trends Data Products estimated for the year 2022 released in 2023.
 **Users are strongly discouraged from comparing Status and Trends
 results between years due to methodological differences between
@@ -63,10 +63,10 @@ use. When requesting data access, please be sure to carefully read the
 terms of use and ensure that your intended use is not restricted.
 
 After completing the Access Request Form, you will be provided a Status
-and Trends access key, which you will need when downloading data. To
-store the key so the package can access it when downloading data, use
-the function `set_ebirdst_access_key("XXXXX")`, where `"XXXXX"` is the
-access key provided to you.
+and Trends Data Products access key, which you will need when
+downloading data. To store the key so the package can access it when
+downloading data, use the function `set_ebirdst_access_key("XXXXX")`,
+where `"XXXXX"` is the access key provided to you.
 
 **For those interested in accessing these data outside of R**, the most
 widely used data products are available for direct download through the
@@ -77,14 +77,14 @@ can be opened in QGIS, ArcGIS, or other GIS software.
 
 ## Versions
 
-The eBird Status Data Products provide estimates of relative abundance,
-and other variables, for a particular year. This estimation year is used
-to identify the version of the data products. Each version of this R
-package is associated with a particular version of the data. For
-example, the current version of the R package is 3.2022.0 and, as
+The eBird Status and Trends Data Products provide estimates of relative
+abundance, and other variables, for a particular year. This estimation
+year is used to identify the version of the data products. Each version
+of this R package is associated with a particular version of the data.
+For example, the current version of the R package is 3.2022.0 and, as
 indicated by the year in the version number, it is designed to work with
-the 2022 data products. Every year, typically in November, the Status &
-Trends Data Products are updated, and users are encouraged to update
+the 2022 data products. Every year, typically in November, the Status
+and Trends Data Products are updated, and users are encouraged to update
 this R package and transition to using the new version of the data
 products. After the data products are updated, there will be a brief
 period where access to the previous version is also provided, allowing
@@ -94,7 +94,7 @@ not update the R package.
 
 ## Citation
 
-If you use the the eBird Status & Trends data please cite it with:
+If you use the the eBird Status and Trends data please cite it with:
 
 <blockquote>
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O.
@@ -135,10 +135,13 @@ example dataset is used consisting of Yellow-bellied Sapsucker in
 Michigan. For a full list of the species available for download, look at
 the data frame `ebirst_runs`, which is included in this package.
 
-**Important note: after downloading the results, do not change the file
-structure.** All functionality in this package relies on the structure
-inherent in the delivered results. Changing the folder and file
-structure will cause errors with this package.
+**IMPORTANT: eBird Status and Trends Data Products are designed to be
+downloaded and accessed using this R package. Downloaded data have a
+specific file structure and changing file names or locations will
+disrupt the ability of functions in this package to access the data. If
+you prefer to access data for use outside of R, consider downloading
+data via the [eBird Status and Trends
+website](https://science.ebird.org/en/status-and-trends/download-data).**
 
 ``` r
 library(fields)
@@ -165,6 +168,12 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- as.Date(names(abd))
 print(weeks)
+#>  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01" "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01"
+#> [10] "2022-03-08" "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12" "2022-04-19" "2022-04-26" "2022-05-03"
+#> [19] "2022-05-10" "2022-05-17" "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14" "2022-06-21" "2022-06-28" "2022-07-05"
+#> [28] "2022-07-12" "2022-07-19" "2022-07-26" "2022-08-02" "2022-08-09" "2022-08-16" "2022-08-23" "2022-08-30" "2022-09-06"
+#> [37] "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04" "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"
+#> [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13" "2022-12-20" "2022-12-27"
 
 # select a week in the middle of the year
 abd <- abd[[26]]
@@ -211,3 +220,5 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
                             labels = round(labels, 2),
                             cex.axis = 0.9, lwd.ticks = 0))
 ```
+
+<img src="man/figures/README-quick_start-1.png" width="100%" style="display: block; margin: auto;" />

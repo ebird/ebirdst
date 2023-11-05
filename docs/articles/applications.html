@@ -121,7 +121,7 @@ uncertainty</a></li>
 </h2>
 <p>As covered in the <a href="articles/status.html">Introduction to
 eBird Status Data Products vignette</a>, the function
-<code><a href="../reference/load_raster.html">load_raster()</a></code> loads raster data products in R as
+<code><a href="../reference/load_raster.html">load_raster()</a></code> loads raster data products into R as
 <code>SpatRaster</code> objects, which we can work with using the
 <code>terra</code> package. Let’s start by loading the seasonal relative
 abundance raster for the example Yellow-bellied Sapsucker data. We’ll
@@ -141,7 +141,7 @@ fast processing times.</p>
 <span></span>
 <span><span class="co"># download the example yellow-bellied sapsucker data</span></span>
 <span><span class="co"># this simplified dataset doesn't require an access key</span></span>
-<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, download_ranges <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load seasonal mean relative abundance at 27km resolution</span></span>
 <span><span class="va">abd_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, </span>

@@ -136,13 +136,13 @@ which estimate the full annual cycle distributions, relative abundances,
 and habitat associations for
 <code>r</code>scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species
 for the year 2022. For each species, distribution and abundance
-estimates are available for all 52 weeks of the year across a regular
-grid of locations that cover the globe at a resolution of 3 km X 3 km.
-Variation in detectability associated with the search effort is
-controlled by standardizing the estimates as the expected occurrence
-rate and count of the species on a 1 hour, 2 km checklist by an expert
-eBird observer at the optimal time of day and with optimal weather
-conditions for detecting the species.</p>
+estimates are available for all 52 weeks of the year across a regular 3
+km by 3 km square grid of cells covering the globe. Variation in
+detectability associated with the search effort is controlled by
+standardizing the estimates as the expected occurrence rate and count of
+the species on a 1 hour, 2 km checklist by an expert eBird observer at
+the optimal time of day and with optimal weather conditions for
+detecting the species.</p>
 </div>
 <div class="section level2">
 <h2 id="access">Data access<a class="anchor" aria-label="anchor" href="#access"></a>
@@ -165,14 +165,14 @@ is the access key provided to you.</p>
 function defines the species (as a common name, scientific name, or
 species code) to download data for and the remaining arguments define
 the specific data products to download. Throughout this vignettes, we’ll
-use a simplified example dataset consisting of Yellow-bellied Sapsucker
-in Michigan. This dataset is designed to be small for faster download
-and is accessible without a key. By default
+use a simplified example dataset consisting of estimates for
+Yellow-bellied Sapsucker in Michigan. This dataset is designed to be
+small for faster download and is accessible without a key. By default
 <code>ebirst_download_status()</code> only downloads the most commonly
 used data products; however, since this vignette will cover all the
 available data products, we’ll use <code>download_all = TRUE</code>.
-Note that data for any species other that the example dataset requires
-an API key to access.</p>
+Note that data for any species other that the example dataset requires a
+key to access.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
@@ -181,19 +181,19 @@ an API key to access.</p>
 <span></span>
 <span><span class="co"># download a simplified example dataset for Yellow-bellied Sapsucker in Michigan</span></span>
 <span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"yebsap-example"</span>, download_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>By default, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> downloads all data
-to a centralized directory for on your computer. You can see what that
+<p>By default, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> downloads data to
+a centralized directory for on your computer. You can see what that
 directory is with the function <code><a href="../reference/ebirdst_data_dir.html">ebirdst_data_dir()</a></code> and you
 can change the default download directory by setting the environment
 variable <code>EBIRDST_DATA_DIR</code>, for example by calling
 <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> and adding a line such as
 <code>EBIRDST_DATA_DIR=/custom/download/directory/</code>.</p>
-<p><strong>IMPORTANT: eBird Status &amp; Trends Data Products are
-designed to be downloaded and accessed using the <code>ebirdst</code> R
-package. Data downloaded using this R package have a specific file
-structure and changing file names or locations will disrupt the ability
-of functions in this package to access the data. If you prefer to access
-data for use outside of R, consider downloading data via the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird
+<p><strong>IMPORTANT: eBird Status and Trends Data Products are designed
+to be downloaded and accessed using the <code>ebirdst</code> R package.
+Data downloaded using this R package have a specific file structure and
+changing file names or locations will disrupt the ability of functions
+in this package to access the data. If you prefer to access data for use
+outside of R, consider downloading data via the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird
 Status and Trends website</a>.</strong></p>
 </div>
 <div class="section level2">
@@ -370,39 +370,35 @@ Traveling Count by an expert eBird observer at the optimal time of day
 and for optimal weather conditions to observe the given species.</p>
 <ul>
 <li>
-<strong>Occurrence</strong> <code>occurrence</code>: the expected
-probability of encountering a species.</li>
+<strong>Occurrence</strong>: the expected probability of
+encountering a species.</li>
 <li>
-<strong>Count</strong> <code>count</code>: the expected count of a
-species, conditional on its occurrence at the given location.</li>
+<strong>Count</strong>: the expected count of a species, conditional
+on its occurrence at the given location.</li>
 <li>
-<strong>Relative abundance</strong> <code>abundance</code>: the
-expected relative abundance of a species, computed as the product of the
-probability of occurrence and the count conditional on occurrence. In
-addition to the median relative abundance, upper and lower confidence
-intervals (CIs) are provided, defined at the 10th and 90th quantile of
-relative abundance, respectively.</li>
+<strong>Relative abundance</strong>: the expected relative abundance
+of a species, computed as the product of the probability of occurrence
+and the count conditional on occurrence. In addition to the median
+relative abundance, upper and lower confidence intervals (CIs) are
+provided, defined at the 10th and 90th quantile of relative abundance,
+respectively.</li>
 <li>
-<strong>Percent of population</strong>
-<code>proportion-population</code>: the proportion of the total relative
-abundance within each cell. This is a derived product calculated by
-dividing each cell value in the relative abundance raster by the sum of
-all cell values</li>
+<strong>Proportion of population</strong>: the proportion of the
+total relative abundance within each cell. This is a derived product
+calculated by dividing each cell value in the relative abundance raster
+by the sum of all cell values</li>
 </ul>
-<p>All predictions are made on a standard 3 km x 3 km global grid;
+<p>All predictions are made on a standard 3 km by 3 km global grid;
 however, for convenience lower resolution GeoTIFFs are also provided,
 which are typically much faster to work with. However, note that to keep
 file sizes small, <strong>the example dataset only contains lowest (27
 km) resolution data</strong>. The three resolutions are:</p>
 <ul>
-<li>High resolution (<code>3km</code>): the native 3 km resolution
-data.</li>
-<li>Medium resolution (<code>9km</code>): the 3 km resolution data
-aggregated by a factor of 3 in each direction resulting in a resolution
-of 9 km.</li>
-<li>Low resolution (<code>27km</code>): the 3 km resolution data
-aggregated by a factor of 9 in each direction resulting in a resolution
-of 27 km.</li>
+<li>High resolution (3km): the native 3 km resolution data.</li>
+<li>Medium resolution (9km): the 3 km resolution data aggregated by a
+factor of 3 in each direction resulting in a resolution of 9 km.</li>
+<li>Low resolution (27km): the 3 km resolution data aggregated by a
+factor of 9 in each direction resulting in a resolution of 27 km.</li>
 </ul>
 <p>The function <code><a href="../reference/load_raster.html">load_raster()</a></code> is used to load these data
 into R and takes arguments for <code>product</code> and
@@ -472,9 +468,9 @@ into R as <code>SpatRaster</code> objects for use with the
 <span><span class="co"># just the breeding season layer</span></span>
 <span><span class="va">abd_seasonal_mean</span><span class="op">[[</span><span class="st">"breeding"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 27, 29, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 626, 1502, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 26665.26, 26665.28  (x, y)</span></span>
-<span><span class="co">#&gt; extent      : -7215785, -6442492, 4647833, 5367796  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; extent      : -20015109, 20036111, -6684911, 10007555  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs </span></span>
 <span><span class="co">#&gt; source      : yebsap-example_abundance_seasonal_mean_27km_2022.tif </span></span>
 <span><span class="co">#&gt; name        :  breeding </span></span>
