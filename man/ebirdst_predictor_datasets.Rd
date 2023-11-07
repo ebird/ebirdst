@@ -5,12 +5,20 @@
 \alias{ebirdst_predictor_datasets}
 \title{eBird Status and Trends predictors datasets}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 37 rows and 4 columns.
+A data frame with 37 rows and 4 columns
+\itemize{
+\item \code{dataset}: dataset name.
+\item \code{predictor}: predictor name or, if multiple variables are derived from
+this dataset, the pattern used to generate the names.
+\item \code{description}: detailed description of the dataset or variable.
+\item \code{reference}: a reference to consult for further information on the dataset.
+}
 }
 \usage{
 ebirdst_predictor_datasets
 }
 \description{
-eBird Status and Trends predictors datasets
+Details on the datasets used to generate the eBird Status and Trends
+predictor variables.
 }
 \keyword{datasets}

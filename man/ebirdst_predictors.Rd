@@ -3,14 +3,28 @@
 \docType{data}
 \name{ebirdst_predictors}
 \alias{ebirdst_predictors}
-\title{eBird Status and Trends predictors}
+\title{eBird Status and Trends predictor variables}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 150 rows and 4 columns.
+A data frame with 150 rows and 4 columns:
+\itemize{
+\item \code{predictor}: predictor name.
+\item \code{dataset}: dataset name, which can be cross referenced in
+\link{ebirdst_predictor_datasets} for further details.
+\item \code{class}: class number or name for categorical variables.
+\item \code{label}: descriptive labels for each predictor variable.
+}
 }
 \usage{
 ebirdst_predictors
 }
 \description{
-eBird Status and Trends predictors
+A data frame of the predictors used in the eBird Status and Trends models.
+These include effort variables (e.g. distance traveled, number of observers,
+etc.) in addition to variables describing the environment (e.g. elevation,
+land cover, water cover, etc.). The environmental variables are derived by
+summarizing remotely sensed datasets (described in
+\link{ebirdst_predictor_datasets}) over a 3 km diameter neighborhood around each
+checklist. For categorical datasets, two variables are generated for each
+class describing the percent cover (\code{pland}) and edge density (\code{ed}).
 }
 \keyword{datasets}
