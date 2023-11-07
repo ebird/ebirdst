@@ -23,7 +23,14 @@ p_split <- filter(p, str_detect(predictor, "\\{")) %>%
            map(~ data.frame(suffix = str_split_1(., "/"))),
          prefix = str_remove(predictor, "\\{.*\\}")) %>%
   unnest(suffix) %>%
-  mutate(predictor = paste0(prefix, suffix)) %>%
+  mutate(predictor = paste0(prefix, suffix),
+         label = recode(suffix,
+                        median = "(Median)",
+                        mean = "(Mean)",
+                        sd = "(SD)",
+                        pland = "(% cover)",
+                        ed = "(Edge Density)") %>%
+           paste(label, .)) %>%
   select(-prefix, -suffix)
 
 # only keep predictors we use in status or trends models
