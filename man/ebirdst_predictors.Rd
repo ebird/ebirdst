@@ -23,8 +23,8 @@ These include effort variables (e.g. distance traveled, number of observers,
 etc.) in addition to variables describing the environment (e.g. elevation,
 land cover, water cover, etc.). The environmental variables are derived by
 summarizing remotely sensed datasets (described in
-\link{ebirdst_predictor_datasets}) over a 3 km diameter neighborhood around each
-checklist. For categorical datasets, two variables are generated for each
-class describing the percent cover (\code{pland}) and edge density (\code{ed}).
+\link{ebirdst_predictor_descriptions}) over a 3 km diameter neighborhood around
+each checklist. For categorical datasets, two variables are generated for
+each class describing the percent cover (\code{pland}) and edge density (\code{ed}).
 }
 \keyword{datasets}

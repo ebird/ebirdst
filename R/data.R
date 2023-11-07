@@ -77,9 +77,9 @@
 #' etc.) in addition to variables describing the environment (e.g. elevation,
 #' land cover, water cover, etc.). The environmental variables are derived by
 #' summarizing remotely sensed datasets (described in
-#' [ebirdst_predictor_datasets]) over a 3 km diameter neighborhood around each
-#' checklist. For categorical datasets, two variables are generated for each
-#' class describing the percent cover (`pland`) and edge density (`ed`).
+#' [ebirdst_predictor_descriptions]) over a 3 km diameter neighborhood around
+#' each checklist. For categorical datasets, two variables are generated for
+#' each class describing the percent cover (`pland`) and edge density (`ed`).
 #'
 #' @format A data frame with 150 rows and 4 columns:
 #' - `predictor`: predictor name.
@@ -89,10 +89,10 @@
 #' - `label`: descriptive labels for each predictor variable.
 "ebirdst_predictors"
 
-#' eBird Status and Trends predictors datasets
+#' eBird Status and Trends predictors descriptions
 #'
-#' Details on the datasets used to generate the eBird Status and Trends
-#' predictor variables.
+#' Details on the eBird Status and Trends predictor variables or, for variables
+#' all derived from the same dataset, details on the dataset.
 #'
 #' @format A data frame with 37 rows and 4 columns
 #' - `dataset`: dataset name.
@@ -100,4 +100,4 @@
 #' this dataset, the pattern used to generate the names.
 #' - `description`: detailed description of the dataset or variable.
 #' - `reference`: a reference to consult for further information on the dataset.
-"ebirdst_predictor_datasets"
+"ebirdst_predictor_descriptions"
