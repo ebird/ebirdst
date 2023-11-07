@@ -30,12 +30,14 @@ p_split <- filter(p, str_detect(predictor, "\\{")) %>%
 ebirdst_predictors <- bind_rows(p_nosplit, p_split) %>%
   arrange(row) %>%
   select(-row) %>%
-  filter(predictor %in% pred_list)
+  filter(predictor %in% pred_list) %>%
+  as_tibble()
 
 usethis::use_data(ebirdst_predictors, overwrite = TRUE)
 
 # predictor datasets
 ebirdst_predictor_datasets <- read_csv("data-raw/ebirdst_features_2022 - predictor_datasets.csv") %>%
-  filter(str_detect(predictor, "\\{") | predictor %in% pred_list)
+  filter(str_detect(predictor, "\\{") | predictor %in% pred_list) %>%
+  as_tibble()
 
 usethis::use_data(ebirdst_predictor_datasets, overwrite = TRUE)
