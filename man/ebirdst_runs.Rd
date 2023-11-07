@@ -38,7 +38,8 @@ trend estimates for a regional subset of their full range.
 \item \code{trends_start_date}: start date (\code{MM-DD} format) of the season for which the trend was estimated.
 \item \code{trends_end_date}: end date (\code{MM-DD} format) of the season for which the trend was estimated.
 \item \code{rsquared}: R-squared value comparing the actual and estimated trends from the simulations.
-\item \code{beta0}: the slope of a linear model fitting actual vs. estimated trends.
+\item \code{beta0}: the intercept of a linear model fitting actual vs. estimated
+trends.
 (\code{actual ~ estimated}) for the simulations. Positive values of \code{beta0}
 indicate that the models are systematically \emph{underestimating} the simulated
 trend for this species.

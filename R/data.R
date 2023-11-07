@@ -63,8 +63,16 @@
 #' - `trends_start_date`: start date (`MM-DD` format) of the season for which the trend was estimated.
 #' - `trends_end_date`: end date (`MM-DD` format) of the season for which the trend was estimated.
 #' - `rsquared`: R-squared value comparing the actual and estimated trends from the simulations.
-#' - `beta0`: the slope of a linear model fitting actual vs. estimated trends.
+#' - `beta0`: the intercept of a linear model fitting actual vs. estimated
+#' trends.
 #' (`actual ~ estimated`) for the simulations. Positive values of `beta0`
 #' indicate that the models are systematically *underestimating* the simulated
 #' trend for this species.
 "ebirdst_runs"
+
+#' eBird Status and Trends predictors
+"ebirdst_predictors"
+
+#' eBird Status and Trends predictors datasets
+"ebirdst_predictor_datasets"
+

@@ -1,0 +1,113 @@
+predictor,dataset,class,label
+checklist_id,ebird,,Checklist ID
+observer_id,ebird,,Observer ID
+loc_id,ebird,,Location ID
+longitude,ebird,,Longitude
+latitude,ebird,,Latitude
+year,ebird,,Year
+day_of_year,ebird,,Day of Year
+hours_of_day,ebird,,Checklist Midpoint (Hours Since Midnight)
+solar_noon_diff,ebird,,Checklist Midpoint (Hours From Solar Noon)
+is_stationary,ebird,,Is Stationary
+effort_hrs,ebird,,Effort Hours [h]
+effort_distance_km,ebird,,Effort Distance [km]
+effort_speed_kmph,ebird,,Effort Speed [km/h]
+num_observers,ebird,,Number of Observers
+cci,ebird,,Checklist Calibration Index
+moon_fraction,moon,,Moon Illumination Fraction
+moon_altitude,moon,,Moon Altitude
+cds_u10,cds,u10,Wind Speed (E-W) [m/s]
+cds_v10,cds,v10,Wind Speed (N-S) [m/s]
+cds_i10fg,cds,i10fg,Wind Gust [m/s]
+cds_d2m,cds,d2m,Dewpoint [celcius]
+cds_t2m,cds,t2m,Temperature [celcius]
+cds_cbh,cds,cbh,Cloud Base Height [m]
+cds_hcc,cds,hcc,High Cloud Cover [%]
+cds_mcc,cds,mcc,Medium Cloud Cover [%]
+cds_lcc,cds,lcc,Low Cloud Cover [%]
+cds_msl,cds,msl,Sea Level Pressure (Mean) [Pa]
+cds_slc,cds,slc,Sea Level Pressure (Change) [Pa]
+cds_sf,cds,sf,Snowfall (Water Equivalent) [m]
+cds_rf,cds,rf,Rain Fall [m]
+cds_tp,cds,tp,Total Precipitation [m]
+eastness_1km_{median/sd},eastness_1km,,Eastness 1km
+eastness_90m_{median/sd},eastness_90m,,Eastness 90m
+northness_1km_{median/sd},northness_1km,,Northness 1km
+northness_90m_{median/sd},northness_90m,,Northness 90m
+elevation_250m_{median/sd},elevation_250m,,Elevation 250m
+elevation_30m_{median/sd},elevation_30m,,Elevation 30m
+island,island,,Island ID
+astwbd_c1_{pland/ed},astwbd,1,Ocean
+astwbd_c2_{pland/ed},astwbd,2,River
+astwbd_c3_{pland/ed},astwbd,3,Lakes
+gsw_c2_{pland/ed},gsw,2,Seasonal water
+gsw_c3_{pland/ed},gsw,3,Permanent water
+intertidal_c1_{pland/ed},intertidal,1,Tidal Mudflats
+ntl_{mean/sd},ntl,,Nighttime Lights
+road_density_c1,road_density,1,Highways
+road_density_c2,road_density,2,Primary roads
+road_density_c3,road_density,3,Secondary roads
+road_density_c4,road_density,4,Tertiary roads
+road_density_c5,road_density,5,Local roads
+mcd12q1_lccs1_c1_{pland/ed},mcd12q1_lccs1,1,Barren
+mcd12q1_lccs1_c2_{pland/ed},mcd12q1_lccs1,2,Permanent Snow and Ice
+mcd12q1_lccs1_c11_{pland/ed},mcd12q1_lccs1,11,Evergreen Needleleaf Forests
+mcd12q1_lccs1_c12_{pland/ed},mcd12q1_lccs1,12,Evergreen Broadleaf Forests
+mcd12q1_lccs1_c13_{pland/ed},mcd12q1_lccs1,13,Deciduous Needleleaf Forests
+mcd12q1_lccs1_c14_{pland/ed},mcd12q1_lccs1,14,Deciduous Broadleaf Forests
+mcd12q1_lccs1_c15_{pland/ed},mcd12q1_lccs1,15,Mixed Broadleaf/Needleleaf Forests
+mcd12q1_lccs1_c16_{pland/ed},mcd12q1_lccs1,16,Mixed Broadleaf Evergreen/Deciduous Forests
+mcd12q1_lccs1_c21_{pland/ed},mcd12q1_lccs1,21,Open Forests
+mcd12q1_lccs1_c22_{pland/ed},mcd12q1_lccs1,22,Sparse Forests
+mcd12q1_lccs1_c31_{pland/ed},mcd12q1_lccs1,31,Unclassified
+mcd12q1_lccs1_c32_{pland/ed},mcd12q1_lccs1,32,Dense Herbaceous
+mcd12q1_lccs1_c41_{pland/ed},mcd12q1_lccs1,41,Sparse Herbaceous
+mcd12q1_lccs1_c42_{pland/ed},mcd12q1_lccs1,42,Dense Shrublands
+mcd12q1_lccs1_c43_{pland/ed},mcd12q1_lccs1,43,Shrubland/Grassland Mosaics
+mcd12q1_lccs1_c255_{pland/ed},mcd12q1_lccs1,255,Sparse Shrublands
+mcd12q1_lccs2_c9_{pland/ed},mcd12q1_lccs2,9,Urban and Built-up Lands
+mcd12q1_lccs2_c25_{pland/ed},mcd12q1_lccs2,25,Forest/Cropland Mosaics
+mcd12q1_lccs2_c35_{pland/ed},mcd12q1_lccs2,35,Natural Herbaceous/Croplands Mosaics
+mcd12q1_lccs2_c36_{pland/ed},mcd12q1_lccs2,36,Herbaceous Croplands
+mcd12q1_lccs3_c27_{pland/ed},mcd12q1_lccs3,27,Woody Wetlands
+mcd12q1_lccs3_c50_{pland/ed},mcd12q1_lccs3,50,Herbaceous Wetlands
+mcd12q1_lccs3_c51_{pland/ed},mcd12q1_lccs3,51,Tundra
+has_shoreline,shoreline,,Has Shoreline
+shoreline_waveheight_{mean/sd},shoreline,waveheight,Wave Height [m]
+shoreline_tidal_range_{mean/sd},shoreline,tidal_range,Tidal Range [m]
+shoreline_chlorophyll_{mean/sd},shoreline,chlorophyll,Chlorophyll Concentration [µg/L]
+shoreline_turbidity_{mean/sd},shoreline,turbidity,Turbidity [1/m]
+shoreline_sinuosity_{mean/sd},shoreline,sinuosity,Sinuosity
+shoreline_slope_{mean/sd},shoreline,slope,Slope [%]
+shoreline_outflow_density_{mean/sd},shoreline,outflow_density,Outflow Density
+shoreline_erodibility_c1_density,shoreline_erodibility,1,Non
+shoreline_erodibility_c2_density,shoreline_erodibility,2,Low
+shoreline_erodibility_c3_density,shoreline_erodibility,3,Medium
+shoreline_erodibility_c4_density,shoreline_erodibility,4,High
+shoreline_erodibility_n,shoreline,,Number of Shoreline Erodibility Classes
+shoreline_emu_physical_c1_density,shoreline_emu_physical,1,Euhaline-Highly Oxic-Superchilled
+shoreline_emu_physical_c2_density,shoreline_emu_physical,2,Euhaline-Hypoxic-Moderate to Cool
+shoreline_emu_physical_c3_density,shoreline_emu_physical,3,Euhaline-Oxic-Cold
+shoreline_emu_physical_c4_density,shoreline_emu_physical,4,Euhaline-Oxic-Moderate
+shoreline_emu_physical_c5_density,shoreline_emu_physical,5,Euhaline-Oxic-Moderate to Cool
+shoreline_emu_physical_c6_density,shoreline_emu_physical,6,Euhaline-Oxic-Superchilled
+shoreline_emu_physical_c7_density,shoreline_emu_physical,7,Euhaline-Oxic-Very Cold
+shoreline_emu_physical_c8_density,shoreline_emu_physical,8,Euhaline-Oxic-Warm to Very Warm
+shoreline_emu_physical_c9_density,shoreline_emu_physical,9,Euhaline-Severely Hypoxic-Cold
+shoreline_emu_physical_c10_density,shoreline_emu_physical,10,Euhaline-Severely Hypoxic-Very Cold
+shoreline_emu_physical_c11_density,shoreline_emu_physical,11,Mesohaline-Highly Oxic-Very Cold
+shoreline_emu_physical_c12_density,shoreline_emu_physical,12,Mesohaline-Hypoxic-Cold
+shoreline_emu_physical_c13_density,shoreline_emu_physical,13,Mesohaline-Oxic-Cold
+shoreline_emu_physical_c14_density,shoreline_emu_physical,14,Mesohaline-Oxic-Moderate to Cool
+shoreline_emu_physical_c15_density,shoreline_emu_physical,15,Mesohaline-Oxic-Very Cold
+shoreline_emu_physical_c16_density,shoreline_emu_physical,16,Mesohaline-Severely Hypoxic-Very Cold
+shoreline_emu_physical_c17_density,shoreline_emu_physical,17,Polyhaline-Anoxic-Cold
+shoreline_emu_physical_c18_density,shoreline_emu_physical,18,Polyhaline-Anoxic-Very Cold
+shoreline_emu_physical_c19_density,shoreline_emu_physical,19,Polyhaline-Highly Oxic-Superchilled
+shoreline_emu_physical_c20_density,shoreline_emu_physical,20,Polyhaline-Hypoxic-Cold
+shoreline_emu_physical_c21_density,shoreline_emu_physical,21,Polyhaline-Oxic-Cold
+shoreline_emu_physical_c22_density,shoreline_emu_physical,22,Polyhaline-Oxic-Very Cold
+shoreline_emu_physical_c23_density,shoreline_emu_physical,23,Polyhaline-Severely Hypoxic-Cold
+shoreline_emu_physical_n,shoreline,,Number of EMU Classes
+has_evi,evi,,Has EVI
+evi_{median/sd},evi,,Enhanced Vegetation Index (EVI)

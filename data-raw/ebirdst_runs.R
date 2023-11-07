@@ -4,7 +4,7 @@ library(lubridate)
 library(jsonlite)
 library(glue)
 
-pred_year <- file.path("data-raw", "config.json") %>%
+pred_year <- file.path("data-raw", "config_status.json") %>%
   read_json(simplifyVector = TRUE) %>%
   pluck("SRD_PRED_YEAR")
 
