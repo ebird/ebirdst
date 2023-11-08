@@ -63,9 +63,10 @@
 #' the non-breeding season.
 #'
 #' @return For the weekly cubes, a [SpatRaster][terra::SpatRaster] with 52
-#'   layers for the given product, labeled by week. Seasonal cubes will have up
-#'   to four layers labeled according to the seasons. The full-year products
-#'   will have a single layer.
+#'   layers for the given product, where the layer names are the dates
+#'   (`YYYY-MM-DD` format) of the midpoint of each week. Seasonal cubes will
+#'   have up to four layers named with the corresponding season. The full-year
+#'   products will have a single layer.
 #'
 #' @export
 #'
@@ -541,4 +542,86 @@ load_fac_map_parameters <- function(species, path = ebirdst_data_dir()) {
                         weekly_labels = p$bins[["3km"]]$labels,
                         seasonal_bins = p$bins_seasonal[["3km"]]$breaks,
                         seasonal_labels = p$bins_seasonal[["3km"]]$labels)
+}
+
+
+#' Load Predictor Importance (PI) rasters
+#'
+#'
+#' @inheritParams load_raster
+#' @param predictor character; the predictor that the PI data should be loaded
+#'   for. The list of predictors that PI data are available for varies by
+#'   species, use [list_availble_pis()] to get the list for a given species.
+#' @param response character; the model (occurrence or count) that the PI
+#'   data should be loaded for.
+#'
+#' @return
+#' @return A [SpatRaster][terra::SpatRaster] with 52 layers, where the layer
+#'   names are the dates (`MM-DD` format) of the midpoint of each week.
+#'
+#' @examples
+load_pis <- function(species, predictor, response = c("occurrence", "count"),
+                     path = ebirdst_data_dir()) {
+  stopifnot(is.character(species), length(species) == 1, dir.exists(path))
+  response <- match.arg(response)
+
+  species_code <- get_species(species)
+  species_path <- get_species_path(species, path = path,
+                                   check_downloaded = FALSE)
+  if (!dir.exists(species_path)) {
+    stop("No data found for the requested species. Ensure that the data were ",
+         "downloaded using ebirdst_download_status() and that the 'path' ",
+         "argument correctly points to the data download directory.")
+  }
+
+  # construct file name
+  year <- load_config(species = species, path = path)[["srd_pred_year"]]
+  p <- stringr::str_replace_all(predictor, "_", "-")
+  tif <- stringr::str_glue("{species_code}_pi_{response}_{p}_27km_{year}.tif")
+  tif <- file.path(species_path, "pis", tif)
+  if (!file.exists(tif)) {
+    stop("GeoTIFF for ", predictor, " PI could not be found. To download ",
+         "PI data use ebirst_download_status(download_pis = TRUE). To list ",
+         "predictors that have PI data use list_available_pis().")
+  }
+  return(terra::rast(tif))
+}
+
+
+#' @describeIn load_pis list the predictors that have PI information for this
+#'   species.
+list_available_pis <- function(species, path = ebirdst_data_dir()) {
+  stopifnot(is.character(species), length(species) == 1, dir.exists(path))
+
+  species_code <- get_species(species)
+  species_path <- get_species_path(species, path = path,
+                                   check_downloaded = FALSE)
+  if (!dir.exists(species_path)) {
+    stop("No data found for the requested species. Ensure that the data were ",
+         "downloaded using ebirdst_download_status() and that the 'path' ",
+         "argument correctly points to the data download directory.")
+  }
+
+  csv_file <- file.path(species_path, "pis", "pi_rangewide-ranks.csv")
+  if(!file.exists(csv_file)) {
+    stop("The PI data could not be found. To download, use ",
+         "`ebirst_download_status(download_pis = TRUE)`.")
+  }
+  # load ranks
+  ranks <- read.csv(csv_file, row.names = NULL, na = "")
+
+  # available pis
+  tifs <- list.files(file.path(species_path, "pis"), pattern = "*.tif")
+  tifs <- tifs[!stringr::str_detect(tifs, "n-folds")]
+  preds <- stringr::str_remove(tifs, "^[a-z0-9]+_pi_(occurrence|count)_")
+  preds <- stringr::str_extract(preds, "[-a-z0-9]+")
+  preds <- unique(stringr::str_replace_all(preds, "-", "_"))
+  preds <- preds[preds %in% ranks$predictor]
+
+  return(dplyr::as_tibble(ranks[ranks$predictor %in% preds, ]))
+}
+
+
+load_ppms <- function(species, ppm, path = ebirdst_data_dir()) {
+
 }
