@@ -147,9 +147,10 @@ by calling <code><a href="ebirdst_data_dir.html">ebirdst_data_dir()</a></code>.<
     
 
 <p>For the weekly cubes, a <a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">SpatRaster</a> with 52
-layers for the given product, labeled by week. Seasonal cubes will have up
-to four layers labeled according to the seasons. The full-year products
-will have a single layer.</p>
+layers for the given product, where the layer names are the dates
+(<code>YYYY-MM-DD</code> format) of the midpoint of each week. Seasonal cubes will
+have up to four layers named with the corresponding season. The full-year
+products will have a single layer.</p>
     </div>
     <div id="details">
     <h2>Details</h2>

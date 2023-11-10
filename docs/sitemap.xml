@@ -61,6 +61,12 @@
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_palettes.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_predictor_descriptions.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst_predictors.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst_runs.html</loc>
   </url>
   <url>
@@ -83,6 +89,12 @@
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/load_fac_map_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/load_pi.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/load_ppm.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/load_ranges.html</loc>

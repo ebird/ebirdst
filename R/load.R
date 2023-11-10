@@ -545,23 +545,54 @@ load_fac_map_parameters <- function(species, path = ebirdst_data_dir()) {
 }
 
 
-#' Load Predictor Importance (PI) rasters
+#' Load predictor importance (PI) rasters
 #'
+#' The eBird Status models estimate the relative importance of each
+#' environmental predictor used in the model. These predictor importance (PI)
+#' data are converted to ranks (with a rank of 1 being the most important)
+#' relative to the full suite of environmental predictors. The ranks are
+#' summarized to a 27 km resolution raster grid for each predictor, where the
+#' cell values are the average across all models in the ensemble contributing to
+#' that cell. These data are available in raster format provided `download_pis =
+#' TRUE` was used when calling [ebirdst_download_status()]. PI estimates are
+#' available separately for both the occurrence and count sub-model and only the
+#' 30 most important predictors are distributed. Use [list_available_pis()] to
+#' see which predictors have PI data.
 #'
 #' @inheritParams load_raster
 #' @param predictor character; the predictor that the PI data should be loaded
 #'   for. The list of predictors that PI data are available for varies by
-#'   species, use [list_availble_pis()] to get the list for a given species.
+#'   species, use [list_available_pis()] to get the list for a given species.
 #' @param response character; the model (occurrence or count) that the PI
 #'   data should be loaded for.
 #'
-#' @return
-#' @return A [SpatRaster][terra::SpatRaster] with 52 layers, where the layer
-#'   names are the dates (`MM-DD` format) of the midpoint of each week.
+#' @return A [SpatRaster][terra::SpatRaster] object with the PI ranks for the
+#'   given predictor. For migrants, the estimates are weekly and the raster will
+#'   have 52 layers, where the layer names are the dates (`MM-DD` format) of the
+#'   midpoint of each week. For residents, a single year round layer is
+#'   returned.
+#'
+#' [list_available_pis()] returns a data frame listing the top 30 predictors for
+#' which PI rasters can be loaded. In addition to the predictor names, the mean
+#' range-wide rank (`rangewide_rank`) is given as well as the integer rank
+#' (`rank`) relative to the other 29 predictors.
+#'
+#' @export
 #'
 #' @examples
-load_pis <- function(species, predictor, response = c("occurrence", "count"),
-                     path = ebirdst_data_dir()) {
+#' \dontrun{
+#' # download example data if hasn't already been downloaded
+#' ebirdst_download_status("yebsap-example", download_pis = TRUE)
+#'
+#' # identify the top predictor
+#' top_preds <- list_available_pis("yebsap-example")
+#' print(top_preds[1, ])
+#'
+#' # load predictor importance raster of top predictor for occurrence
+#' load_pi("yebsap-example", top_preds$predictor[1])
+#' }
+load_pi <- function(species, predictor, response = c("occurrence", "count"),
+                    path = ebirdst_data_dir()) {
   stopifnot(is.character(species), length(species) == 1, dir.exists(path))
   response <- match.arg(response)
 
@@ -588,8 +619,9 @@ load_pis <- function(species, predictor, response = c("occurrence", "count"),
 }
 
 
-#' @describeIn load_pis list the predictors that have PI information for this
+#' @describeIn load_pi list the predictors that have PI information for this
 #'   species.
+#' @export
 list_available_pis <- function(species, path = ebirdst_data_dir()) {
   stopifnot(is.character(species), length(species) == 1, dir.exists(path))
 
@@ -608,20 +640,107 @@ list_available_pis <- function(species, path = ebirdst_data_dir()) {
          "`ebirst_download_status(download_pis = TRUE)`.")
   }
   # load ranks
-  ranks <- read.csv(csv_file, row.names = NULL, na = "")
+  ranks <- utils::read.csv(csv_file, row.names = NULL, na = "")
 
   # available pis
   tifs <- list.files(file.path(species_path, "pis"), pattern = "*.tif")
   tifs <- tifs[!stringr::str_detect(tifs, "n-folds")]
-  preds <- stringr::str_remove(tifs, "^[a-z0-9]+_pi_(occurrence|count)_")
+  preds <- stringr::str_remove(tifs, "^[^_]+_pi_(occurrence|count)_")
   preds <- stringr::str_extract(preds, "[-a-z0-9]+")
   preds <- unique(stringr::str_replace_all(preds, "-", "_"))
   preds <- preds[preds %in% ranks$predictor]
 
-  return(dplyr::as_tibble(ranks[ranks$predictor %in% preds, ]))
+  # return ranks
+  top_ranks <- dplyr::as_tibble(ranks[ranks$predictor %in% preds, ])
+  top_ranks <- dplyr::arrange(top_ranks, .data$rank)
+
+  return(top_ranks)
 }
 
 
-load_ppms <- function(species, ppm, path = ebirdst_data_dir()) {
+#' Load predictive performance metric (PPM) rasters
+#'
+#' eBird Status models are evaluated against a test set of eBird data not used
+#' during model training and a suite of predictive performance metrics (PPMs)
+#' are calculated. The PPMs for each base model are summarized to a 27 km
+#' resolution raster grid, where the cell values are the average across all
+#' models in the ensemble contributing to that cell. These data are available in
+#' raster format provided `download_ppms = TRUE` was used when calling
+#' [ebirdst_download_status()].
+#'
+#' @inheritParams load_raster
+#' @param ppm character; the name of a single metric to load data for. See
+#'   Details for definitions of each metric.
+#'
+#' @details
+#' Eight predictive performance metrics are provided:
+#' - `binary_f1`: F1-score comparing the model predictions converted to binary
+#' with the observed detection/non-detection for the test checklists.
+#' - `binary_pr_auc`: the area on the precision-recall curve generated by
+#' comparing the model predictions converted to binary with the observed
+#' detection/non-detection for the test checklists.
+#' - `occ_bernoulli_dev`: Bernoulli deviance comparing the predicted occurrence
+#' with the observed detection/non-detection for the test checklists.
+#' - `count_spearman`: Spearman's rank correlation coefficient comparing the
+#' predicted count with the observed count for the subset of test checklists
+#' on which the species was detected.
+#' - `log_count_pearson`: Pearson correlation coefficient comparing the
+#' logarithm of the predicted count with the logarithm of the observed count
+#' for the subset of test checklists on which the species was detected.
+#' - `abd_poisson_dev`: Poisson deviance comparing the predicted relative
+#' abundance with the observed count for the full set of test checklists.
+#' - `abd_spearman`: Spearman's rank  correlation coefficient comparing the
+#' predicted relative abundance with the observed count for the full set of
+#' test checklists.
+#' - `log_abd_pearson`: Pearson correlation coefficient comparing the logarithm
+#' of the predicted relative abundance with the logarithm of the observed
+#' count for the full set of test checklists.
+#'
+#' @return A [SpatRaster][terra::SpatRaster] object with the PPM data. For
+#'   migrants, rasters are weekly with  52 layers, where the layer names are the
+#'   dates (`MM-DD` format) of the midpoint of each week. For residents, a
+#'   single year round layer is returned.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download example data if hasn't already been downloaded
+#' ebirdst_download_status("yebsap-example", download_ppms = TRUE)
+#'
+#' # load area under the precision-recall curve PPM raster
+#' load_ppm("yebsap-example", ppm = "binary_pr_auc")
+#' }
+load_ppm <- function(species,
+                     ppm = c("binary_f1",
+                             "binary_pr_auc",
+                             "occ_bernoulli_dev",
+                             "count_spearman",
+                             "log_count_pearson",
+                             "abd_poisson_dev",
+                             "abd_spearman",
+                             "log_abd_pearson"),
+                     path = ebirdst_data_dir()) {
+  stopifnot(is.character(species), length(species) == 1, dir.exists(path))
+  ppm <- match.arg(ppm)
 
+  species_code <- get_species(species)
+  species_path <- get_species_path(species, path = path,
+                                   check_downloaded = FALSE)
+  if (!dir.exists(species_path)) {
+    stop("No data found for the requested species. Ensure that the data were ",
+         "downloaded using ebirdst_download_status() and that the 'path' ",
+         "argument correctly points to the data download directory.")
+  }
+
+  # construct file name
+  year <- load_config(species = species, path = path)[["srd_pred_year"]]
+  p <- stringr::str_replace_all(ppm, "_", "-")
+  tif <- stringr::str_glue("{species_code}_ppm_{p}_27km_{year}.tif")
+  tif <- file.path(species_path, "ppms", tif)
+  if (!file.exists(tif)) {
+    stop("GeoTIFF for ", ppm, " PPM could not be found. To download ",
+         "PPM data use ebirst_download_status(download_ppm = TRUE).")
+  }
+  return(terra::rast(tif))
 }

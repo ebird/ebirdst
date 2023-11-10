@@ -84,7 +84,7 @@
 #' @format A data frame with 150 rows and 4 columns:
 #' - `predictor`: predictor name.
 #' - `dataset`: dataset name, which can be cross referenced in
-#' [ebirdst_predictor_datasets] for further details.
+#' [ebirdst_predictor_descriptions] for further details.
 #' - `class`: class number or name for categorical variables.
 #' - `label`: descriptive labels for each predictor variable.
 "ebirdst_predictors"

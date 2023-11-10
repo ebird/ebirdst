@@ -9,7 +9,7 @@ A data frame with 150 rows and 4 columns:
 \itemize{
 \item \code{predictor}: predictor name.
 \item \code{dataset}: dataset name, which can be cross referenced in
-\link{ebirdst_predictor_datasets} for further details.
+\link{ebirdst_predictor_descriptions} for further details.
 \item \code{class}: class number or name for categorical variables.
 \item \code{label}: descriptive labels for each predictor variable.
 }

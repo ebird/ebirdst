@@ -88,7 +88,7 @@ Version 2022 changed the functional form of the predictive model from a (mostly)
 - CHANGED: Water cover is now represented by the static [ASTER water bodies dataset](https://lpdaac.usgs.gov/products/astwbdv001/) instead of the annual [MODIS MOD44W dataset](https://lpdaac.usgs.gov/products/mod44wv006/).
 
 #### Ensemble
-- CHANGED: The residual confounding adjustment now includes two components: a global adjustment and a spatially explicit adjustment. Both adjustments are linear transformations derived by comparing the actual and estimated trends for the simulations. The global trend is calculated and applied across the entire species range, while the spatially explicit adjustment is calculated and applied separately for each pixel.
+- CHANGED: The residual confounding adjustment is now a spatially​explicit adjustment, calculated and applied separately for each pixel.
 Regions, Years, and Seasons
 - CHANGED: Trends regions now have variable start years, with all trends now being run for a shorter time series, to ensure all years in the time series have sufficient data to model trends. For example, North American trends will now start in 2012 rather than 2007.
 - CHANGED: Seasonal dates for Trends are now identical to Status seasonal dates.

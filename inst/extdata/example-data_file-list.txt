@@ -1,4 +1,5 @@
 2022/yebsap-example/config.json
+2022/yebsap-example/pis/pi_rangewide-ranks.csv
 2022/yebsap-example/pis/yebsap-example_pi_count_elevation-250m-median_27km_2022.tif
 2022/yebsap-example/pis/yebsap-example_pi_count_gsw-c2-pland_27km_2022.tif
 2022/yebsap-example/pis/yebsap-example_pi_count_mcd12q1-lccs1-c21-pland_27km_2022.tif

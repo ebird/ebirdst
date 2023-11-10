@@ -221,4 +221,4 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
                             cex.axis = 0.9, lwd.ticks = 0))
 ```
 
-<img src="man/figures/README-quick_start-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-quick_start-1.png" width="100%" />

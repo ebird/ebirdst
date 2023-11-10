@@ -49,9 +49,10 @@ by calling \code{ebirdst_data_dir()}.}
 }
 \value{
 For the weekly cubes, a \link[terra:SpatRaster-class]{SpatRaster} with 52
-layers for the given product, labeled by week. Seasonal cubes will have up
-to four layers labeled according to the seasons. The full-year products
-will have a single layer.
+layers for the given product, where the layer names are the dates
+(\code{YYYY-MM-DD} format) of the midpoint of each week. Seasonal cubes will
+have up to four layers named with the corresponding season. The full-year
+products will have a single layer.
 }
 \description{
 Each of the eBird Status raster products is packaged as a GeoTIFF file
