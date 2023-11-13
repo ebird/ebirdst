@@ -1,14 +1,15 @@
 #' Store the eBird Status and Trends access key
 #'
 #' Accessing eBird Status and Trends data requires an access key, which can be
-#' obtained by visiting https://ebird.org/st/request. This key must be
-#' stored as the environment variable `EBIRDST_KEY` in order for
-#' [ebirdst_download()] to use it. The easiest approach is to store the key in
-#' your `.Renviron` file so it can always be accessed in your R sessions. Use
-#' this function to set `EBIRDST_KEY` in your `.Renviron` file provided that it
-#' is located in the standard location in your home directory. It is also
-#' possible to manually edit the `.Renviron` file. **The access key is specific
-#' to you and should never be shared or made publicly accessible.**
+#' obtained by visiting https://ebird.org/st/request. This key must be stored as
+#' the environment variable `EBIRDST_KEY` in order for
+#' [ebirdst_download_status()] and [ebirdst_download_trends()] to use it. The
+#' easiest approach is to store the key in your `.Renviron` file so it can
+#' always be accessed in your R sessions. Use this function to set `EBIRDST_KEY`
+#' in your `.Renviron` file provided that it is located in the standard location
+#' in your home directory. It is also possible to manually edit the `.Renviron`
+#' file. **The access key is specific to you and should never be shared or made
+#' publicly accessible.**
 #'
 #' @param key character; API key obtained by filling out the form at
 #'   https://ebird.org/st/request.

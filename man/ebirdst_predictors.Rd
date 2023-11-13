@@ -3,21 +3,15 @@
 \docType{data}
 \name{ebirdst_predictors}
 \alias{ebirdst_predictors}
-\title{eBird Status and Trends predictors}
+\title{eBird Status and Trends predictor variables}
 \format{
-A data frame with 74 rows and 5 columns:
-\describe{
-\item{predictor}{Predictor variable name.}
-\item{predictor_label}{Descriptive labels for predictors for plotting and
-translating the cryptic variables names (e.g. \code{umd_fs_c1} is
-Evergreen Needleleaf Forest.}
-\item{lc_class}{For the land and water cover FRAGSTATS variables, this
-gives the associated landcover class. It can be used for grouping
-and summarizing the four FRAGSTATS metrics to the level of the
-landcover class.}
-\item{lc_class_label}{Similar to \code{predictor_label}; however, this variable
-gives the FRAGSTATS metrics a single name for the landcover
-class.}
+A data frame with 150 rows and 4 columns:
+\itemize{
+\item \code{predictor}: predictor name.
+\item \code{dataset}: dataset name, which can be cross referenced in
+\link{ebirdst_predictor_descriptions} for further details.
+\item \code{class}: class number or name for categorical variables.
+\item \code{label}: descriptive labels for each predictor variable.
 }
 }
 \usage{
@@ -26,9 +20,11 @@ ebirdst_predictors
 \description{
 A data frame of the predictors used in the eBird Status and Trends models.
 These include effort variables (e.g. distance traveled, number of observers,
-etc.) in addition to land and water cover variables. These landcover
-variables are derived from the MODIS MCD12Q1 500 m landcover product, and for
-each land cover class two FRAGSTATS metrics are calculated within a 1.5 km
-buffer around each checklist: \% landcover (PLAND) and edge density (ED).
+etc.) in addition to variables describing the environment (e.g. elevation,
+land cover, water cover, etc.). The environmental variables are derived by
+summarizing remotely sensed datasets (described in
+\link{ebirdst_predictor_descriptions}) over a 3 km diameter neighborhood around
+each checklist. For categorical datasets, two variables are generated for
+each class describing the percent cover (\code{pland}) and edge density (\code{ed}).
 }
 \keyword{datasets}

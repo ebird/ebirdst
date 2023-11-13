@@ -4,38 +4,35 @@
 \alias{get_species_path}
 \title{Get the path to the data package for a given species}
 \usage{
-get_species_path(species, path = ebirdst_data_dir())
+get_species_path(species, path = ebirdst_data_dir(), check_downloaded = TRUE)
 }
 \arguments{
 \item{species}{character; a single species given as a scientific name, common
-name or six-letter species code (e.g. woothr). The full list of valid
-species is can be viewed in the \link{ebirdst_runs} data frame included in this
-package. To download the example dataset, use "example_data".}
+name or six-letter species code (e.g. "woothr"). The full list of valid
+species is in the \link{ebirdst_runs} data frame included in this package. To
+download the example dataset, use \code{"yebsap-example"}.}
 
 \item{path}{character; directory to download the data to. All downloaded
 files will be placed in a sub-directory of this directory named for the
-data version year, e.g. "2020" for the 2020 Status Data Products. Each species'
-data package will then appear in a directory named with the eBird species
-code. Defaults to a persistent data directory, which can be found by
-calling \code{ebirdst_data_dir()}.}
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling \code{ebirdst_data_dir()}.}
+
+\item{check_downloaded}{logical; raise an error if no data have been
+downloaded for this species.}
 }
 \value{
 The path to the data package directory.
 }
 \description{
 This helper function can be used to get the path to a data package for a
-given species to be used by the various data loading functions.
+given species.
 }
 \examples{
 \dontrun{
-# download the example data
-ebirdst_download("example_data")
-
 # get the path
-path <- get_species_path("example_data")
-
-# use it to load data
-abd <- load_raster(path, "abundance")
+path <- get_species_path("yebsap-example")
 
 # get the path to the full data package for yellow-bellied sapsucker
 # common name, scientific name, or species code can be used

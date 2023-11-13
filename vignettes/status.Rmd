@@ -1,0 +1,217 @@
+---
+title: "Introduction to eBird Status Data Products"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Introduction to eBird Status Data Products}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<style type="text/css">
+.table {
+    width: 75%;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE,
+                      collapse = TRUE,
+                      comment = "#>",
+                      out.width = "100%",
+                      fig.height = 4, 
+                      fig.width = 7, 
+                      fig.align = "center")
+# only build vignettes locally and not for R CMD check
+knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
+```
+
+# Outline
+
+1. [Background](#background)
+2. [Data access](#access)
+3. [Species list](#species)
+4. [Data types and structure](#types)
+
+# Background {#background}
+
+The study and conservation of the natural world relies on detailed information about the distributions, abundances, and population trends of species over time. For many taxa, this information is challenging to obtain at relevant geographic scales. The goal of the eBird Status and Trends project is to use data from [eBird](https://ebird.org/home), the global community science bird monitoring program administered by The Cornell Lab of Ornithology, to generate a reliable, standardized source of biodiversity information for the world’s bird populations. To translate the eBird observations into robust data products, we use machine learning to fill spatiotemporal gaps, using local land cover descriptions derived from remote sensing data, while controlling for biases inherent in species observations collected by community scientists. See Fink et al. (2019) for more information about the analysis used to generate these data.
+
+This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for `r `scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species for the year `r ebirdst::ebirdst_version()[["version_year"]]`. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.
+
+# Data access {#access}
+
+Data access is granted through an Access Request Form at: https://ebird.org/st/request. Filling out this form generates a key to be used with this R package. Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.
+
+After completing the Access Request Form, you will be provided an eBird Status & Trends Data Products access key, which you will need when downloading data. To store the key so this package can access it when downloading data, use the function `set_ebirdst_access_key("XXXXX")`, where `"XXXXX"` is the access key provided to you.
+
+There are a wide variety of data products available for download with `ebirdst` via the function `ebirdst_download_status()`. The first argument to this function defines the species (as a common name, scientific name, or species code) to download data for and the remaining arguments define the specific data products to download. Throughout this vignettes, we'll use a simplified example dataset consisting of estimates for Yellow-bellied Sapsucker in Michigan. This dataset is designed to be small for faster download and is accessible without a key. By default `ebirst_download_status()` only downloads the most commonly used data products; however, since this vignette will cover all the available data products, we'll use `download_all = TRUE`. Note that data for any species other that the example dataset requires a key to access. 
+
+```{r access}
+library(dplyr)
+library(sf)
+library(terra)
+library(ebirdst)
+
+# download a simplified example dataset for Yellow-bellied Sapsucker in Michigan
+ebirdst_download_status(species = "yebsap-example", download_all = TRUE)
+```
+
+By default, `ebirdst_download_status()` downloads data to a centralized directory for on your computer. You can see what that directory is with the function `ebirdst_data_dir()` and you can change the default download directory by setting the environment variable `EBIRDST_DATA_DIR`, for example by calling `usethis::edit_r_environ()` and adding a line such as `EBIRDST_DATA_DIR=/custom/download/directory/`.
+
+**IMPORTANT: eBird Status and Trends Data Products are designed to be downloaded and accessed using the `ebirdst` R package. Data downloaded using this R package have a specific file structure and changing file names or locations will disrupt the ability of functions in this package to access the data. If you prefer to access data for use outside of R, consider downloading data via the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/download-data).**
+
+# Species list {#species}
+
+The data frame `ebirdst_runs` lists all species with eBird Status Data Products available for download.
+
+```{r species}
+glimpse(ebirdst_runs)
+```
+
+If you’re working in RStudio, you can use `View()` to interactively explore this data frame.
+
+All species go through a process of review by an expert on that species prior to being released. The `ebirdst_runs` data frame contains information from this review process. For migrants, reviewers assess the model estimates for each of the four seasons: breeding, non-breeding, pre-breeding migration, and post-breeding migration. Resident (i.e., non-migratory) species are identified by having `TRUE` in the `is_resident` column of `ebirdst_runs`, and these species are assessed across the whole year rather than seasonally. `ebirdst_runs` contains two important pieces of information for each season: a **quality** rating and **seasonal dates**.
+
+The **seasonal dates** define the weeks that fall within each season. Breeding and non-breeding season dates are defined for each species as the weeks during those seasons when the species' population does not move. For this reason, these seasons are also described as stationary periods. Migration periods are defined as the periods of movement between the stationary non-breeding and breeding seasons. Note that for many species these migratory periods include not only movement from breeding grounds to non-breeding grounds, but also post-breeding dispersal, molt migration, and other movements. 
+
+Reviewers also examine the model estimates for each season to assess the amount of extrapolation or omission present in the model, and assign an associated quality rating ranging from 0 (lowest quality) to 3 (highest quality). Extrapolation refers to cases where the model predicts occurrence where the species is known to be absent, while omission refers to the model failing to predict occurrence where a species is known to be present.
+
+A rating of 0 implies this season failed review and model results should not be used at all for this period. Ratings of 1-3 correspond to a gradient of more to less extrapolation and/or omission, and we often use a traffic light analogy when referring to them:
+
+1. **Red light (1)**: low quality, extensive extrapolation and/or omission and noise, but at least some regions have estimates that are accurate; can be used with caution in certain regions.
+2. **Yellow light (2)**: medium quality, some extrapolation and/or omission; use with caution.
+3. **Green light (3)**: high quality, very little or no extrapolation and/or omission; these seasons can be safely used.
+
+Let's look at the results of the review for our example dataset.
+
+```{r review}
+ebirdst_runs %>% 
+  filter(species_code == "yebsap-example") %>% 
+  glimpse()
+```
+
+From this, we can see that Yellow-bellied Sapsucker was modeled as a migrant and all four seasons received a quality of 3, the highest rating. Note that there are a variety of trends-specific columns at the end of this data frame that we'll ignore for now; these columns will be covered in the [trends vignette](articles/trends.html)
+
+# Data types {#types}
+
+For each species, there are a variety of data products available, which can be categorized into the following broad types:
+
+- **Weekly raster estimates:** weekly estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are the core products from which the other products are derivied.
+- **Seasonal raster estimates:** seasonal estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are derived from the corresponding weekly raster data by summarizing across the weeks falling within each season based on the dates defined in the `ebirdst_runs` data frame. Only seasons that passed the expert review process are included.
+- **Seasonal range boundaries:** seasonal range boundary polygons in GeoPackage format.
+- **Regional summary statistics:** a variety of summary statistics for countries and states/provinces (e.g. proportion of total population in the region) in CSV format.
+
+Each of these data products will be covered in more detail in the following sections, including details on how to load the data into R. All of the loading functions take a species (given as common name, scientific name, or species code) as their first argument. If you have used a non-default `path` argument to `ebirdst_download_status()` then you will also need to provide the same `path` argument to the loading functions.
+
+## Weekly raster estimates
+
+The core raster data products are the weekly estimates of occurrence, count, relative abundance, and percent of population. These are all stored in the widely used GeoTIFF raster format, and we refer to them as "weekly cubes" (e.g. the "weekly abundance cube"). All cubes have 52 weeks and cover the entire globe, even for species with ranges only covering a small region. They come with areas of predicted and assumed zeroes, such that any cells that are `NA` represent areas where we didn't produce model estimates.
+
+All estimates are the median expected value for a 2 km, 1 hour eBird Traveling Count by an expert eBird observer at the optimal time of day and for optimal weather conditions to observe the given species.
+
+- **Occurrence**: the expected probability of encountering a species.
+- **Count**: the expected count of a species, conditional on its occurrence at the given location.
+- **Relative abundance**: the expected relative abundance of a species, computed as the product of the probability of occurrence and the count conditional on occurrence. In addition to the median relative abundance, upper and lower confidence intervals (CIs) are provided, defined at the 10th and 90th quantile of relative abundance, respectively.
+- **Proportion of population**: the proportion of the total relative abundance within each cell. This is a derived product calculated by dividing each cell value in the relative abundance raster by the sum of all cell values
+
+All predictions are made on a standard 3 km by 3 km global grid; however, for convenience lower resolution GeoTIFFs are also provided, which are typically much faster to work with. However, note that to keep file sizes small, **the example dataset only contains lowest (27 km) resolution data**. The three resolutions are:
+
+- High resolution (3km): the native 3 km resolution data.
+- Medium resolution (9km): the 3 km resolution data aggregated by a factor of 3 in each direction resulting in a resolution of 9 km.
+- Low resolution (27km): the 3 km resolution data aggregated by a factor of 9 in each direction resulting in a resolution of 27 km.
+
+The function `load_raster()` is used to load these data into R and takes arguments for `product` and `resolution`. The `metric` argument can be also be used to access the relative abundance CIs. All raster products are loaded into R as `SpatRaster` objects for use with the `terra` R package. For example,
+
+```{r types_weekly}
+# weekly, 27km res, median relative abundance
+abd_lr <- load_raster("yebsap-example", product = "abundance", 
+                      resolution = "27km")
+
+# weekly, 27km res, median proportion of population
+prop_pop_lr <- load_raster("yebsap-example", product = "proportion-population", 
+                      resolution = "27km")
+
+# weekly, 27km res, abundance confidence intervals
+abd_lower <- load_raster("yebsap-example", product = "abundance", metric = "lower", 
+                         resolution = "27km")
+abd_upper <- load_raster("yebsap-example", product = "abundance", metric = "upper", 
+                         resolution = "27km")
+```
+
+Each object has 52 layers, one for each week of the year, and layer names store the dates corresponding to the midpoints of each week.
+
+```{r types_weekly_dates}
+as.Date(names(abd_lr))
+```
+
+The GeoTIFFs use the same Sinusoidal projection as NASA MODIS data. This projection is ideal for analysis, as it is an equal are projection, but is not ideal for mapping since it introduces significant distortion.
+
+## Seasonal raster estimates
+
+The seasonal raster estimates are provided for the same set of products and at the same three resolutions as the weekly estimates. They're derived from the weekly data by taking the cell-wise mean or max across the weeks within each season. The seasonal boundary dates are defined through a process of expert review of each species, and are available in the data frame `ebirdst_runs`. Each season is also given a quality score from 0 (fail) to 3 (high quality), and seasons with a score of 0 are not provided.
+
+The function `load_raster(period = "seasonal")` is used to load these data into R and takes arguments for `product`, `metric` and `resolution`. The data are loaded into R as `SpatRaster` objects for use with the `terra` package. For example,
+
+```{r types_seasonal}
+# seasonal, 27km res, mean relative abundance
+abd_seasonal_mean <- load_raster("yebsap-example", product = "abundance", 
+                                 period = "seasonal", metric = "mean", 
+                                 resolution = "27km")
+# season that each layer corresponds to
+names(abd_seasonal_mean)
+# just the breeding season layer
+abd_seasonal_mean[["breeding"]]
+
+# seasonal, 27km res, max occurrence
+occ_seasonal_max <- load_raster("yebsap-example", product = "occurrence", 
+                                period = "seasonal", metric = "max", 
+                                resolution = "27km")
+```
+
+Finally, as a convenience, the data products include year-round rasters summarizing the mean or max across all weeks that fall within a season that passed the expert review process.  These can be accessed similarly to the seasonal products, but with `period = "full-year"` instead. For example, these layers can be used in conservation planning to assess the most important sites across the full range and full annual cycle of a species.
+
+```{r types_fullyear}
+# full year, 27km res, maximum relative abundance
+abd_fy_max <- load_raster("yebsap-example", product = "abundance", 
+                          period = "full-year", metric = "max", 
+                          resolution = "27km")
+```
+
+## Range boundaries
+
+Seasonal range polygons are defined as the boundaries of non-zero seasonal relative abundance estimates, which are then (optionally) smoothed to produce more aesthetically pleasing polygons using the `smoothr` package. They are provided in the widely used GeoPackage format and can be loaded into R with `load_ranges()`, which returns a set of spatial features for use with the `sf` R package. By default the smoothed ranges are returned, but using `smoothed = FALSE` will return the raw, unsmoothed range polygons. Note that only low and medium resolution ranges are provided. These range polygons can be loaded with `load_ranges()`:
+
+```{r types_ranges}
+# seasonal, 27km res, smoothed ranges
+ranges <- load_ranges("yebsap-example", resolution = "27km")
+ranges
+
+# subset to just the breeding season range using dplyr
+range_breeding <- filter(ranges, season == "breeding")
+```
+
+## Regional summary statistics
+
+Regional summaries of the seasonal raster estimates are also provided for a standard set of regions (countries and states/provinces). These summary statistics can be loaded with `load_regional_stats()`:
+
+```{r types_regional}
+regional <- load_regional_stats("yebsap-example")
+glimpse(regional)
+```
+
+The five summary statistics are defined as:
+
+- `abundance_mean`: mean relative abundance in the region.
+- `total_pop_percent`: proportion of the seasonal modeled population falling within the region.
+- `range_percent_occupied`: the proportion of the region occupied by the species during the given season.
+- `range_total_percent`: the proportion of the species seasonal range falling within the region.
+- `range_days_occupation`: number of days of the season that the region was occupied by this species.
+
+## References
+
+<blockquote>
+Fink, D., T. Auer, A. Johnston, V. Ruiz‐Gutierrez, W.M. Hochachka, S. Kelling. 2019. Modeling avian full annual cycle distribution and population trends with citizen science data. Ecological Applications, 00(00):e02056. doi: 10.1002/eap.2056
+</blockquote>

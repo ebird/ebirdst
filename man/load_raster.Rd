@@ -2,27 +2,29 @@
 % Please edit documentation in R/load.R
 \name{load_raster}
 \alias{load_raster}
-\title{Load eBird Status and Trends raster data cubes}
+\title{Load eBird Status Data Products raster data}
 \usage{
 load_raster(
-  path,
-  product = c("abundance", "count", "occurrence", "percent-population"),
+  species,
+  product = c("abundance", "count", "occurrence", "proportion-population"),
   period = c("weekly", "seasonal", "full-year"),
   metric = NULL,
-  resolution = c("hr", "mr", "lr")
+  resolution = c("3km", "9km", "27km"),
+  path = ebirdst_data_dir()
 )
 }
 \arguments{
-\item{path}{character; directory that the Status and Trends data for a given
-species was downloaded to. This path is returned by \code{ebirdst_download()}
-or \code{get_species_path()}.}
+\item{species}{character; the species to load data for, given as a scientific
+name, common name or six-letter species code (e.g. "woothr"). The full list
+of valid species is in the \link{ebirdst_runs} data frame included in this
+package. To download the example dataset, use \code{"yebsap-example"}.}
 
-\item{product}{character; Status and Trends product to load: occurrence,
-count, relative abundance, or percent of population. See Details for a
+\item{product}{character; eBird Status raster product to load: occurrence,
+count, relative abundance, or proportion of population. See Details for a
 detailed explanation of each of these products.}
 
-\item{period}{character; temporal period of the estimation. The Status and
-Trends models make predictions for each week of the year; however, as a
+\item{period}{character; temporal period of the estimation. The eBird Status
+models make predictions for each week of the year; however, as a
 convenience, data are also provided summarized at the seasonal or annual
 ("full-year") level.}
 
@@ -35,40 +37,50 @@ quantile. For the seasonal and annual products, the cell-wise maximum
 values across weeks can be obtained with \code{metric = "max"}.}
 
 \item{resolution}{character; the resolution of the raster data to load. The
-default is to load the native ~3 km resolution (\code{"hr"}); however, for some
-applications 9 km (\code{"mr"}) or 27 km (\code{"lr"}) data may be suitable.}
+default is to load the native 3 km resolution data; however, for some
+applications 9 km or 27 km data may be suitable.}
+
+\item{path}{character; directory to download the data to. All downloaded
+files will be placed in a sub-directory of this directory named for the
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling \code{ebirdst_data_dir()}.}
 }
 \value{
 For the weekly cubes, a \link[terra:SpatRaster-class]{SpatRaster} with 52
-layers for the given product, labeled by week. Seasonal cubes will have up
-to four layers labeled according to the seasons. The full-year products
-will have a single layer.
+layers for the given product, where the layer names are the dates
+(\code{YYYY-MM-DD} format) of the midpoint of each week. Seasonal cubes will
+have up to four layers named with the corresponding season. The full-year
+products will have a single layer.
 }
 \description{
-Each of the eBird Status and Trends raster products is packaged as a GeoTIFF
-file representing predictions on a regular grid. The core products are
-occurrence, count, relative abundance, and percent of population. This
-function loads one of the available data products into R as a
-\link[terra:SpatRaster-class]{SpatRaster} object.
+Each of the eBird Status raster products is packaged as a GeoTIFF file
+representing predictions on a regular grid. The core products are occurrence,
+count, relative abundance, and proportion of population. This function loads
+one of the available data products into R as a
+\link[terra:SpatRaster-class]{SpatRaster} object. Note that data must be download using
+\code{\link[=ebirdst_download_status]{ebirdst_download_status()}} prior to loading it using this function.
 }
 \details{
-The core Status and Trends data products provide weekly estimates
-across a regular spatial grid. They are packaged as rasters with 52 layers,
-each corresponding to estimates for a week of the year, and we refer to
-them as "cubes" (e.g. the "relative abundance cube"). All estimates are the
-median expected value for a standard 1km, 1 hour eBird Traveling Count by
-an expert eBird observer at the optimal time of day and for optimal weather
+The core eBird Status data products provide weekly estimates across
+a regular spatial grid. They are packaged as rasters with 52 layers, each
+corresponding to estimates for a week of the year, and we refer to them as
+"cubes" (e.g. the "relative abundance cube"). All estimates are the median
+expected value for a standard 2 km, 1 hour eBird Traveling Count by an
+expert eBird observer at the optimal time of day and for optimal weather
 conditions to observe the given species. These products are:
 \itemize{
-\item \code{occurrence}: the expected probability (0-1) of occurrence a species.
+\item \code{occurrence}: the expected probability (0-1) of occurrence of a species.
 \item \code{count}: the expected count of a species, conditional on its occurrence at
 the given location.
-\item \code{abundance}: the expected relative abundance of a species, computed as the product of
-the probability of occurrence and the count conditional on occurrence.
-\item \code{percent-population}: the percent of the total relative abundance within
-each cell. This is a derived product calculated by dividing each cell value
-in the relative abundance raster with the total abundance summed across all
-cells.
+\item \code{abundance}: the expected relative abundance of a species, computed as the
+product of the probability of occurrence and the count conditional on
+occurrence.
+\item \code{proportion-population}: the proportion of the total relative abundance
+within each cell. This is a derived product calculated by dividing each cell
+value in the relative abundance raster by the total abundance summed across
+all cells.
 }
 
 In addition to these weekly data cubes, this function provides access to data
@@ -85,24 +97,22 @@ the non-breeding season.
 }
 \examples{
 \dontrun{
-# download example data
-path <- ebirdst_download("example_data")
-# or get the path if you already have the data downloaded
-path <- get_species_path("example_data")
+# download example data if hasn't already been downloaded
+ebirdst_download("yebsap-example")
 
 # weekly relative abundance
-# note that only low resolution (lr) data are available for the example data
-abd_weekly <- load_raster(path, "abundance", resolution = "lr")
+# note that only 27 km data are available for the example data
+abd_weekly <- load_raster("yebsap-example", "abundance", resolution = "27km")
 
 # the weeks for each layer are stored in the layer names
 names(abd_weekly)
-# and can be converted to Date objects with
-parse_raster_dates(abd_weekly)
+# they can be converted to date objects with as.Date
+as.Date(names(abd_weekly))
 
 # max seasonal abundance
-abd_seasonal <- load_raster(path, "abundance",
+abd_seasonal <- load_raster("yebsap-example", "abundance",
                             period = "seasonal", metric = "max",
-                            resolution = "lr")
+                            resolution = "27km")
 # available seasons in stack
 names(abd_seasonal)
 # subset to just breeding season abundance

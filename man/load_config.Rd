@@ -2,31 +2,37 @@
 % Please edit documentation in R/load.R
 \name{load_config}
 \alias{load_config}
-\title{Load eBird Status and Trends configuration file}
+\title{Load eBird Status Data Products configuration file}
 \usage{
-load_config(path)
+load_config(species, path = ebirdst_data_dir())
 }
 \arguments{
-\item{path}{character; directory that the Status and Trends data for a given
-species was downloaded to. This path is returned by \code{ebirdst_download()}
-or \code{get_species_path()}.}
+\item{species}{character; the species to load data for, given as a scientific
+name, common name or six-letter species code (e.g. "woothr"). The full list
+of valid species is in the \link{ebirdst_runs} data frame included in this
+package. To download the example dataset, use \code{"yebsap-example"}.}
+
+\item{path}{character; directory to download the data to. All downloaded
+files will be placed in a sub-directory of this directory named for the
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling \code{ebirdst_data_dir()}.}
 }
 \value{
 A list with the run configuration parameters.
 }
 \description{
-Load the configuration file for an eBird Status and Trends runs. This
-configuration file is mostly for internal use and contains a variety of
-parameters used in the modeling process.
+Load the configuration file for an eBird Status run. This configuration file
+is mostly for internal use and contains a variety of parameters used in the
+modeling process.
 }
 \examples{
 \dontrun{
-# download example data
-path <- ebirdst_download("example_data")
-# or get the path if you already have the data downloaded
-path <- get_species_path("example_data")
+# download example data if hasn't already been downloaded
+ebirdst_download_status("yebsap-example")
 
-# load configuration file
-cfg <- load_config(path)
+# load configuration parameters
+p <- load_config("yebsap-example")
 }
 }

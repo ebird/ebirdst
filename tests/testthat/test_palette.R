@@ -1,9 +1,10 @@
-context("Abundance palette")
+context("Color palettes")
 
-test_that("abundance_palette", {
-  expect_is(abundance_palette(n = 10), "character")
-  expect_length(abundance_palette(n = 10), 10)
-  expect_length(abundance_palette(n = 10, season = "breeding"), 10)
-  expect_match(abundance_palette(n = 10, season = "nonbreeding"),
+test_that("ebirdst_palettes", {
+  expect_is(ebirdst_palettes(n = 10), "character")
+  expect_length(ebirdst_palettes(n = 10), 10)
+  expect_length(ebirdst_palettes(n = 10, type = "breeding"), 10)
+  expect_length(ebirdst_palettes(n = 10, type = "trends"), 10)
+  expect_match(ebirdst_palettes(n = 10, type = "nonbreeding"),
                "#[0-9A-F]{6}")
 })

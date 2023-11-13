@@ -4,18 +4,31 @@
 \alias{load_ranges}
 \title{Load seasonal eBird Status and Trends range polygons}
 \usage{
-load_ranges(path, resolution = c("mr", "lr"), smoothed = TRUE)
+load_ranges(
+  species,
+  resolution = c("9km", "27km"),
+  smoothed = TRUE,
+  path = ebirdst_data_dir()
+)
 }
 \arguments{
-\item{path}{character; directory that the Status and Trends data for a given
-species was downloaded to. This path is returned by \code{ebirdst_download()}
-or \code{get_species_path()}.}
+\item{species}{character; the species to load data for, given as a scientific
+name, common name or six-letter species code (e.g. "woothr"). The full list
+of valid species is in the \link{ebirdst_runs} data frame included in this
+package. To download the example dataset, use \code{"yebsap-example"}.}
 
 \item{resolution}{character; the raster resolution from which the range
 polygons were derived.}
 
 \item{smoothed}{logical; whether smoothed or unsmoothed ranges should be
 loaded.}
+
+\item{path}{character; directory to download the data to. All downloaded
+files will be placed in a sub-directory of this directory named for the
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling \code{ebirdst_data_dir()}.}
 }
 \value{
 An \code{sf} update containing the seasonal range boundaries, with each
@@ -28,13 +41,11 @@ aesthetically pleasing polygons using the \code{smoothr} package.
 }
 \examples{
 \dontrun{
-# download example data
-path <- ebirdst_download("example_data")
-# or get the path if you already have the data downloaded
-path <- get_species_path("example_data")
+# download example data if hasn't already been downloaded
+ebirdst_download_status("yebsap-example")
 
 # load smoothed ranges
-# note that only low res data are provided for the example data
-ranges <- load_range(path, resolution = "lr")
+# note that only 27 km data are provided for the example data
+ranges <- load_ranges("yebsap-example", resolution = "27km")
 }
 }

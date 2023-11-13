@@ -1,6 +1,9 @@
-# ebirdst 2.2021.4
+# ebirdst 3.2022.0
 
-- performance improvements to `ebirdst_habitat()`
+- new 2022 status data and trends data released for the first time!
+- major overhaul to allow more targeting downloading of data
+- all stixel-level results (PPMS/PIs/PDs) removed, replaced with spatialized raster versions
+- no more restart required after updating API key
 - change package-level documentation as per roxygen2 suggestions
 
 ## Test environments

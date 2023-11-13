@@ -3,45 +3,83 @@
 \docType{data}
 \name{ebirdst_runs}
 \alias{ebirdst_runs}
-\title{Data frame of available eBird Status and Trends species}
+\title{Data frame of species with eBird Status & Trends Data Products}
 \format{
-A data frame with 15 variables:
-\describe{
-\item{species_code}{Six letter eBird code in eBird Taxonomy v2018}
-\item{scientific_name}{Scientific name from eBird Taxonomy v2018}
-\item{common_name}{English common name from eBird Taxonomy v2018}
-\item{resident}{Classifies this species a resident or a migrant}
-\item{breeding_quality}{Breeding season quality}
-\item{breeding_range_modeled}{Is the full range modeled?}
-\item{breeding_start}{Breeding season start date}
-\item{breeding_end}{Breeding season start date}
-\item{nonbreeding_quality}{Non-breeding season quality}
-\item{nonbreeding_range_modeled}{Is the full range modeled?}
-\item{nonbreeding_start}{Non-breeding season start date}
-\item{nonbreeding_end}{Non-breeding season start date}
-\item{postbreeding_migration_quality}{Post-breeding season quality}
-\item{postbreeding_migration_range_modeled}{Is the full range modeled?}
-\item{postbreeding_migration_start}{Post-breeding season start date}
-\item{postbreeding_migration_end}{Post-breeding season start date}
-\item{prebreeding_migration_quality}{Pre-breeding season quality}
-\item{prebreeding_migration_range_modeled}{Is the full range modeled?}
-\item{prebreeding_migration_start}{Pre-breeding season start date}
-\item{prebreeding_migration_end}{Pre-breeding season start date}
-\item{resident_quality}{Resident quality}
-\item{resident_start}{For resident species, the year-round start date}
-\item{resident_end}{For resident species, the year-round end date}
+A data frame with 27 variables:
+\itemize{
+\item \code{species_code}: alphanumeric eBird species code uniquely identifying the
+species
+\item \code{scientific_name}: scientific name.
+\item \code{common_name}: English common name.
+\item \code{is_resident}: classifies this species a resident or a migrant.
+\item \code{breeding_quality}: breeding season quality.
+\item \code{breeding_start}: breeding season start date.
+\item \code{breeding_end}: breeding season start date.
+\item \code{nonbreeding_quality}: non-breeding season quality.
+\item \code{nonbreeding_start}: non-breeding season start date.
+\item \code{nonbreeding_end}: non-breeding season start date.
+\item \code{postbreeding_migration_quality}: post-breeding season quality.
+\item \code{postbreeding_migration_start}: post-breeding season start date.
+\item \code{postbreeding_migration_end}: post-breeding season start date.
+\item \code{prebreeding_migration_quality}: pre-breeding season quality.
+\item \code{prebreeding_migration_start}: pre-breeding season start date.
+\item \code{prebreeding_migration_end}: pre-breeding season start date.
+\item \code{resident_quality}: resident quality.
+\item \code{resident_start}: for resident species, the year-round start date.
+\item \code{resident_end}: for resident species, the year-round end date.
+\item \code{has_trends}: whether or not this species has trends estimates.
+\item \code{trends_season}: season that the trend was estimated for: breeding,
+nonbreeding, or resident.
+\item \code{trends_region}: the geographic region that the trend model was run for.
+Note that broadly distributed species (e.g. Barn Swallow) will only have
+trend estimates for a regional subset of their full range.
+\item \code{trends_start_year}: start year of the trend time period.
+\item \code{trends_end_year}: end year of the trend time period.
+\item \code{trends_start_date}: start date (\code{MM-DD} format) of the season for which the trend was estimated.
+\item \code{trends_end_date}: end date (\code{MM-DD} format) of the season for which the trend was estimated.
+\item \code{rsquared}: R-squared value comparing the actual and estimated trends from the simulations.
+\item \code{beta0}: the intercept of a linear model fitting actual vs. estimated
+trends.
+(\code{actual ~ estimated}) for the simulations. Positive values of \code{beta0}
+indicate that the models are systematically \emph{underestimating} the simulated
+trend for this species.
 }
 }
 \usage{
 ebirdst_runs
 }
 \description{
-A dataset containing the species for which eBird Status and Trends data are
-available In addition, the dates defining the boundaries of the seasons are
-provided. These seasons are defined on a species-specific basis through
-expert review. For information on the details of defining seasons, please see
-the \href{https://ebird.org/science/status-and-trends/faq#seasons}{seasons section of the FAQ}. Note that
-missing dates imply that a season failed expert review for that species
-within that season.
+A dataset listing the species for which eBird Status & Trends Data Products
+are available, with additional information relevant to both the Status and
+Trends results for each species.
+}
+\details{
+For the Status Data Products, the dates defining the boundaries of the
+seasons are provided in additional to a quality rating from 0-3 for each
+season. These dates and quality ratings are assigned through a process of
+\href{https://ebird.org/science/status-and-trends/faq#seasons}{expert review}.
+expert review. Note that missing dates imply that a season failed expert
+review for that species within that season.
+
+Trends Data Products are only available for a subset of species, indicated by
+the \code{has_trends} variable, and for each species the trends is estimated for a
+single season. The two predictive performance metrics (\code{rsquared} and
+\code{beta0}) are based on a comparison of actual and estimated percent per year
+trends for a suite of simulations (see Fink et al. 2023 for further details).
+The trends regions are defined as follows:
+\itemize{
+\item \code{aus_nz}: Australia and New Zealand
+\item \code{iberia}: Spain and Portugal
+\item \code{india_se_asia}: India, Nepal, Bhutan, Sri Lanka, Thailand, Cambodia,
+Malaysia, Brunei, Singapore, and Philippines
+\item \code{japan}: Japan
+\item \code{north_america}: North America including Mexico, Central America, and the
+Caribbean, but excluding Nunavut, North West Territories, and Hawaii
+\item \code{south_africa}: South Africa, Lesotho, and Eswatini
+\item \code{south_america}: Colombia, Ecuador, Peru, Chile, Argentina, and Uruguay
+\item \code{taiwan}: Taiwan
+\item \code{turkey_plus}: Turkey, Cyprus, Israel, Palestine, Greece, Armenia, and
+Georgia
+}
 }
 \keyword{datasets}

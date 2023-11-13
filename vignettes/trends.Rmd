@@ -1,0 +1,282 @@
+---
+title: "eBird Trends Data Products"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{eBird Trends Data Products}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<style type="text/css">
+.table {
+    width: 75%;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE,
+                      collapse = TRUE,
+                      comment = "#>",
+                      out.width = "100%",
+                      fig.height = 4, 
+                      fig.width = 7, 
+                      fig.align = "center")
+# only build vignettes locally and not for R CMD check
+knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
+```
+
+The eBird Trends Data Products provide estimates of trends in relative abundance based on eBird data. Trend estimates are made on a 27 km by 27 km grid for a single season per species (breeding, non-breeding, or resident). For further details on the methodology used to estimate these trends consult the associated paper:
+
+<blockquote>
+Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki, S., Oldham Jaromczyk, L., Robinson, O., Wood, C., Kelling, S., & Rodewald, A. D. (2023). A Double machine learning trend model for citizen science data. Methods in Ecology and Evolution, 00, 1–14. https://doi.org/10.1111/2041-210X.14186
+</blockquote>
+
+Data users who are not comfortable in R should consider directly downloading the data from the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/download-data).
+
+The data frame `ebirdst_runs` indicates which species have trends estimates with the `has_trends` column. We can filter the data frame and only select those columns relevant to trends.
+
+```{r runs}
+library(dplyr)
+library(ggplot2)
+library(rnaturalearth)
+library(sf)
+library(terra)
+library(ebirdst)
+
+trends_runs <- ebirdst_runs %>% 
+  filter(has_trends) %>% 
+  select(species_code, common_name,
+         trends_season, trends_region,
+         trends_start_year, trends_end_year,
+         trends_start_date, trends_end_date,
+         rsquared, beta0)
+glimpse(trends_runs)
+```
+
+Information is provided on the trends model for each species, including two predictive performance metrics (`rsquared` and `beta0`) that are based on a comparison of actual and estimated trends for a suite of simulations (see Fink et al. 2023 for further details). The columns in the `trends_runs` data frame are as follows:
+
+- `species_code`: the alphanumeric eBird species code uniquely identifying the species.
+- `common_name`: the English common name of the species.
+-  `trends_season`: season that the trend was estimated for: breeding, nonbreeding, or resident.
+- `trends_region`: the geographic region that the trend model was run for. Note that broadly distributed species (e.g. Barn Swallow) will only have trend estimates for a regional subset of their full range.
+- `trends_start_year/trends_end_year`: the start and end years of the trend time period.
+- `trends_start_date/trends_end_date`: the start and end dates (`MM-DD` format) of the season for which the trend was estimated.
+- `rsquared`: R-squared value comparing the actual and estimated trends from the simulations.
+- `beta0`: the intercept of a linear model fitting actual vs. estimated trends (`actual ~ estimated`) for the simulations. Positive values of `beta0` indicate that the models are systematically *underestimating* the simulated trend for this species.
+
+Note that some season dates span two calendar years, for example Canvasback has 2011-2021 trends estimates for a non-breeding season defined as December 20 to January 25. In this case, the first season will be December 20, 2011 to January 25, 2012.
+
+```{r crossing}
+trends_runs %>% 
+  filter(common_name == "Canvasback") %>% 
+  select(trends_start_year, trends_end_year, 
+         trends_start_date, trends_end_date)
+```
+
+# Downloading data {#download}
+
+Trends data access is granted through the same process as the eBird Status Data Products. If you haven't already requested an API key, consult the relevant section in the [Introduction to eBird Status Data Products vignette](articles/status.html#access).
+
+Trends data can be downloaded for one or more species using `ebirdst_download_trends()`, where the first argument is a vector of common names, scientific names, or species codes. As with the Status Data Products, trends data will be downloaded to a centralized directory and file management and access is performed via `ebirdst. For example, let's download the breeding season trends data for Sage Thrasher.
+
+```{r download}
+ebirdst_download_trends("Sage Thrasher")
+```
+
+# Loading data into R {#load}
+
+Once the data are downloaded, the trends data for a set of species, can be loaded into R using the function `load_trends()`. For example, we can load the Sage Thrasher trends estimates we just downloaded with:
+
+```{r load}
+trends_sagthr <- load_trends("Sage Thrasher")
+```
+
+Each row corresponds to the trend estimate for a 27 km by 27 km grid cell, identified by the `srd_id` column and with cell center given by the `longitude` and `latitude` coordinates. Columns beginning with `abd_ppy` provide estimates of the percent per year trend in relative abundance and 80% confidence intervals, while those beginning with `abd_trend` provide estimates of the cumulative trend in relative abundance and 80% confidence intervals over the time period. The `abd` column gives the relative abundance estimate for the middle of the trend time period (e.g. 2014 for a 2007-2021 trend). The `start_year/end_year` and `start_date/end_date` columns provide redundant information to that available in `ebirdst_runs`. Specifically for Sage Thrasher we have:
+
+```{r dates}
+trends_runs %>% 
+  filter(common_name == "Sage Thrasher") %>% 
+  select(trends_start_year, trends_end_year,
+         trends_start_date, trends_end_date)
+```
+
+This tells us that the trend estimates are for the breeding season (May 17 to July 12) for the period 2012-2022.
+
+# Conversion to spatial formats {#spatial}
+
+The eBird trends data are stored in a tabular format, where each row gives the trend estimate for a single cell in a 27 km by 27 km equal area grid. For each grid cell, the coordinates (longitude and latitude) are provided for the center of the grid cell. For many applications, an explicitly spatial format is more useful and these coordinates can be use to convert from the tabular format to either a vector or raster format.
+
+## Vector (points) {#spatial-points}
+
+The tabular trend data can be converted into point vector features for use with the `sf` package using the `sf` function `st_as_sf()`.
+
+```{r spatial-points}
+trends_sf <- st_as_sf(trends_sagthr, 
+                      coords = c("longitude", "latitude"), 
+                      crs = 4326)
+print(trends_sf)
+```
+
+These points can then be exported to GeoPackage for use in a GIS such as QGIS or ArcGIS with
+
+```{r spatial-points-export, eval=FALSE}
+# be sure to modify the path to the file to save the file to directory of 
+# your choice on your hard drive
+write_sf(trends_sf, "ebird-trends_sagthr_2022.gpkg",
+         layer = "sagthr_trends")
+```
+
+## Raster {#spatial-raster}
+
+The tabular trend estimates can most easily be converted to raster format for use with the `terra` package using the function `rasterize_trends()`. Any of the columns in the trends data frame can be selected using the `layers` argument and converted into layers in the resulting raster object.
+
+```{r spatial-raster}
+# rasterize the percent per year trend with confidence limits (default)
+ppy_raster <- rasterize_trends(trends_sagthr)
+print(ppy_raster)
+# rasterize the cumulative trend estimate
+trends_raster <- rasterize_trends(trends_sagthr, layers = "abd_trend")
+print(trends_raster)
+```
+
+These raster objects can be exported to GeoTIFF files for use in a GIS such as QGIS or ArcGIS with
+
+```{r spatial-raster-export, eval=FALSE}
+writeRaster(trends_raster, filename = "ebird-trends_sagthr_2021.tif")
+```
+
+A simple map of these data can be produced from the raster data. For example, we'll make a map of percent per year change in relative abundance for Sage Thrasher. Note that this is slightly different than the trends maps on the Status and Trends website, which show the cumulative trend rather than the annual trend.
+
+```{r spatial-raster-map}
+# define breaks and palettes similar to those on status and trends website
+breaks <- seq(-4, 4)
+breaks[1] <- -Inf
+breaks[length(breaks)] <- Inf
+pal <- ebirdst_palettes(length(breaks) - 1, type = "trends")
+
+# make a simple map
+plot(ppy_raster[["abd_ppy"]], 
+     col = pal, breaks =  breaks,
+     main = "Sage Thrasher breeding trend 2012-2022 [% change per year]",
+     cex.main = 0.75,
+     axes = FALSE)
+```
+
+# Uncertainty {#uncertainty}
+
+The model used to estimate trends produces an ensemble of 100 estimates at each location, each based on a random subsample of eBird data. This ensemble of estimates is used to quantify uncertainty in the trends estimates. The estimated trend is the median across the ensemble, and the 80% confidence intervals are the lower 10th and upper 90th percentiles across the ensemble. Those wishing to access estimates from the individual folds making up the ensemble can use `fold_estimates = TRUE` when loading data. These fold-level estimates can be used to quantify uncertainty, for example, when calculating the trend for a given region. For example, let's load the fold-level estimates for Sage Thrasher:
+
+```{r uncertainty}
+trends_sagthr_folds <- load_trends("sagthr", fold_estimates = TRUE)
+print(trends_sagthr_folds)
+```
+
+This data frame is much more concise, only giving estimates of the mid-point relative abundance and percent per year trend in relative abundance for each of 100 folds for each grid cell.
+
+## Regional trends {#applications-regional}
+
+eBird trend estimates are made on a 27 km by 27 km grid, which allows summarization over broader regions such as states or provinces. Since the relative abundance of a species varies throughout its range, we need to weight the mean trend calculation by relative abundance (`abd` in the trends data frame). To quantify uncertainty in the regional trend, we can use the fold-level data to produce 100 distinct estimates of the regional trend, then calculate the median and 80% confidence intervals. As an example, let's calculate the state-level mean percent per year trends in relative abundance for Sage Thrasher.
+
+```{r applications-regional}
+# boundaries of states in the united states
+states <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+  transmute(state = iso_3166_2)
+
+# convert fold-level trends estimates to sf format
+trends_sagthr_sf <-  st_as_sf(trends_sagthr_folds, 
+                              coords = c("longitude", "latitude"), 
+                              crs = 4326)
+
+# attach state to the fold-level trends data
+trends_sagthr_sf <- st_join(trends_sagthr_sf, states, left = FALSE)
+
+# abundance-weighted average trend by region and fold
+trends_states_folds <- trends_sagthr_sf %>%
+  st_drop_geometry() %>%
+  group_by(state, fold) %>%
+  summarize(abd_ppy = sum(abd * abd_ppy) / sum(abd),
+            .groups = "drop")
+
+# summarize across folds for each state
+trends_states <- trends_states_folds %>% 
+  group_by(state) %>%
+  summarise(abd_ppy_median = median(abd_ppy, na.rm = TRUE),
+            abd_ppy_lower = quantile(abd_ppy, 0.10, na.rm = TRUE),
+            abd_ppy_upper = quantile(abd_ppy, 0.90, na.rm = TRUE),
+            .groups = "drop") %>% 
+  arrange(abd_ppy_median)
+```
+
+We can join these state-level trends back to the state boundaries and make a map with `ggplot2`.
+
+```{r}
+trends_states_sf <- left_join(states, trends_states, by = "state")
+ggplot(trends_states_sf) +
+  geom_sf(aes(fill = abd_ppy_median)) +
+  scale_fill_distiller(palette = "Reds", 
+                       limits = c(NA, 0),
+                       na.value = "grey80") +
+  guides(fill = guide_colorbar(title.position = "top", barwidth = 15)) +
+  labs(title = "Sage Thrasher state-level breeding trends 2012-2022",
+       fill = "Relative abundance trend [% change / year]") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+Based on these data, Sage Thrasher populations appear to be in decline throughout their entire range; however, some states (e.g. South Dakota) are experiencing much steeper declines than others (e.g. California).
+
+## Multi-species trends {#applications-multi}
+
+In some cases, we may be interested in the trend for an entire community of birds, which can be estimated by calculating the cell-wise mean trend across a suite of species. For example, the eBird Trends Data Products contain trend estimates for three species that breed in [sagebrush](https://en.wikipedia.org/wiki/Sagebrush_steppe): Brewer's Sparrow, Sagebrush Sparrow, and Sage Thrasher. We can calculate an average trend for this group of species, which will provide an estimate of the trend in the sagebrush bird community. First let's look at the model information to ensure all species are modeled for the same region, season, and range of years.
+
+```{r applications-multi-runs}
+sagebrush_species <- c("Brewer's Sparrow", "Sagebrush Sparrow", "Sage Thrasher")
+trends_runs %>% 
+  filter(common_name %in% sagebrush_species)
+```
+
+Everything looks good, so we can proceed to compare trends for these species. Next we need to download the trends data for these species. Note that since we've already downloaded the Sage Thrasher data above it won't be re-downloaded here.
+
+```{r applications-multi-dl}
+ebirdst_download_trends(sagebrush_species)
+```
+
+Now we can load the trends and calculate the cell-wise mean.
+
+```{r applications-multi}
+trends_sagebrush_species <- load_trends(sagebrush_species)
+
+# calculate mean trend for each cell
+trends_sagebrush <- trends_sagebrush_species %>% 
+  group_by(srd_id, latitude, longitude) %>% 
+  summarize(n_species = n(),
+            abd_ppy = mean(abd_ppy, na.rm = TRUE),
+            .groups = "drop")
+print(trends_sagebrush)
+```
+
+Finally, let's make a map of these sagebrush trends, focusing only on those cells where all three species occur.
+
+```{r applications-multi-map}
+# convert the points to sf format
+all_species <- trends_sagebrush %>% 
+  filter(n_species == length(sagebrush_species)) %>% 
+  st_as_sf(coords = c("longitude", "latitude"),
+           crs = 4326)
+
+# make a map
+ggplot(all_species) +
+  geom_sf(aes(color = abd_ppy), size = 2) +
+  scale_color_gradient2(low = "#CB181D", high = "#2171B5",
+                        limits = c(-4, 4), 
+                        oob = scales::oob_squish) +
+  guides(color = guide_colorbar(title.position = "left", barheight = 15)) +
+  labs(title = "Sagebrush species breeding trends (2012-2022)",
+       color = "Relative abundance trend [% change / year]") +
+  theme_bw() +
+  theme(legend.title = element_text(angle = 90))
+```

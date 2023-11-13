@@ -4,19 +4,28 @@
 \alias{load_fac_map_parameters}
 \title{Load full annual cycle map parameters}
 \usage{
-load_fac_map_parameters(path)
+load_fac_map_parameters(species, path = ebirdst_data_dir())
 }
 \arguments{
-\item{path}{character; directory that the Status and Trends data for a given
-species was downloaded to. This path is returned by \code{ebirdst_download()}
-or \code{get_species_path()}.}
+\item{species}{character; the species to load data for, given as a scientific
+name, common name or six-letter species code (e.g. "woothr"). The full list
+of valid species is in the \link{ebirdst_runs} data frame included in this
+package. To download the example dataset, use \code{"yebsap-example"}.}
+
+\item{path}{character; directory to download the data to. All downloaded
+files will be placed in a sub-directory of this directory named for the
+data version year, e.g. "2020" for the 2020 Status Data Products. Each
+species' data package will then appear in a directory named with the eBird
+species code. Defaults to a persistent data directory, which can be found
+by calling \code{ebirdst_data_dir()}.}
 }
 \value{
 A list containing elements:
 \itemize{
 \item \code{custom_projection}: a custom projection optimized for the given species'
 full annual cycle
-\item \code{fa_extent}: a \link[terra:ext]{SpatExtent} object storing the spatial extent of non-zero
+\item \code{fa_extent}: a \link[terra:ext]{SpatExtent} object storing the spatial
+extent of non-zero
 data for the given species in the custom projection
 \item \code{res}: a numeric vector with 2 elements giving the target resolution of
 raster in the custom projection
@@ -36,12 +45,10 @@ optimized for this extent.
 }
 \examples{
 \dontrun{
-# download example data
-path <- ebirdst_download("example_data", tifs_only = FALSE)
-# or get the path if you already have the data downloaded
-path <- get_species_path("example_data")
+# download example data if hasn't already been downloaded
+ebirdst_download_status("yebsap-example")
 
-# get map parameters
+# load configuration parameters
 load_fac_map_parameters(path)
 }
 }
