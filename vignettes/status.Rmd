@@ -93,7 +93,7 @@ ebirdst_runs %>%
   glimpse()
 ```
 
-From this, we can see that Yellow-bellied Sapsucker was modeled as a migrant and all four seasons received a quality of 3, the highest rating. Note that there are a variety of trends-specific columns at the end of this data frame that we'll ignore for now; these columns will be covered in the [trends vignette](articles/trends.html)
+From this, we can see that Yellow-bellied Sapsucker was modeled as a migrant and all four seasons received a quality of 3, the highest rating. Note that there are a variety of trends-specific columns at the end of this data frame that we'll ignore for now; these columns will be covered in the [trends vignette](https://ebird.github.io/ebirdst/articles/trends.html)
 
 # Data types {#types}
 

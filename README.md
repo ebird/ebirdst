@@ -115,14 +115,17 @@ the full spectrum from introductory to advanced usage, please see the
 package [website](https://ebird.github.io/ebirdst/). The available
 vignettes are:
 
-- [Introduction to eBird Status Data Products](articles/status.html):
+- [Introduction to eBird Status Data
+  Products](https://ebird.github.io/ebirdst/articles/status.html):
   covers data access, available data products, and structure and format
   of data files.
-- [eBird Status Data Products Applications](articles/applications.html):
+- [eBird Status Data Products
+  Applications](https://ebird.github.io/ebirdst/articles/applications.html):
   demonstrates how to work with the raster data products and use them
   for a variety of common applications.
-- [eBird Trends Data Products](articles/trends.html): covers downloading
-  and working with the eBird Trends Data Products.
+- [eBird Trends Data
+  Products](https://ebird.github.io/ebirdst/articles/trends.html):
+  covers downloading and working with the eBird Trends Data Products.
 
 ## Quick Start
 

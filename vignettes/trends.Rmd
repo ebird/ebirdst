@@ -78,7 +78,7 @@ trends_runs %>%
 
 # Downloading data {#download}
 
-Trends data access is granted through the same process as the eBird Status Data Products. If you haven't already requested an API key, consult the relevant section in the [Introduction to eBird Status Data Products vignette](articles/status.html#access).
+Trends data access is granted through the same process as the eBird Status Data Products. If you haven't already requested an API key, consult the relevant section in the [Introduction to eBird Status Data Products vignette](https://ebird.github.io/ebirdst/articles/status.html#access).
 
 Trends data can be downloaded for one or more species using `ebirdst_download_trends()`, where the first argument is a vector of common names, scientific names, or species codes. As with the Status Data Products, trends data will be downloaded to a centralized directory and file management and access is performed via `ebirdst. For example, let's download the breeding season trends data for Sage Thrasher.
 
