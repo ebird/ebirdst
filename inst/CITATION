@@ -2,7 +2,7 @@ citHeader("To cite ebirdst in publications use:")
 
 bibentry(
   bibtype      = "Manual",
-  title        = "ebirdst: Tools for loading, plotting, mapping and analysis of eBird Status and Trends data products",
+  title        = "ebirdst: Access and Analyze eBird Status and Trends Data Products",
   author       = c(
                    as.person("Matthew Strimas-Mackey"),
                    as.person("Shawn Ligocki"),
@@ -15,7 +15,7 @@ bibentry(
 
   textVersion  =
   paste("Matthew Strimas-Mackey, Shawn Ligocki, Tom Auer, Daniel Fink (2023).",
-        "ebirdst: Tools for loading, plotting, mapping and analysis of eBird Status and Trends data products.",
+        "ebirdst: Access and Analyze eBird Status and Trends Data Products.",
         "R package version 3.2022.0.",
         "https://ebird.github.io/ebirdst/")
 )

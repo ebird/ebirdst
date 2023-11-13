@@ -1,5 +1,6 @@
-library(tidyverse)
 library(jsonlite)
+library(stringi)
+library(tidyverse)
 
 # feature set - status + trends
 pred_list <- file.path("data-raw", "config_status.json") %>%

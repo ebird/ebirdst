@@ -75,7 +75,7 @@ mcd12q1_lccs3_c51_{pland/ed},mcd12q1_lccs3,51,Tundra
 has_shoreline,shoreline,,Has Shoreline
 shoreline_waveheight_{mean/sd},shoreline,waveheight,Wave Height [m]
 shoreline_tidal_range_{mean/sd},shoreline,tidal_range,Tidal Range [m]
-shoreline_chlorophyll_{mean/sd},shoreline,chlorophyll,Chlorophyll Concentration [µg/L]
+shoreline_chlorophyll_{mean/sd},shoreline,chlorophyll,Chlorophyll Concentration [g/1000L]
 shoreline_turbidity_{mean/sd},shoreline,turbidity,Turbidity [1/m]
 shoreline_sinuosity_{mean/sd},shoreline,sinuosity,Sinuosity
 shoreline_slope_{mean/sd},shoreline,slope,Slope [%]
