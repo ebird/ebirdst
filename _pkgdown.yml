@@ -14,7 +14,7 @@ navbar:
       - text: Introduction to eBird Status Data Products
         href: articles/status.html
       - text: eBird Status Data Products Applications
-        href: articles/rasters.html
+        href: articles/applications.html
       - text: eBird Trends Data Products
         href: articles/trends.html
     reference:

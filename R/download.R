@@ -1,7 +1,7 @@
 #' Download eBird Status Data Products
 #'
 #' Download eBird Status Data Products for a single species, or for an example
-#' species. Downloading Status & Trends data requires an access key, consult
+#' species. Downloading Status and Trends data requires an access key, consult
 #' [set_ebirdst_access_key()] for instructions on how to obtain and store this
 #' key. The example data consist of the results for Yellow-bellied Sapsucker
 #' subset to Michigan and are much smaller than the full dataset, making these
@@ -183,7 +183,7 @@ ebirdst_download_status <- function(species,
 #' Download eBird Trends Data Products
 #'
 #' Download eBird Trends Data Products for set of species, or for an example
-#' species. Downloading Status & Trends data requires an access key, consult
+#' species. Downloading Status and Trends data requires an access key, consult
 #' [set_ebirdst_access_key()] for instructions on how to obtain and store this
 #' key. The example data consist of the results for Yellow-bellied Sapsucker
 #' subset to Michigan and are much smaller than the full dataset, making these
@@ -293,7 +293,7 @@ get_species_path <- function(species, path = ebirdst_data_dir(),
 
   species_code <- get_species(species)
   if (is.na(species_code)) {
-    stop(species, " does not correspond to a valid Status & Trends species.")
+    stop(species, " does not correspond to a valid Status and Trends species.")
   }
   species_path <- path.expand(file.path(path,
                                         ebirdst_version()[["version_year"]],

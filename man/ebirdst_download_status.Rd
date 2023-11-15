@@ -77,7 +77,7 @@ returned.
 }
 \description{
 Download eBird Status Data Products for a single species, or for an example
-species. Downloading Status & Trends data requires an access key, consult
+species. Downloading Status and Trends data requires an access key, consult
 \code{\link[=set_ebirdst_access_key]{set_ebirdst_access_key()}} for instructions on how to obtain and store this
 key. The example data consist of the results for Yellow-bellied Sapsucker
 subset to Michigan and are much smaller than the full dataset, making these

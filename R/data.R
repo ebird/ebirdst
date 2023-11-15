@@ -1,6 +1,6 @@
-#' Data frame of species with eBird Status & Trends Data Products
+#' Data frame of species with eBird Status and Trends Data Products
 #'
-#' A dataset listing the species for which eBird Status & Trends Data Products
+#' A dataset listing the species for which eBird Status and Trends Data Products
 #' are available, with additional information relevant to both the Status and
 #' Trends results for each species.
 #'

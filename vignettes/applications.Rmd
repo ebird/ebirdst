@@ -28,13 +28,6 @@ knitr::opts_chunk$set(warning = FALSE,
 knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 ```
 
-# Outline
-
-1. [Loading raster data](#load)
-2. [Mapping relative abundance](#map)
-3. [Extracting trajectories with uncertainty](#trajectories)
-4. [Regional statistics](#stats)
-
 # Loading raster data {#load}
 
 As covered in the [Introduction to eBird Status Data Products vignette](https://ebird.github.io/ebirdst/articles/status.html), the function `load_raster()` loads raster data products into R as `SpatRaster` objects, which we can work with using the `terra` package. Let's start by loading the seasonal relative abundance raster for the example Yellow-bellied Sapsucker data. We'll work with the low resolution (27 km) data in this vignette to ensure fast processing times.

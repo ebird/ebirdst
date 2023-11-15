@@ -4,7 +4,7 @@
   ry <- v[["release_year"]]
   aed <- format(v[["access_end_date"]], "%B %Y")
   citation <- stringr::str_glue(
-    "Please cite the eBird Status & Trends data using: ",
+    "Please cite the eBird Status and Trends data using: ",
     "Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, ",
     "W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, I. Davies, ",
     "A. Rodewald, V. Ruiz-Gutierrez, C. Wood. {ry}.",

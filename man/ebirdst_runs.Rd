@@ -3,7 +3,7 @@
 \docType{data}
 \name{ebirdst_runs}
 \alias{ebirdst_runs}
-\title{Data frame of species with eBird Status & Trends Data Products}
+\title{Data frame of species with eBird Status and Trends Data Products}
 \format{
 A data frame with 27 variables:
 \itemize{
@@ -49,7 +49,7 @@ trend for this species.
 ebirdst_runs
 }
 \description{
-A dataset listing the species for which eBird Status & Trends Data Products
+A dataset listing the species for which eBird Status and Trends Data Products
 are available, with additional information relevant to both the Status and
 Trends results for each species.
 }
