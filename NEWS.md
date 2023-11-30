@@ -1,3 +1,8 @@
+- Documented which functions are deprecated and defunct relative to version
+  2.2021.3 under topics `ebirdst-defunct` and `ebirdst-deprecated` and added
+  them back into the package.  This allows other packages to conditionally 
+  reference them when 2.2021.3 is installed while still passing CRAN checks. 
+
 # ebirdst 3.2022.0
 
 - new 2022 status data and trends data released for the first time!
