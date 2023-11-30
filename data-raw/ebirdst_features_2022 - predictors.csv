@@ -59,12 +59,12 @@ mcd12q1_lccs1_c15_{pland/ed},mcd12q1_lccs1,15,Mixed Broadleaf/Needleleaf Forests
 mcd12q1_lccs1_c16_{pland/ed},mcd12q1_lccs1,16,Mixed Broadleaf Evergreen/Deciduous Forests
 mcd12q1_lccs1_c21_{pland/ed},mcd12q1_lccs1,21,Open Forests
 mcd12q1_lccs1_c22_{pland/ed},mcd12q1_lccs1,22,Sparse Forests
-mcd12q1_lccs1_c31_{pland/ed},mcd12q1_lccs1,31,Unclassified
-mcd12q1_lccs1_c32_{pland/ed},mcd12q1_lccs1,32,Dense Herbaceous
-mcd12q1_lccs1_c41_{pland/ed},mcd12q1_lccs1,41,Sparse Herbaceous
-mcd12q1_lccs1_c42_{pland/ed},mcd12q1_lccs1,42,Dense Shrublands
-mcd12q1_lccs1_c43_{pland/ed},mcd12q1_lccs1,43,Shrubland/Grassland Mosaics
-mcd12q1_lccs1_c255_{pland/ed},mcd12q1_lccs1,255,Sparse Shrublands
+mcd12q1_lccs1_c31_{pland/ed},mcd12q1_lccs1,31,Dense Herbaceous
+mcd12q1_lccs1_c32_{pland/ed},mcd12q1_lccs1,32,Sparse Herbaceous
+mcd12q1_lccs1_c41_{pland/ed},mcd12q1_lccs1,41,Dense Shrublands
+mcd12q1_lccs1_c42_{pland/ed},mcd12q1_lccs1,42,Shrubland/Grassland Mosaics
+mcd12q1_lccs1_c43_{pland/ed},mcd12q1_lccs1,43,Sparse Shrublands
+mcd12q1_lccs1_c255_{pland/ed},mcd12q1_lccs1,255,Unclassified
 mcd12q1_lccs2_c9_{pland/ed},mcd12q1_lccs2,9,Urban and Built-up Lands
 mcd12q1_lccs2_c25_{pland/ed},mcd12q1_lccs2,25,Forest/Cropland Mosaics
 mcd12q1_lccs2_c35_{pland/ed},mcd12q1_lccs2,35,Natural Herbaceous/Croplands Mosaics
@@ -75,7 +75,7 @@ mcd12q1_lccs3_c51_{pland/ed},mcd12q1_lccs3,51,Tundra
 has_shoreline,shoreline,,Has Shoreline
 shoreline_waveheight_{mean/sd},shoreline,waveheight,Wave Height [m]
 shoreline_tidal_range_{mean/sd},shoreline,tidal_range,Tidal Range [m]
-shoreline_chlorophyll_{mean/sd},shoreline,chlorophyll,Chlorophyll Concentration [g/1000L]
+shoreline_chlorophyll_{mean/sd},shoreline,chlorophyll,Chlorophyll Concentration [µg/L]
 shoreline_turbidity_{mean/sd},shoreline,turbidity,Turbidity [1/m]
 shoreline_sinuosity_{mean/sd},shoreline,sinuosity,Sinuosity
 shoreline_slope_{mean/sd},shoreline,slope,Slope [%]
