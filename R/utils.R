@@ -47,20 +47,32 @@ calculate_mcc_f1 <- function(observed, predicted) {
 #' Get the Status and Trends week that a date falls into
 #'
 #' @param dates a vector of dates.
-#'
+#' @param version One of `2021` for the date scheme used for the 2021 and prior
+#' data releases or `2022` for the date scheme used in the 2022 and subsequent
+#' releases.  Default is `2022`.
 #' @return An integer vector of weeks numbers from 1-52.
 #' @export
 #' @examples
 #' d <- as.Date(c("2016-04-08", "2018-12-31", "2014-01-01", "2018-09-04"))
 #' date_to_st_week(d)
-date_to_st_week <- function(dates) {
-  dv <- seq(from = 0, to = 1, length.out = 52 + 1)
-  days <- (as.POSIXlt(dates)$yday + 0.5) / 366
+date_to_st_week <- function(dates, version = 2022) {
+  stopifnot(version %in% c(2021, 2022))
 
-  check_d <- function(x) {
-    which(x >= dv[-length(dv)] & x < dv[-1])
+  if (version == 2021) { # as used in ebirdst 2021 data release
+    dv <- seq(from = 0, to = 1, length.out = 52 + 1)
+    days <- (as.POSIXlt(dates)$yday + 0.5) / 366
+    check_d <- function(x) {
+      which(x >= dv[-length(dv)] & x < dv[-1])
+    }
+    return(vapply(days, check_d, FUN.VALUE = integer(length = 1)))
   }
-  vapply(days, check_d, FUN.VALUE = integer(length = 1))
+
+  # 2022 date scheme
+  # Each week is defined by it's central Julian Date which are: seq(4, 366, 7)
+  # Dates are converted to Julian dates and assigned to nearest week.
+  breaks <- c(-Inf, seq(7.5, 357.5, 7), Inf) # breaks are midway between weeks
+  jd <- as.POSIXlt(dates)$yday + 1 # Julian Day, yday starts with 0 for Jan 1
+  return(findInterval(jd, breaks))
 }
 
 

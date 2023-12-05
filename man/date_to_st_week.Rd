@@ -4,10 +4,14 @@
 \alias{date_to_st_week}
 \title{Get the Status and Trends week that a date falls into}
 \usage{
-date_to_st_week(dates)
+date_to_st_week(dates, version = 2022)
 }
 \arguments{
 \item{dates}{a vector of dates.}
+
+\item{version}{One of \code{2021} for the date scheme used for the 2021 and prior
+data releases or \code{2022} for the date scheme used in the 2022 and subsequent
+releases.  Default is \code{2022}.}
 }
 \value{
 An integer vector of weeks numbers from 1-52.
