@@ -1,3 +1,5 @@
+# ebirdst 3.2022.1
+
 - Documented which functions are deprecated and defunct relative to version
   2.2021.3 under topics `ebirdst-defunct` and `ebirdst-deprecated` and added
   them back into the package.  This allows other packages to conditionally 

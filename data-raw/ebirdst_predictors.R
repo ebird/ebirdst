@@ -26,12 +26,13 @@ p_split <- filter(p, str_detect(predictor, "\\{")) %>%
   unnest(suffix) %>%
   mutate(predictor = paste0(prefix, suffix),
          label = recode(suffix,
-                        median = "(Median)",
-                        mean = "(Mean)",
+                        median = "(median)",
+                        mean = "(mean)",
                         sd = "(SD)",
                         pland = "(% cover)",
-                        ed = "(Edge Density)") %>%
-           paste(label, .)) %>%
+                        ed = "(edge density)") %>%
+           paste(label, .),
+         label = str_replace(label, "µg/L", "g/1000L")) %>%
   select(-prefix, -suffix)
 
 # only keep predictors we use in status or trends models

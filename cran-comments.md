@@ -1,10 +1,9 @@
-# ebirdst 3.2022.0
+# ebirdst 3.2022.1
 
-- new 2022 status data and trends data released for the first time!
-- major overhaul to allow more targeting downloading of data
-- all stixel-level results (PPMS/PIs/PDs) removed, replaced with spatialized raster versions
-- no more restart required after updating API key
-- change package-level documentation as per roxygen2 suggestions
+- Documented which functions are deprecated and defunct relative to version
+  2.2021.3 under topics `ebirdst-defunct` and `ebirdst-deprecated` and added
+  them back into the package.  This allows other packages to conditionally 
+  reference them when 2.2021.3 is installed while still passing CRAN checks. 
 
 ## Test environments
 
@@ -19,4 +18,4 @@
 
 0 errors | 0 warnings | 2 notes
 
-- NOTE: Version contains large components (3.2022.0). We've aligned our version numbers with the version numbers for the API that this package interacts with. The eBird Status and Trends data products are given a version corresponding to a year, with the current version being 2022, so we've included that year in our version number to indicate that this package only works with the 2022 version of the data.
+- NOTE: Version contains large components (3.2022.1). We've aligned our version numbers with the version numbers for the API that this package interacts with. The eBird Status and Trends data products are given a version corresponding to a year, with the current version being 2022, so we've included that year in our version number to indicate that this package only works with the 2022 version of the data.

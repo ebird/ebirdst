@@ -37,6 +37,9 @@
     <loc>https://ebird.github.io/ebirdst/news/index.html</loc>
   </url>
   <url>
+    <loc>https://ebird.github.io/ebirdst/reference/abundance_palette-deprecated.html</loc>
+  </url>
+  <url>
     <loc>https://ebird.github.io/ebirdst/reference/assign_to_grid.html</loc>
   </url>
   <url>
@@ -44,6 +47,12 @@
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/date_to_st_week.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst-defunct.html</loc>
+  </url>
+  <url>
+    <loc>https://ebird.github.io/ebirdst/reference/ebirdst-deprecated.html</loc>
   </url>
   <url>
     <loc>https://ebird.github.io/ebirdst/reference/ebirdst-package.html</loc>

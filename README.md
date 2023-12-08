@@ -81,7 +81,7 @@ The eBird Status and Trends Data Products provide estimates of relative
 abundance, and other variables, for a particular year. This estimation
 year is used to identify the version of the data products. Each version
 of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 3.2022.0 and, as
+For example, the current version of the R package is 3.2022.1 and, as
 indicated by the year in the version number, it is designed to work with
 the 2022 data products. Every year, typically in November, the Status
 and Trends Data Products are updated, and users are encouraged to update
@@ -171,12 +171,13 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- as.Date(names(abd))
 print(weeks)
-#>  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01" "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01"
-#> [10] "2022-03-08" "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12" "2022-04-19" "2022-04-26" "2022-05-03"
-#> [19] "2022-05-10" "2022-05-17" "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14" "2022-06-21" "2022-06-28" "2022-07-05"
-#> [28] "2022-07-12" "2022-07-19" "2022-07-26" "2022-08-02" "2022-08-09" "2022-08-16" "2022-08-23" "2022-08-30" "2022-09-06"
-#> [37] "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04" "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"
-#> [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13" "2022-12-20" "2022-12-27"
+#>  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01" "2022-02-08" "2022-02-15" "2022-02-22"
+#>  [9] "2022-03-01" "2022-03-08" "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12" "2022-04-19"
+#> [17] "2022-04-26" "2022-05-03" "2022-05-10" "2022-05-17" "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14"
+#> [25] "2022-06-21" "2022-06-28" "2022-07-05" "2022-07-12" "2022-07-19" "2022-07-26" "2022-08-02" "2022-08-09"
+#> [33] "2022-08-16" "2022-08-23" "2022-08-30" "2022-09-06" "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04"
+#> [41] "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08" "2022-11-15" "2022-11-22" "2022-11-29"
+#> [49] "2022-12-06" "2022-12-13" "2022-12-20" "2022-12-27"
 
 # select a week in the middle of the year
 abd <- abd[[26]]
