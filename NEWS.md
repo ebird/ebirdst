@@ -1,3 +1,7 @@
+# ebirdst 3.2022.2
+
+- Switch terminology from "trajectory" to "migration chronology"
+
 # ebirdst 3.2022.1
 
 - Documented which functions are deprecated and defunct relative to version

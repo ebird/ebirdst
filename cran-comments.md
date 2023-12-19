@@ -1,9 +1,6 @@
-# ebirdst 3.2022.1
+# ebirdst 3.2022.2
 
-- Documented which functions are deprecated and defunct relative to version
-  2.2021.3 under topics `ebirdst-defunct` and `ebirdst-deprecated` and added
-  them back into the package.  This allows other packages to conditionally 
-  reference them when 2.2021.3 is installed while still passing CRAN checks. 
+- Switch terminology from "trajectory" to "migration chronology"
 
 ## Test environments
 

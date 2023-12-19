@@ -185,13 +185,13 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
                             line = -0.5))
 ```
 
-# Extracting trajectories with uncertainty {#trajectories}
+# Migration chronologies with uncertainty {#chron}
 
-Next, we'll look at the temporal component of the relative abundance data. Using the weekly relative abundance cubes, we can chart the change in relative abundance throughout the year for a fixed location. Furthermore, using the upper and lower confidence interval rasters, we can add uncertainty estimates. We often refer to these as relative abundance trajectories.
+Next, we'll look at the temporal component of the relative abundance data. Using the weekly relative abundance cubes, we can chart the change in relative abundance throughout the year for a fixed location. Furthermore, using the upper and lower confidence interval rasters, we can add uncertainty estimates. We often refer to these as migration chronologies.
 
 Let's start by loading all the necessary relative abundance cubes.
 
-```{r trajectories_load}
+```{r chron_load}
 abd_median <- load_raster("yebsap-example", product = "abundance", 
                           metric = "median", resolution = "27km")
 abd_lower <- load_raster("yebsap-example", product = "abundance",
@@ -202,7 +202,7 @@ abd_upper <- load_raster("yebsap-example", product = "abundance",
 
 Now we'll extract the values for a fixed location.
 
-```{r trajectories_extract}
+```{r chron_extract}
 # set a point
 pt <- st_point(c(-88.1, 46.7)) %>% 
   st_sfc(crs = 4326) %>% 
@@ -210,19 +210,18 @@ pt <- st_point(c(-88.1, 46.7)) %>%
   st_coordinates()
 
 # extract
-traj_median <- as.matrix(extract(abd_median, pt))[1, ]
-traj_upper <- as.matrix(extract(abd_upper, pt))[1, ]
-traj_lower <- as.matrix(extract(abd_lower, pt))[1, ]
+chron_median <- as.matrix(extract(abd_median, pt))[1, ]
+chron_upper <- as.matrix(extract(abd_upper, pt))[1, ]
+chron_lower <- as.matrix(extract(abd_lower, pt))[1, ]
 
-# plot trajectories
-plot_frame <- data.frame(x = seq_len(length(traj_median)),
-                         y = unname(traj_median),
-                         lower = unname(traj_lower),
-                         upper = unname(traj_upper))
-ggplot(plot_frame, aes(x, y)) +
-  geom_line(data = plot_frame) +
-  geom_ribbon(data = plot_frame, 
-              aes(ymin = lower, ymax = upper), 
+# plot chronology
+chron <- data.frame(x = seq_len(length(chron_median)),
+                    y = unname(chron_median),
+                    lower = unname(chron_upper),
+                    upper = unname(chron_lower))
+ggplot(chron, aes(x, y)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper), 
               alpha = 0.3) +
   ylab("Relative abundance") +
   xlab("Week") +
