@@ -414,7 +414,7 @@ loaded into R as <code>SpatRaster</code> objects for use with the
 <p>Each object has 52 layers, one for each week of the year, and layer
 names store the dates corresponding to the midpoints of each week.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lr</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lr</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01"</span></span>
 <span><span class="co">#&gt;  [6] "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01" "2022-03-08"</span></span>
 <span><span class="co">#&gt; [11] "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12"</span></span>
@@ -453,7 +453,7 @@ into R as <code>SpatRaster</code> objects for use with the
 <span>                                 period <span class="op">=</span> <span class="st">"seasonal"</span>, metric <span class="op">=</span> <span class="st">"mean"</span>, </span>
 <span>                                 resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
 <span><span class="co"># season that each layer corresponds to</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_seasonal_mean</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_seasonal_mean</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "breeding"               "nonbreeding"            "prebreeding_migration" </span></span>
 <span><span class="co">#&gt; [4] "postbreeding_migration"</span></span>
 <span><span class="co"># just the breeding season layer</span></span>
@@ -587,7 +587,7 @@ population trends with citizen science data. Ecological Applications,
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, <a href="http://twitter.com/tom_auer" class="external-link">Tom Auer</a>, Daniel Fink.</p>
+<p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown">

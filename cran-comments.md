@@ -1,6 +1,7 @@
 # ebirdst 3.2022.2
 
 - Switch terminology from "trajectory" to "migration chronology"
+- ensure `rasterize_trends()` works for older versions of `terra` (issue #7)
 
 ## Test environments
 

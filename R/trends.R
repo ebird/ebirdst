@@ -88,7 +88,16 @@ rasterize_trends <- function(trends,
   rm(trends, trends_ss)
 
   # rasterize
-  trends_raster <- terra::rasterize(v, r, field = layers)
+  # check terra version
+  if (utils::packageVersion("terra") >= "1.7-3") {
+    trends_raster <- terra::rasterize(v, r, field = layers)
+  } else {
+    trends_raster <- list()
+    for (l in layers) {
+      trends_raster[[l]] <- terra::rasterize(v, r, field = l)
+    }
+    trends_raster <- terra::rast(trends_raster)
+  }
   names(trends_raster) <- layers
 
   if (isTRUE(trim)) {

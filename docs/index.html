@@ -178,8 +178,15 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="va">pars</span><span class="op">$</span><span class="va">weekly_labels</span></span>
 <span></span>
 <span><span class="co"># the date that each raster layer corresponds to is stored within the labels</span></span>
-<span><span class="va">weeks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">weeks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">weeks</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01" "2022-02-08" "2022-02-15" "2022-02-22"</span></span>
+<span><span class="co">#&gt;  [9] "2022-03-01" "2022-03-08" "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12" "2022-04-19"</span></span>
+<span><span class="co">#&gt; [17] "2022-04-26" "2022-05-03" "2022-05-10" "2022-05-17" "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14"</span></span>
+<span><span class="co">#&gt; [25] "2022-06-21" "2022-06-28" "2022-07-05" "2022-07-12" "2022-07-19" "2022-07-26" "2022-08-02" "2022-08-09"</span></span>
+<span><span class="co">#&gt; [33] "2022-08-16" "2022-08-23" "2022-08-30" "2022-09-06" "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04"</span></span>
+<span><span class="co">#&gt; [41] "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08" "2022-11-15" "2022-11-22" "2022-11-29"</span></span>
+<span><span class="co">#&gt; [49] "2022-12-06" "2022-12-13" "2022-12-20" "2022-12-27"</span></span>
 <span></span>
 <span><span class="co"># select a week in the middle of the year</span></span>
 <span><span class="va">abd</span> <span class="op">&lt;-</span> <span class="va">abd</span><span class="op">[[</span><span class="fl">26</span><span class="op">]</span><span class="op">]</span></span>
@@ -223,8 +230,9 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <span>           smallplot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.90</span>, <span class="fl">0.93</span>, <span class="fl">0.15</span>, <span class="fl">0.85</span><span class="op">)</span>,</span>
 <span>           legend.only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>           axis.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, </span>
-<span>                            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">labels</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>                            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="va">labels</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>                            cex.axis <span class="op">=</span> <span class="fl">0.9</span>, lwd.ticks <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-quick_start-1.png" width="100%"></p>
 </div>
 </div>
   </div>
@@ -268,8 +276,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <li>
 <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8929-7776" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Shawn Ligocki <br><small class="roles"> Author </small>  </li>
-<li>
-<a href="http://twitter.com/tom_auer" class="external-link">Tom Auer</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8619-7147" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Tom Auer <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8619-7147" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Daniel Fink <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8368-1248" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
@@ -290,7 +297,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, <a href="http://twitter.com/tom_auer" class="external-link">Tom Auer</a>, Daniel Fink.</p>
+<p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown">
