@@ -7,7 +7,7 @@
 \title{\code{ebirdst}: Tools to Load, Map, Plot, and Analyze eBird Status and Trends
 Data Products}
 \description{
-Tools to load, map, plot, and analyze \href{https://ebird.org/science/status-and-trends}{eBird Status and Trends} data products
+Tools to load, map, plot, and analyze \href{https://science.ebird.org/status-and-trends}{eBird Status and Trends} data products
 }
 \seealso{
 Useful links:

@@ -74,7 +74,7 @@ For full package documentation, including a series of vignettes covering the ful
 
 ## Quick Start
 
-This quick start guide shows how to download data and plot relative abundance values similar to how they are plotted for the [eBird Status and Trends weekly abundance animations](https://ebird.org/science/status-and-trends/yebsap/abundance-map-weekly). In this guide, and throughout all package documentation, a simplified example dataset is used consisting of Yellow-bellied Sapsucker in Michigan. For a full list of the species available for download, look at the data frame `ebirst_runs`, which is included in this package.
+This quick start guide shows how to download data and plot relative abundance values similar to how they are plotted for the [eBird Status and Trends weekly abundance animations](https://science.ebird.org/en/status-and-trends/species/yebsap/abundance-map-weekly). In this guide, and throughout all package documentation, a simplified example dataset is used consisting of Yellow-bellied Sapsucker in Michigan. For a full list of the species available for download, look at the data frame `ebirst_runs`, which is included in this package.
 
 **IMPORTANT: eBird Status and Trends Data Products are designed to be downloaded and accessed using this R package. Downloaded data have a specific file structure and changing file names or locations will disrupt the ability of functions in this package to access the data. If you prefer to access data for use outside of R, consider downloading data via the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/download-data).**
 

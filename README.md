@@ -132,7 +132,7 @@ vignettes are:
 This quick start guide shows how to download data and plot relative
 abundance values similar to how they are plotted for the [eBird Status
 and Trends weekly abundance
-animations](https://ebird.org/science/status-and-trends/yebsap/abundance-map-weekly).
+animations](https://science.ebird.org/en/status-and-trends/species/yebsap/abundance-map-weekly).
 In this guide, and throughout all package documentation, a simplified
 example dataset is used consisting of Yellow-bellied Sapsucker in
 Michigan. For a full list of the species available for download, look at

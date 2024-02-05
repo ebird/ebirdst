@@ -2,7 +2,7 @@
 #' Data Products
 #'
 #' Tools to load, map, plot, and analyze [eBird Status and
-#' Trends](https://ebird.org/science/status-and-trends) data products
+#' Trends](https://science.ebird.org/status-and-trends) data products
 #'
 #' @keywords internal
 "_PACKAGE"

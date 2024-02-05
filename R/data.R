@@ -7,7 +7,7 @@
 #' For the Status Data Products, the dates defining the boundaries of the
 #' seasons are provided in additional to a quality rating from 0-3 for each
 #' season. These dates and quality ratings are assigned through a process of
-#' [expert review](https://ebird.org/science/status-and-trends/faq#seasons).
+#' [expert review](https://science.ebird.org/status-and-trends/faq#seasons).
 #' expert review. Note that missing dates imply that a season failed expert
 #' review for that species within that season.
 #'
