@@ -25,7 +25,6 @@ BugReports: https://github.com/ebird/ebirdst/issues
 Depends: 
     R (>= 4.0.0)
 Imports: 
-    arrow,
     dplyr (>= 1.0.0),
     grDevices,
     jsonlite,
@@ -40,6 +39,7 @@ Imports:
     utils,
     viridisLite
 Suggests: 
+    arrow,
     fields,
     ggplot2,
     knitr,
@@ -54,3 +54,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Additional_repositories: https://p3m.dev/cran/2024-02-02/
