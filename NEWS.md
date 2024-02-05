@@ -1,7 +1,8 @@
 # ebirdst 3.2022.2
 
-- Switch terminology from "trajectory" to "migration chronology"
+- switch terminology from "trajectory" to "migration chronology"
 - ensure `rasterize_trends()` works for older versions of `terra` (issue #7)
+- move `arrow` package to Suggests until it is back on CRAN (see https://github.com/apache/arrow/issues/39806)
 
 # ebirdst 3.2022.1
 

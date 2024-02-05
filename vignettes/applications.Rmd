@@ -28,11 +28,11 @@ knitr::opts_chunk$set(warning = FALSE,
 knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 ```
 
-# Loading raster data {#load}
+This vignette will cover a variety of common applications of the eBird Status Data Products including producing maps, plotting migration chronologies, and estimating the proportion of the population of a species within a region. In the introductory vignette we worked with the small example dataset for Yellow-bellied Sapsucker, which does not require a data access key to download. To provide more realistic examples, throughout this vignette we will use complete datasets for several species. As a result, a [data access key](https://ebird.github.io/ebirdst/articles/status.html#access) is required to run the code in this vignette.
 
-As covered in the [Introduction to eBird Status Data Products vignette](https://ebird.github.io/ebirdst/articles/status.html), the function `load_raster()` loads raster data products into R as `SpatRaster` objects, which we can work with using the `terra` package. Let's start by loading the seasonal relative abundance raster for the example Yellow-bellied Sapsucker data. We'll work with the low resolution (27 km) data in this vignette to ensure fast processing times.
+We start by loading the packages used throughout this vignette.
 
-```{r load}
+```{r packages}
 library(ebirdst)
 library(terra)
 library(sf)
@@ -43,138 +43,143 @@ library(geodata)
 library(ggplot2)
 library(fields)
 extract <- terra::extract
+```
 
-# download the example yellow-bellied sapsucker data
-# this simplified dataset doesn't require an access key
-ebirdst_download_status("yebsap-example", download_ranges = TRUE)
+# Mapping relative abundance {#map}
 
-# load seasonal mean relative abundance at 27km resolution
-abd_seasonal <- load_raster("yebsap-example", 
+In this section, we'll demonstrate how to make a simple map of relative abundance within a given region. As an example, we'll make a map of breeding season relative abundance for [Sage Trasher](https://ebird.org/species/sagthr) in Wyoming. The maps produced using this approach are suiteable for many applications; however, for high-quality publication-ready maps, it may be worthwhile using a traditional GIS environment such as QGIS or ArcGIS rather than R.
+
+We start by downloading data for Sage Trasher and loading the breeding season relative abundance raster. The `pattern` argument to `ebirdst_download_status()` can be used to only download the specific files we need.
+
+```{r map-load}
+# download the yellow-bellied sapsucker data
+ebirdst_download_status("sagthr",
+                        pattern = "abundance_seasonal_mean")
+
+# load seasonal mean relative abundance at 3km resolution
+abd_seasonal <- load_raster("sagthr", 
                             product = "abundance", 
                             period = "seasonal",
                             metric = "mean",
-                            resolution = "27km")
-
-# get the seasons corresponding to each layer
-names(abd_seasonal)
+                            resolution = "3km")
 
 # extract just the breeding season relative abundance
 abd_breeding <- abd_seasonal[["breeding"]]
 ```
 
-We can get the dates and quality scores associated with each of these seasons by filtering the `ebirdst_runs` data frame.
-
-```{r seasons}
-ebirdst_runs %>% 
-  # note that the example data are for yellow-bellied sapsucker
-  filter(species_code == "yebsap-example") %>% 
-  glimpse()
-```
-
-# Mapping relative abundance {#map}
-
-In this section, we'll demonstrate how to make a simple map of breeding season relative abundance. However, note that to make high-quality, publication-ready maps typically requires extra work. It many cases, it may be worthwhile designing maps in a traditional GIS environment such as QGIS or ArcGIS.
-
 The simplest way to map the seasonal relative abundance data is to use the built in `plot()` function from the `terra` package.
 
-```{r map_simple, echo=-1}
+```{r map-simple, echo=-1}
 par(mar = c(0.25, 0.25, 0.25, 2))
 plot(abd_breeding, axes = FALSE)
 ```
 
 Clearly this approach doesn't work out of the box! There are a wide variety of issues that we'll tackle one at a time.
 
-## Extent
+## Cropping and masking
 
-All raster data downloaded through this package are defined over the same global grid, regardless of the range of the individual species. The example data only has non-zero abundance within the state of Michigan, which is barely visible on the above global map. We need to define an extent for our map. There are a variety of ways to do this, but we'll use the R package `rnaturalearth` to access a polygon boundary for Michigan, which we'll then use to crop the raster.
+All raster data downloaded through this package are defined over the same global grid, regardless of the range of the individual species. As a result, mapping these data will produce a global map by default. However, Sage Thrasher only occurs in the western United States, which is barely visible in the global map. We need to constrain the extent of our map to make it more useful. For this example, we'll download a boundary for Wyoming (a state in the United States that harbours a large proportion of the breeding population of Sage Thrasher) and use it to crop and mask the relative abundance data. If you have a region defined in a Shapefile or GeoPackage you can instead load that regional polygon using `read_sf()`.
 
-```{r map_extent, echo=-1}
-par(mar = c(0.25, 0.25, 0.25, 2))
-# boundary polygon for michigan
-mi <- ne_states(iso_a2 = "US", returnclass = "sf") %>% 
-  filter(postal == "MI") %>% 
-  # project to same coordinate reference system as the raster data
-  st_transform(st_crs(abd_seasonal))
+```{r map-extent, echo=-1}
+par(mar = c(0.25, 0.25, 0.25, 0.25))
+# wyoming boundary
+region_boundary <- ne_states(iso_a2 = "US", returnclass = "sf") |> 
+  filter(name == "Wyoming")
 
-# crop data to michigan
-abd_breeding_mi <- crop(abd_breeding, mi)
+# project boundary to match raster data
+region_boundary_proj <- st_transform(region_boundary, st_crs(abd_breeding))
+
+# crop and mask to boundary of wyoming
+abd_breeding_mask <- mask(abd_breeding, region_boundary_proj) |> 
+  crop(region_boundary_proj)
 
 # map the cropped data
-plot(abd_breeding_mi, axes = FALSE)
+plot(abd_breeding_mask, axes = FALSE)
 ```
 
 ## Projection
 
-The raster data are all provided in the same equal area sinusoidal projection as NASA MODIS data. While this projection is suitable for analysis, it is not ideal for mapping since it introduces significant distortion. Instead, as part of the Status and Trends workflow, custom species-specific projections are provided that are optimized for the region that the species occurs within. We can access the projection for Yellow-bellied Sapsucker with `load_fac_map_parameters()`, then transform the raster data to this custom projection.
+The raster data are all provided in the same equal area sinusoidal projection as NASA MODIS data. While this projection is suitable for analysis, it is not ideal for mapping since it introduces significant distortion. Instead, it's best to select an equal area projection tailored to your region. A good general purpose choice is a Lambert's azimuthal equal area projection centered on the focal region. This can be defined programmatically as follows.
 
-```{r map_projection, echo=-1}
+```{r map-projection, echo=-1}
 par(mar = c(0.25, 0.25, 0.25, 2))
-# load the mapping parameters
-fac_parameters <- load_fac_map_parameters("yebsap-example")
-crs <- fac_parameters$custom_projection
+# find the centroid of the region
+region_centroid <- region_boundary |> 
+  st_geometry() |> 
+  st_transform(crs = 4326) |> 
+  st_centroid() |> 
+  st_coordinates() |> 
+  round(1)
+
+# define projection
+crs_laea <- paste0("+proj=laea +lat_0=", region_centroid[2],
+                   " +lon_0=", region_centroid[1])
 
 # transform to the custom projection using nearest neighbor resampling
-abd_projected <- project(abd_breeding_mi, crs, method = "near")
+abd_breeding_laea <- project(abd_breeding_mask, crs_laea, method = "near") |> 
+  trim()
 
 # map the cropped and projected data
-plot(abd_projected, axes = FALSE)
+plot(abd_breeding_laea, axes = FALSE, breakby = "cases")
 ```
 
 ## Abundance bins
 
-The relative abundance data are not uniformly distributed, which can lead to challenges distinguishing areas of differing levels of abundance. To address this, we'll use a quantile bins for the map, where each color in the legend corresponds to an equal number of cells in the raster. We'll define these bins excluding zeros, then assign a separate color to the zeros. We can also use the function `abundance_palette()` to get the same set of colors we use in the legends on the eBird Status and Trends website.
+The relative abundance data are not uniformly distributed, which can lead to challenges distinguishing areas of differing levels of abundance. This is especially true for highly aggregatory species like shorebirds and ducks. To address this, we'll use a quantile bins for the map, where each color in the legend corresponds to an equal number of cells in the raster. We'll define these bins excluding zeros, then assign a separate color to the zeros. We can also use the function `abundance_palette()` to get the same set of colors we use in the legends on the eBird Status and Trends website.
 
-```{r map_bins, echo=-1}
+```{r map-bins, echo=-1}
 par(mar = c(0.25, 0.25, 0.25, 2))
 # quantiles of non-zero values
-v <- values(abd_projected)
-v <- v[!is.na(v) & v > 0]
-bins <- quantile(v, seq(0, 1, by = 0.1))
+v <- values(abd_breeding_laea, na.rm = TRUE, mat = FALSE)
+v <- v[v > 0]
+breaks <- quantile(v, seq(0, 1, by = 0.1))
 # add a bin for 0
-bins <- c(0, bins)
+breaks <- c(0, breaks)
 
 # status and trends palette
-pal <- ebirdst_palettes(length(bins) - 2)
+pal <- ebirdst_palettes(length(breaks) - 2)
 # add a color for zero
 pal <- c("#e6e6e6", pal)
 
 # map using the quantile bins
-plot(abd_projected, breaks = bins, col = pal, axes = FALSE)
+plot(abd_breeding_laea, breaks = breaks, col = pal, axes = FALSE)
 ```
 
 ## Basemap
 
-Finally, we'll add state and country boundaries to provide some context. The R package `rnaturalearth` is an excellent source of attribution free contextual GIS data.
+Finally, we'll add state and country boundaries to provide some context and generate a nicer legend. The R package `rnaturalearth` is an excellent source of attribution free contextual GIS data.
 
-```{r map_basemap, echo=-1}
+```{r map-basemap, echo=-1}
 par(mar = c(0.25, 0.25, 0.25, 0.25))
 # natural earth boundaries
-countries <- ne_countries(returnclass = "sf") %>% 
-  st_geometry() %>% 
-  st_transform(crs)
-states <- ne_states(iso_a2 = "US", returnclass = "sf") %>% 
-  st_geometry() %>% 
-  st_transform(crs)
+countries <- ne_countries(returnclass = "sf") |> 
+  st_geometry() |> 
+  st_transform(crs_laea)
+states <- ne_states(iso_a2 = "US", returnclass = "sf") |> 
+  st_geometry() |> 
+  st_transform(crs_laea)
 
-# define the map extent with the michigan polygon
-mi_ext <- mi %>% 
-  st_geometry() %>% 
-  st_transform(crs)
-plot(mi_ext)
+# define the map plotting extent with the region boundary polygon
+region_boundary_laea <- region_boundary |> 
+  st_geometry() |> 
+  st_transform(crs_laea)
+plot(region_boundary_laea)
 # add basemap
 plot(countries, col = "#cfcfcf", border = "#888888", add = TRUE)
-# add data
-plot(abd_projected, 
-     breaks = bins, col = pal, 
-     axes = FALSE, legend = FALSE, add = TRUE)
+# add relative abundance
+plot(abd_breeding_mask, 
+     breaks = breaks, col = pal, 
+     maxcell = ncell(abd_breeding_laea),
+     legend = FALSE, add = TRUE)
 # add boundaries
-plot(countries, col = NA, border = "#888888", lwd = 3, add = TRUE)
-plot(states, col = NA, border = "#888888", add = TRUE)
+lines(vect(countries), col = "#ffffff", lwd = 3)
+lines(vect(states), col =  "#ffffff", lwd = 1.5, xpd = TRUE)
+lines(vect(region_boundary_laea), col = "#ffffff", lwd = 3, xpd = TRUE)
 
 # add legend using the fields package
 # label the bottom, middle, and top
-labels <- quantile(bins, c(0, 0.5, 1))
-label_breaks <- seq(0, 1, length.out = length(bins))
+labels <- quantile(breaks, c(0, 0.5, 1))
+label_breaks <- seq(0, 1, length.out = length(breaks))
 image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
            smallplot = c(0.90, 0.93, 0.15, 0.85),
            legend.only = TRUE,
@@ -185,9 +190,11 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
                             line = -0.5))
 ```
 
-# Migration chronologies with uncertainty {#chron}
+# Migration chronologies {#chron}
 
-Next, we'll look at the temporal component of the relative abundance data. Using the weekly relative abundance cubes, we can chart the change in relative abundance throughout the year for a fixed location. Furthermore, using the upper and lower confidence interval rasters, we can add uncertainty estimates. We often refer to these as migration chronologies.
+In this application we'll use the weekly estimates to chart the change in relative abundance throughout the year for a given region.
+
+Next, we'll look at the temporal component of the relative abundance data. Using the weekly relative abundance, we can chart the change in relative abundance throughout the year for a given region. We'll start by looking at the Furthermore, using the upper and lower confidence interval rasters, we can add uncertainty estimates. We often refer to these as migration chronologies.
 
 Let's start by loading all the necessary relative abundance cubes.
 

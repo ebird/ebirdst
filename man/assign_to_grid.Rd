@@ -24,7 +24,7 @@ default coordinate names: \code{c("x", "y", "t")} or \code{c("longitude", "latit
 \item{is_lonlat}{logical; if the points are in unprojected, lon-lat
 coordinates. In this case, the input data frame should have columns
 \code{"longitude"} and \code{"latitude"} and the points will be projected to an equal
-area sinusoidal CRS prior to grid assignment.}
+area Eckert IV CRS prior to grid assignment.}
 
 \item{res}{numeric; resolution of the grid in the \code{x}, \code{y}, and \code{t}
 dimensions, respectively. If only 2 dimensions are provided, a space only

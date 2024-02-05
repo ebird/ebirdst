@@ -45,7 +45,7 @@ default the spatial spatial coordinates should be \code{longitude} and
 
 \item{is_lonlat}{logical; if the points are in unprojected, lon-lat
 coordinates. In this case, the points will be projected to an equal area
-sinusoidal CRS prior to grid assignment.}
+Eckert IV CRS prior to grid assignment.}
 
 \item{res}{numeric; resolution of the spatiotemporal grid in the x, y, and
 time dimensions. Unprojected locations are projected to an equal area
