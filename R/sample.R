@@ -10,7 +10,7 @@
 #'   `latitude`, and temporal coordinate should be `day_of_year`.
 #' @param is_lonlat logical; if the points are in unprojected, lon-lat
 #'   coordinates. In this case, the points will be projected to an equal area
-#'   sinusoidal CRS prior to grid assignment.
+#'   Eckert IV CRS prior to grid assignment.
 #' @param res numeric; resolution of the spatiotemporal grid in the x, y, and
 #'   time dimensions. Unprojected locations are projected to an equal area
 #'   coordinate system prior to sampling, and resolution should therefore be
@@ -484,7 +484,7 @@ grid_sample_stratified <- function(
 #' @param is_lonlat logical; if the points are in unprojected, lon-lat
 #'   coordinates. In this case, the input data frame should have columns
 #'   `"longitude"` and `"latitude"` and the points will be projected to an equal
-#'   area sinusoidal CRS prior to grid assignment.
+#'   area Eckert IV CRS prior to grid assignment.
 #' @param res numeric; resolution of the grid in the `x`, `y`, and `t`
 #'   dimensions, respectively. If only 2 dimensions are provided, a space only
 #'   grid will be generated. The units of `res` are the same as the coordinates
@@ -552,13 +552,13 @@ assign_to_grid <- function(points,
     names(points)[match(coords, names(points))] <- default_names
   }
 
-  # project to sinusoidal if unprojected
+  # project to equal area if unprojected
   if (is_lonlat) {
     stopifnot(all(c("longitude", "latitude") %in% names(points)))
     coords <- terra::vect(points[, c("longitude", "latitude")],
                           geom = c("longitude", "latitude"),
                           crs = "epsg:4326")
-    coords <- terra::project(coords, y = "+proj=sinu")
+    coords <- terra::project(coords, y = "+proj=eck4")
     coords <- as.data.frame(terra::crds(coords))
     # add temporal columns
     if ("t" %in% names(points)) {
@@ -634,7 +634,7 @@ assign_to_grid <- function(points,
 project_equal_area <- function(points, coords = c("longitude", "latitude")) {
   stopifnot(all(coords %in% names(points)))
   locs <- terra::vect(points[, coords], geom = coords, crs = "epsg:4326")
-  locs <- terra::project(locs, y = "+proj=sinu")
+  locs <- terra::project(locs, y = "+proj=eck4")
   locs <- as.data.frame(terra::crds(locs))
   return(stats::setNames(locs, c("x", "y")))
 }
