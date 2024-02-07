@@ -1,4 +1,6 @@
 url: https://ebird.github.io/ebirdst/
+template:
+  bootstrap: 5
 
 navbar:
   structure:
