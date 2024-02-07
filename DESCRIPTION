@@ -20,7 +20,7 @@ Description: Tools for accessing and analyzing eBird Status and
     data to model global bird distributions, abundances, and population trends 
     at a high spatial and temporal resolution.
 License: GPL-3
-URL: https://github.com/ebird/ebirdst
+URL: https://ebird.github.io/ebirdst/, https://github.com/ebird/ebirdst
 BugReports: https://github.com/ebird/ebirdst/issues
 Depends: 
     R (>= 4.0.0)
