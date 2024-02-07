@@ -116,15 +116,15 @@ several species. As a result, a <a href="https://ebird.github.io/ebirdst/article
 access key</a> is required to run the code in this vignette.</p>
 <p>We start by loading the packages used throughout this vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ebird/ebirdst" class="external-link">ebirdst</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">geodata</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ebird/ebirdst" class="external-link">ebirdst</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dnychka/fieldsRPackage" class="external-link">fields</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="va">extract</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="va"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span></span></code></pre></div>
 <div class="section level2">
 <h2 id="map">Mapping relative abundance<a class="anchor" aria-label="anchor" href="#map"></a>
@@ -132,11 +132,11 @@ access key</a> is required to run the code in this vignette.</p>
 <p>In this section, we’ll demonstrate how to make a simple map of
 relative abundance within a given region. As an example, we’ll make a
 map of breeding season relative abundance for <a href="https://ebird.org/species/sagthr" class="external-link">Sage Trasher</a> in Wyoming. The
-maps produced using this approach are suiteable for many applications;
+maps produced using this approach are suitable for many applications;
 however, for high-quality publication-ready maps, it may be worthwhile
 using a traditional GIS environment such as QGIS or ArcGIS rather than
 R.</p>
-<p>We start by downloading data for Sage Trasher and loading the
+<p>We start by downloading data for Sage Thrasher and loading the
 breeding season relative abundance raster. The <code>pattern</code>
 argument to <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> can be used to only
 download the specific files we need.</p>
@@ -160,10 +160,10 @@ use the built in <code><a href="https://rspatial.github.io/terra/reference/plot.
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">abd_breeding</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="applications_files/figure-html/map-simple-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Clearly this approach doesn’t work out of the box! There are a wide
+<p>Clearly this simple approach doesn’t work very well! There are a wide
 variety of issues that we’ll tackle one at a time.</p>
 <div class="section level3">
-<h3 id="cropping-and-masking">Cropping and masking<a class="anchor" aria-label="anchor" href="#cropping-and-masking"></a>
+<h3 id="map-extent">Cropping and masking<a class="anchor" aria-label="anchor" href="#map-extent"></a>
 </h3>
 <p>All raster data downloaded through this package are defined over the
 same global grid, regardless of the range of the individual species. As
@@ -171,29 +171,29 @@ a result, mapping these data will produce a global map by default.
 However, Sage Thrasher only occurs in the western United States, which
 is barely visible in the global map. We need to constrain the extent of
 our map to make it more useful. For this example, we’ll download a
-boundary for Wyoming (a state in the United States that harbours a large
+boundary for Wyoming (a state in the United States that harbors a large
 proportion of the breeding population of Sage Thrasher) and use it to
 crop and mask the relative abundance data. If you have a region defined
-in a Shapefile or GeoPackage you can instead load that regional polygon
-using <code><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf()</a></code>.</p>
+in a Shapefile or GeoPackage you can instead load that a polygon
+defining the boundary of that region using <code><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># wyoming boundary</span></span>
-<span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Wyoming"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># project boundary to match raster data</span></span>
 <span><span class="va">region_boundary_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">region_boundary</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_breeding</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># crop and mask to boundary of wyoming</span></span>
-<span><span class="va">abd_breeding_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">abd_breeding</span>, <span class="va">region_boundary_proj</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">region_boundary_proj</span><span class="op">)</span></span>
+<span><span class="va">abd_breeding_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">abd_breeding</span>, <span class="va">region_boundary_proj</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">region_boundary_proj</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># map the cropped data</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">abd_breeding_mask</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="applications_files/figure-html/map-extent-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="projection">Projection<a class="anchor" aria-label="anchor" href="#projection"></a>
+<h3 id="map-projection">Projection<a class="anchor" aria-label="anchor" href="#map-projection"></a>
 </h3>
 <p>The raster data are all provided in the same equal area sinusoidal
 projection as NASA MODIS data. While this projection is suitable for
@@ -217,6 +217,7 @@ be defined programmatically as follows.</p>
 <span></span>
 <span><span class="co"># transform to the custom projection using nearest neighbor resampling</span></span>
 <span><span class="va">abd_breeding_laea</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">abd_breeding_mask</span>, <span class="va">crs_laea</span>, method <span class="op">=</span> <span class="st">"near"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># remove areas of the raster containing no data</span></span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># map the cropped and projected data</span></span>
@@ -224,7 +225,7 @@ be defined programmatically as follows.</p>
 <p><img src="applications_files/figure-html/map-projection-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="abundance-bins">Abundance bins<a class="anchor" aria-label="anchor" href="#abundance-bins"></a>
+<h3 id="map-bins">Abundance bins<a class="anchor" aria-label="anchor" href="#map-bins"></a>
 </h3>
 <p>The relative abundance data are not uniformly distributed, which can
 lead to challenges distinguishing areas of differing levels of
@@ -253,7 +254,7 @@ the legends on the eBird Status and Trends website.</p>
 <p><img src="applications_files/figure-html/map-bins-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="basemap">Basemap<a class="anchor" aria-label="anchor" href="#basemap"></a>
+<h3 id="map-basemap">Basemap<a class="anchor" aria-label="anchor" href="#map-basemap"></a>
 </h3>
 <p>Finally, we’ll add state and country boundaries to provide some
 context and generate a nicer legend. The R package
@@ -264,7 +265,7 @@ contextual GIS data.</p>
 <span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">crs_laea</span><span class="op">)</span></span>
-<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">crs_laea</span><span class="op">)</span></span>
 <span></span>
@@ -276,7 +277,7 @@ contextual GIS data.</p>
 <span><span class="co"># add basemap</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#cfcfcf"</span>, border <span class="op">=</span> <span class="st">"#888888"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># add relative abundance</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">abd_breeding_mask</span>, </span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">abd_breeding_laea</span>,</span>
 <span>     breaks <span class="op">=</span> <span class="va">breaks</span>, col <span class="op">=</span> <span class="va">pal</span>, </span>
 <span>     maxcell <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">abd_breeding_laea</span><span class="op">)</span>,</span>
 <span>     legend <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -298,6 +299,383 @@ contextual GIS data.</p>
 <span>                            cex.axis <span class="op">=</span> <span class="fl">0.9</span>, lwd.ticks <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>                            line <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="applications_files/figure-html/map-basemap-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="chron">Migration chronologies<a class="anchor" aria-label="anchor" href="#chron"></a>
+</h2>
+<p>In this application we’ll use the weekly estimates to chart the
+change in relative abundance throughout the year for a given region.
+We’ll start by generating a trajectory with confidence intervals for a
+single species, then demonstrate how to produce multi-species
+trajectories. For these examples, we’ll consider shorebirds in Kansas (a
+state in center of the United States). To start we’ll load a polygon for
+the boundary of Kansas.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Kansas"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="chron-single">Single species with uncertainty<a class="anchor" aria-label="anchor" href="#chron-single"></a>
+</h3>
+<p>For the single species example, let’s chart a migration chronology
+for <a href="https://ebird.org/species/snoplo5" class="external-link">Snowy Plover</a> in
+Kansas. First we need to download and load the relevant eBird Status
+Data Products for this species: the weekly median relative abundance and
+the upper and lower confidence intervals of weekly relative
+abundance.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># download data if they haven't already been downloaded</span></span>
+<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"Snowy Plover"</span>, </span>
+<span>                        pattern <span class="op">=</span> <span class="st">"abundance_(median|upper|lower)_3km"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load raster data</span></span>
+<span><span class="va">abd_median</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"snoplo5"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span>
+<span><span class="va">abd_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"snoplo5"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"lower"</span><span class="op">)</span></span>
+<span><span class="va">abd_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"snoplo5"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># project region boundary to match raster data</span></span>
+<span><span class="va">region_boundary_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">region_boundary</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_median</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Now we can calculate the mean relative abundance with confidence
+intervals for each week of the year within Kansas.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># extract values within region and calculate the mean</span></span>
+<span><span class="va">abd_median_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_median</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                             fun <span class="op">=</span> <span class="st">"mean"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">abd_lower_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_lower</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                            fun <span class="op">=</span> <span class="st">"mean"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">abd_upper_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_upper</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                            fun <span class="op">=</span> <span class="st">"mean"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># transform to data frame format</span></span>
+<span><span class="va">abd_median_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_median_region</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                                median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_median_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">abd_lower_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lower_region</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                               lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_lower_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">abd_upper_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_upper_region</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                               upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_upper_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># combine median and confidence intervals</span></span>
+<span><span class="va">chronology</span> <span class="op">&lt;-</span> <span class="va">abd_median_region</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">abd_lower_region</span>, by <span class="op">=</span> <span class="st">"week"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">abd_upper_region</span>, by <span class="op">=</span> <span class="st">"week"</span><span class="op">)</span></span></code></pre></div>
+<p>Finally, let’s use this data frame to generate a migration chronology
+for this species.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">chronology</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">week</span>, y <span class="op">=</span> <span class="va">median</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b"</span>, date_breaks <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Week"</span>, </span>
+<span>       y <span class="op">=</span> <span class="st">"Mean relative abundance in Kansas"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Migration chronology for Snowy Plover in Kansas"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/chron-single-chart-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level3">
+<h3 id="chron-multi">Multi-species<a class="anchor" aria-label="anchor" href="#chron-multi"></a>
+</h3>
+<p>Migration chronologies can also be overlaid for multiple species,
+allowing for comparison of migration timing between species. However,
+comparing eBird Status Data Products across species requires extra
+caution because the models give <em>relative</em> rather than absolute
+abundance. For example, species differ in their detectability, and this
+may cause differences in relative abundance. To address this, we’ll use
+the proportion of population layers, which give the proportion of the
+total range-wide relative abundance falling within each cell. These
+proportion of population layers help to control for difference in
+detectability, allowing us to compare multiple species</p>
+<p>Following a similar approach to that used for the single species
+chronology above, we’ll estimate migration chronologies for a suite of
+shorebird species in Kansas. However, in this example we’ll estiate the
+proportion of population falling within Kansas rather than the mean
+abundance.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"American Avocet"</span>, <span class="st">"Snowy Plover"</span>, <span class="st">"Hudsonian Godwit"</span>, </span>
+<span>             <span class="st">"Semipalmated Sandpiper"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chronologies</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">species</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># download propotion of population data</span></span>
+<span>  <span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="va">species</span>,</span>
+<span>                          pattern <span class="op">=</span> <span class="st">"proportion-population_median_3km"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># load raster data</span></span>
+<span>  <span class="va">prop_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span>, product <span class="op">=</span> <span class="st">"proportion-population"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># estimate proportion of population within the region</span></span>
+<span>  <span class="va">prop_pop_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">prop_pop</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                             fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">prop_pop_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>species <span class="op">=</span> <span class="va">species</span>,</span>
+<span>                                week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">prop_pop_region</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                                median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">prop_pop_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># combine with other species</span></span>
+<span>  <span class="va">chronologies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">chronologies</span>, <span class="va">prop_pop_region</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Finally, we can use this data frame to generate migration
+chronologies for these species.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">chronologies</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">week</span>, y <span class="op">=</span> <span class="va">median</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b"</span>, date_breaks <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>       y <span class="op">=</span> <span class="st">"Percent of population in Kansas"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Migration chronologies for shorebirds in Kansas"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/chron-multi-chart-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>A variety of patterns are revealed in this migration chronology.
+Semipalmated Sandpiper and Hudsonian Godwit pass through the region
+during pre-breeding migration, presumably on their way to breed further
+north, but don’t appear to take the same route on the post-breeding
+migration. Snowy Plover occurs in the region for much of the year, but
+with spikes for the pre- and post-breeding migration. Finally, American
+Avocet also occurs in the region for much of the year, but without the
+strong peaks during migration.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="stats">Regional statistics<a class="anchor" aria-label="anchor" href="#stats"></a>
+</h2>
+<p>The eBird Status and Trends website provides regional summary
+statistics at the country and state/province level for each species. For
+example, we can use the regional stats to see that <a href="https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA" class="external-link">33%
+of the non-breeding population of Golen Eagle falls within the United
+States</a>. The website also allows users to draw their own customs
+polygons to get summary statistics. within these polygons. However,
+there are cases where you may want to estimate regional summary
+statistics in a way that isn’t supported by the website. Here we’ll
+provide a few examples for calculating the proportion of population
+within a region. We’ll use Golden Eagle for these examples.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"Golden Eagle"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="stats-seasonal">Proportion of seasonal population<a class="anchor" aria-label="anchor" href="#stats-seasonal"></a>
+</h3>
+<p>For this example, we’ll estimate the seasonal proportion of the
+population of Golden Eagle within each state in the United States. Note
+that Golden Eagles are distributed throughout the Northern Hemisphere,
+in North America, Asia, and Europe. In this example, we’ll be estimating
+the proportion of the global population, in the <a href="#stats-regional">next example</a> we’ll estimate the proportion of
+the North American population.</p>
+<p>To start, we’ll load the seasonal proportion of population raster
+layers and polygons defining each state. If you have a Shapefile or
+GeoPackage defining your region of interest (e.g., for a protected area
+or Bird Conservation Region), you could load it here using the
+<code><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf()</a></code> function.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># seasonal proportion of population</span></span>
+<span><span class="va">prop_pop_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"goleag"</span>, </span>
+<span>                                 product <span class="op">=</span> <span class="st">"proportion-population"</span>,</span>
+<span>                                 period <span class="op">=</span> <span class="st">"seasonal"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># state boundaries, excluding hawaii</span></span>
+<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">!=</span> <span class="st">"Hawaii"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>state <span class="op">=</span> <span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># transform to match projection of raster data</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">prop_pop_seasonal</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Now we can use the <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> function from
+<code>terra</code> to calculate the proportion of the population within
+each state for each season. Setting <code>weights = TRUE</code> triggers
+<code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> to calculate a weighted sum to account to adjust
+for partial coverage of raster cells by the region polygons. In this
+example, the <code>weights</code> argument has little impact, but it can
+play a more important role for smaller regions.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">state_prop_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">prop_pop_seasonal</span>, <span class="va">states</span>, </span>
+<span>                          fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                          bind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># sort in descending order or breeding proportion of population</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">breeding</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_pop</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      state    breeding  nonbreeding prebreeding_migration</span></span>
+<span><span class="co">#&gt; 1   Alaska 0.059539077 1.246767e-05            0.18449229</span></span>
+<span><span class="co">#&gt; 2  Wyoming 0.024791619 4.237502e-02            0.02376162</span></span>
+<span><span class="co">#&gt; 3  Montana 0.021015488 4.665311e-02            0.02299377</span></span>
+<span><span class="co">#&gt; 4   Nevada 0.014276172 3.525481e-02            0.01667688</span></span>
+<span><span class="co">#&gt; 5     Utah 0.013512905 3.705198e-02            0.01845320</span></span>
+<span><span class="co">#&gt; 6 Colorado 0.008481925 2.615300e-02            0.01133763</span></span>
+<span><span class="co">#&gt;   postbreeding_migration</span></span>
+<span><span class="co">#&gt; 1             0.06922753</span></span>
+<span><span class="co">#&gt; 2             0.02112028</span></span>
+<span><span class="co">#&gt; 3             0.03463215</span></span>
+<span><span class="co">#&gt; 4             0.01537817</span></span>
+<span><span class="co">#&gt; 5             0.01493372</span></span>
+<span><span class="co">#&gt; 6             0.01077595</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="stats-relative">Proportion of North American population<a class="anchor" aria-label="anchor" href="#stats-relative"></a>
+</h3>
+<p>For broadly distributed species, such as Golden Eagle, it may be
+desirable to estimate the proportion of the population relative to a
+subset of the full range. For example, let’s calculate the proportion of
+the North American population falling within each state, where we define
+North America to include the United States, Canada, and Mexico. We’ll
+start by creating a polygon for the boundary of North America, using
+this to mask the seasonal relative abundance raster, the dividing the
+masked relative abundance raster by the total relative abundance across
+all of North America to generate proportion of population layers.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># seasonal relative abundance</span></span>
+<span><span class="va">abd_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"goleag"</span>, </span>
+<span>                            product <span class="op">=</span> <span class="st">"abundance"</span>,</span>
+<span>                            period <span class="op">=</span> <span class="st">"seasonal"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load country polygon, union into a single polygon, and project</span></span>
+<span><span class="va">noram</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States of America"</span>, </span>
+<span>                                  <span class="st">"Canada"</span>, <span class="st">"Mexico"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_combine.html" class="external-link">st_union</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_seasonal</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># vect converts an sf object to terra format for mask()</span></span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># mask seasonal abundance</span></span>
+<span><span class="va">abd_seasonal_noram</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">abd_seasonal</span>, <span class="va">noram</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># total north american relative abundance for each season</span></span>
+<span><span class="va">abd_noram_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="va">abd_seasonal_noram</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># proportion of north american population</span></span>
+<span><span class="va">prop_pop_noram</span> <span class="op">&lt;-</span> <span class="va">abd_seasonal_noram</span> <span class="op">/</span> <span class="va">abd_noram_total</span><span class="op">$</span><span class="va">sum</span></span></code></pre></div>
+<p>Now we can calculate the proportion of population using exactly the
+same method as in the previous section.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">state_prop_noram_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">prop_pop_noram</span>, <span class="va">states</span>, </span>
+<span>                                fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                bind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># sort in descending order or breeding proportion of population</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">breeding</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_noram_pop</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      state   breeding  nonbreeding prebreeding_migration postbreeding_migration</span></span>
+<span><span class="co">#&gt; 1   Alaska 0.23794508 0.0000337296            0.35744748             0.16047911</span></span>
+<span><span class="co">#&gt; 2  Wyoming 0.09942421 0.1146398620            0.04606608             0.04913360</span></span>
+<span><span class="co">#&gt; 3  Montana 0.08428043 0.1262136568            0.04457747             0.08056719</span></span>
+<span><span class="co">#&gt; 4   Nevada 0.05725310 0.0953771106            0.03233106             0.03577531</span></span>
+<span><span class="co">#&gt; 5     Utah 0.05419210 0.1002391073            0.03577476             0.03474136</span></span>
+<span><span class="co">#&gt; 6 Colorado 0.03401588 0.0707534000            0.02198000             0.02506885</span></span></code></pre></div>
+<p>Notice that the proportions are higher than those in the previous
+section since we’re now estimating the proportion of the North American
+population rather than the proportion of the global population. For
+example, 6% of the global breeding season population occurs in Alaska,
+but this corresponds to 24% of the North American breeding season
+population.</p>
+</div>
+<div class="section level3">
+<h3 id="stats-custom">Regional stats for weeks and custom time periods<a class="anchor" aria-label="anchor" href="#stats-custom"></a>
+</h3>
+<p>The eBird Status Data Products include seasonal raster layers that
+are derived from the weekly rasters based on expert defined seasons.
+These seasonal layers are convenient to work with, however, in some
+cases you may want to estimate the proportion of the population within a
+region at the weekly level or for a custom time period. For example,
+let’s estimate the proportion of the North American population within
+California by week and for the month of January.</p>
+<p>For this example, we’ll use the lower, 27 km resolution data in the
+interest of speed, since the 3 km weekly data can be quite slow to
+process. We’ll start by estimating the weekly proportion of the North
+American population following an approach similar to that in the
+previous section.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># weekly relative abundance, masked to north america</span></span>
+<span><span class="va">abd_weekly_noram</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"goleag"</span>, </span>
+<span>                                product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
+<span>                                resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">noram</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># total north american relative abundance for each week</span></span>
+<span><span class="va">abd_weekly_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="va">abd_weekly_noram</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># proportion of north american population</span></span>
+<span><span class="va">prop_pop_weekly_noram</span> <span class="op">&lt;-</span> <span class="va">abd_weekly_noram</span> <span class="op">/</span> <span class="va">abd_weekly_total</span><span class="op">$</span><span class="va">sum</span></span>
+<span></span>
+<span><span class="co"># proportion of weekly population in california</span></span>
+<span><span class="va">california</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">states</span>, <span class="va">state</span> <span class="op">==</span> <span class="st">"California"</span><span class="op">)</span></span>
+<span><span class="va">cali_prop_noram_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">prop_pop_weekly_noram</span>, <span class="va">california</span>, </span>
+<span>                               fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                               weights <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">prop_pop_weekly_noram</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cali_prop_noram_pop</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  prop_pop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">cali_prop_noram_pop</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prop_pop_weekly_noram</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         week   prop_pop</span></span>
+<span><span class="co">#&gt; 1 2022-01-04 0.05982915</span></span>
+<span><span class="co">#&gt; 2 2022-01-11 0.05356687</span></span>
+<span><span class="co">#&gt; 3 2022-01-18 0.05547690</span></span>
+<span><span class="co">#&gt; 4 2022-01-25 0.05428955</span></span>
+<span><span class="co">#&gt; 5 2022-02-01 0.05839619</span></span>
+<span><span class="co">#&gt; 6 2022-02-08 0.06418506</span></span></code></pre></div>
+<p>This data frame gives the weekly proportion of the North American
+population of Golden Eagle in California; the structure is very similar
+to the data we generated in the <a href="#chron">migration
+chronology</a> section. We can take this one step further and average
+the proportion of population across the weeks in the month of
+January.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prop_pop_weekly_noram</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">week</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>prop_pop <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">prop_pop</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     prop_pop</span></span>
+<span><span class="co">#&gt; 1 0.05579062</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="stats-coastal">Coastal species<a class="anchor" aria-label="anchor" href="#stats-coastal"></a>
+</h3>
+<p>There is one particular case where the methods for estimate regional
+statistics presented so far can fail: species with a significant
+proportion of their population in offshore or tidal areas. Many regional
+polygons, including those from Natural Earth used so far, only capture
+the land area, resulting in a large proportion of non-zero relative
+abundance cells falling outside the polygons. For example, let’s
+estimate the proportion of the global non-breeding season population of
+<a href="https://ebird.org/species/sursco" class="external-link">Surf Scoter</a> in Mexico
+using the naive approach used in the previous examples.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># download only the season proportion of population layer</span></span>
+<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"Surf Scoter"</span>, </span>
+<span>                        pattern <span class="op">=</span> <span class="st">"proportion-population_seasonal_mean_3km"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># breeding season proportion of population</span></span>
+<span><span class="va">abd_nonbreeding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"Surf Scoter"</span>,</span>
+<span>                               product <span class="op">=</span> <span class="st">"proportion-population"</span>,</span>
+<span>                               period <span class="op">=</span> <span class="st">"seasonal"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="st">"nonbreeding"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load a polygon for the boundary of Mexico</span></span>
+<span><span class="va">mexico</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"Mexico"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># proportion in mexico</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   ID nonbreeding</span></span>
+<span><span class="co">#&gt; 1  1   0.2049178</span></span></code></pre></div>
+<p>According to this method, about 20% of the non-breeding population of
+Surf Scoter occurs in Mexico. However, Surf Scoter is an exclusively
+coastal species and this naive estimate is missing a large part of the
+population because the coarse boundary for Mexico we’re using doesn’t
+capture many of the 3 km raster cells that are falling offshore. We can
+correct for this by buffering the Mexico polygon by 5 km to try to
+capture these coastal cells. We’ll also use <code>touches = TRUE</code>
+to include raster cells that are touched by the Mexico polygon; without
+that argument, only cells whose centers fall within the Mexico polygon
+will be included.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># buffer by 5000m = 5km</span></span>
+<span><span class="va">mexico_buffer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_buffer</a></span><span class="op">(</span><span class="va">mexico</span>, dist <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># proportion in mexico</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico_buffer</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        touches <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   ID nonbreeding</span></span>
+<span><span class="co">#&gt; 1  1   0.3336408</span></span></code></pre></div>
+<p>With these adjustments the proportion of the population has increased
+substantially from 20% to 33%. These approaches are not perfect and care
+should always be taken when working with eBird Status and Trends Data
+Products for coastal species.</p>
 </div>
 </div>
   </div>
