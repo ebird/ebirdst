@@ -12,6 +12,7 @@ Tools to load, map, plot, and analyze \href{https://science.ebird.org/status-and
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://ebird.github.io/ebirdst/}
   \item \url{https://github.com/ebird/ebirdst}
   \item Report bugs at \url{https://github.com/ebird/ebirdst/issues}
 }

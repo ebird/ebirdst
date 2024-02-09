@@ -294,11 +294,14 @@ contextual GIS data.</p>
 </h2>
 <p>In this application we’ll use the weekly estimates to chart the
 change in relative abundance throughout the year for a given region.
-We’ll start by generating a trajectory with confidence intervals for a
-single species, then demonstrate how to produce multi-species
-trajectories. For these examples, we’ll consider shorebirds in Kansas (a
-state in center of the United States). To start we’ll load a polygon for
-the boundary of Kansas.</p>
+These migration chronologies can be useful for identifying when a given
+geography receives the highest intensity of use by a species or group of
+species.</p>
+<p>We’ll start by generating a chronology with confidence intervals for
+a single species, then demonstrate how to produce multi-species
+chronologies For these examples, we’ll consider shorebirds in Kansas (a
+state near the center of the United States). To start we’ll load a
+polygon for the boundary of Kansas.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Kansas"</span><span class="op">)</span></span></code></pre></div>
@@ -430,7 +433,7 @@ strong peaks during migration.</p>
 <p>The eBird Status and Trends website provides regional summary
 statistics at the country and state/province level for each species. For
 example, we can use the regional stats to see that <a href="https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA" class="external-link">33%
-of the non-breeding population of Golen Eagle falls within the United
+of the non-breeding population of Golden Eagle falls within the United
 States</a>. The website also allows users to draw their own customs
 polygons to get summary statistics. within these polygons. However,
 there are cases where you may want to estimate regional summary
@@ -504,9 +507,10 @@ subset of the full range. For example, let’s calculate the proportion of
 the North American population falling within each state, where we define
 North America to include the United States, Canada, and Mexico. We’ll
 start by creating a polygon for the boundary of North America, using
-this to mask the seasonal relative abundance raster, the dividing the
+this to mask the seasonal relative abundance raster, then dividing the
 masked relative abundance raster by the total relative abundance across
-all of North America to generate proportion of population layers.</p>
+all of North America to generate layers showing the proportion of North
+American population.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal relative abundance</span></span>
 <span><span class="va">abd_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"goleag"</span>, </span>
@@ -613,8 +617,8 @@ January.</p>
 <div class="section level3">
 <h3 id="stats-coastal">Coastal species<a class="anchor" aria-label="anchor" href="#stats-coastal"></a>
 </h3>
-<p>There is one particular case where the methods for estimate regional
-statistics presented so far can fail: species with a significant
+<p>There is one particular case where the methods we have presented so
+far for regional statistics can cause issues: species with a significant
 proportion of their population in offshore or tidal areas. Many regional
 polygons, including those from Natural Earth used so far, only capture
 the land area, resulting in a large proportion of non-zero relative

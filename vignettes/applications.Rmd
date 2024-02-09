@@ -193,7 +193,9 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
 
 # Migration chronologies {#chron}
 
-In this application we'll use the weekly estimates to chart the change in relative abundance throughout the year for a given region. We'll start by generating a trajectory with confidence intervals for a single species, then demonstrate how to produce multi-species trajectories. For these examples, we'll consider shorebirds in Kansas (a state in center of the United States). To start we'll load a polygon for the boundary of Kansas.
+In this application we'll use the weekly estimates to chart the change in relative abundance throughout the year for a given region. These migration chronologies can be useful for identifying when a given geography receives the highest intensity of use by a species or group of species.
+
+We'll start by generating a chronology with confidence intervals for a single species, then demonstrate how to produce multi-species chronologies For these examples, we'll consider shorebirds in Kansas (a state near the center of the United States). To start we'll load a polygon for the boundary of Kansas.
 
 ```{r chron}
 region_boundary <- ne_states(iso_a2 = "US") |> 
@@ -306,7 +308,7 @@ A variety of patterns are revealed in this migration chronology. Semipalmated Sa
 
 # Regional statistics {#stats}
 
-The eBird Status and Trends website provides regional summary statistics at the country and state/province level for each species. For example, we can use the regional stats to see that [33% of the non-breeding population of Golen Eagle falls within the United States](https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA). The website also allows users to draw their own customs polygons to get summary statistics. within these polygons. However, there are cases where you may want to estimate regional summary statistics in a way that isn't supported by the website. Here we'll provide a few examples for calculating the proportion of population within a region. We'll use Golden Eagle for these examples.
+The eBird Status and Trends website provides regional summary statistics at the country and state/province level for each species. For example, we can use the regional stats to see that [33% of the non-breeding population of Golden Eagle falls within the United States](https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA). The website also allows users to draw their own customs polygons to get summary statistics. within these polygons. However, there are cases where you may want to estimate regional summary statistics in a way that isn't supported by the website. Here we'll provide a few examples for calculating the proportion of population within a region. We'll use Golden Eagle for these examples.
 
 ```{r stats-dl}
 ebirdst_download_status("Golden Eagle")
@@ -346,7 +348,7 @@ head(state_prop_pop)
 
 ## Proportion of North American population {#stats-relative}
 
-For broadly distributed species, such as Golden Eagle, it may be desirable to estimate the proportion of the population relative to a subset of the full range. For example, let's calculate the proportion of the North American population falling within each state, where we define North America to include the United States, Canada, and Mexico. We'll start by creating a polygon for the boundary of North America, using this to mask the seasonal relative abundance raster, the dividing the masked relative abundance raster by the total relative abundance across all of North America to generate proportion of population layers.
+For broadly distributed species, such as Golden Eagle, it may be desirable to estimate the proportion of the population relative to a subset of the full range. For example, let's calculate the proportion of the North American population falling within each state, where we define North America to include the United States, Canada, and Mexico. We'll start by creating a polygon for the boundary of North America, using this to mask the seasonal relative abundance raster, then dividing the masked relative abundance raster by the total relative abundance across all of North America to generate layers showing the proportion of North American population.
 
 ```{r stats-relative-prep}
 # seasonal relative abundance
@@ -426,7 +428,7 @@ prop_pop_weekly_noram |>
 
 ## Coastal species {#stats-coastal}
 
-There is one particular case where the methods for estimate regional statistics presented so far can fail: species with a significant proportion of their population in offshore or tidal areas. Many regional polygons, including those from Natural Earth used so far, only capture the land area, resulting in a large proportion of non-zero relative abundance cells falling outside the polygons. For example, let's estimate the proportion of the global non-breeding season population of [Surf Scoter](https://ebird.org/species/sursco) in Mexico using the naive approach used in the previous examples.
+There is one particular case where the methods we have presented so far for regional statistics can cause issues: species with a significant proportion of their population in offshore or tidal areas. Many regional polygons, including those from Natural Earth used so far, only capture the land area, resulting in a large proportion of non-zero relative abundance cells falling outside the polygons. For example, let's estimate the proportion of the global non-breeding season population of [Surf Scoter](https://ebird.org/species/sursco) in Mexico using the naive approach used in the previous examples.
 
 ```{r stats-coastal-wrong}
 # download only the season proportion of population layer
