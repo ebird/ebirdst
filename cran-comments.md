@@ -1,8 +1,6 @@
-# ebirdst 3.2022.2
+# ebirdst 3.2022.3
 
-- switch terminology from "trajectory" to "migration chronology"
-- ensure `rasterize_trends()` works for older versions of `terra` (issue #7)
-- move `arrow` package to Suggests until it is back on CRAN (see https://github.com/apache/arrow/issues/39806)
+- arrow is back on CRAN, move from Suggests back to Imports
 
 ## Test environments
 
@@ -18,4 +16,3 @@
 0 errors | 0 warnings | 2 notes
 
 - NOTE: Version contains large components (3.2022.2). We've aligned our version numbers with the version numbers for the API that this package interacts with. The eBird Status and Trends data products are given a version corresponding to a year, with the current version being 2022, so we've included that year in our version number to indicate that this package only works with the 2022 version of the data.
-- NOTE: The arrow package, which ebirdst depends on, is scheduled for removal from CRAN. I have moved the arrow package to Suggests and added a link under "Additional_repositories" to address this until the arrow maintainers can get the package back on CRAN.
