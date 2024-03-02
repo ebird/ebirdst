@@ -19,7 +19,7 @@ project](https://science.ebird.org/en/status-and-trends) at the [Cornell
 Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to estimate distributions, relative abundances,
 and population trends at high spatial and temporal resolution across the
-full annual cycle of 1,112 bird species globally. These models learn the
+full annual cycle of 1,118 bird species globally. These models learn the
 relationships between bird observations collected through
 [eBird](https://ebird.org/home) and a suite of remotely sensed habitat
 variables, while accounting for the noise and bias inherent in community
@@ -81,7 +81,7 @@ The eBird Status and Trends Data Products provide estimates of relative
 abundance, and other variables, for a particular year. This estimation
 year is used to identify the version of the data products. Each version
 of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 3.2022.2 and, as
+For example, the current version of the R package is 3.2022.3 and, as
 indicated by the year in the version number, it is designed to work with
 the 2022 data products. Every year, typically in November, the Status
 and Trends Data Products are updated, and users are encouraged to update

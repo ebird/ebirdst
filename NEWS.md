@@ -1,6 +1,7 @@
 # ebirdst 3.2022.3
 
 - arrow is back on CRAN, move from Suggests back to Imports
+- add 6 new species for Australia
 
 # ebirdst 3.2022.2
 
