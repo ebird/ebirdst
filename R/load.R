@@ -138,7 +138,7 @@ load_raster <- function(species,
   }
 
   # full year products only available for migrants
-  if (p$is_resident && period == "full-year") {
+  if (p$summarize_as_resident && period == "full-year") {
     stop("Full-year products are not available for residents, use ",
          "period = 'seasonal' instead.")
   }
