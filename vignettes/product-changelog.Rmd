@@ -156,7 +156,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 
 ## 2020 Changelog
 
-**Data Version:** 2020 (available June 2022)
+**Data Version:** 2020 (available Fall 2021)
 
 **Citation:** 
 <blockquote>
@@ -223,7 +223,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, O. Robinson, S. Ligocki, W. H
 
 ## 2019 Changelog
 
-**Data Version:** 2019 (currently available)
+**Data Version:** 2019 (available Fall 2020)
 
 **Citation:** 
 <blockquote>
