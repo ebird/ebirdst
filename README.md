@@ -19,7 +19,7 @@ project](https://science.ebird.org/en/status-and-trends) at the [Cornell
 Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to estimate distributions, relative abundances,
 and population trends at high spatial and temporal resolution across the
-full annual cycle of 1,119 bird species globally. These models learn the
+full annual cycle of 1,117 bird species globally. These models learn the
 relationships between bird observations collected through
 [eBird](https://ebird.org/home) and a suite of remotely sensed habitat
 variables, while accounting for the noise and bias inherent in community
@@ -81,7 +81,7 @@ The eBird Status and Trends Data Products provide estimates of relative
 abundance, and other variables, for a particular year. This estimation
 year is used to identify the version of the data products. Each version
 of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 3.2022.3 and, as
+For example, the current version of the R package is 3.2022.4 and, as
 indicated by the year in the version number, it is designed to work with
 the 2022 data products. Every year, typically in November, the Status
 and Trends Data Products are updated, and users are encouraged to update
@@ -179,6 +179,9 @@ print(weeks)
 #> [36] "2022-09-06" "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04" "2022-10-11" "2022-10-18"
 #> [43] "2022-10-25" "2022-11-01" "2022-11-08" "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06"
 #> [50] "2022-12-13" "2022-12-20" "2022-12-27"
+```
+
+``` r
 
 # select a week in the middle of the year
 abd <- abd[[26]]

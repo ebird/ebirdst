@@ -1,3 +1,7 @@
+# ebirdst 3.2022.4
+
+- Northern Goshawk species code was incorrect
+
 # ebirdst 3.2022.3
 
 - arrow is back on CRAN, move from Suggests back to Imports

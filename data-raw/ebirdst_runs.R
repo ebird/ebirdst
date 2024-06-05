@@ -82,6 +82,8 @@ ebirdst_runs <- runs %>%
 # trends runs
 trends <- read_csv("data-raw/ebird-trends_runs_2022.csv",
                    show_col_types = FALSE) %>%
+  mutate(species_code = case_match(species_code, "norgos2" ~ "norgos",
+                                   .default = species_code)) |>
   transmute(has_trends = TRUE,
             species_code,
             trends_season = season,
