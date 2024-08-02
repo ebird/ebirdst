@@ -59,8 +59,8 @@ Each of the eBird Status raster products is packaged as a GeoTIFF file
 representing predictions on a regular grid. The core products are occurrence,
 count, relative abundance, and proportion of population. This function loads
 one of the available data products into R as a
-\link[terra:SpatRaster-class]{SpatRaster} object. Note that data must be download using
-\code{\link[=ebirdst_download_status]{ebirdst_download_status()}} prior to loading it using this function.
+\link[terra:SpatRaster-class]{SpatRaster} object. Note that data must be downloaded
+using \code{\link[=ebirdst_download_status]{ebirdst_download_status()}} prior to loading it using this function.
 }
 \details{
 The core eBird Status data products provide weekly estimates across
@@ -98,7 +98,7 @@ the non-breeding season.
 \examples{
 \dontrun{
 # download example data if hasn't already been downloaded
-ebirdst_download("yebsap-example")
+ebirdst_download_status("yebsap-example")
 
 # weekly relative abundance
 # note that only 27 km data are available for the example data

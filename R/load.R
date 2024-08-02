@@ -4,8 +4,8 @@
 #' representing predictions on a regular grid. The core products are occurrence,
 #' count, relative abundance, and proportion of population. This function loads
 #' one of the available data products into R as a
-#' [SpatRaster][terra::SpatRaster] object. Note that data must be download using
-#' [ebirdst_download_status()] prior to loading it using this function.
+#' [SpatRaster][terra::SpatRaster] object. Note that data must be downloaded
+#' using [ebirdst_download_status()] prior to loading it using this function.
 #'
 #' @param species character; the species to load data for, given as a scientific
 #'   name, common name or six-letter species code (e.g. "woothr"). The full list
@@ -73,7 +73,7 @@
 #' @examples
 #' \dontrun{
 #' # download example data if hasn't already been downloaded
-#' ebirdst_download("yebsap-example")
+#' ebirdst_download_status("yebsap-example")
 #'
 #' # weekly relative abundance
 #' # note that only 27 km data are available for the example data
@@ -194,7 +194,7 @@ load_raster <- function(species,
 #' Load the relative abundance trend estimates for a single species or a set of
 #' species. Trends are estimated on a 27 km by 27 km grid for a single season
 #' per species (breeding, non-breeding, or resident).  Note that data must be
-#' download using [ebirdst_download_trends()] prior to loading it using this
+#' downloaded using [ebirdst_download_trends()] prior to loading it using this
 #' function.
 #'
 #' The trends in relative abundance are estimated using a double machine
@@ -312,6 +312,107 @@ load_trends <- function(species,
 
   # load data
   return(dplyr::collect(arrow::open_dataset(trends_paths)))
+}
+
+
+#' Load eBird Status and Trends Data Coverage Products
+#'
+#' The data coverage products are packaged as individual GeoTIFF files for each
+#' product for each week of the year. This function loads one of the available
+#' data products for one or more weeks into R as a
+#' [SpatRaster][terra::SpatRaster] object. Note that data must be downloaded
+#' using [ebirdst_download_data_coverage()] prior to loading it using this
+#' function.
+#'
+#' @param product character; data coverage raster product to load: spatial
+#'   coverage or site selection probability.
+#' @param weeks character; one or more weeks (expressed in `"MM-DD"` format) to
+#'   load the raster layers for. If this argument is not specified, all
+#'   downloaded weeks will be loaded. **Note that these rasters are quite large
+#'   so it's recommended to only load a small number of weeks of data at the
+#'   same time.**
+#' @inheritParams ebirdst_download_status
+#'
+#' @details In addition to the species-specific data products, the eBird Status
+#'   data products include two products providing estimates of weekly data
+#'   coverage at 3 km spatial resolution:
+#'
+#' - `spatial-coverage`: a spatially smoothed estimate of the proportion of the
+#' area that was covered by eBird checklists for the given week.
+#' - `selection-probability`: a modeled estimate of the probability that the
+#' given location and habitat was sampled by eBird data in the given week.
+#'
+#' @return A [SpatRaster][terra::SpatRaster] with between 1 and 52 layers for
+#'   the given product for the given weeks, where the layer names are the dates
+#'   (`YYYY-MM-DD` format) of the midpoint of each week.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download example data if hasn't already been downloaded
+#' ebirdst_download_data_coverage()
+#'
+#' # load a single week of site selection probability data
+#' load_data_coverage("selection-probability", weeks = "01-04")
+#'
+#' # load all weeks of spatial coverage data
+#' load_data_coverage("spatial-coverage", weeks = c("01-04", "01-11"))
+#' }
+load_data_coverage <- function(product = c("spatial-coverage",
+                                           "selection-probability"),
+                               weeks = NULL,
+                               path = ebirdst_data_dir()) {
+  product <- match.arg(product)
+  stopifnot(is.character(weeks))
+  stopifnot(dir.exists(path))
+
+  dc_path <- get_species_path("data_coverage", path = path,
+                              check_downloaded = FALSE)
+  if (!dir.exists(dc_path)) {
+    stop("No data coverage products were found. Ensure that the data were ",
+         "downloaded using ebirdst_download_data_coverage() and that the ",
+         "'path' argument correctly points to the data download directory.")
+  }
+
+  # check that the geotiff driver is installed
+  drv <- terra::gdal(drivers = TRUE)
+  drv <- drv$name[stringr::str_detect(drv$can, "read")]
+  if (!"GTiff" %in% drv) {
+    stop("GDAL does not have GeoTIFF support. GeoTIFF support is required to ",
+         "load Status and Trends raster data.")
+  }
+
+  # generate vector of valid weeks
+  valid_weeks <- as.Date(paste(2018, seq(4, 366, 7)), format = "%Y %j")
+  valid_weeks <- format(valid_weeks, format = "%m-%d")
+  if (!is.null(weeks) && !all(weeks %in% valid_weeks)) {
+    stop("The following weeks are invalid: ",
+         paste(weeks[!weeks %in% valid_weeks], collapse = ", "), "\n",
+         "Valid weeks include: ", paste(valid_weeks, collapse = ", "))
+  }
+  # subset to selected weeks
+  if (!is.null(weeks)) {
+    valid_weeks <- intersect(valid_weeks, weeks)
+  }
+  valid_weeks <- paste(ebirdst_version()[["version_year"]],
+                       valid_weeks, sep = "-")
+
+  # construct filenames
+  product <- paste0(product, "_mean")
+  files <- stringr::str_glue("{product}_{valid_weeks}.tif")
+  files <- file.path(dc_path, product, files)
+
+  # check existence of target files
+  if (!all(file.exists(files))) {
+    missing_files <- files[!file.exists(files)]
+    stop("The files for the requested product do not exist. You may need to ",
+         "download them using ebirdst_download_data_coverage(): \n  ",
+         paste(basename(files), sep = "\n"))
+  }
+
+  # load and return raster stack
+  return(stats::setNames(terra::rast(files), valid_weeks))
 }
 
 

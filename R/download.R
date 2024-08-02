@@ -98,9 +98,9 @@ ebirdst_download_status <- function(species,
             is_flag(download_pis),
             is_flag(download_ppms),
             is_flag(download_all))
+  stopifnot(is_flag(dry_run))
   stopifnot(is_flag(force))
   stopifnot(is_flag(show_progress))
-  stopifnot(is_flag(dry_run))
 
   # convert to species code
   species <- get_species(species)
@@ -262,6 +262,77 @@ ebirdst_download_trends <- function(species,
 }
 
 
+#' Download eBird Status and Trends Data Coverage Products
+#'
+#' In addition to the species-specific data products, the eBird Status data
+#' products include two products providing estimates of weekly data coverage at
+#' 3 km spatial resolution: site selection probability and spatial coverage.
+#' This function downloads these data products in raster GeoTIFF format.
+#'
+#' @inheritParams ebirdst_download_status
+#'
+#' @return Path to the folder containing the downloaded data coverage products.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download all data coverage products
+#' ebirdst_download_data_coverage()
+#'
+#' # download just the spatial coverage products
+#' ebirdst_download_data_coverage(pattern = "spatial-coverage")
+#'
+#' # download a single week of data coverage products
+#' ebirdst_download_data_coverage(pattern = "01-04")
+#'
+#' # download all weeks in april
+#' ebirdst_download_data_coverage(pattern = "04-")
+#' }
+ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
+                                           pattern = NULL,
+                                           dry_run = FALSE,
+                                           force = FALSE,
+                                           show_progress = TRUE) {
+  stopifnot(is.character(path), length(path) == 1)
+  stopifnot(is_flag(dry_run))
+  stopifnot(is_flag(force))
+  stopifnot(is_flag(show_progress))
+
+  # complete list of all available files for this species
+  files <- get_download_file_list(species_code = "data_coverage", path = path)
+  # path to data package
+  run_path <- file.path(path,
+                        ebirdst_version()[["version_year"]],
+                        "data_coverage")
+
+  # apply pattern
+  if (!is.null(pattern)) {
+    stopifnot(is.character(pattern), length(pattern) == 1, !is.na(pattern))
+    pat_match <- stringr::str_detect(basename(files$file), pattern = pattern)
+    if (all(!pat_match)) {
+      stop("No files matched pattern")
+    }
+    files <- files[pat_match, ]
+  }
+
+  # print files to download for dry run
+  if (dry_run) {
+    message("Downloading Data Coverage Products to:\n  ", path)
+    message(paste(c("File list:", files$file), collapse = "\n  "))
+    return(invisible(files$file))
+  }
+
+  if (show_progress) {
+    message(stringr::str_glue("Downloading Data Coverage Products"))
+  }
+
+  download_files(files, force = force, show_progress = show_progress)
+
+  return(invisible(normalizePath(run_path)))
+
+}
+
+
 #' Get the path to the data package for a given species
 #'
 #' This helper function can be used to get the path to a data package for a
@@ -291,7 +362,11 @@ get_species_path <- function(species, path = ebirdst_data_dir(),
   stopifnot(is.character(path), length(path) == 1, dir.exists(path))
   stopifnot(is_flag(check_downloaded))
 
-  species_code <- get_species(species)
+  if (species == "data_coverage") {
+    species_code <- "data_coverage"
+  } else {
+    species_code <- get_species(species)
+  }
   if (is.na(species_code)) {
     stop(species, " does not correspond to a valid Status and Trends species.")
   }

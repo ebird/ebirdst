@@ -1,5 +1,6 @@
 # ebirdst 3.2022.4
 
+- add capability to download and load data coverage layers
 - Northern Goshawk species code was incorrect
 
 ## Test environments
