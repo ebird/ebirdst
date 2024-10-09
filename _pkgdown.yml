@@ -9,7 +9,7 @@ navbar:
   components:
     intro:
       text: Get Started
-      href: articles/ebirdst.html
+      href: articles/status.html
     articles:
       text: Vignettes
       menu:

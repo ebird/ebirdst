@@ -21,3 +21,5 @@ vignettes/changelog.Rmd
 ^example-data$
 ^CRAN-SUBMISSION$
 ^ebirdst-citation.bib$
+
+^examples$
