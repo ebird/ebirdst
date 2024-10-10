@@ -91,7 +91,8 @@ names(prop_na_pop) <- names(wy_abd)
 ebirdst_download_status("Hooded Warbler", pattern = "abundance_median_27km")
 abd_weekly <- load_raster("Hooded Warbler", resolution = "27km")
 # country boundary for Guatemala
-gt_boundary <- ne_countries(country = "Guatemala", scale = 50)
+gt_boundary <- ne_countries(country = "Guatemala", scale = 50) |>
+  vect()
 # mean weekly abundance within Guatemala
 abd_gt <- extract(abd_weekly, gt_boundary,
                   fun = "mean", na.rm = TRUE, ID = FALSE)

@@ -82,7 +82,8 @@ na_boundary <- ne_countries(scale = 50) |>
 # download and load weekly relative abundance at 27 km
 
 # country boundary for Guatemala
-gt_boundary <- ne_countries(country = "Guatemala", scale = 50)
+gt_boundary <- ne_countries(country = "Guatemala", scale = 50) |>
+  vect()
 # mean weekly abundance within Guatemala
 
 # plot migration chronology
