@@ -66,7 +66,7 @@ Version 2022 changed the functional form of the predictive model from a (mostly)
 - CHANGED: The calendar dates for grid prediction have changed as a result of converting the prediction values to integers (formerly they included fractional day information).
 - CHANGED: The prediction values for both `effort_distance_km` and `effort_hrs` are set to their 90th quantiles when making predictions to determine the range boundary. Previously these were chosen to maximize the partial dependence (PD) curve.	
 - CHANGED: The prediction values for CCI and time of day (`solar_noon_diff`) are now chosen to maximize the abundance partial dependence (PD) constrained to values where the species was detected. Previously they were chosen using the occurrence partial dependence curve and were not constrained to detections.
--CHANGED: When maximizing the prediction value for CCI at a stixel level, the allowable range of values is now 0-2, up from 0-1.85, based on the range of the new version of CCI values overall.
+- CHANGED: When maximizing the prediction value for CCI at a stixel level, the allowable range of values is now 0-2, up from 0-1.85, based on the range of the new version of CCI values overall.
 - CHANGED: The prediction value for `effort_distance_km` is now 2 km, to more closely reflect the distribution of checklists and to increase overall signal.
 - CHANGED: weather optimization arise now done for relative abundance, not occurrence.
 - CHANGED: PD maximization of solar_noon_diff allows the full range of quantiles to allow selection of the highest and lowest quantile values which are often nocturnal. Previously the outermost quantile values were not allowed for selection.
