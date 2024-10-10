@@ -81,7 +81,7 @@ abd_seasonal_na <- mask(abd_seasonal, na_boundary)
 # total North American abundance
 na_abd <- global(abd_seasonal_na, fun = sum, na.rm = TRUE)
 # proportion of global population
-prop_na_pop <- as.numeric(wy_abd) / prop_na_pop$sum
+prop_na_pop <- as.numeric(wy_abd) / na_abd$sum
 names(prop_na_pop) <- names(wy_abd)
 
 
