@@ -460,10 +460,21 @@ get_download_file_list <- function(species_code, path) {
       jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
     }), error = function(e) NULL)
     if (is.null(files)) {
-      stop("Cannot access Status and Trends data URL. Ensure that you have ",
-           "a working internet connection and a valid API key for the Status ",
-           "and Trends data. Note that the API keys expire after 6 month, so ",
-           "may need to update your key. Visit https://ebird.org/st/request")
+      # try http instead in case of ssl issues on vpn
+      api_url <- "http://st-download.ebird.org/v1"
+      # get file list for this species
+      list_obj_url <- stringr::str_glue("{api_url}/list-obj/{version_year}/",
+                                        "{species_code}?key={key}")
+      files <- tryCatch(suppressWarnings({
+        jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
+      }), error = function(e) NULL)
+      if (is.null(files)) {
+        stop("Cannot access Status and Trends data URL. Ensure that you have ",
+             "a working internet connection and a valid API key for the ",
+             "Status and Trends data. Note that the API keys expire after ",
+             "6 month, so may need to update your key. ",
+             "Visit https://ebird.org/st/request")
+      }
     }
 
     # remove web_download folder
