@@ -129,23 +129,17 @@ ebirdst_download_status("Allen's Hummingbird", dry_run = TRUE)
 # Part II: eBird Status Data Products Applications ----
 
 # explore all available eBird Status data products
-ebirdst_download_status("Golden Eagle", download_all = TRUE, dry_run = TRUE)
+
 # download everything!
-ebirdst_download_status("Golden Eagle", download_all = TRUE)
-# load the weekly proportion of population, then show that it sums to 1
-prop_pop <- load_raster("Golden Eagle",
-                        product = "proportion-population",
-                        resolution = "27km")
-global(prop_pop, fun = sum, na.rm = TRUE)
+
+# load the weekly proportion of population at 27 km, then show that it sums to 1
+
 # load the full-year maximum relative abundance
-abd_fy_max <- load_raster("Golden Eagle",
-                          product = "abundance",
-                          period = "full-year",
-                          metric = "max")
+
 # load the regional stats
-regional_stats <- load_regional_stats("Golden Eagle")
+
 # load smoothed range polygon at 27 km resolution
-ranges <- load_ranges("Golden Eagle", resolution = "27km", smoothed = TRUE)
+
 
 # ├ Application 1: multi-species migration chronology ----
 

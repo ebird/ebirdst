@@ -132,7 +132,7 @@ ebirdst_download_status("Allen's Hummingbird", dry_run = TRUE)
 ebirdst_download_status("Golden Eagle", download_all = TRUE, dry_run = TRUE)
 # download everything!
 ebirdst_download_status("Golden Eagle", download_all = TRUE)
-# load the weekly proportion of population, then show that it sums to 1
+# load the weekly proportion of population at 27 km, then show that it sums to 1
 prop_pop <- load_raster("Golden Eagle",
                         product = "proportion-population",
                         resolution = "27km")
