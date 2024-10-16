@@ -165,6 +165,7 @@ grassland_species <- c("Baird's Sparrow",
 # note: you could use any region here, e.g. a shapefile, read in using read_sf
 mt_boundary <- ne_states(iso_a2 = "US") |>
   filter(name == "Montana") |>
+  # transform coordinate system to match the raster data
   st_transform("+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs") |>
   vect()
 
@@ -296,3 +297,24 @@ fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
                    legend.args = list(text = "Relative Importance",
                                       side = 3, col = "black",
                                       cex = 1, line = 0))
+
+# ├ Exercises ----
+
+# Exercises 1: repeat the migration chronology application demonstrated in the
+# webinar, but try plotting the proportion of the population within the
+# contiguous United States (i.e. all US states except Alaska and Hawaii) rather
+# than the proportion of global population. Hint: this will require cropping and
+# masking the relative abundance rasters to a boundary of the unites states,
+# which is provided below.
+us_boundary <- ne_states(iso_a2 = "US") |>
+  filter(!name %in% c("Alaska", "Hawaii")) |>
+  st_union() |>
+  st_transform("+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs") |>
+  vect()
+
+# Exercise 2: select a group of 5-10 species and a region of interest to you.
+# Generate a map identifying areas of importance for these species by finding
+# the mean proportion of population across the species in your region of
+# interest for either the breeding or non-breeding season. Experiment with
+# different quantile cutoffs (e.g. median, 70th quantile, 90th quantile) to see
+# how that impacts the areas of importance identified.
