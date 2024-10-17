@@ -238,11 +238,13 @@ fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
 # ├ Exercises ----
 
 # Exercises 1: repeat the migration chronology application demonstrated in the
-# webinar, but try plotting the proportion of the population within the
+# webinar, but try plotting the proportion of the population relative to the
 # contiguous United States (i.e. all US states except Alaska and Hawaii) rather
-# than the proportion of global population. Hint: this will require cropping and
-# masking the relative abundance rasters to a boundary of the unites states,
+# than the proportion of the global population. Hint: this will require cropping
+# and masking the relative abundance rasters to a boundary of the unites states,
 # which is provided below.
+
+# boundary of the contiguous united states
 us_boundary <- ne_states(iso_a2 = "US") |>
   filter(!name %in% c("Alaska", "Hawaii")) |>
   st_union() |>
@@ -253,5 +255,5 @@ us_boundary <- ne_states(iso_a2 = "US") |>
 # Generate a map identifying areas of importance for these species by finding
 # the mean proportion of population across the species in your region of
 # interest for either the breeding or non-breeding season. Experiment with
-# different quantile cutoffs (e.g. median, 70th quantile, 90th quantile) to see
+# different quantile cutoffs (e.g. median, 70th quantile, 80th quantile) to see
 # how that impacts the areas of importance identified.

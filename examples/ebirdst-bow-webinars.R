@@ -308,6 +308,8 @@ fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
 # than the proportion of the global population. Hint: this will require cropping
 # and masking the relative abundance rasters to a boundary of the unites states,
 # which is provided below.
+
+# boundary of the contiguous united states
 us_boundary <- ne_states(iso_a2 = "US") |>
   filter(!name %in% c("Alaska", "Hawaii")) |>
   st_union() |>
