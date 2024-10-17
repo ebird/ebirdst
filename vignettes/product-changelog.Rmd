@@ -179,7 +179,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, O. Robinson, S. Ligocki, W. H
 - CHANGED: The single year of Nighttime Lights has been replaced with by-year assignment for 2014-2020 using the [EOG Annual VNL v2 product](https://eogdata.mines.edu/products/vnl/). 
 - CHANGED: The Global Intertidal Change dataset has been updated to version 1.2 which includes a new three-year time step covering 2017 through 2019.
 - CHANGED: Continents now have unique identifiers in the island categorization. Previously, all continents were treated as the same "mainland" value.
-- ADDED: Hourly weather variables have been assigned at 30 kilometer spatial resolution using the [Copernicus ERA5 reanalysis product](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels).
+- ADDED: Hourly weather variables have been assigned at 30 kilometer spatial resolution using the [Copernicus ERA5 reanalysis product](https://doi.org/10.24381/cds.adbb2d47).
 - ADDED: 90m eastness and northness (combined slope and aspect) topographic variables from [Amatulli et al. 2020](https://www.nature.com/articles/s41597-020-0479-6) are included in addition to 1 kilometer eastness and northness.
 - FIXED: Source data updated for 2017-2019 for MCD12Q1 which had reported classification errors.
 

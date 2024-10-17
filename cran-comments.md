@@ -2,6 +2,7 @@
 
 - add capability to download and load data coverage layers
 - Northern Goshawk species code was incorrect
+- on some VPNs downloading from https raises an error, switch to http in these cases
 
 ## Test environments
 
