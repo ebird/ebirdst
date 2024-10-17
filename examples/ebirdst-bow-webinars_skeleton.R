@@ -187,9 +187,27 @@ ggplot(chronology) +
 # grassland species in Montana.
 
 # start by producing a map of richness for these species
+# produce binary range rasters for each species in Montana
+range_mt <- list()
+for (species in grassland_species) {
+
+}
+# sum across species to calculate richness
+
+# make a simple map
 
 
-# for more granularity, combine proportion of population across species
+# for more granularity, use mean proportion of population
+# produce proportion of population layers for each species masked to Montana
+prop_pop_mt <- list()
+for (species in grassland_species) {
+
+}
+# take mean across species
+
+# drop zeros
+
+# drop anything below the median
 
 
 # make a slightly nicer map
