@@ -241,7 +241,7 @@ fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
 # webinar, but try plotting the proportion of the population relative to the
 # contiguous United States (i.e. all US states except Alaska and Hawaii) rather
 # than the proportion of the global population. Hint: this will require cropping
-# and masking the relative abundance rasters to a boundary of the unites states,
+# and masking the relative abundance rasters to a boundary of the Unites States,
 # which is provided below.
 
 # boundary of the contiguous united states
@@ -257,3 +257,174 @@ us_boundary <- ne_states(iso_a2 = "US") |>
 # interest for either the breeding or non-breeding season. Experiment with
 # different quantile cutoffs (e.g. median, 70th quantile, 80th quantile) to see
 # how that impacts the areas of importance identified.
+
+
+# Part II: eBird Status Data Products Applications ----
+
+# ├ Exercise 1 Solution ----
+
+# Goal: repeat the multi-species migration chronology application, this time
+# showing the proportion of the contiguous US population rather than the
+# proportion of the entire modeled population
+
+# species list
+grassland_species <- c("Baird's Sparrow",
+                       "Bobolink",
+                       "Chestnut-collared Longspur",
+                       "Sprague's Pipit",
+                       "Upland Sandpiper",
+                       "Western Meadowlark")
+
+# Montana boundary polygon from Natural Earth
+mt_boundary <- ne_states(iso_a2 = "US") |>
+  filter(name == "Montana") |>
+  # transform coordinate system to match the raster data
+  st_transform("+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs") |>
+  vect()
+
+# boundary of the contiguous United States from Natural Earth
+us_boundary <- ne_states(iso_a2 = "US") |>
+  filter(!name %in% c("Alaska", "Hawaii")) |>
+  st_union() |>
+  st_transform("+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs") |>
+  vect()
+
+# loop over each species, generate a migration chronology for each
+chronology <- NULL
+for (species in grassland_species) {
+  # download the data products for this species
+  # only weekly 27km relative abundance, median and confidence limits
+  ebirdst_download_status(species,
+                          pattern = "abundance_(median|lower|upper)_27km")
+
+  # load the median weekly relative abundance and lower/upper confidence limits
+  abd_median <- load_raster(species, resolution = "27km") |>
+    # masking to US boundary will ensure we have proportions of US population
+    mask(us_boundary)
+  abd_lower <- load_raster(species, metric = "lower", resolution = "27km") |>
+    # masking to US boundary will ensure we have proportions of US population
+    mask(us_boundary)
+  abd_upper <- load_raster(species, metric = "upper", resolution = "27km") |>
+    # masking to US boundary will ensure we have proportions of US population
+    mask(us_boundary)
+
+  # convert from relative abundance to proportion of population
+  abd_total <- global(abd_median, fun = sum, na.rm = TRUE)$sum
+  pop_median <- abd_median / abd_total
+  pop_lower <- abd_lower / abd_total
+  pop_upper <- abd_upper / abd_total
+
+  # estimate the proportion of population in Montana with confidence limits
+  # note: you could also mask and sum here
+  pop_median_region <- extract(pop_median, mt_boundary,
+                               fun = sum, na.rm = TRUE, ID = FALSE)
+  pop_lower_region <- extract(pop_lower, mt_boundary,
+                              fun = sum, na.rm = TRUE, ID = FALSE)
+  pop_upper_region <- extract(pop_upper, mt_boundary,
+                              fun = sum, na.rm = TRUE, ID = FALSE)
+
+  # convert to a data frame in long format (one row per week)
+  chronology <- data.frame(species = species,
+                           week = as.Date(names(pop_median_region)),
+                           median = as.numeric(pop_median_region),
+                           lower = as.numeric(pop_lower_region),
+                           upper = as.numeric(pop_upper_region)) |>
+    bind_rows(chronology)
+}
+
+# plot the migration chronologies for each species
+# note: there are now some missing values in chronology because some species
+# have no US population at all during some weeks (e.g. Upload Sandpiper
+# migrates entirely to southern South American)
+ggplot(chronology[complete.cases(chronology), ]) +
+  aes(x = week, y = median, color = species, fill = species) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), color = NA, alpha = 0.2) +
+  geom_line() +
+  scale_x_date(date_labels = "%b", date_breaks = "1 month") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(x = "Week",
+       y = "% of population in Montana",
+       title = "Migration chronologies for grassland birds in Montana",
+       color = NULL, fill = NULL) +
+  theme(legend.position = "bottom")
+
+# ├ Exercise 2 Solution ----
+
+# Goal: repeat the areas of importance exercise for a set of 6 woodpeckers in
+# Washington this time using a 70th percentile cutoff rather than a median
+# cutoff.
+
+# species list, note some are migrants and others are residents
+woodpecker_species <- c("Lewis's Woodpecker",
+                        "Downy Woodpecker",
+                        "Hairy Woodpecker",
+                        "Black-backed Woodpecker",
+                        "White-headed Woodpecker",
+                        "Northern Flicker")
+
+# Washington boundary polygon from Natural Earth
+wa_boundary <- ne_states(iso_a2 = "US") |>
+  filter(name == "Washington") |>
+  # transform coordinate system to match the raster data
+  st_transform("+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs") |>
+  vect()
+
+# produce proportion of population layers for each species masked to Washington
+prop_pop_wa <- list()
+for (species in woodpecker_species) {
+  # download seasonal abundance at 3km
+  ebirdst_download_status(species,
+                          pattern = "proportion-population_seasonal_mean_3km")
+
+  # check if this species is a resident
+  is_resident <- filter(ebirdst_runs, common_name == species)[["is_resident"]]
+
+  # load breeding season proportion of population for migrants
+  # and resident season proportion of population for residents
+  if (is_resident) {
+    season_name <- "resident"
+  } else {
+    season_name <- "breeding"
+  }
+  prop_pop <- load_raster(species,
+                          product = "proportion-population",
+                          period = "seasonal") |>
+    subset(season_name)
+  # crop and mask to Washington
+  prop_pop_wa[[species]] <- mask(crop(prop_pop, wa_boundary), wa_boundary)
+}
+# take mean across species
+importance <- mean(rast(prop_pop_wa), na.rm = TRUE)
+# drop zeros
+importance <- ifel(importance == 0, NA, importance)
+# drop anything below the 70th percentile
+cutoff <- global(importance, quantile, probs = 0.7, na.rm = TRUE) |>
+  as.numeric()
+importance <- ifel(importance > cutoff, importance, NA)
+
+# make a slightly nicer map
+# reproject
+importance_proj <- trim(project(importance, "ESRI:102003"))
+wa_boundary_proj <- project(wa_boundary, "ESRI:102003")
+# basemap
+par(mar = c(0, 0, 0, 0))
+plot(wa_boundary_proj, col = "grey", axes = FALSE,
+     main = "Areas of importance for woodpeckers in Washington")
+# add importance raster
+plot(importance_proj, legend = FALSE, add = TRUE)
+# add legend
+fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
+                   col = viridis::viridis(100),
+                   breaks = seq(0, 1, length.out = 101),
+                   smallplot = c(0.15, 0.85, 0.12, 0.15),
+                   horizontal = TRUE,
+                   axis.args = list(at = c(0, 0.5, 1),
+                                    labels = c("Low", "Medium", "High"),
+                                    fg = "black", col.axis = "black",
+                                    cex.axis = 0.75, lwd.ticks = 0.5,
+                                    padj = -1.5),
+                   legend.args = list(text = "Relative Importance",
+                                      side = 3, col = "black",
+                                      cex = 1, line = 0))
