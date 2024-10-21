@@ -259,7 +259,7 @@ us_boundary <- ne_states(iso_a2 = "US") |>
 # how that impacts the areas of importance identified.
 
 
-# Part II: eBird Status Data Products Applications ----
+# Part III: eBird Trends Data Products Applications ----
 
 # ├ Exercise 1 Solution ----
 
@@ -357,12 +357,12 @@ ggplot(chronology[complete.cases(chronology), ]) +
 # cutoff.
 
 # species list, note some are migrants and others are residents
-woodpecker_species <- c("Lewis's Woodpecker",
+woodpecker_species <- c("Black-backed Woodpecker",
                         "Downy Woodpecker",
                         "Hairy Woodpecker",
-                        "Black-backed Woodpecker",
-                        "White-headed Woodpecker",
-                        "Northern Flicker")
+                        "Lewis's Woodpecker",
+                        "Northern Flicker",
+                        "White-headed Woodpecker")
 
 # Washington boundary polygon from Natural Earth
 wa_boundary <- ne_states(iso_a2 = "US") |>
@@ -428,3 +428,97 @@ fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
                    legend.args = list(text = "Relative Importance",
                                       side = 3, col = "black",
                                       cex = 1, line = 0))
+
+# ├ Introduction to the eBird Trends Data Products ----
+
+# ebirdst runs that have trends results
+
+# download trends for Sage Thrasher
+
+# load trends into R session
+
+
+# convert percent per year trends from data frame format to raster
+
+# convert cumulative trends from data frame format to raster
+
+# save to geotiff for use in QGIS or ArcGIS
+
+
+# convert to spatial points for use with sf package
+
+# save to GeoPackage for use in QGIS or ArcGIS, could also save to shapefile
+
+
+# conversion from annual to cumulative trend
+ppy_trend <- 2
+start_year <- 2012
+end_year <- 2022
+cumulative_trend <- 100 * ((1 + ppy_trend / 100)^(end_year - start_year) - 1)
+
+# ├ Application 1: regional trends with uncertainty ----
+
+# Goal: estimate the % per year trend with 80% confidence limits for Sage
+# Thrasher for each state in the contiguous United States.
+
+# polygon boundaries of each state in the contiguous US
+states <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+  transmute(state = iso_3166_2)
+
+# load fold-level trend estimates for Sage Thrasher
+
+# convert to spatial sf format
+
+# attach state to the fold-level trends data
+
+
+# abundance-weighted average trend by region and fold
+
+
+# summarize across folds for each state
+
+# join trends to state polygons and make a map
+trends_states_sf <- left_join(states, trends_states, by = "state")
+ggplot(trends_states_sf) +
+  geom_sf(aes(fill = abd_ppy_median)) +
+  scale_fill_distiller(palette = "Reds",
+                       limits = c(NA, 0),
+                       na.value = "grey80") +
+  guides(fill = guide_colorbar(title.position = "top", barwidth = 15)) +
+  labs(title = "Sage Thrasher state-level breeding trends 2012-2022",
+       fill = "Relative abundance trend [% change / year]") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+# ├ Application 2: multi-species trends ----
+
+# Goal: estimate the mean trend for a set three species representing the
+# sagebrush bird community.
+
+# species list
+
+# ensure that all species are for the same region and season
+
+
+# download trends for these species and load them into R
+
+
+# calculate cell-wise mean trend
+
+
+# convert the points to sf format
+# only consider cells where all three species occur
+
+
+# make a map
+ggplot(all_species) +
+  geom_sf(aes(color = abd_ppy), size = 2) +
+  scale_color_gradient2(low = "#CB181D", high = "#2171B5",
+                        limits = c(-4, 4),
+                        oob = scales::oob_squish) +
+  guides(color = guide_colorbar(title.position = "left", barheight = 15)) +
+  labs(title = "Sagebrush species breeding trends (2012-2022)",
+       color = "Relative abundance trend [% change / year]") +
+  theme_bw() +
+  theme(legend.title = element_text(angle = 90))
