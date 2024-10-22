@@ -456,15 +456,34 @@ start_year <- 2012
 end_year <- 2022
 cumulative_trend <- 100 * ((1 + ppy_trend / 100)^(end_year - start_year) - 1)
 
-# ├ Application 1: regional trends with uncertainty ----
+# ├ Application 1: regional trends ----
+
+# Goal: estimate the % per year trend for Sage Thrasher in the Great Basin Bird
+# Conservation Region (BCR 9). BCR polygons can be downloaded from
+# https://www.birdscanada.org/bird-science/nabci-bird-conservation-regions
+
+# load BCR polygons that you've downloaded and unzipped, then subset to BCR 9
+
+
+# load trend estimates for Sage Thrasher
+
+# convert to spatial sf format
+
+# subset to just cells within BCR 19
+
+# calculate abundance-weighted regional trend
+
+
+# ├ Application 2: multi-region trends with uncertainty ----
 
 # Goal: estimate the % per year trend with 80% confidence limits for Sage
 # Thrasher for each state in the contiguous United States.
 
 # polygon boundaries of each state in the contiguous US
-states <- ne_states(iso_a2 = "US", returnclass = "sf") |>
-  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) |>
-  transmute(state = iso_3166_2)
+states <- gadm(country = "USA", level = 1, path = tempdir()) |>
+  st_as_sf() |>
+  select(state = ISO_1) |>
+  filter(!state %in% c("US-AK", "US-HI"))
 
 # load fold-level trend estimates for Sage Thrasher
 
@@ -491,7 +510,7 @@ ggplot(trends_states_sf) +
   theme_bw() +
   theme(legend.position = "bottom")
 
-# ├ Application 2: multi-species trends ----
+# ├ Application 3: multi-species trends ----
 
 # Goal: estimate the mean trend for a set three species representing the
 # sagebrush bird community.
