@@ -532,8 +532,8 @@ cumulative_trend <- 100 * ((1 + ppy_trend / 100)^(end_year - start_year) - 1)
 # Thrasher for each state in the contiguous United States.
 
 # polygon boundaries of each state in the contiguous US
-states <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
-  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+states <- ne_states(iso_a2 = "US", returnclass = "sf") |>
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) |>
   transmute(state = iso_3166_2)
 
 # load fold-level trend estimates for Sage Thrasher
@@ -547,18 +547,18 @@ trends_folds <- st_join(trends_folds_sf, states, left = FALSE) |>
   st_drop_geometry()
 
 # abundance-weighted average trend by region and fold
-trends_states_folds <- trends_folds %>%
-  group_by(state, fold) %>%
+trends_states_folds <- trends_folds |>
+  group_by(state, fold) |>
   summarize(abd_ppy = sum(abd * abd_ppy) / sum(abd),
             .groups = "drop")
 
 # summarize across folds for each state
-trends_states <- trends_states_folds %>%
-  group_by(state) %>%
+trends_states <- trends_states_folds |>
+  group_by(state) |>
   summarise(abd_ppy_median = median(abd_ppy, na.rm = TRUE),
             abd_ppy_lower = quantile(abd_ppy, 0.10, na.rm = TRUE),
             abd_ppy_upper = quantile(abd_ppy, 0.90, na.rm = TRUE),
-            .groups = "drop") %>%
+            .groups = "drop") |>
   arrange(abd_ppy_median)
 
 # join trends to state polygons and make a map
@@ -589,16 +589,16 @@ ebirdst_download_trends(sagebrush_species)
 trends_sagebrush_species <- load_trends(sagebrush_species)
 
 # calculate cell-wise mean trend
-trends_sagebrush <- trends_sagebrush_species %>%
-  group_by(srd_id, latitude, longitude) %>%
+trends_sagebrush <- trends_sagebrush_species |>
+  group_by(srd_id, latitude, longitude) |>
   summarize(n_species = n(),
             abd_ppy = mean(abd_ppy, na.rm = TRUE),
             .groups = "drop")
 
 # convert the points to sf format
 # only consider cells where all three species occur
-all_species <- trends_sagebrush %>%
-  filter(n_species == length(sagebrush_species)) %>%
+all_species <- trends_sagebrush |>
+  filter(n_species == length(sagebrush_species)) |>
   st_as_sf(coords = c("longitude", "latitude"),
            crs = 4326)
 

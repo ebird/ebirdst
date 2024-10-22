@@ -4,25 +4,25 @@ library(lubridate)
 library(jsonlite)
 library(glue)
 
-pred_year <- file.path("data-raw", "config_status.json") %>%
-  read_json(simplifyVector = TRUE) %>%
+pred_year <- file.path("data-raw", "config_status.json") |>
+  read_json(simplifyVector = TRUE) |>
   pluck("SRD_PRED_YEAR")
 
 # s3 species
 s3_bucket <- Sys.getenv("EBIRDST_S3_BUCKET")
-species_codes <- glue("aws s3 ls {s3_bucket}/{pred_year}/") %>%
-  paste("awk '{print $2}'", sep = " | ") %>%
-  system(intern = TRUE) %>%
+species_codes <- glue("aws s3 ls {s3_bucket}/{pred_year}/") |>
+  paste("awk '{print $2}'", sep = " | ") |>
+  system(intern = TRUE) |>
   str_remove_all("/")
 
 # reviews
 gs_key <- Sys.getenv("EBIRDST_STATUS_GS_KEY")
 runs <- glue("https://docs.google.com/spreadsheets/d/{gs_key}/",
-             "export?format=csv") %>%
-  read_csv(show_col_types = FALSE) %>%
-  rename_with(tolower) %>%
-  filter(status == "REVIEWED", full_year_quality > 0) %>%
-  rename(resident_quality = full_year_quality) %>%
+             "export?format=csv") |>
+  read_csv(show_col_types = FALSE) |>
+  rename_with(tolower) |>
+  filter(status == "REVIEWED", full_year_quality > 0) |>
+  rename(resident_quality = full_year_quality) |>
   filter(!is.na(species_code))
 
 # species passing review but missing from s3
@@ -63,12 +63,12 @@ runs$resident_end[fy_resident] <- "12-28"
 convert_to_date <- function(x) {
   ymd(ifelse(is.na(x), NA_character_, paste0(pred_year, "-", x)))
 }
-ebirdst_runs <- runs %>%
-  select(-common_name) %>%
-  inner_join(ebird_taxonomy, by = "species_code") %>%
-  arrange(taxon_order) %>%
+ebirdst_runs <- runs |>
+  select(-common_name) |>
+  inner_join(ebird_taxonomy, by = "species_code") |>
+  arrange(taxon_order) |>
   mutate(across(ends_with("start"), convert_to_date),
-         across(ends_with("end"), convert_to_date)) %>%
+         across(ends_with("end"), convert_to_date)) |>
   select(species_code, scientific_name, common_name,
          is_resident = summarize_as_resident,
          breeding_quality, breeding_start, breeding_end,
@@ -81,7 +81,7 @@ ebirdst_runs <- runs %>%
 
 # trends runs
 trends <- read_csv("data-raw/ebird-trends_runs_2022.csv",
-                   show_col_types = FALSE) %>%
+                   show_col_types = FALSE) |>
   mutate(species_code = case_match(species_code, "norgos2" ~ "norgos",
                                    .default = species_code)) |>
   transmute(has_trends = TRUE,
@@ -95,14 +95,14 @@ trends <- read_csv("data-raw/ebird-trends_runs_2022.csv",
             rsquared, beta0)
 
 # combine
-ebirdst_runs <- left_join(ebirdst_runs, trends, by = "species_code") %>%
-  mutate(has_trends = coalesce(has_trends, FALSE)) %>%
+ebirdst_runs <- left_join(ebirdst_runs, trends, by = "species_code") |>
+  mutate(has_trends = coalesce(has_trends, FALSE)) |>
   arrange(species_code)
 
 # add a row for yebsap example
-ebirdst_runs <- ebirdst_runs %>%
-  filter(species_code == "yebsap") %>%
-  mutate(species_code = "yebsap-example") %>%
-  bind_rows(ebirdst_runs, .)
+ebirdst_runs <- ebirdst_runs |>
+  filter(species_code == "yebsap") |>
+  mutate(species_code = "yebsap-example") |>
+  bind_rows(ebirdst_runs)
 
 usethis::use_data(ebirdst_runs, overwrite = TRUE)

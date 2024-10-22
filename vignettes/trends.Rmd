@@ -46,8 +46,8 @@ library(sf)
 library(terra)
 library(ebirdst)
 
-trends_runs <- ebirdst_runs %>% 
-  filter(has_trends) %>% 
+trends_runs <- ebirdst_runs |> 
+  filter(has_trends) |> 
   select(species_code, common_name,
          trends_season, trends_region,
          trends_start_year, trends_end_year,
@@ -70,8 +70,8 @@ Information is provided on the trends model for each species, including two pred
 Note that some season dates span two calendar years, for example Canvasback has 2011-2021 trends estimates for a non-breeding season defined as December 20 to January 25. In this case, the first season will be December 20, 2011 to January 25, 2012.
 
 ```{r crossing}
-trends_runs %>% 
-  filter(common_name == "Canvasback") %>% 
+trends_runs |> 
+  filter(common_name == "Canvasback") |> 
   select(trends_start_year, trends_end_year, 
          trends_start_date, trends_end_date)
 ```
@@ -97,8 +97,8 @@ trends_sagthr <- load_trends("Sage Thrasher")
 Each row corresponds to the trend estimate for a 27 km by 27 km grid cell, identified by the `srd_id` column and with cell center given by the `longitude` and `latitude` coordinates. Columns beginning with `abd_ppy` provide estimates of the percent per year trend in relative abundance and 80% confidence intervals, while those beginning with `abd_trend` provide estimates of the cumulative trend in relative abundance and 80% confidence intervals over the time period. The `abd` column gives the relative abundance estimate for the middle of the trend time period (e.g. 2014 for a 2007-2021 trend). The `start_year/end_year` and `start_date/end_date` columns provide redundant information to that available in `ebirdst_runs`. Specifically for Sage Thrasher we have:
 
 ```{r dates}
-trends_runs %>% 
-  filter(common_name == "Sage Thrasher") %>% 
+trends_runs |> 
+  filter(common_name == "Sage Thrasher") |> 
   select(trends_start_year, trends_end_year,
          trends_start_date, trends_end_date)
 ```
@@ -182,8 +182,8 @@ eBird trend estimates are made on a 27 km by 27 km grid, which allows summarizat
 
 ```{r applications-regional}
 # boundaries of states in the united states
-states <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
-  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+states <- ne_states(iso_a2 = "US", returnclass = "sf") |>
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) |>
   transmute(state = iso_3166_2)
 
 # convert fold-level trends estimates to sf format
@@ -195,19 +195,19 @@ trends_sagthr_sf <-  st_as_sf(trends_sagthr_folds,
 trends_sagthr_sf <- st_join(trends_sagthr_sf, states, left = FALSE)
 
 # abundance-weighted average trend by region and fold
-trends_states_folds <- trends_sagthr_sf %>%
-  st_drop_geometry() %>%
-  group_by(state, fold) %>%
+trends_states_folds <- trends_sagthr_sf |>
+  st_drop_geometry() |>
+  group_by(state, fold) |>
   summarize(abd_ppy = sum(abd * abd_ppy) / sum(abd),
             .groups = "drop")
 
 # summarize across folds for each state
-trends_states <- trends_states_folds %>% 
-  group_by(state) %>%
+trends_states <- trends_states_folds |> 
+  group_by(state) |>
   summarise(abd_ppy_median = median(abd_ppy, na.rm = TRUE),
             abd_ppy_lower = quantile(abd_ppy, 0.10, na.rm = TRUE),
             abd_ppy_upper = quantile(abd_ppy, 0.90, na.rm = TRUE),
-            .groups = "drop") %>% 
+            .groups = "drop") |> 
   arrange(abd_ppy_median)
 ```
 
@@ -235,7 +235,7 @@ In some cases, we may be interested in the trend for an entire community of bird
 
 ```{r applications-multi-runs}
 sagebrush_species <- c("Brewer's Sparrow", "Sagebrush Sparrow", "Sage Thrasher")
-trends_runs %>% 
+trends_runs |> 
   filter(common_name %in% sagebrush_species)
 ```
 
@@ -251,8 +251,8 @@ Now we can load the trends and calculate the cell-wise mean.
 trends_sagebrush_species <- load_trends(sagebrush_species)
 
 # calculate mean trend for each cell
-trends_sagebrush <- trends_sagebrush_species %>% 
-  group_by(srd_id, latitude, longitude) %>% 
+trends_sagebrush <- trends_sagebrush_species |> 
+  group_by(srd_id, latitude, longitude) |> 
   summarize(n_species = n(),
             abd_ppy = mean(abd_ppy, na.rm = TRUE),
             .groups = "drop")
@@ -263,8 +263,8 @@ Finally, let's make a map of these sagebrush trends, focusing only on those cell
 
 ```{r applications-multi-map}
 # convert the points to sf format
-all_species <- trends_sagebrush %>% 
-  filter(n_species == length(sagebrush_species)) %>% 
+all_species <- trends_sagebrush |> 
+  filter(n_species == length(sagebrush_species)) |> 
   st_as_sf(coords = c("longitude", "latitude"),
            crs = 4326)
 

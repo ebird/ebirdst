@@ -462,8 +462,8 @@ cumulative_trend <- 100 * ((1 + ppy_trend / 100)^(end_year - start_year) - 1)
 # Thrasher for each state in the contiguous United States.
 
 # polygon boundaries of each state in the contiguous US
-states <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
-  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+states <- ne_states(iso_a2 = "US", returnclass = "sf") |>
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) |>
   transmute(state = iso_3166_2)
 
 # load fold-level trend estimates for Sage Thrasher

@@ -114,8 +114,8 @@ abd_prj <- project(trim(abd), crs$wkt, method = "near")
 # get reference data from the rnaturalearth package
 # the example data currently shows only the US state of Michigan
 wh_states <- ne_states(country = c("United States of America", "Canada"),
-                       returnclass = "sf") %>% 
-  st_transform(crs = crs) %>% 
+                       returnclass = "sf") |> 
+  st_transform(crs = crs) |> 
   st_geometry()
 
 # start plotting

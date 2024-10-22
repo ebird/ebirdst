@@ -81,8 +81,8 @@ A rating of 0 implies this season failed review and model results should not be 
 Let's look at the results of the review for our example dataset.
 
 ```{r review}
-ebirdst_runs %>% 
-  filter(species_code == "yebsap-example") %>% 
+ebirdst_runs |> 
+  filter(species_code == "yebsap-example") |> 
   glimpse()
 ```
 
