@@ -1,5 +1,6 @@
 library(dplyr)
 library(ebirdst)
+library(geodata)
 library(ggplot2)
 library(rnaturalearth)
 library(sf)
@@ -459,7 +460,9 @@ cumulative_trend <- 100 * ((1 + ppy_trend / 100)^(end_year - start_year) - 1)
 # ├ Application 1: regional trends ----
 
 # Goal: estimate the % per year trend for Sage Thrasher in the Great Basin Bird
-# Conservation Region (BCR 9). BCR polygons can be downloaded from
+# Conservation Region (BCR 9). BCRs are are ecologically distinct regions in
+# North America with similar bird communities, habitats, and resource management
+# issues. Polygons defining the BCR boundaries can be downloaded from
 # https://www.birdscanada.org/bird-science/nabci-bird-conservation-regions
 
 # load BCR polygons that you've downloaded and unzipped, then subset to BCR 9
@@ -469,7 +472,7 @@ cumulative_trend <- 100 * ((1 + ppy_trend / 100)^(end_year - start_year) - 1)
 
 # convert to spatial sf format
 
-# subset to just cells within BCR 19
+# subset to just cells within BCR 9
 
 # calculate abundance-weighted regional trend
 
@@ -528,7 +531,10 @@ ggplot(trends_states_sf) +
 
 # convert the points to sf format
 # only consider cells where all three species occur
-
+all_species <- trends_sagebrush |>
+  filter(n_species == length(sagebrush_species)) |>
+  st_as_sf(coords = c("longitude", "latitude"),
+           crs = 4326)
 
 # make a map
 ggplot(all_species) +
