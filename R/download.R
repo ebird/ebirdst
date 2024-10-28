@@ -422,7 +422,7 @@ ebirdst_data_dir <- function() {
 ebirdst_version <- function() {
   list(version_year = 2022,
        release_year = 2023,
-       access_end_date = as.Date("2024-11-15"))
+       access_end_date = as.Date("2025-01-15"))
 }
 
 
