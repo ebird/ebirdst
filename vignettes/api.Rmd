@@ -64,5 +64,5 @@ https://st-download.ebird.org/v1/fetch?objKey={object_path}&key={access_key}
 where `object_path` is the path to a given file object in the same format as returned by the list files API and `access_key` is the user specific access key. For example, assuming your access key is `XXXXXXXX`, if you want to download the 3 km seasonal mean relative abundance, first find the corresponding file object path in the JSON returned by the list files API: `2022/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2022.tif`. Then provide that object path to the download API:
 
 ```
-https://st-download.ebird.org/v1/fetch?objKey=2022/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2022.tif&key=h4ebqg7t66i2
+https://st-download.ebird.org/v1/fetch?objKey=2022/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2022.tif&key=XXXXXXXX
 ```
