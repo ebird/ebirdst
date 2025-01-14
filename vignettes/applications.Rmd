@@ -28,7 +28,14 @@ knitr::opts_chunk$set(warning = FALSE,
 knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 ```
 
-This vignette will cover a variety of common applications of the eBird Status Data Products including producing maps, plotting migration chronologies, and estimating the proportion of the population of a species within a region. In the introductory vignette we worked with the small example dataset for Yellow-bellied Sapsucker, which does not require a data access key to download. To provide more realistic examples, throughout this vignette we will use complete datasets for several species. As a result, a [data access key](https://ebird.github.io/ebirdst/articles/status.html#access) is required to run the code in this vignette.
+This vignette will cover a variety of common applications of the eBird Status Data Products including producing maps, plotting migration chronologies, estimating the proportion of the population of a species within a region, and identifying areas of importance for a suite of species within a region. Each of these applications is chosen to highlight the value of the eBird Status Data Products for informing bird conservation and management.
+
+Since conservation resources are finite, it's crucial to allocate them strategically for maximum impact, ensuring resources are precisely directed to the right place at the right time. The eBird Status Data Products are particularly valuable for informing these spatiotemporal conservation decisions because they offer high spatial and temporal resolution information for a large number of species across their full global ranges.
+
+In the introductory vignette we worked with the small example dataset for Yellow-bellied Sapsucker, which does not require a data access key to download. To provide more realistic examples, throughout this vignette we will use complete datasets for several species. As a result, a [data access key](https://ebird.github.io/ebirdst/articles/status.html#access) is required to run the 
+code in this vignette.
+
+A webinar working through several of these applications is a [available on YouTube](https://www.youtube.com/watch?v=xduYPkQnbEo).
 
 We start by loading the packages used throughout this vignette.
 
@@ -47,17 +54,17 @@ extract <- terra::extract
 
 # Mapping relative abundance {#map}
 
-In this section, we'll demonstrate how to make a simple map of relative abundance within a given region. As an example, we'll make a map of breeding season relative abundance for [Sage Trasher](https://ebird.org/species/sagthr) in Wyoming. The maps produced using this approach are suitable for many applications; however, for high-quality publication-ready maps, it may be worthwhile using a traditional GIS environment such as QGIS or ArcGIS rather than R.
+In this section, we'll demonstrate how to make a simple map of relative abundance within a given region. As an example, we'll make a map of breeding season relative abundance for [Western Meadowlark](https://ebird.org/species/wesmea) in Montana The maps produced using this approach are suitable for many applications; however, for high-quality publication-ready maps, it may be worthwhile using a traditional GIS environment such as QGIS or ArcGIS rather than R.
 
-We start by downloading data for Sage Thrasher and loading the breeding season relative abundance raster. The `pattern` argument to `ebirdst_download_status()` can be used to only download the specific files we need.
+We start by downloading data for Western Meadowlark and loading the breeding season relative abundance raster. The `pattern` argument to `ebirdst_download_status()` can be used to only download the specific files we need.
 
 ```{r map-load}
-# download the yellow-bellied sapsucker data
-ebirdst_download_status("sagthr",
+# download seasonal relative abundance data
+ebirdst_download_status("wesmea",
                         pattern = "abundance_seasonal_mean")
 
 # load seasonal mean relative abundance at 3km resolution
-abd_seasonal <- load_raster("sagthr", 
+abd_seasonal <- load_raster("wesmea", 
                             product = "abundance", 
                             period = "seasonal",
                             metric = "mean",
@@ -78,18 +85,18 @@ Clearly this simple approach doesn't work very well! There are a wide variety of
 
 ## Cropping and masking {#map-extent}
 
-All raster data downloaded through this package are defined over the same global grid, regardless of the range of the individual species. As a result, mapping these data will produce a global map by default. However, Sage Thrasher only occurs in the western United States, which is barely visible in the global map. We need to constrain the extent of our map to make it more useful. For this example, we'll download a boundary for Wyoming (a state in the United States that harbors a large proportion of the breeding population of Sage Thrasher) and use it to crop and mask the relative abundance data. If you have a region defined in a Shapefile or GeoPackage you can instead load that a polygon defining the boundary of that region using `read_sf()`.
+All raster data downloaded through this package are defined over the same global grid, regardless of the range of the individual species. As a result, mapping these data will produce a global map by default. However, Western Meadowlark only occurs in the western United States, which is barely visible in the global map. We need to constrain the extent of our map to make it more useful. For this example, we'll download a boundary for Montana (a state in the United States that harbors a large proportion of the breeding population of Western Meadowlark) and use it to crop and mask the relative abundance data. If you have a region defined in a Shapefile or GeoPackage you can instead load that a polygon defining the boundary of that region using `read_sf()`.
 
 ```{r map-extent, echo=-1}
 par(mar = c(0.25, 0.25, 0.25, 0.25))
-# wyoming boundary
+# region boundary
 region_boundary <- ne_states(iso_a2 = "US") |> 
-  filter(name == "Wyoming")
+  filter(name == "Montana")
 
 # project boundary to match raster data
 region_boundary_proj <- st_transform(region_boundary, st_crs(abd_breeding))
 
-# crop and mask to boundary of wyoming
+# crop and mask to boundary of montana
 abd_breeding_mask <- crop(abd_breeding, region_boundary_proj) |> 
   mask(region_boundary_proj)
 
@@ -193,34 +200,37 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
 
 # Migration chronologies {#chron}
 
+> **Goal:** generate migration chronologies for a set of species within a region to investigate how use of the region changes throughout the year for different species. This information can be used to inform the optimal time of year to make temporally specific conservation investments. For an example of this type of conservation intervention, see the [California Bird Returns project](https://birdreturns.org/).
+
 In this application we'll use the weekly estimates to chart the change in relative abundance throughout the year for a given region. These migration chronologies can be useful for identifying when a given geography receives the highest intensity of use by a species or group of species.
 
-We'll start by generating a chronology with confidence intervals for a single species, then demonstrate how to produce multi-species chronologies For these examples, we'll consider shorebirds in Kansas (a state near the center of the United States). To start we'll load a polygon for the boundary of Kansas.
+We'll start by generating a chronology with confidence intervals for a single species, then demonstrate how to produce multi-species chronologies. For these examples, we'll consider grassland birds in Montana. To start we'll load a polygon for the boundary of Montana.
 
 ```{r chron}
 region_boundary <- ne_states(iso_a2 = "US") |> 
-  filter(name == "Kansas")
+  filter(name == "Montana")
 ```
 
 ## Single species with uncertainty {#chron-single}
 
-For the single species example, let's chart a migration chronology for [Snowy Plover](https://ebird.org/species/snoplo5) in Kansas. First we need to download and load the relevant eBird Status Data Products for this species: the weekly median relative abundance and the upper and lower confidence intervals of weekly relative abundance.
+For the single species example, let's chart a migration chronology for [Western Meadowlark](https://ebird.org/species/wesmea) in Montana. First we need to download and load the relevant eBird Status Data Products for this species: the weekly median relative abundance and the upper and lower confidence intervals of weekly relative abundance.
 
 ```{r chron-single-dl}
 # download data if they haven't already been downloaded
-ebirdst_download_status("Snowy Plover", 
+# only weekly 3km relative abundance, median and confidence limits
+ebirdst_download_status("Western Meadowlark", 
                         pattern = "abundance_(median|upper|lower)_3km")
 
-# load raster data
-abd_median <- load_raster("snoplo5", product = "abundance", metric = "median")
-abd_lower <- load_raster("snoplo5", product = "abundance", metric = "lower")
-abd_upper <- load_raster("snoplo5", product = "abundance", metric = "upper")
+# load the median weekly relative abundance and lower/upper confidence limits
+abd_median <- load_raster("wesmea", product = "abundance", metric = "median")
+abd_lower <- load_raster("wesmea", product = "abundance", metric = "lower")
+abd_upper <- load_raster("wesmea", product = "abundance", metric = "upper")
 
 # project region boundary to match raster data
 region_boundary_proj <- st_transform(region_boundary, st_crs(abd_median))
 ```
 
-Now we can calculate the mean relative abundance with confidence intervals for each week of the year within Kansas.
+Now we can calculate the mean relative abundance with confidence intervals for each week of the year within Montana The `extract()` function extracts all the raster cells values within a given polygon, then summarizes these values using a user-provided function.
 
 ```{r chron-single-region}
 # extract values within region and calculate the mean
@@ -231,18 +241,11 @@ abd_lower_region <- extract(abd_lower, region_boundary_proj,
 abd_upper_region <- extract(abd_upper, region_boundary_proj,
                             fun = "mean", na.rm = TRUE, ID = FALSE)
 
-# transform to data frame format
-abd_median_region <- data.frame(week = as.Date(names(abd_median_region)),
-                                median = as.numeric(abd_median_region[1, ]))
-abd_lower_region <- data.frame(week = as.Date(names(abd_lower_region)),
-                               lower = as.numeric(abd_lower_region[1, ]))
-abd_upper_region <- data.frame(week = as.Date(names(abd_upper_region)),
-                               upper = as.numeric(abd_upper_region[1, ]))
-
-# combine median and confidence intervals
-chronology <- abd_median_region |> 
-  inner_join(abd_lower_region, by = "week") |> 
-  inner_join(abd_upper_region, by = "week")
+# transform to data frame format with rows corresponding to weeks
+chronology <- data.frame(week = as.Date(names(abd_median)),
+                         median = as.numeric(abd_median_region),
+                         lower = as.numeric(abd_lower_region),
+                         upper = as.numeric(abd_upper_region))
 ```
 
 Finally, let's use this data frame to generate a migration chronology for this species.
@@ -254,38 +257,60 @@ ggplot(chronology) +
   geom_line() +
   scale_x_date(date_labels = "%b", date_breaks = "1 month") +
   labs(x = "Week", 
-       y = "Mean relative abundance in Kansas",
-       title = "Migration chronology for Snowy Plover in Kansas")
+       y = "Mean relative abundance in Montana",
+       title = "Migration chronology for Western Meadowlark in Montana")
 ```
 
 ## Multi-species {#chron-multi}
 
-Migration chronologies can also be overlaid for multiple species, allowing for comparison of migration timing between species. However, comparing eBird Status Data Products across species requires extra caution because the models give *relative* rather than absolute abundance. For example, species differ in their detectability, and this may cause differences in relative abundance. To address this, we’ll use the proportion of population layers, which give the proportion of the total range-wide relative abundance falling within each cell. These proportion of population layers help to control for difference in detectability, allowing us to compare multiple species
+Migration chronologies can also be overlaid for multiple species, allowing for comparison of migration timing between species. However, comparing eBird Status Data Products across species requires extra caution because the models give *relative* rather than absolute abundance. For example, species differ in their detectability, and this may cause differences in relative abundance. To address this, rather than use the relative abundance within Kansas, we'll calculate the proportion of the global modeled population falling within Kansas. Since proportion of population is a ratio of relative abundance values, it helps to control for difference in detectability, allowing us to compare multiple species.
 
-Following a similar approach to that used for the single species chronology above, we'll estimate migration chronologies for a suite of shorebird species in Kansas. However, in this example we'll estiate the proportion of population falling within Kansas rather than the mean abundance.
+Following a similar approach to that used for the single species chronology above, we'll estimate migration chronologies for a suite of grassland species in Montana. However, in this example we'll estimate the proportion of population falling within Montana rather than the mean abundance.
 
 ```{r chron-multi-chron}
-species <- c("American Avocet", "Snowy Plover", "Hudsonian Godwit", 
-             "Semipalmated Sandpiper")
+grassland_species <- c("Baird's Sparrow",
+                       "Bobolink",
+                       "Chestnut-collared Longspur",
+                       "Sprague's Pipit",
+                       "Upland Sandpiper",
+                       "Western Meadowlark")
 
 chronologies <- NULL
-for (species in species) {
-  # download propotion of population data
+for (species in grassland_species) {
+  # download weekly 27km relative abundance, median and confidence limits
   ebirdst_download_status(species,
-                          pattern = "proportion-population_median_3km")
+                          pattern = "abundance_(median|upper|lower)_3km")
   
-  # load raster data
-  prop_pop <- load_raster(species, product = "proportion-population")
+  # load the median weekly relative abundance and lower/upper confidence limits
+  abd_median <- load_raster(species)
+  abd_lower <- load_raster(species, metric = "lower")
+  abd_upper <- load_raster(species, metric = "upper")
   
-  # estimate proportion of population within the region
-  prop_pop_region <- extract(prop_pop, region_boundary_proj,
-                             fun = "sum", na.rm = TRUE, ID = FALSE)
-  prop_pop_region <- data.frame(species = species,
-                                week = as.Date(names(prop_pop_region)),
-                                median = as.numeric(prop_pop_region[1, ]))
+  # total relative abundance across the entire modeled range of the species
+  abd_total <- global(abd_median, fun = sum, na.rm = TRUE)$sum
+  
+  # total abundance within the region of interest
+  abd_median_region <- extract(abd_median, region_boundary_proj,
+                               fun = "sum", na.rm = TRUE, ID = FALSE)
+  abd_lower_region <- extract(abd_lower, region_boundary_proj,
+                              fun = "sum", na.rm = TRUE, ID = FALSE)
+  abd_upper_region <- extract(abd_upper, region_boundary_proj,
+                              fun = "sum", na.rm = TRUE, ID = FALSE)
+  
+  # proportion of population within the region of interest
+  prop_pop_median <- as.numeric(abd_median_region) / abd_total
+  prop_pop_lower <- as.numeric(abd_lower_region) / abd_total
+  prop_pop_upper <- as.numeric(abd_upper_region) / abd_total
+  
+  # transform to data frame format with rows corresponding to weeks
+  chronology <- data.frame(species = species,
+                           week = as.Date(names(abd_median)),
+                           median = prop_pop_median,
+                           lower = prop_pop_lower,
+                           upper = prop_pop_upper)
   
   # combine with other species
-  chronologies <- bind_rows(chronologies, prop_pop_region)
+  chronologies <- bind_rows(chronologies, chronology)
 }
 ```
 
@@ -293,22 +318,29 @@ Finally, we can use this data frame to generate migration chronologies for these
 
 ```{r chron-multi-chart}
 ggplot(chronologies) +
-  aes(x = week, y = median, color = species) +
+  aes(x = week, y = median, color = species, fill = species) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), color = NA, alpha = 0.2) +
   geom_line(linewidth = 1) +
   scale_x_date(date_labels = "%b", date_breaks = "1 month") +
   scale_y_continuous(labels = scales::label_percent()) +
   scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
   labs(x = NULL, 
-       y = "Percent of population in Kansas",
-       title = "Migration chronologies for shorebirds in Kansas") +
+       y = "Percent of population in Montana",
+       title = "Migration chronologies for grassland birds in Montana",
+       color = NULL, fill = NULL) +
     theme(legend.position = "bottom")
 ```
 
-A variety of patterns are revealed in this migration chronology. Semipalmated Sandpiper and Hudsonian Godwit pass through the region during pre-breeding migration, presumably on their way to breed further north, but don't appear to take the same route on the post-breeding migration. Snowy Plover occurs in the region for much of the year, but with spikes for the pre- and post-breeding migration. Finally, American Avocet also occurs in the region for much of the year, but without the strong peaks during migration.
+A variety of patterns are revealed in this migration chronology. Several of the grassland species (e.g., Baird's Sparrow) have more than 30% of their breeding populations entirely within the state of Montana. Timing of arrival and departure varies between species, with Western Meadowlark spending the longest amount of time in the state and Bobolink spending the least amount of time.
 
-# Regional statistics {#stats}
+Finally, Sprague's Pipit deserves special attention: there's a huge spike in proportion of population during post-breeding migration. Is this a true reflection of the ecology of this species or an issue with the model estimates? It's important to bring a critical eye to outliers in the data and ask these questions. In this particular case, looking at the weekly maps on the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/species/sprpip/abundance-map-weekly?week=34) for the end of August reveals that the species appears to almost completely disappears for a couple weeks. Sprague's Pipit is quite challenging to detect during migration and it appears the models are struggling to pick up a signal, resulting in estimates that are missing large parts of the population. We've included this species as a remind to instigate any irregularities in the estimates you discover and consult an expert on the species if needed.
 
-The eBird Status and Trends website provides regional summary statistics at the country and state/province level for each species. For example, we can use the regional stats to see that [33% of the non-breeding population of Golden Eagle falls within the United States](https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA). The website also allows users to draw their own customs polygons to get summary statistics. within these polygons. However, there are cases where you may want to estimate regional summary statistics in a way that isn't supported by the website. Here we'll provide a few examples for calculating the proportion of population within a region. We'll use Golden Eagle for these examples.
+# Regional proportion of population {#stats}
+
+> **Goal:** identify the proportion of a species' population falling within a given region. This information can be used to highlight stewardship responsibility for a species, for example, if a large proportion of a species' breeding populaiton falls within a region, that region could be said to have a high stewardship resonsibility for that species.
+
+The eBird Status and Trends website provides regional summary statistics at the country and state/province level for each species. For example, we can use the regional stats to see that [33% of the non-breeding population of Golden Eagle falls within the United States](https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA). The website also allows users to draw their own customs polygons to get summary statistics within these polygons. However, there are cases where you may want to estimate regional summary statistics in a way that isn't supported by the website. Here we'll provide a few examples for calculating the proportion of population within a region. We'll use Golden Eagle for these examples.
 
 ```{r stats-dl}
 ebirdst_download_status("Golden Eagle")
@@ -334,7 +366,7 @@ states <- ne_states(iso_a2 = "US") |>
   st_transform(crs = st_crs(prop_pop_seasonal))
 ```
 
-Now we can use the `extract()` function from `terra` to calculate the proportion of the population within each state for each season. Setting `weights = TRUE` triggers `extract()` to calculate a weighted sum to account to adjust for partial coverage of raster cells by the region polygons. In this example, the `weights` argument has little impact, but it can play a more important role for smaller regions.
+Now we can use the `extract()` function from `terra` to calculate the proportion of the population within each state for each season. Setting `weights = TRUE` triggers `extract()` to calculate a weighted sum to account for partial coverage of raster cells by the region polygons. In this example, the `weights` argument has little impact, but it can play a more important role for smaller regions.
 
 ```{r stats-seasonal-extract}
 state_prop_pop <- extract(prop_pop_seasonal, states, 
@@ -446,7 +478,7 @@ mexico <- ne_countries(country = "Mexico") |>
   st_transform(crs = st_crs(abd_nonbreeding))
 
 # proportion in mexico
-extract(abd_nonbreeding, mexico, fun = "sum", na.rm = TRUE)
+extract(abd_nonbreeding, mexico, fun = "sum", na.rm = TRUE, ID = FALSE)
 ```
 
 According to this method, about 20% of the non-breeding population of Surf Scoter occurs in Mexico. However, Surf Scoter is an exclusively coastal species and this naive estimate is missing a large part of the population because the coarse boundary for Mexico we're using doesn't capture many of the 3 km raster cells that are falling offshore. We can correct for this by buffering the Mexico polygon by 5 km to try to capture these coastal cells. We'll also use `touches = TRUE` to include raster cells that are touched by the Mexico polygon; without that argument, only cells whose centers fall within the Mexico polygon will be included.
@@ -457,8 +489,136 @@ mexico_buffer <- st_buffer(mexico, dist = 5000)
 
 # proportion in mexico
 extract(abd_nonbreeding, mexico_buffer, fun = "sum", na.rm = TRUE,
-        touches = TRUE)
-
+        touches = TRUE, ID = FALSE)
 ```
 
 With these adjustments the proportion of the population has increased substantially from 20% to 33%. These approaches are not perfect and care should always be taken when working with eBird Status and Trends Data Products for coastal species.
+
+# Areas of importance {#aoi}
+
+> **Goal:** identify areas of highest importance for a set of species within a region. This information can be used to identify areas to prioritize for protection or other conservation interventions.
+
+eBird Status Data Products can used to identify areas of importance for a species or group of species, which can help prioritize areas for protection or other conservation interventions. In this context, "areas of importance" refer to those areas within the landscape that have a higher concentration of the given species. For this application, we'll use the same set of grassland species in Montana during the breeding season as we used for the migration chronology example.
+
+```{r aoi-species}
+# species list
+grassland_species <- c("Baird's Sparrow",
+                       "Bobolink",
+                       "Chestnut-collared Longspur",
+                       "Sprague's Pipit",
+                       "Upland Sandpiper",
+                       "Western Meadowlark")
+
+# region boundary
+region_boundary <- ne_states(iso_a2 = "US") |> 
+  filter(name == "Montana") |>
+  st_transform(st_crs(abd_breeding)) |> 
+  vect()
+```
+
+## Richness {#aoi-richness}
+
+The simplest approach to identifying important areas is to generate a richness map showing the number of species falling within each 3 km grid cell. We'll start by converting the relative abundance rasters to binary presence-absence rasters for each species within the region of interest by converting any non-zero abundance values to one. Then we calculate a cell-wise sum across the binary rasters for each species to generate a richness raster.
+
+```{r aoi-richness}
+range_rasters <- list()
+for (species in grassland_species) {
+  # download seasonal abundance at 3km
+  ebirdst_download_status(species, pattern = "abundance_seasonal_mean_3km")
+
+  # load breeding season relative abundance
+  abd <- load_raster(species, period = "seasonal") |>
+    subset("breeding")
+  # crop and mask to region
+  abd_masked <- mask(crop(abd, region_boundary), region_boundary)
+  # convert to binary, presence-absence
+  range_rasters[[species]] <- abd_masked > 0
+}
+# sum across species to calculate richness
+richness <- sum(rast(range_rasters), na.rm = TRUE)
+```
+
+Then we can make a simple map that shows the number of species (out of six total) that occur within each 3 km grid cell.
+
+```{r aoi-richness-map}
+# make a simple map
+plot(richness, axes = FALSE)
+```
+
+## Importance {#aoi-importance}
+
+The richness map generated in the previous section is intuitive and gives a general sense of where grassland species are occurring within Montana. However, presence-absence is a coarse metric: species may occur at dramatically different densities from location to location and, in general, it's most strategic to invest conservation resources in areas with higher concentrations of the target species. We can take full advantage of the relative abundance estimates to generate an importance metric that is much more granular than richness.
+
+Recall that when combining estimates across species it's important to use proportion of population rather than relative abundance to account for differences in the detection process. So, we'll load the pre-generated proportion of population rasters for each species, then average them across species to produce a metric of importance.
+
+```{r aoi-importance-pop}
+prop_pop <- list()
+for (species in grassland_species) {
+  # download seasonal abundance at 3km
+  ebirdst_download_status(species,
+                          pattern = "proportion-population_seasonal_mean_3km")
+
+  # load breeding season proportion of population
+  pp <- load_raster(species,
+                    product = "proportion-population",
+                    period = "seasonal") |>
+    subset("breeding")
+  # crop and mask to region
+  prop_pop[[species]] <- mask(crop(pp, region_boundary), region_boundary)
+}
+# take mean across species
+importance <- mean(rast(prop_pop), na.rm = TRUE)
+```
+
+Now let's make a simple map of this importance metric.
+
+```{r aoi-importance-simple}
+plot(importance, axes = FALSE)
+```
+
+This metric ranges from 0-1 and expresses the mean proportion of the population across the six grassland species within each cell. The raw numeric values are hard to interpret and not particularly meaningful, what's most important is the relative ranking of cells. We can make the map more useful by removing the zeros as well as small values. We'll drop all cell values below the median, but depending on your application you may want to chose a different value.
+
+```{r aoi-importance-clean}
+# drop zeros
+importance <- ifel(importance == 0, NA, importance)
+# drop anything below the median
+cutoff <- global(importance, quantile, probs = 0.5, na.rm = TRUE) |>
+  as.numeric()
+importance <- ifel(importance > cutoff, importance, NA)
+# make a simple map
+plot(importance, axes = FALSE)
+plot(region_boundary, col = "grey", axes = FALSE, add = TRUE)
+plot(importance, axes = FALSE, legend = FALSE, add = TRUE)
+```
+
+This map does a better job of highlighting the most important areas for grassland birds within Montana. Let's go one step further and add a better legend and re-project the data using the same region-specific coordinate reference system as we used in the [mapping example in this vignette](#map-projection).
+
+```{r aoi-importance-nice}
+# reproject
+importance_proj <- trim(project(importance, crs_laea))
+region_boundary_proj <- project(region_boundary, crs_laea)
+# basemap
+par(mar = c(0, 0, 0, 0))
+plot(region_boundary_proj, col = "grey", axes = FALSE,
+     main = "Areas of importance for grassland birds in Montana")
+# add importance raster
+plot(importance_proj, legend = FALSE, add = TRUE)
+# add legend
+fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
+                   col = viridisLite::viridis(100),
+                   breaks = seq(0, 1, length.out = 101),
+                   smallplot = c(0.15, 0.85, 0.12, 0.15),
+                   horizontal = TRUE,
+                   axis.args = list(at = c(0, 0.5, 1),
+                                    labels = c("Low", "Medium", "High"),
+                                    fg = "black", col.axis = "black",
+                                    cex.axis = 0.75, lwd.ticks = 0.5,
+                                    padj = -1.5),
+                   legend.args = list(text = "Relative Importance",
+                                      side = 3, col = "black",
+                                      cex = 1, line = 0))
+```
+
+We've presented one simple example of identifying priority areas for birds using the eBird Status Data Products; however, this method is quite flexible and can be tailored to your particular use case. At the very least, the focal region, season, and species should be modified for your application. In some cases, species may be present in your focal region throughout the full annual cycle and you may want to consider an importance metric derived by combing multiple seasons of data for each species or using weekly estimates to identify the week of highest importance for each species.
+
+For a more robust approach to this this problem, you may want to use eBird Status Data Products within the framework of Systematic Conservation Prioritization. Tools such as the R package [`prioritizr`](https://prioritizr.net/) can be used in conjunction with the eBird Status Data Products to solve spatial conservation planning problems with a broad range of objectives and constraints.

@@ -52,6 +52,31 @@ versions.** If you have accessed and used previous versions and/or may
 need access to previous versions for reasons related to reproducibility,
 please contact <ebird@cornell.edu> and your request will be considered.
 
+## Webinars
+
+A series of eBird Status and Trends webinars presented in collaboration
+with [Birds of the World](https://birdsoftheworld.org/bow/home) are
+available on YouTube. These webinars cover much of the same material as
+the vignettes available through the `ebirdst` R package website, but in
+a more visual interactive format. The webinars are as follows
+
+- [Estimating Abundance and Trends for the World’s Birds using eBird
+  data](https://www.youtube.com/watch?v=VKh9L6hjdlM): an introduction to
+  the methodology used to generate the eBird Status and Trends Data
+  Products and how these data products are being used in conservation
+  and research.
+- Working with eBird Status and Trends Data Products in R: a three part
+  series of webinars exploring how to work with the data products in R.
+  - [Part I](https://www.youtube.com/watch?v=DWqgbsMH1yU): introduction
+    to the range of data products available as well as the suite of
+    tools and training materials available for working with these data.
+    This webinar also covers how to work with the spatial data products
+    in QGIS.
+  - [Part II](https://www.youtube.com/watch?v=xduYPkQnbEo): applications
+    of the eBird Status Data Products.
+  - [Part III](https://www.youtube.com/watch?v=N7dDUXpcANE):
+    applications of the eBird Trends Data Products.
+
 ## Data access
 
 Data access is granted through an Access Request Form at:
@@ -68,12 +93,20 @@ downloading data. To store the key so the package can access it when
 downloading data, use the function `set_ebirdst_access_key("XXXXX")`,
 where `"XXXXX"` is the access key provided to you.
 
-**For those interested in accessing these data outside of R**, the most
-widely used data products are available for direct download through the
-[Status and Trends
-website](https://science.ebird.org/en/status-and-trends). Spatial data
-are accessible in widely adopted GeoTIFF and GeoPackage formats, which
-can be opened in QGIS, ArcGIS, or other GIS software.
+### Access outside of R
+
+For those interested in accessing these data outside of R, there are two
+alternative options:
+
+- The most widely used data products are available for direct download
+  through the [Status and Trends
+  website](https://science.ebird.org/en/status-and-trends). Spatial data
+  are accessible in widely adopted GeoTIFF and GeoPackage formats, which
+  can be opened in QGIS, ArcGIS, or other GIS software.
+- There is an API for programmatic access outside of R. For more
+  information on the eBird Status and Trends Data Products API, consult
+  the [associated
+  vignette](https://ebird.github.io/ebirdst/articles/api.html).
 
 ## Versions
 
@@ -182,9 +215,6 @@ print(weeks)
 #> [41] "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"
 #> [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13"
 #> [51] "2022-12-20" "2022-12-27"
-```
-
-``` r
 
 # select a week in the middle of the year
 abd <- abd[[26]]

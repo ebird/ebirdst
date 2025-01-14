@@ -19,6 +19,8 @@ navbar:
         href: articles/applications.html
       - text: eBird Trends Data Products
         href: articles/trends.html
+      - text: eBird Status and Trends Data Products API
+        href: articles/api.html
     reference:
       text: Function Reference
       href: reference/index.html

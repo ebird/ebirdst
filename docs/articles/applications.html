@@ -5,72 +5,50 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="ebirdst">
 <title>eBird Status Data Products Applications • ebirdst</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="eBird Status Data Products Applications">
-<meta property="og:description" content="ebirdst">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="eBird Status Data Products Applications">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2022.4</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../articles/status.html">Get Started</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/status.html">Get Started</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
-    <a class="dropdown-item" href="../articles/status.html">Introduction to eBird Status Data Products</a>
-    <a class="dropdown-item" href="../articles/applications.html">eBird Status Data Products Applications</a>
-    <a class="dropdown-item" href="../articles/trends.html">eBird Trends Data Products</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
+<li><a class="dropdown-item" href="../articles/status.html">Introduction to eBird Status Data Products</a></li>
+    <li><a class="dropdown-item" href="../articles/applications.html">eBird Status Data Products Applications</a></li>
+    <li><a class="dropdown-item" href="../articles/trends.html">eBird Trends Data Products</a></li>
+    <li><a class="dropdown-item" href="../articles/api.html">eBird Status and Trends Data Products API</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Function Reference</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../articles/product-changelog.html#2022-changelog">Changelog</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Version History</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Function Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/product-changelog.html#2022-changelog">Changelog</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Version History</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/ebird/ebirdst/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ebird/ebirdst/" aria-label="github"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -79,7 +57,8 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>eBird Status Data Products Applications</h1>
+
+      <h1>eBird Status Data Products Applications</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/applications.Rmd" class="external-link"><code>vignettes/applications.Rmd</code></a></small>
@@ -95,13 +74,26 @@
 </style>
 <p>This vignette will cover a variety of common applications of the
 eBird Status Data Products including producing maps, plotting migration
-chronologies, and estimating the proportion of the population of a
-species within a region. In the introductory vignette we worked with the
-small example dataset for Yellow-bellied Sapsucker, which does not
-require a data access key to download. To provide more realistic
-examples, throughout this vignette we will use complete datasets for
-several species. As a result, a <a href="https://ebird.github.io/ebirdst/articles/status.html#access">data
+chronologies, estimating the proportion of the population of a species
+within a region, and identifying areas of importance for a suite of
+species within a region. Each of these applications is chosen to
+highlight the value of the eBird Status Data Products for informing bird
+conservation and management.</p>
+<p>Since conservation resources are finite, it’s crucial to allocate
+them strategically for maximum impact, ensuring resources are precisely
+directed to the right place at the right time. The eBird Status Data
+Products are particularly valuable for informing these spatiotemporal
+conservation decisions because they offer high spatial and temporal
+resolution information for a large number of species across their full
+global ranges.</p>
+<p>In the introductory vignette we worked with the small example dataset
+for Yellow-bellied Sapsucker, which does not require a data access key
+to download. To provide more realistic examples, throughout this
+vignette we will use complete datasets for several species. As a result,
+a <a href="https://ebird.github.io/ebirdst/articles/status.html#access">data
 access key</a> is required to run the code in this vignette.</p>
+<p>A webinar working through several of these applications is a <a href="https://www.youtube.com/watch?v=xduYPkQnbEo" class="external-link">available on
+YouTube</a>.</p>
 <p>We start by loading the packages used throughout this vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -119,22 +111,22 @@ access key</a> is required to run the code in this vignette.</p>
 </h2>
 <p>In this section, we’ll demonstrate how to make a simple map of
 relative abundance within a given region. As an example, we’ll make a
-map of breeding season relative abundance for <a href="https://ebird.org/species/sagthr" class="external-link">Sage Trasher</a> in Wyoming. The
-maps produced using this approach are suitable for many applications;
-however, for high-quality publication-ready maps, it may be worthwhile
-using a traditional GIS environment such as QGIS or ArcGIS rather than
-R.</p>
-<p>We start by downloading data for Sage Thrasher and loading the
+map of breeding season relative abundance for <a href="https://ebird.org/species/wesmea" class="external-link">Western Meadowlark</a> in
+Montana The maps produced using this approach are suitable for many
+applications; however, for high-quality publication-ready maps, it may
+be worthwhile using a traditional GIS environment such as QGIS or ArcGIS
+rather than R.</p>
+<p>We start by downloading data for Western Meadowlark and loading the
 breeding season relative abundance raster. The <code>pattern</code>
 argument to <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> can be used to only
 download the specific files we need.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># download the yellow-bellied sapsucker data</span></span>
-<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"sagthr"</span>,</span>
+<code class="sourceCode R"><span><span class="co"># download seasonal relative abundance data</span></span>
+<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"wesmea"</span>,</span>
 <span>                        pattern <span class="op">=</span> <span class="st">"abundance_seasonal_mean"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load seasonal mean relative abundance at 3km resolution</span></span>
-<span><span class="va">abd_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"sagthr"</span>, </span>
+<span><span class="va">abd_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"wesmea"</span>, </span>
 <span>                            product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
 <span>                            period <span class="op">=</span> <span class="st">"seasonal"</span>,</span>
 <span>                            metric <span class="op">=</span> <span class="st">"mean"</span>,</span>
@@ -156,23 +148,24 @@ variety of issues that we’ll tackle one at a time.</p>
 <p>All raster data downloaded through this package are defined over the
 same global grid, regardless of the range of the individual species. As
 a result, mapping these data will produce a global map by default.
-However, Sage Thrasher only occurs in the western United States, which
-is barely visible in the global map. We need to constrain the extent of
-our map to make it more useful. For this example, we’ll download a
-boundary for Wyoming (a state in the United States that harbors a large
-proportion of the breeding population of Sage Thrasher) and use it to
-crop and mask the relative abundance data. If you have a region defined
-in a Shapefile or GeoPackage you can instead load that a polygon
-defining the boundary of that region using <code><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf()</a></code>.</p>
+However, Western Meadowlark only occurs in the western United States,
+which is barely visible in the global map. We need to constrain the
+extent of our map to make it more useful. For this example, we’ll
+download a boundary for Montana (a state in the United States that
+harbors a large proportion of the breeding population of Western
+Meadowlark) and use it to crop and mask the relative abundance data. If
+you have a region defined in a Shapefile or GeoPackage you can instead
+load that a polygon defining the boundary of that region using
+<code><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># wyoming boundary</span></span>
+<code class="sourceCode R"><span><span class="co"># region boundary</span></span>
 <span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Wyoming"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Montana"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># project boundary to match raster data</span></span>
 <span><span class="va">region_boundary_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">region_boundary</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_breeding</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># crop and mask to boundary of wyoming</span></span>
+<span><span class="co"># crop and mask to boundary of montana</span></span>
 <span><span class="va">abd_breeding_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">abd_breeding</span>, <span class="va">region_boundary_proj</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">region_boundary_proj</span><span class="op">)</span></span>
 <span></span>
@@ -292,6 +285,15 @@ contextual GIS data.</p>
 <div class="section level2">
 <h2 id="chron">Migration chronologies<a class="anchor" aria-label="anchor" href="#chron"></a>
 </h2>
+<blockquote>
+<p><strong>Goal:</strong> generate migration chronologies for a set of
+species within a region to investigate how use of the region changes
+throughout the year for different species. This information can be used
+to inform the optimal time of year to make temporally specific
+conservation investments. For an example of this type of conservation
+intervention, see the <a href="https://birdreturns.org/" class="external-link">California Bird
+Returns project</a>.</p>
+</blockquote>
 <p>In this application we’ll use the weekly estimates to chart the
 change in relative abundance throughout the year for a given region.
 These migration chronologies can be useful for identifying when a given
@@ -299,35 +301,38 @@ geography receives the highest intensity of use by a species or group of
 species.</p>
 <p>We’ll start by generating a chronology with confidence intervals for
 a single species, then demonstrate how to produce multi-species
-chronologies For these examples, we’ll consider shorebirds in Kansas (a
-state near the center of the United States). To start we’ll load a
-polygon for the boundary of Kansas.</p>
+chronologies. For these examples, we’ll consider grassland birds in
+Montana. To start we’ll load a polygon for the boundary of Montana.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Kansas"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Montana"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="chron-single">Single species with uncertainty<a class="anchor" aria-label="anchor" href="#chron-single"></a>
 </h3>
 <p>For the single species example, let’s chart a migration chronology
-for <a href="https://ebird.org/species/snoplo5" class="external-link">Snowy Plover</a> in
-Kansas. First we need to download and load the relevant eBird Status
+for <a href="https://ebird.org/species/wesmea" class="external-link">Western Meadowlark</a> in
+Montana. First we need to download and load the relevant eBird Status
 Data Products for this species: the weekly median relative abundance and
 the upper and lower confidence intervals of weekly relative
 abundance.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># download data if they haven't already been downloaded</span></span>
-<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"Snowy Plover"</span>, </span>
+<span><span class="co"># only weekly 3km relative abundance, median and confidence limits</span></span>
+<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"Western Meadowlark"</span>, </span>
 <span>                        pattern <span class="op">=</span> <span class="st">"abundance_(median|upper|lower)_3km"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># load raster data</span></span>
-<span><span class="va">abd_median</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"snoplo5"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span>
-<span><span class="va">abd_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"snoplo5"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"lower"</span><span class="op">)</span></span>
-<span><span class="va">abd_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"snoplo5"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span>
+<span><span class="co"># load the median weekly relative abundance and lower/upper confidence limits</span></span>
+<span><span class="va">abd_median</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"wesmea"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span>
+<span><span class="va">abd_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"wesmea"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"lower"</span><span class="op">)</span></span>
+<span><span class="va">abd_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"wesmea"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># project region boundary to match raster data</span></span>
 <span><span class="va">region_boundary_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">region_boundary</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_median</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can calculate the mean relative abundance with confidence
-intervals for each week of the year within Kansas.</p>
+intervals for each week of the year within Montana The
+<code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> function extracts all the raster cells values
+within a given polygon, then summarizes these values using a
+user-provided function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract values within region and calculate the mean</span></span>
 <span><span class="va">abd_median_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_median</span>, <span class="va">region_boundary_proj</span>,</span>
@@ -337,18 +342,11 @@ intervals for each week of the year within Kansas.</p>
 <span><span class="va">abd_upper_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_upper</span>, <span class="va">region_boundary_proj</span>,</span>
 <span>                            fun <span class="op">=</span> <span class="st">"mean"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># transform to data frame format</span></span>
-<span><span class="va">abd_median_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_median_region</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                                median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_median_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">abd_lower_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lower_region</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                               lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_lower_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">abd_upper_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_upper_region</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                               upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_upper_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># combine median and confidence intervals</span></span>
-<span><span class="va">chronology</span> <span class="op">&lt;-</span> <span class="va">abd_median_region</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">abd_lower_region</span>, by <span class="op">=</span> <span class="st">"week"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">abd_upper_region</span>, by <span class="op">=</span> <span class="st">"week"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># transform to data frame format with rows corresponding to weeks</span></span>
+<span><span class="va">chronology</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_median</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                         median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_median_region</span><span class="op">)</span>,</span>
+<span>                         lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_lower_region</span><span class="op">)</span>,</span>
+<span>                         upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_upper_region</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, let’s use this data frame to generate a migration chronology
 for this species.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -358,8 +356,8 @@ for this species.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b"</span>, date_breaks <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Week"</span>, </span>
-<span>       y <span class="op">=</span> <span class="st">"Mean relative abundance in Kansas"</span>,</span>
-<span>       title <span class="op">=</span> <span class="st">"Migration chronology for Snowy Plover in Kansas"</span><span class="op">)</span></span></code></pre></div>
+<span>       y <span class="op">=</span> <span class="st">"Mean relative abundance in Montana"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Migration chronology for Western Meadowlark in Montana"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="applications_files/figure-html/chron-single-chart-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -370,76 +368,122 @@ allowing for comparison of migration timing between species. However,
 comparing eBird Status Data Products across species requires extra
 caution because the models give <em>relative</em> rather than absolute
 abundance. For example, species differ in their detectability, and this
-may cause differences in relative abundance. To address this, we’ll use
-the proportion of population layers, which give the proportion of the
-total range-wide relative abundance falling within each cell. These
-proportion of population layers help to control for difference in
-detectability, allowing us to compare multiple species</p>
+may cause differences in relative abundance. To address this, rather
+than use the relative abundance within Kansas, we’ll calculate the
+proportion of the global modeled population falling within Kansas. Since
+proportion of population is a ratio of relative abundance values, it
+helps to control for difference in detectability, allowing us to compare
+multiple species.</p>
 <p>Following a similar approach to that used for the single species
 chronology above, we’ll estimate migration chronologies for a suite of
-shorebird species in Kansas. However, in this example we’ll estiate the
-proportion of population falling within Kansas rather than the mean
+grassland species in Montana. However, in this example we’ll estimate
+the proportion of population falling within Montana rather than the mean
 abundance.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"American Avocet"</span>, <span class="st">"Snowy Plover"</span>, <span class="st">"Hudsonian Godwit"</span>, </span>
-<span>             <span class="st">"Semipalmated Sandpiper"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">grassland_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baird's Sparrow"</span>,</span>
+<span>                       <span class="st">"Bobolink"</span>,</span>
+<span>                       <span class="st">"Chestnut-collared Longspur"</span>,</span>
+<span>                       <span class="st">"Sprague's Pipit"</span>,</span>
+<span>                       <span class="st">"Upland Sandpiper"</span>,</span>
+<span>                       <span class="st">"Western Meadowlark"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">chronologies</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">species</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># download propotion of population data</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">grassland_species</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># download weekly 27km relative abundance, median and confidence limits</span></span>
 <span>  <span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="va">species</span>,</span>
-<span>                          pattern <span class="op">=</span> <span class="st">"proportion-population_median_3km"</span><span class="op">)</span></span>
+<span>                          pattern <span class="op">=</span> <span class="st">"abundance_(median|upper|lower)_3km"</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="co"># load raster data</span></span>
-<span>  <span class="va">prop_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span>, product <span class="op">=</span> <span class="st">"proportion-population"</span><span class="op">)</span></span>
+<span>  <span class="co"># load the median weekly relative abundance and lower/upper confidence limits</span></span>
+<span>  <span class="va">abd_median</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span></span>
+<span>  <span class="va">abd_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span>, metric <span class="op">=</span> <span class="st">"lower"</span><span class="op">)</span></span>
+<span>  <span class="va">abd_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span>, metric <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="co"># estimate proportion of population within the region</span></span>
-<span>  <span class="va">prop_pop_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">prop_pop</span>, <span class="va">region_boundary_proj</span>,</span>
-<span>                             fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">prop_pop_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>species <span class="op">=</span> <span class="va">species</span>,</span>
-<span>                                week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">prop_pop_region</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                                median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">prop_pop_region</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="co"># total relative abundance across the entire modeled range of the species</span></span>
+<span>  <span class="va">abd_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="va">abd_median</span>, fun <span class="op">=</span> <span class="va">sum</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">sum</span></span>
+<span>  </span>
+<span>  <span class="co"># total abundance within the region of interest</span></span>
+<span>  <span class="va">abd_median_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_median</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                               fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">abd_lower_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_lower</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                              fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">abd_upper_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_upper</span>, <span class="va">region_boundary_proj</span>,</span>
+<span>                              fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># proportion of population within the region of interest</span></span>
+<span>  <span class="va">prop_pop_median</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_median_region</span><span class="op">)</span> <span class="op">/</span> <span class="va">abd_total</span></span>
+<span>  <span class="va">prop_pop_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_lower_region</span><span class="op">)</span> <span class="op">/</span> <span class="va">abd_total</span></span>
+<span>  <span class="va">prop_pop_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">abd_upper_region</span><span class="op">)</span> <span class="op">/</span> <span class="va">abd_total</span></span>
+<span>  </span>
+<span>  <span class="co"># transform to data frame format with rows corresponding to weeks</span></span>
+<span>  <span class="va">chronology</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>species <span class="op">=</span> <span class="va">species</span>,</span>
+<span>                           week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_median</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                           median <span class="op">=</span> <span class="va">prop_pop_median</span>,</span>
+<span>                           lower <span class="op">=</span> <span class="va">prop_pop_lower</span>,</span>
+<span>                           upper <span class="op">=</span> <span class="va">prop_pop_upper</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># combine with other species</span></span>
-<span>  <span class="va">chronologies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">chronologies</span>, <span class="va">prop_pop_region</span><span class="op">)</span></span>
+<span>  <span class="va">chronologies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">chronologies</span>, <span class="va">chronology</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Finally, we can use this data frame to generate migration
 chronologies for these species.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">chronologies</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">week</span>, y <span class="op">=</span> <span class="va">median</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">week</span>, y <span class="op">=</span> <span class="va">median</span>, color <span class="op">=</span> <span class="va">species</span>, fill <span class="op">=</span> <span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b"</span>, date_breaks <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, </span>
-<span>       y <span class="op">=</span> <span class="st">"Percent of population in Kansas"</span>,</span>
-<span>       title <span class="op">=</span> <span class="st">"Migration chronologies for shorebirds in Kansas"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       y <span class="op">=</span> <span class="st">"Percent of population in Montana"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Migration chronologies for grassland birds in Montana"</span>,</span>
+<span>       color <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="applications_files/figure-html/chron-multi-chart-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>A variety of patterns are revealed in this migration chronology.
-Semipalmated Sandpiper and Hudsonian Godwit pass through the region
-during pre-breeding migration, presumably on their way to breed further
-north, but don’t appear to take the same route on the post-breeding
-migration. Snowy Plover occurs in the region for much of the year, but
-with spikes for the pre- and post-breeding migration. Finally, American
-Avocet also occurs in the region for much of the year, but without the
-strong peaks during migration.</p>
+Several of the grassland species (e.g., Baird’s Sparrow) have more than
+30% of their breeding populations entirely within the state of Montana.
+Timing of arrival and departure varies between species, with Western
+Meadowlark spending the longest amount of time in the state and Bobolink
+spending the least amount of time.</p>
+<p>Finally, Sprague’s Pipit deserves special attention: there’s a huge
+spike in proportion of population during post-breeding migration. Is
+this a true reflection of the ecology of this species or an issue with
+the model estimates? It’s important to bring a critical eye to outliers
+in the data and ask these questions. In this particular case, looking at
+the weekly maps on the <a href="https://science.ebird.org/en/status-and-trends/species/sprpip/abundance-map-weekly?week=34" class="external-link">eBird
+Status and Trends website</a> for the end of August reveals that the
+species appears to almost completely disappears for a couple weeks.
+Sprague’s Pipit is quite challenging to detect during migration and it
+appears the models are struggling to pick up a signal, resulting in
+estimates that are missing large parts of the population. We’ve included
+this species as a remind to instigate any irregularities in the
+estimates you discover and consult an expert on the species if
+needed.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="stats">Regional statistics<a class="anchor" aria-label="anchor" href="#stats"></a>
+<h2 id="stats">Regional proportion of population<a class="anchor" aria-label="anchor" href="#stats"></a>
 </h2>
+<blockquote>
+<p><strong>Goal:</strong> identify the proportion of a species’
+population falling within a given region. This information can be used
+to highlight stewardship responsibility for a species, for example, if a
+large proportion of a species’ breeding populaiton falls within a
+region, that region could be said to have a high stewardship
+resonsibility for that species.</p>
+</blockquote>
 <p>The eBird Status and Trends website provides regional summary
 statistics at the country and state/province level for each species. For
 example, we can use the regional stats to see that <a href="https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA" class="external-link">33%
 of the non-breeding population of Golden Eagle falls within the United
 States</a>. The website also allows users to draw their own customs
-polygons to get summary statistics. within these polygons. However,
-there are cases where you may want to estimate regional summary
-statistics in a way that isn’t supported by the website. Here we’ll
-provide a few examples for calculating the proportion of population
-within a region. We’ll use Golden Eagle for these examples.</p>
+polygons to get summary statistics within these polygons. However, there
+are cases where you may want to estimate regional summary statistics in
+a way that isn’t supported by the website. Here we’ll provide a few
+examples for calculating the proportion of population within a region.
+We’ll use Golden Eagle for these examples.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"Golden Eagle"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
@@ -471,8 +515,8 @@ or Bird Conservation Region), you could load it here using the
 <p>Now we can use the <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> function from
 <code>terra</code> to calculate the proportion of the population within
 each state for each season. Setting <code>weights = TRUE</code> triggers
-<code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> to calculate a weighted sum to account to adjust
-for partial coverage of raster cells by the region polygons. In this
+<code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> to calculate a weighted sum to account for
+partial coverage of raster cells by the region polygons. In this
 example, the <code>weights</code> argument has little impact, but it can
 play a more important role for smaller regions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -482,6 +526,7 @@ play a more important role for smaller regions.</p>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># sort in descending order or breeding proportion of population</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">breeding</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; |---------|---------|---------|---------|=========================================                                          </span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_pop</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      state    breeding  nonbreeding prebreeding_migration</span></span>
 <span><span class="co">#&gt; 1   Alaska 0.059539077 1.246767e-05            0.18449229</span></span>
@@ -542,6 +587,7 @@ same method as in the previous section.</p>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># sort in descending order or breeding proportion of population</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">breeding</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; |---------|---------|---------|---------|=========================================                                          </span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_noram_pop</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      state   breeding  nonbreeding prebreeding_migration postbreeding_migration</span></span>
 <span><span class="co">#&gt; 1   Alaska 0.23794508 0.0000337296            0.35744748             0.16047911</span></span>
@@ -642,9 +688,9 @@ using the naive approach used in the previous examples.</p>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># proportion in mexico</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   ID nonbreeding</span></span>
-<span><span class="co">#&gt; 1  1   0.2049178</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   nonbreeding</span></span>
+<span><span class="co">#&gt; 1   0.2049178</span></span></code></pre></div>
 <p>According to this method, about 20% of the non-breeding population of
 Surf Scoter occurs in Mexico. However, Surf Scoter is an exclusively
 coastal species and this naive estimate is missing a large part of the
@@ -661,16 +707,181 @@ will be included.</p>
 <span></span>
 <span><span class="co"># proportion in mexico</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico_buffer</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>        touches <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   ID nonbreeding</span></span>
-<span><span class="co">#&gt; 1  1   0.3336408</span></span></code></pre></div>
+<span>        touches <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   nonbreeding</span></span>
+<span><span class="co">#&gt; 1   0.3336408</span></span></code></pre></div>
 <p>With these adjustments the proportion of the population has increased
 substantially from 20% to 33%. These approaches are not perfect and care
 should always be taken when working with eBird Status and Trends Data
 Products for coastal species.</p>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+<div class="section level2">
+<h2 id="aoi">Areas of importance<a class="anchor" aria-label="anchor" href="#aoi"></a>
+</h2>
+<blockquote>
+<p><strong>Goal:</strong> identify areas of highest importance for a set
+of species within a region. This information can be used to identify
+areas to prioritize for protection or other conservation
+interventions.</p>
+</blockquote>
+<p>eBird Status Data Products can used to identify areas of importance
+for a species or group of species, which can help prioritize areas for
+protection or other conservation interventions. In this context, “areas
+of importance” refer to those areas within the landscape that have a
+higher concentration of the given species. For this application, we’ll
+use the same set of grassland species in Montana during the breeding
+season as we used for the migration chronology example.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># species list</span></span>
+<span><span class="va">grassland_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baird's Sparrow"</span>,</span>
+<span>                       <span class="st">"Bobolink"</span>,</span>
+<span>                       <span class="st">"Chestnut-collared Longspur"</span>,</span>
+<span>                       <span class="st">"Sprague's Pipit"</span>,</span>
+<span>                       <span class="st">"Upland Sandpiper"</span>,</span>
+<span>                       <span class="st">"Western Meadowlark"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># region boundary</span></span>
+<span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Montana"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">abd_breeding</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="aoi-richness">Richness<a class="anchor" aria-label="anchor" href="#aoi-richness"></a>
+</h3>
+<p>The simplest approach to identifying important areas is to generate a
+richness map showing the number of species falling within each 3 km grid
+cell. We’ll start by converting the relative abundance rasters to binary
+presence-absence rasters for each species within the region of interest
+by converting any non-zero abundance values to one. Then we calculate a
+cell-wise sum across the binary rasters for each species to generate a
+richness raster.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">range_rasters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">grassland_species</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># download seasonal abundance at 3km</span></span>
+<span>  <span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="va">species</span>, pattern <span class="op">=</span> <span class="st">"abundance_seasonal_mean_3km"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># load breeding season relative abundance</span></span>
+<span>  <span class="va">abd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span>, period <span class="op">=</span> <span class="st">"seasonal"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="st">"breeding"</span><span class="op">)</span></span>
+<span>  <span class="co"># crop and mask to region</span></span>
+<span>  <span class="va">abd_masked</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">abd</span>, <span class="va">region_boundary</span><span class="op">)</span>, <span class="va">region_boundary</span><span class="op">)</span></span>
+<span>  <span class="co"># convert to binary, presence-absence</span></span>
+<span>  <span class="va">range_rasters</span><span class="op">[[</span><span class="va">species</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">abd_masked</span> <span class="op">&gt;</span> <span class="fl">0</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># sum across species to calculate richness</span></span>
+<span><span class="va">richness</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">range_rasters</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Then we can make a simple map that shows the number of species (out
+of six total) that occur within each 3 km grid cell.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># make a simple map</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">richness</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/aoi-richness-map-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level3">
+<h3 id="aoi-importance">Importance<a class="anchor" aria-label="anchor" href="#aoi-importance"></a>
+</h3>
+<p>The richness map generated in the previous section is intuitive and
+gives a general sense of where grassland species are occurring within
+Montana. However, presence-absence is a coarse metric: species may occur
+at dramatically different densities from location to location and, in
+general, it’s most strategic to invest conservation resources in areas
+with higher concentrations of the target species. We can take full
+advantage of the relative abundance estimates to generate an importance
+metric that is much more granular than richness.</p>
+<p>Recall that when combining estimates across species it’s important to
+use proportion of population rather than relative abundance to account
+for differences in the detection process. So, we’ll load the
+pre-generated proportion of population rasters for each species, then
+average them across species to produce a metric of importance.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prop_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">grassland_species</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># download seasonal abundance at 3km</span></span>
+<span>  <span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="va">species</span>,</span>
+<span>                          pattern <span class="op">=</span> <span class="st">"proportion-population_seasonal_mean_3km"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># load breeding season proportion of population</span></span>
+<span>  <span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="va">species</span>,</span>
+<span>                    product <span class="op">=</span> <span class="st">"proportion-population"</span>,</span>
+<span>                    period <span class="op">=</span> <span class="st">"seasonal"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="st">"breeding"</span><span class="op">)</span></span>
+<span>  <span class="co"># crop and mask to region</span></span>
+<span>  <span class="va">prop_pop</span><span class="op">[[</span><span class="va">species</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">pp</span>, <span class="va">region_boundary</span><span class="op">)</span>, <span class="va">region_boundary</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># take mean across species</span></span>
+<span><span class="va">importance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">prop_pop</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Now let’s make a simple map of this importance metric.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">importance</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/aoi-importance-simple-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>This metric ranges from 0-1 and expresses the mean proportion of the
+population across the six grassland species within each cell. The raw
+numeric values are hard to interpret and not particularly meaningful,
+what’s most important is the relative ranking of cells. We can make the
+map more useful by removing the zeros as well as small values. We’ll
+drop all cell values below the median, but depending on your application
+you may want to chose a different value.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># drop zeros</span></span>
+<span><span class="va">importance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/ifelse.html" class="external-link">ifel</a></span><span class="op">(</span><span class="va">importance</span> <span class="op">==</span> <span class="fl">0</span>, <span class="cn">NA</span>, <span class="va">importance</span><span class="op">)</span></span>
+<span><span class="co"># drop anything below the median</span></span>
+<span><span class="va">cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="va">importance</span>, <span class="va">quantile</span>, probs <span class="op">=</span> <span class="fl">0.5</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">importance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/ifelse.html" class="external-link">ifel</a></span><span class="op">(</span><span class="va">importance</span> <span class="op">&gt;</span> <span class="va">cutoff</span>, <span class="va">importance</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co"># make a simple map</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">importance</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">region_boundary</span>, col <span class="op">=</span> <span class="st">"grey"</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">importance</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/aoi-importance-clean-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>This map does a better job of highlighting the most important areas
+for grassland birds within Montana. Let’s go one step further and add a
+better legend and re-project the data using the same region-specific
+coordinate reference system as we used in the <a href="#map-projection">mapping example in this vignette</a>.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># reproject</span></span>
+<span><span class="va">importance_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">importance</span>, <span class="va">crs_laea</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">region_boundary_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">region_boundary</span>, <span class="va">crs_laea</span><span class="op">)</span></span>
+<span><span class="co"># basemap</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">region_boundary_proj</span>, col <span class="op">=</span> <span class="st">"grey"</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"Areas of importance for grassland birds in Montana"</span><span class="op">)</span></span>
+<span><span class="co"># add importance raster</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">importance_proj</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># add legend</span></span>
+<span><span class="fu">fields</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fields/man/image.plot.html" class="external-link">image.plot</a></span><span class="op">(</span>zlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, legend.only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   col <span class="op">=</span> <span class="fu">viridisLite</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>,</span>
+<span>                   smallplot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.85</span>, <span class="fl">0.12</span>, <span class="fl">0.15</span><span class="op">)</span>,</span>
+<span>                   horizontal <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   axis.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                                    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span><span class="op">)</span>,</span>
+<span>                                    fg <span class="op">=</span> <span class="st">"black"</span>, col.axis <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>                                    cex.axis <span class="op">=</span> <span class="fl">0.75</span>, lwd.ticks <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>                                    padj <span class="op">=</span> <span class="op">-</span><span class="fl">1.5</span><span class="op">)</span>,</span>
+<span>                   legend.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Relative Importance"</span>,</span>
+<span>                                      side <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>                                      cex <span class="op">=</span> <span class="fl">1</span>, line <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/aoi-importance-nice-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>We’ve presented one simple example of identifying priority areas for
+birds using the eBird Status Data Products; however, this method is
+quite flexible and can be tailored to your particular use case. At the
+very least, the focal region, season, and species should be modified for
+your application. In some cases, species may be present in your focal
+region throughout the full annual cycle and you may want to consider an
+importance metric derived by combing multiple seasons of data for each
+species or using weekly estimates to identify the week of highest
+importance for each species.</p>
+<p>For a more robust approach to this this problem, you may want to use
+eBird Status Data Products within the framework of Systematic
+Conservation Prioritization. Tools such as the R package <a href="https://prioritizr.net/" class="external-link"><code>prioritizr</code></a> can be used
+in conjunction with the eBird Status Data Products to solve spatial
+conservation planning problems with a broad range of objectives and
+constraints.</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -681,15 +892,15 @@ Products for coastal species.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

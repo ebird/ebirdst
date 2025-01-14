@@ -213,7 +213,7 @@ trends_states <- trends_states_folds |>
 
 We can join these state-level trends back to the state boundaries and make a map with `ggplot2`.
 
-```{r}
+```{r applications-regional-plot}
 trends_states_sf <- left_join(states, trends_states, by = "state")
 ggplot(trends_states_sf) +
   geom_sf(aes(fill = abd_ppy_median)) +

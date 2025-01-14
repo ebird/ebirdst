@@ -42,13 +42,28 @@ remotes::install_github("ebird/ebirdst")
 
 This version of `ebirdst` is designed to work with the eBird Status and Trends Data Products estimated for the year `r ebirdst::ebirdst_version()[["version_year"]]` released in `r ebirdst::ebirdst_version()[["release_year"]]`. **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.
 
+## Webinars
+
+A series of eBird Status and Trends webinars presented in collaboration with [Birds of the World](https://birdsoftheworld.org/bow/home) are available on YouTube. These webinars cover much of the same material as the vignettes available through the `ebirdst` R package website, but in a more visual interactive format. The webinars are as follows
+
+- [Estimating Abundance and Trends for the World’s Birds using eBird data ](https://www.youtube.com/watch?v=VKh9L6hjdlM): an introduction to the methodology used to generate the eBird Status and Trends Data Products and how these data products are being used in conservation and research.
+- Working with eBird Status and Trends Data Products in R: a three part series of webinars exploring how to work with the data products in R.
+  - [Part I](https://www.youtube.com/watch?v=DWqgbsMH1yU): introduction to the range of data products available as well as the suite of tools and training materials available for working with these data. This webinar also covers how to work with the spatial data products in QGIS.
+  - [Part II](https://www.youtube.com/watch?v=xduYPkQnbEo): applications of the eBird Status Data Products.
+  - [Part III](https://www.youtube.com/watch?v=N7dDUXpcANE): applications of the eBird Trends Data Products.
+
 ## Data access
 
 Data access is granted through an Access Request Form at: https://ebird.org/st/request. Access with this form generates a key to be used with this R package and is provided immediately (as long as commercial use is not requested). Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.
 
 After completing the Access Request Form, you will be provided a Status and Trends Data Products access key, which you will need when downloading data. To store the key so the package can access it when downloading data, use the function `set_ebirdst_access_key("XXXXX")`, where `"XXXXX"` is the access key provided to you.
 
-**For those interested in accessing these data outside of R**, the most widely used data products are available for direct download through the [Status and Trends website](https://science.ebird.org/en/status-and-trends). Spatial data are accessible in widely adopted GeoTIFF and GeoPackage formats, which can be opened in QGIS, ArcGIS, or other GIS software.
+### Access outside of R
+
+For those interested in accessing these data outside of R, there are two alternative options:
+
+- The most widely used data products are available for direct download through the [Status and Trends website](https://science.ebird.org/en/status-and-trends). Spatial data are accessible in widely adopted GeoTIFF and GeoPackage formats, which can be opened in QGIS, ArcGIS, or other GIS software.
+- There is an API for programmatic access outside of R. For more information on the eBird Status and Trends Data Products API, consult the [associated vignette](https://ebird.github.io/ebirdst/articles/api.html).
 
 ## Versions
 

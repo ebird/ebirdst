@@ -349,7 +349,7 @@ grid_sample_stratified <- function(
   if (!is.null(maximum_ss)) {
     sample_prop <- maximum_ss / nrow(sampled)
     if (case_control) {
-      # case control sampling on: sample preserving detections probability
+      # case control sampling on: sample preserving detection probability
       # calculate detection probability for the grid sampled data
       det_prob <- mean(sampled[[".detected"]], na.rm = TRUE)
 
