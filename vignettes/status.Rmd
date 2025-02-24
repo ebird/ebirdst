@@ -32,7 +32,7 @@ knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 
 The study and conservation of the natural world relies on detailed information about the distributions, abundances, and population trends of species over time. For many taxa, this information is challenging to obtain at relevant geographic scales. The goal of the eBird Status and Trends project is to use data from [eBird](https://ebird.org/home), the global community science bird monitoring program administered by The Cornell Lab of Ornithology, to generate a reliable, standardized source of biodiversity information for the world’s bird populations. To translate the eBird observations into robust data products, we use machine learning to fill spatiotemporal gaps, using local land cover descriptions derived from remote sensing data, while controlling for biases inherent in species observations collected by community scientists. See Fink et al. (2019) for more information about the analysis used to generate these data.
 
-This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for `r `scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species for the year `r ebirdst::ebirdst_version()[["version_year"]]`. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.
+This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for `r scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species for the year `r ebirdst::ebirdst_version()[["version_year"]]`. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.
 
 # Data access {#access}
 
@@ -101,9 +101,11 @@ Each of these data products will be covered in more detail in the following sect
 
 ## Weekly raster estimates
 
-The core raster data products are the weekly estimates of occurrence, count, relative abundance, and percent of population. These are all stored in the widely used GeoTIFF raster format, and we refer to them as "weekly cubes" (e.g. the "weekly abundance cube"). All cubes have 52 weeks and cover the entire globe, even for species with ranges only covering a small region. They come with areas of predicted and assumed zeroes, such that any cells that are `NA` represent areas where we didn't produce model estimates.
+The core raster data products are the weekly estimates of occurrence, count, and relative abundance. These estimates are derived from an ensemble model producing 100 individual estimates of the expected value of each quantity. The raster data products give the median value across the ensemble for each quantity.
 
-All estimates are the median expected value for a 2 km, 1 hour eBird Traveling Count by an expert eBird observer at the optimal time of day and for optimal weather conditions to observe the given species.
+The weekly estimates are all stored in the widely used GeoTIFF raster format, and we refer to them as "weekly cubes" (e.g. the "weekly abundance cube"). All cubes have 52 weeks and cover the entire globe, even for species with ranges only covering a small region. They come with areas of predicted and assumed zeroes, such that any cells that are `NA` represent areas where we didn't produce model estimates.
+
+All estimates are the ensemble median expected value for a 2 km, 1 hour eBird Traveling Count by an expert eBird observer at the optimal time of day and for optimal weather conditions to observe the given species.
 
 - **Occurrence**: the expected probability of encountering a species.
 - **Count**: the expected count of a species, conditional on its occurrence at the given location.

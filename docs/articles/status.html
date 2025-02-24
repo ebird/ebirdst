@@ -90,16 +90,14 @@ observations collected by community scientists. See Fink et al. (2019)
 for more information about the analysis used to generate these data.</p>
 <p>This vignette gives an overview of the eBird Status Data Products,
 which estimate the full annual cycle distributions, relative abundances,
-and habitat associations for
-<code>r</code>scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species
-for the year 2022. For each species, distribution and abundance
-estimates are available for all 52 weeks of the year across a regular 3
-km by 3 km square grid of cells covering the globe. Variation in
-detectability associated with the search effort is controlled by
-standardizing the estimates as the expected occurrence rate and count of
-the species on a 1 hour, 2 km checklist by an expert eBird observer at
-the optimal time of day and with optimal weather conditions for
-detecting the species.</p>
+and habitat associations for 1,117 species for the year 2022. For each
+species, distribution and abundance estimates are available for all 52
+weeks of the year across a regular 3 km by 3 km square grid of cells
+covering the globe. Variation in detectability associated with the
+search effort is controlled by standardizing the estimates as the
+expected occurrence rate and count of the species on a 1 hour, 2 km
+checklist by an expert eBird observer at the optimal time of day and
+with optimal weather conditions for detecting the species.</p>
 </div>
 <div class="section level2">
 <h2 id="access">Data access<a class="anchor" aria-label="anchor" href="#access"></a>
@@ -316,16 +314,21 @@ functions.</p>
 <h3 id="weekly-raster-estimates">Weekly raster estimates<a class="anchor" aria-label="anchor" href="#weekly-raster-estimates"></a>
 </h3>
 <p>The core raster data products are the weekly estimates of occurrence,
-count, relative abundance, and percent of population. These are all
-stored in the widely used GeoTIFF raster format, and we refer to them as
-“weekly cubes” (e.g. the “weekly abundance cube”). All cubes have 52
-weeks and cover the entire globe, even for species with ranges only
-covering a small region. They come with areas of predicted and assumed
-zeroes, such that any cells that are <code>NA</code> represent areas
-where we didn’t produce model estimates.</p>
-<p>All estimates are the median expected value for a 2 km, 1 hour eBird
-Traveling Count by an expert eBird observer at the optimal time of day
-and for optimal weather conditions to observe the given species.</p>
+count, and relative abundance. These estimates are derived from an
+ensemble model producing 100 individual estimates of the expected value
+of each quantity. The raster data products give the median value across
+the ensemble for each quantity.</p>
+<p>The weekly estimates are all stored in the widely used GeoTIFF raster
+format, and we refer to them as “weekly cubes” (e.g. the “weekly
+abundance cube”). All cubes have 52 weeks and cover the entire globe,
+even for species with ranges only covering a small region. They come
+with areas of predicted and assumed zeroes, such that any cells that are
+<code>NA</code> represent areas where we didn’t produce model
+estimates.</p>
+<p>All estimates are the ensemble median expected value for a 2 km, 1
+hour eBird Traveling Count by an expert eBird observer at the optimal
+time of day and for optimal weather conditions to observe the given
+species.</p>
 <ul>
 <li>
 <strong>Occurrence</strong>: the expected probability of
