@@ -19,7 +19,7 @@ project](https://science.ebird.org/en/status-and-trends) at the [Cornell
 Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to estimate distributions, relative abundances,
 and population trends at high spatial and temporal resolution across the
-full annual cycle of 1,117 bird species globally. These models learn the
+full annual cycle of 2,980 bird species globally. These models learn the
 relationships between bird observations collected through
 [eBird](https://ebird.org/home) and a suite of remotely sensed habitat
 variables, while accounting for the noise and bias inherent in community
@@ -44,8 +44,8 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("ebird/ebirdst")
 ```
 
-This version of `ebirdst` is designed to work with the eBird Status and
-Trends Data Products estimated for the year 2022 released in 2023.
+This version of `ebirdst` is designed to work with the 2023 version of
+Status Data Products and the 2022 version of Trends Data Products.
 **Users are strongly discouraged from comparing Status and Trends
 results between years due to methodological differences between
 versions.** If you have accessed and used previous versions and/or may
@@ -108,26 +108,27 @@ alternative options:
   the [associated
   vignette](https://ebird.github.io/ebirdst/articles/api.html).
 
-## Versions
-
-The eBird Status and Trends Data Products provide estimates of relative
-abundance, and other variables, for a particular year. This estimation
-year is used to identify the version of the data products. Each version
-of this R package is associated with a particular version of the data.
-For example, the current version of the R package is 3.2022.4 and, as
-indicated by the year in the version number, it is designed to work with
-the 2022 data products. Every year, typically in November, the Status
-and Trends Data Products are updated, and users are encouraged to update
-this R package and transition to using the new version of the data
-products. After the data products are updated, there will be a brief
-period where access to the previous version is also provided, allowing
-users to finish any analyses with this previous version. If you intended
-to continue using the older data products during this period you must
-not update the R package.
-
 ## Citation
 
-If you use the the eBird Status and Trends data please cite it with:
+The eBird Status Data Products and eBird Trends Data Products come from
+different versions and require different citations.
+
+Please cite the **eBird Status Data Products** with:
+
+<blockquote>
+Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O.
+Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A.
+Stillman, C. Davis, M. Stokowski, P. Sharma, V. Pantoja, D. Burgin, P.
+Crowe, M. Bell, S. Ray, I. Davies, V. Ruiz-Gutierrez, C. Wood, A.
+Rodewald. 2024. eBird Status and Trends, Data Version: 2023; Released:
+2025. Cornell Lab of Ornithology, Ithaca, New York.
+<a href="https://doi.org/10.2173/WZTW8903" class="uri">https://doi.org/10.2173/WZTW8903</a>
+</blockquote>
+
+[Download a BibTeX
+version](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation_2023.bib).
+
+Please cite the **eBird Trends Data Products** with:
 
 <blockquote>
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O.
@@ -138,8 +139,8 @@ of Ornithology, Ithaca, New York.
 <a href="https://doi.org/10.2173/ebirdst.2022" class="uri">https://doi.org/10.2173/ebirdst.2022</a>
 </blockquote>
 
-[Download
-BibTeX](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation.bib).
+[Download a BibTeX
+version](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation_2022.bib).
 
 ## Vignettes
 
@@ -204,17 +205,17 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- as.Date(names(abd))
 print(weeks)
-#>  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01"
-#>  [6] "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01" "2022-03-08"
-#> [11] "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12"
-#> [16] "2022-04-19" "2022-04-26" "2022-05-03" "2022-05-10" "2022-05-17"
-#> [21] "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14" "2022-06-21"
-#> [26] "2022-06-28" "2022-07-05" "2022-07-12" "2022-07-19" "2022-07-26"
-#> [31] "2022-08-02" "2022-08-09" "2022-08-16" "2022-08-23" "2022-08-30"
-#> [36] "2022-09-06" "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04"
-#> [41] "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"
-#> [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13"
-#> [51] "2022-12-20" "2022-12-27"
+#>  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"
+#>  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"
+#> [11] "2023-03-15" "2023-03-22" "2023-03-29" "2023-04-05" "2023-04-12"
+#> [16] "2023-04-19" "2023-04-26" "2023-05-03" "2023-05-10" "2023-05-17"
+#> [21] "2023-05-24" "2023-05-31" "2023-06-07" "2023-06-14" "2023-06-21"
+#> [26] "2023-06-28" "2023-07-05" "2023-07-12" "2023-07-19" "2023-07-26"
+#> [31] "2023-08-02" "2023-08-09" "2023-08-16" "2023-08-23" "2023-08-30"
+#> [36] "2023-09-06" "2023-09-13" "2023-09-20" "2023-09-27" "2023-10-04"
+#> [41] "2023-10-11" "2023-10-18" "2023-10-25" "2023-11-01" "2023-11-08"
+#> [46] "2023-11-15" "2023-11-22" "2023-11-29" "2023-12-06" "2023-12-13"
+#> [51] "2023-12-20" "2023-12-27"
 
 # select a week in the middle of the year
 abd <- abd[[26]]

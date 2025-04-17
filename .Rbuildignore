@@ -20,6 +20,6 @@
 vignettes/changelog.Rmd
 ^example-data$
 ^CRAN-SUBMISSION$
-^ebirdst-citation.bib$
+^ebirdst-citation.*\.bib$
 
 ^examples$

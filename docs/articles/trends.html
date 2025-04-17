@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2022.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +72,11 @@
     width: 75%;
 }
 </style>
+<p><strong>Version Note:</strong> In 2025, the eBird Status Data
+Products were updated to the 2023 version year, however, none of the
+Trends data products were updated. Therefore the Trends Data Products
+currently available via <code>ebirdst</code> are for the 2022 prediction
+year.</p>
 <p>The eBird Trends Data Products provide estimates of trends in
 relative abundance based on eBird data. Trend estimates are made on a 27
 km by 27 km grid for a single season per species (breeding,
@@ -103,20 +108,21 @@ the data frame and only select those columns relevant to trends.</p>
 <span>         <span class="va">trends_season</span>, <span class="va">trends_region</span>,</span>
 <span>         <span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>,</span>
 <span>         <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span>,</span>
-<span>         <span class="va">rsquared</span>, <span class="va">beta0</span><span class="op">)</span></span>
+<span>         <span class="va">rsquared</span>, <span class="va">beta0</span>, <span class="va">trends_version_year</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">trends_runs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 853</span></span>
-<span><span class="co">#&gt; Columns: 10</span></span>
-<span><span class="co">#&gt; $ species_code      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "abetow", "acafly", "acowoo", "aldfly", "alepar2", "…</span></span>
-<span><span class="co">#&gt; $ common_name       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Abert's Towhee", "Acadian Flycatcher", "Acorn Woodp…</span></span>
-<span><span class="co">#&gt; $ trends_season     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "resident", "breeding", "resident", "breeding", "res…</span></span>
-<span><span class="co">#&gt; $ trends_region     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america", "north_america", "north_america", "…</span></span>
-<span><span class="co">#&gt; $ trends_start_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012, 2012, 2011, 2012, 2015, 2012, 2011, 2011, 2012…</span></span>
-<span><span class="co">#&gt; $ trends_end_year   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022, 2022, 2021, 2022, 2022, 2022, 2021, 2021, 2022…</span></span>
-<span><span class="co">#&gt; $ trends_start_date <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "01-25", "05-24", "11-01", "06-21", "07-26", "03-22"…</span></span>
-<span><span class="co">#&gt; $ trends_end_date   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-10", "08-02", "05-03", "07-12", "12-06", "06-07"…</span></span>
-<span><span class="co">#&gt; $ rsquared          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9231821, 0.8570363, 0.8805367, 0.7868723, 0.819570…</span></span>
-<span><span class="co">#&gt; $ beta0             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.013923012, 0.689424792, -0.092670714, -0.16241275…</span></span></code></pre></div>
+<span><span class="co">#&gt; Rows: 842</span></span>
+<span><span class="co">#&gt; Columns: 11</span></span>
+<span><span class="co">#&gt; $ species_code        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"<span style="color: #949494;">, </span>"abetow"<span style="color: #949494;">, </span>"acafly"<span style="color: #949494;">, </span>"acowoo"<span style="color: #949494;">, </span>"a…</span></span>
+<span><span class="co">#&gt; $ common_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yellow-bellied Sapsucker"<span style="color: #949494;">, </span>"Abert's Towhee"<span style="color: #949494;">, </span>"Aca…</span></span>
+<span><span class="co">#&gt; $ trends_season       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"<span style="color: #949494;">, </span>"resident"<span style="color: #949494;">, </span>"breeding"<span style="color: #949494;">, </span>"resident"<span style="color: #949494;">, </span>"b…</span></span>
+<span><span class="co">#&gt; $ trends_region       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america"<span style="color: #949494;">, </span>"north_america"<span style="color: #949494;">, </span>"north_america"<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ trends_start_year   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2011<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2015<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2011<span style="color: #949494;">, </span>20…</span></span>
+<span><span class="co">#&gt; $ trends_end_year     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2021<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2021<span style="color: #949494;">, </span>20…</span></span>
+<span><span class="co">#&gt; $ trends_start_date   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-24"<span style="color: #949494;">, </span>"01-25"<span style="color: #949494;">, </span>"05-24"<span style="color: #949494;">, </span>"11-01"<span style="color: #949494;">, </span>"06-21"<span style="color: #949494;">, </span>"07-2…</span></span>
+<span><span class="co">#&gt; $ trends_end_date     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "08-16"<span style="color: #949494;">, </span>"05-10"<span style="color: #949494;">, </span>"08-02"<span style="color: #949494;">, </span>"05-03"<span style="color: #949494;">, </span>"07-12"<span style="color: #949494;">, </span>"12-0…</span></span>
+<span><span class="co">#&gt; $ rsquared            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8572896<span style="color: #949494;">, </span>0.9231821<span style="color: #949494;">, </span>0.8570363<span style="color: #949494;">, </span>0.8805367<span style="color: #949494;">, </span>0.7868…</span></span>
+<span><span class="co">#&gt; $ beta0               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.227000849<span style="color: #949494;">, </span>-0.013923012<span style="color: #949494;">, </span>0.689424792<span style="color: #949494;">, </span>-0.0926707…</span></span>
+<span><span class="co">#&gt; $ trends_version_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>20…</span></span></code></pre></div>
 <p>Information is provided on the trends model for each species,
 including two predictive performance metrics (<code>rsquared</code> and
 <code>beta0</code>) that are based on a comparison of actual and
@@ -154,6 +160,9 @@ vs. estimated trends (<code>actual ~ estimated</code>) for the
 simulations. Positive values of <code>beta0</code> indicate that the
 models are systematically <em>underestimating</em> the simulated trend
 for this species.</li>
+<li>
+<code>trends_version_year</code>: the version year for the trends
+data projects.</li>
 </ul>
 <p>Note that some season dates span two calendar years, for example
 Canvasback has 2011-2021 trends estimates for a non-breeding season
@@ -440,14 +449,15 @@ region, season, and range of years.</p>
 <code class="sourceCode R"><span><span class="va">sagebrush_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Brewer's Sparrow"</span>, <span class="st">"Sagebrush Sparrow"</span>, <span class="st">"Sage Thrasher"</span><span class="op">)</span></span>
 <span><span class="va">trends_runs</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="va">sagebrush_species</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 11</span></span></span>
 <span><span class="co">#&gt;   species_code common_name       trends_season trends_region trends_start_year</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> brespa       Brewer's Sparrow  breeding      north_america              <span style="text-decoration: underline;">2</span>012</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> sagspa1      Sagebrush Sparrow breeding      north_america              <span style="text-decoration: underline;">2</span>012</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> sagthr       Sage Thrasher     breeding      north_america              <span style="text-decoration: underline;">2</span>012</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: trends_end_year &lt;dbl&gt;, trends_start_date &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   trends_end_date &lt;chr&gt;, rsquared &lt;dbl&gt;, beta0 &lt;dbl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 more variables: trends_end_year &lt;dbl&gt;, trends_start_date &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   trends_end_date &lt;chr&gt;, rsquared &lt;dbl&gt;, beta0 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   trends_version_year &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>Everything looks good, so we can proceed to compare trends for these
 species. Next we need to download the trends data for these species.
 Note that since we’ve already downloaded the Sage Thrasher data above it

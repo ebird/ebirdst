@@ -106,7 +106,7 @@ plot(abd_breeding_mask, axes = FALSE)
 
 ## Projection {#map-projection}
 
-The raster data are all provided in the same equal area sinusoidal projection as NASA MODIS data. While this projection is suitable for analysis, it is not ideal for mapping since it introduces significant distortion. Instead, it's best to select an equal area projection tailored to your region. A good general purpose choice is a Lambert's azimuthal equal area projection centered on the focal region. This can be defined programmatically as follows.
+The raster data are all provided in the same equal area Earth Earth coordinate reference system. This projection is designed to work for any location on Earth; however, it is not ideal for mapping smaller regions. Instead, it's best to select an equal area projection tailored to your region. A good general purpose choice is a Lambert's azimuthal equal area projection centered on the focal region. This can be defined programmatically as follows.
 
 ```{r map-projection, echo=-1}
 par(mar = c(0.25, 0.25, 0.25, 2))
@@ -307,7 +307,7 @@ for (species in grassland_species) {
                            week = as.Date(names(abd_median)),
                            median = prop_pop_median,
                            lower = prop_pop_lower,
-                           upper = prop_pop_upper)
+                           upper = pmin(prop_pop_upper, 1))
   
   # combine with other species
   chronologies <- bind_rows(chronologies, chronology)
@@ -380,7 +380,7 @@ head(state_prop_pop)
 
 ## Proportion of North American population {#stats-relative}
 
-For broadly distributed species, such as Golden Eagle, it may be desirable to estimate the proportion of the population relative to a subset of the full range. For example, let's calculate the proportion of the North American population falling within each state, where we define North America to include the United States, Canada, and Mexico. We'll start by creating a polygon for the boundary of North America, using this to mask the seasonal relative abundance raster, then dividing the masked relative abundance raster by the total relative abundance across all of North America to generate layers showing the proportion of North American population.
+For broadly distributed species, such as Golden Eagle, it may be desirable to estimate the proportion of the population relative to a subset of the full range. For example, let's calculate the proportion of the North American population within each state, where we define North America to include the United States, Canada, and Mexico. We'll start by creating a polygon for the boundary of North America, using this to mask the seasonal relative abundance raster, then dividing the masked relative abundance raster by the total relative abundance across all of North America to generate layers showing the proportion of North American population.
 
 ```{r stats-relative-prep}
 # seasonal relative abundance

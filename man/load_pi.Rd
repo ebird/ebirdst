@@ -43,20 +43,22 @@ returned.
 
 \code{\link[=list_available_pis]{list_available_pis()}} returns a data frame listing the top 30 predictors for
 which PI rasters can be loaded. In addition to the predictor names, the mean
-range-wide rank (\code{rangewide_rank}) is given as well as the integer rank
-(\code{rank}) relative to the other 29 predictors.
+range-wide rank (\code{rank_mean}) is given as well as the integer rank
+(\code{rank}) relative to the full suite of predictors (environmental and effort).
 }
 \description{
-The eBird Status models estimate the relative importance of each
-environmental predictor used in the model. These predictor importance (PI)
-data are converted to ranks (with a rank of 1 being the most important)
-relative to the full suite of environmental predictors. The ranks are
-summarized to a 27 km resolution raster grid for each predictor, where the
-cell values are the average across all models in the ensemble contributing to
-that cell. These data are available in raster format provided \code{download_pis = TRUE} was used when calling \code{\link[=ebirdst_download_status]{ebirdst_download_status()}}. PI estimates are
-available separately for both the occurrence and count sub-model and only the
-30 most important predictors are distributed. Use \code{\link[=list_available_pis]{list_available_pis()}} to
-see which predictors have PI data.
+The eBird Status models estimate the relative importance of each of the core
+environmental predictor used in the model (i.e. the \% land and water cover
+variables). These predictor importance (PI) data are converted to ranks (with
+a rank of 1 being the most important) relative to the full suite of
+environmental predictors. The ranks are summarized to a 27 km resolution
+raster grid for each predictor, where the cell values are the average across
+all models in the ensemble contributing to that cell. These data are
+available in raster format provided \code{download_pis = TRUE} was used when
+calling \code{\link[=ebirdst_download_status]{ebirdst_download_status()}}. PI estimates are available separately
+for both the occurrence and count sub-model and only the 30 most important
+predictors are distributed. Use \code{\link[=list_available_pis]{list_available_pis()}} to see which
+predictors have PI data.
 }
 \section{Functions}{
 \itemize{

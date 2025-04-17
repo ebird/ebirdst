@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2022.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +90,7 @@ observations collected by community scientists. See Fink et al. (2019)
 for more information about the analysis used to generate these data.</p>
 <p>This vignette gives an overview of the eBird Status Data Products,
 which estimate the full annual cycle distributions, relative abundances,
-and habitat associations for 1,117 species for the year 2022. For each
+and habitat associations for 2,980 species for the year 2023. For each
 species, distribution and abundance estimates are available for all 52
 weeks of the year across a regular 3 km by 3 km square grid of cells
 covering the globe. Variation in detectability associated with the
@@ -158,36 +158,38 @@ Status and Trends website</a>.</strong></p>
 Status Data Products available for download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">ebirdst_runs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 1,118</span></span>
-<span><span class="co">#&gt; Columns: 28</span></span>
-<span><span class="co">#&gt; $ species_code                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "abetow", "acafly", "acowoo", "affeag1"…</span></span>
-<span><span class="co">#&gt; $ scientific_name                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Melozone aberti", "Empidonax virescens…</span></span>
-<span><span class="co">#&gt; $ common_name                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Abert's Towhee", "Acadian Flycatcher",…</span></span>
-<span><span class="co">#&gt; $ is_resident                    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, F…</span></span>
-<span><span class="co">#&gt; $ breeding_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, "1", "3", <span style="color: #BB0000;">NA</span>,…</span></span>
-<span><span class="co">#&gt; $ breeding_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-05-24, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-06-21, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ breeding_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-08-02, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-07-12, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_quality            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "1", <span style="color: #BB0000;">NA</span>, "1", "3", <span style="color: #BB0000;">NA</span>,…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_start              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-12-06, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-11-15, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_end                <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-02-15, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-03-29, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_quality <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, "1", "3", <span style="color: #BB0000;">NA</span>,…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_start   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-08-09, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-07-19, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_end     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-11-29, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-11-08, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_quality  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "3", <span style="color: #BB0000;">NA</span>, "2", "3", <span style="color: #BB0000;">NA</span>,…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_start    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-02-22, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-04-05, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_end      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span>, 2022-05-17, <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, 2022-06-14, <span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ resident_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3", <span style="color: #BB0000;">NA</span>, "3", "2", <span style="color: #BB0000;">NA</span>, "2", <span style="color: #BB0000;">NA</span>, <span style="color: #BB0000;">NA</span>, "3"…</span></span>
-<span><span class="co">#&gt; $ resident_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-01-04, <span style="color: #BB0000;">NA</span>, 2022-01-04, 2022-01-04…</span></span>
-<span><span class="co">#&gt; $ resident_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-12-27, <span style="color: #BB0000;">NA</span>, 2022-12-27, 2022-12-27…</span></span>
-<span><span class="co">#&gt; $ has_trends                     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FA…</span></span>
-<span><span class="co">#&gt; $ trends_season                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "resident", "breeding", "resident", <span style="color: #BB0000;">NA</span>,…</span></span>
-<span><span class="co">#&gt; $ trends_region                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america", "north_america", "nort…</span></span>
-<span><span class="co">#&gt; $ trends_start_year              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012, 2012, 2011, <span style="color: #BB0000;">NA</span>, 2012, 2015, <span style="color: #BB0000;">NA</span>, 2…</span></span>
-<span><span class="co">#&gt; $ trends_end_year                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022, 2022, 2021, <span style="color: #BB0000;">NA</span>, 2022, 2022, <span style="color: #BB0000;">NA</span>, 2…</span></span>
-<span><span class="co">#&gt; $ trends_start_date              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "01-25", "05-24", "11-01", <span style="color: #BB0000;">NA</span>, "06-21",…</span></span>
-<span><span class="co">#&gt; $ trends_end_date                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-10", "08-02", "05-03", <span style="color: #BB0000;">NA</span>, "07-12",…</span></span>
-<span><span class="co">#&gt; $ rsquared                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.9231821, 0.8570363, 0.8805367, <span style="color: #BB0000;">NA</span>, 0.…</span></span>
-<span><span class="co">#&gt; $ beta0                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> -0.013923012, 0.689424792, -0.092670714…</span></span></code></pre></div>
+<span><span class="co">#&gt; Rows: 2,981</span></span>
+<span><span class="co">#&gt; Columns: 30</span></span>
+<span><span class="co">#&gt; $ species_code                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"<span style="color: #949494;">, </span>"abetow"<span style="color: #949494;">, </span>"absfin1"<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ scientific_name                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Sphyrapicus varius"<span style="color: #949494;">, </span>"Melozone aberti"…</span></span>
+<span><span class="co">#&gt; $ common_name                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yellow-bellied Sapsucker"<span style="color: #949494;">, </span>"Abert's To…</span></span>
+<span><span class="co">#&gt; $ is_resident                    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>F…</span></span>
+<span><span class="co">#&gt; $ breeding_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ breeding_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-17<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-05-31<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ breeding_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-16<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-08-02<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_quality            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_start              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-22<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-11-22<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_end                <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-08<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-02-22<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_quality <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"0"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_start   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-23<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-08-09<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_end     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-15<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-11-15<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_quality  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"0"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_start    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-15<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-03-01<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_end      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-10<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-05-24<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
+<span><span class="co">#&gt; $ resident_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"2"<span style="color: #949494;">, </span>"3…</span></span>
+<span><span class="co">#&gt; $ resident_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-01-04<span style="color: #949494;">, </span>2023-01-04<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-0…</span></span>
+<span><span class="co">#&gt; $ resident_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-12-27<span style="color: #949494;">, </span>2023-12-27<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-1…</span></span>
+<span><span class="co">#&gt; $ status_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>202…</span></span>
+<span><span class="co">#&gt; $ has_trends                     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>F…</span></span>
+<span><span class="co">#&gt; $ trends_season                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"<span style="color: #949494;">, </span>"resident"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"breeding"<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ trends_region                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america"<span style="color: #949494;">, </span>"north_america"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"…</span></span>
+<span><span class="co">#&gt; $ trends_start_year              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2011<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ trends_end_year                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2021<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ trends_start_date              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-24"<span style="color: #949494;">, </span>"01-25"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"05-24"<span style="color: #949494;">, </span>"11-01"<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ trends_end_date                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "08-16"<span style="color: #949494;">, </span>"05-10"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"08-02"<span style="color: #949494;">, </span>"05-03"<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ rsquared                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8572896<span style="color: #949494;">, </span>0.9231821<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>0.8570363<span style="color: #949494;">, </span>0.…</span></span>
+<span><span class="co">#&gt; $ beta0                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.227000849<span style="color: #949494;">, </span>-0.013923012<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>0.689424…</span></span>
+<span><span class="co">#&gt; $ trends_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">,</span>…</span></span></code></pre></div>
 <p>If you’re working in RStudio, you can use <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> to
 interactively explore this data frame.</p>
 <p>All species go through a process of review by an expert on that
@@ -239,26 +241,27 @@ extrapolation and/or omission; these seasons can be safely used.</li>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species_code</span> <span class="op">==</span> <span class="st">"yebsap-example"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 1</span></span>
-<span><span class="co">#&gt; Columns: 28</span></span>
+<span><span class="co">#&gt; Columns: 30</span></span>
 <span><span class="co">#&gt; $ species_code                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"</span></span>
 <span><span class="co">#&gt; $ scientific_name                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Sphyrapicus varius"</span></span>
 <span><span class="co">#&gt; $ common_name                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yellow-bellied Sapsucker"</span></span>
 <span><span class="co">#&gt; $ is_resident                    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE</span></span>
 <span><span class="co">#&gt; $ breeding_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ breeding_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-05-24</span></span>
-<span><span class="co">#&gt; $ breeding_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-08-16</span></span>
+<span><span class="co">#&gt; $ breeding_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-17</span></span>
+<span><span class="co">#&gt; $ breeding_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-16</span></span>
 <span><span class="co">#&gt; $ nonbreeding_quality            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ nonbreeding_start              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-11-15</span></span>
-<span><span class="co">#&gt; $ nonbreeding_end                <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-03-08</span></span>
+<span><span class="co">#&gt; $ nonbreeding_start              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-22</span></span>
+<span><span class="co">#&gt; $ nonbreeding_end                <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-08</span></span>
 <span><span class="co">#&gt; $ postbreeding_migration_quality <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_start   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-08-23</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_end     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-11-08</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_start   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-23</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_end     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-15</span></span>
 <span><span class="co">#&gt; $ prebreeding_migration_quality  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_start    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-03-15</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_end      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2022-05-17</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_start    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-15</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_end      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-10</span></span>
 <span><span class="co">#&gt; $ resident_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">#&gt; $ resident_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">#&gt; $ resident_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; $ status_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2023</span></span>
 <span><span class="co">#&gt; $ has_trends                     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE</span></span>
 <span><span class="co">#&gt; $ trends_season                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"</span></span>
 <span><span class="co">#&gt; $ trends_region                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america"</span></span>
@@ -267,7 +270,8 @@ extrapolation and/or omission; these seasons can be safely used.</li>
 <span><span class="co">#&gt; $ trends_start_date              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-24"</span></span>
 <span><span class="co">#&gt; $ trends_end_date                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "08-16"</span></span>
 <span><span class="co">#&gt; $ rsquared                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8572896</span></span>
-<span><span class="co">#&gt; $ beta0                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.2270008</span></span></code></pre></div>
+<span><span class="co">#&gt; $ beta0                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.2270008</span></span>
+<span><span class="co">#&gt; $ trends_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022</span></span></code></pre></div>
 <p>From this, we can see that Yellow-bellied Sapsucker was modeled as a
 migrant and all four seasons received a quality of 3, the highest
 rating. Note that there are a variety of trends-specific columns at the
@@ -385,21 +389,20 @@ loaded into R as <code>SpatRaster</code> objects for use with the
 names store the dates corresponding to the midpoints of each week.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lr</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "2022-01-04" "2022-01-11" "2022-01-18" "2022-01-25" "2022-02-01"</span></span>
-<span><span class="co">#&gt;  [6] "2022-02-08" "2022-02-15" "2022-02-22" "2022-03-01" "2022-03-08"</span></span>
-<span><span class="co">#&gt; [11] "2022-03-15" "2022-03-22" "2022-03-29" "2022-04-05" "2022-04-12"</span></span>
-<span><span class="co">#&gt; [16] "2022-04-19" "2022-04-26" "2022-05-03" "2022-05-10" "2022-05-17"</span></span>
-<span><span class="co">#&gt; [21] "2022-05-24" "2022-05-31" "2022-06-07" "2022-06-14" "2022-06-21"</span></span>
-<span><span class="co">#&gt; [26] "2022-06-28" "2022-07-05" "2022-07-12" "2022-07-19" "2022-07-26"</span></span>
-<span><span class="co">#&gt; [31] "2022-08-02" "2022-08-09" "2022-08-16" "2022-08-23" "2022-08-30"</span></span>
-<span><span class="co">#&gt; [36] "2022-09-06" "2022-09-13" "2022-09-20" "2022-09-27" "2022-10-04"</span></span>
-<span><span class="co">#&gt; [41] "2022-10-11" "2022-10-18" "2022-10-25" "2022-11-01" "2022-11-08"</span></span>
-<span><span class="co">#&gt; [46] "2022-11-15" "2022-11-22" "2022-11-29" "2022-12-06" "2022-12-13"</span></span>
-<span><span class="co">#&gt; [51] "2022-12-20" "2022-12-27"</span></span></code></pre></div>
-<p>The GeoTIFFs use the same Sinusoidal projection as NASA MODIS data.
-This projection is ideal for analysis, as it is an equal are projection,
-but is not ideal for mapping since it introduces significant
-distortion.</p>
+<span><span class="co">#&gt;  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"</span></span>
+<span><span class="co">#&gt;  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"</span></span>
+<span><span class="co">#&gt; [11] "2023-03-15" "2023-03-22" "2023-03-29" "2023-04-05" "2023-04-12"</span></span>
+<span><span class="co">#&gt; [16] "2023-04-19" "2023-04-26" "2023-05-03" "2023-05-10" "2023-05-17"</span></span>
+<span><span class="co">#&gt; [21] "2023-05-24" "2023-05-31" "2023-06-07" "2023-06-14" "2023-06-21"</span></span>
+<span><span class="co">#&gt; [26] "2023-06-28" "2023-07-05" "2023-07-12" "2023-07-19" "2023-07-26"</span></span>
+<span><span class="co">#&gt; [31] "2023-08-02" "2023-08-09" "2023-08-16" "2023-08-23" "2023-08-30"</span></span>
+<span><span class="co">#&gt; [36] "2023-09-06" "2023-09-13" "2023-09-20" "2023-09-27" "2023-10-04"</span></span>
+<span><span class="co">#&gt; [41] "2023-10-11" "2023-10-18" "2023-10-25" "2023-11-01" "2023-11-08"</span></span>
+<span><span class="co">#&gt; [46] "2023-11-15" "2023-11-22" "2023-11-29" "2023-12-06" "2023-12-13"</span></span>
+<span><span class="co">#&gt; [51] "2023-12-20" "2023-12-27"</span></span></code></pre></div>
+<p>The GeoTIFFs use the <a href="https://en.wikipedia.org/wiki/Equal_Earth_projection" class="external-link">Equal
+Earth</a> coordinate reference system, an equal area projection suitable
+for global mapping and analysis.</p>
 </div>
 <div class="section level3">
 <h3 id="seasonal-raster-estimates">Seasonal raster estimates<a class="anchor" aria-label="anchor" href="#seasonal-raster-estimates"></a>
@@ -429,14 +432,14 @@ into R as <code>SpatRaster</code> objects for use with the
 <span><span class="co"># just the breeding season layer</span></span>
 <span><span class="va">abd_seasonal_mean</span><span class="op">[[</span><span class="st">"breeding"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 626, 1502, 1  (nrow, ncol, nlyr)</span></span>
-<span><span class="co">#&gt; resolution  : 26665.26, 26665.28  (x, y)</span></span>
-<span><span class="co">#&gt; extent      : -20015109, 20036111, -6684911, 10007555  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; source      : yebsap-example_abundance_seasonal_mean_27km_2022.tif </span></span>
-<span><span class="co">#&gt; name        :  breeding </span></span>
-<span><span class="co">#&gt; min value   : 0.0000000 </span></span>
-<span><span class="co">#&gt; max value   : 0.7763873</span></span>
+<span><span class="co">#&gt; dimensions  : 618, 1276, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 27000, 27000  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : -17226000, 17226000, -8343000, 8343000  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857) </span></span>
+<span><span class="co">#&gt; source      : yebsap-example_abundance_seasonal_mean_27km_2023.tif </span></span>
+<span><span class="co">#&gt; name        : breeding </span></span>
+<span><span class="co">#&gt; min value   : 0.000000 </span></span>
+<span><span class="co">#&gt; max value   : 1.021968</span></span>
 <span></span>
 <span><span class="co"># seasonal, 27km res, max occurrence</span></span>
 <span><span class="va">occ_seasonal_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"occurrence"</span>, </span>
@@ -481,10 +484,10 @@ ranges are provided. These range polygons can be loaded with
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
 <span><span class="co">#&gt;   species_code scientific_name    common_name       prediction_year type  season</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>022 range breed…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>022 range nonbr…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>022 range postb…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>022 range prebr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range breed…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range nonbr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range postb…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range prebr…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: start_date &lt;date&gt;, end_date &lt;date&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   geom &lt;MULTIPOLYGON [°]&gt;</span></span></span>
 <span></span>
@@ -502,25 +505,35 @@ summary statistics can be loaded with
 <code class="sourceCode R"><span><span class="va">regional</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_regional_stats.html">load_regional_stats</a></span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">regional</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 8</span></span>
-<span><span class="co">#&gt; Columns: 10</span></span>
-<span><span class="co">#&gt; $ species_code           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example", "yebsap-example", "yebsap-exa…</span></span>
-<span><span class="co">#&gt; $ region_type            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "country", "country", "country", "country", "st…</span></span>
-<span><span class="co">#&gt; $ region_code            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "USA", "USA", "USA", "USA", "USA-MI", "USA-MI",…</span></span>
-<span><span class="co">#&gt; $ region_name            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "United States", "United States", "United State…</span></span>
-<span><span class="co">#&gt; $ season                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding", "nonbreeding", "postbreeding_migrat…</span></span>
-<span><span class="co">#&gt; $ abundance_mean         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0246, 0.0571, 0.0381, 0.0435, 0.2061, 0.0003,…</span></span>
-<span><span class="co">#&gt; $ total_pop_percent      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.2314, 0.9002, 0.6583, 0.3826, 0.0332, 0.0001,…</span></span>
-<span><span class="co">#&gt; $ range_percent_occupied <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0776, 0.2686, 0.3952, 0.3235, 0.5621, 0.0290,…</span></span>
-<span><span class="co">#&gt; $ range_total_percent    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.1861, 0.7017, 0.6036, 0.4728, 0.0232, 0.0013,…</span></span>
-<span><span class="co">#&gt; $ range_days_occupation  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 91, 119, 84, 70, 91, 98, 84, 49</span></span></code></pre></div>
-<p>The five summary statistics are defined as:</p>
+<span><span class="co">#&gt; Columns: 13</span></span>
+<span><span class="co">#&gt; $ species_code           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"<span style="color: #949494;">, </span>"yebsap-example"<span style="color: #949494;">, </span>"yebsap-exa…</span></span>
+<span><span class="co">#&gt; $ region_type            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "country"<span style="color: #949494;">, </span>"country"<span style="color: #949494;">, </span>"country"<span style="color: #949494;">, </span>"country"<span style="color: #949494;">, </span>"st…</span></span>
+<span><span class="co">#&gt; $ region_code            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "USA"<span style="color: #949494;">, </span>"USA"<span style="color: #949494;">, </span>"USA"<span style="color: #949494;">, </span>"USA"<span style="color: #949494;">, </span>"USA-MI"<span style="color: #949494;">, </span>"USA-MI"<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ region_name            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "United States"<span style="color: #949494;">, </span>"United States"<span style="color: #949494;">, </span>"United State…</span></span>
+<span><span class="co">#&gt; $ continent_code         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"</span></span>
+<span><span class="co">#&gt; $ continent_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "North America"<span style="color: #949494;">, </span>"North America"<span style="color: #949494;">, </span>"North Americ…</span></span>
+<span><span class="co">#&gt; $ season                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"<span style="color: #949494;">, </span>"nonbreeding"<span style="color: #949494;">, </span>"postbreeding_migrat…</span></span>
+<span><span class="co">#&gt; $ abundance_mean         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.114652605<span style="color: #949494;">, </span>0.123534772<span style="color: #949494;">, </span>0.073477334<span style="color: #949494;">, </span>0.084178…</span></span>
+<span><span class="co">#&gt; $ total_pop_percent      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3034155366<span style="color: #949494;">, </span>0.9497140025<span style="color: #949494;">, </span>0.7885750146<span style="color: #949494;">, </span>0.435…</span></span>
+<span><span class="co">#&gt; $ continent_pop_percent  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3034155366<span style="color: #949494;">, </span>0.9497140025<span style="color: #949494;">, </span>0.7885750146<span style="color: #949494;">, </span>0.435…</span></span>
+<span><span class="co">#&gt; $ range_occupied_percent <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.25990556<span style="color: #949494;">, </span>0.40518814<span style="color: #949494;">, </span>0.54434548<span style="color: #949494;">, </span>0.49810429<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ range_total_percent    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.231714761<span style="color: #949494;">, </span>0.801986186<span style="color: #949494;">, </span>0.720437099<span style="color: #949494;">, </span>0.573623…</span></span>
+<span><span class="co">#&gt; $ range_days_occupation  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 98<span style="color: #949494;">, </span>112<span style="color: #949494;">, </span>91<span style="color: #949494;">, </span>63<span style="color: #949494;">, </span>98<span style="color: #949494;">, </span>112<span style="color: #949494;">, </span>91<span style="color: #949494;">, </span>49</span></span></code></pre></div>
+<p>The six summary statistics are defined as:</p>
 <ul>
 <li>
 <code>abundance_mean</code>: mean relative abundance in the
 region.</li>
 <li>
-<code>total_pop_percent</code>: proportion of the seasonal modeled
-population falling within the region.</li>
+<code>total_pop_percent</code>: the proportion of the seasonal
+modeled population within the region.</li>
+<li>
+<code>continent_pop_percent</code>: the proportion of the seasonal
+modeled population for the continent within the region. The
+<code>continent_name</code> column identifies the continent that the
+region falls within. Note that Yellow-bellied Sapsucker only occurs in
+North American so the total and continental proportions are
+identical.</li>
 <li>
 <code>range_percent_occupied</code>: the proportion of the region
 occupied by the species during the given season.</li>

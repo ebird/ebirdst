@@ -32,7 +32,7 @@ knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 
 The study and conservation of the natural world relies on detailed information about the distributions, abundances, and population trends of species over time. For many taxa, this information is challenging to obtain at relevant geographic scales. The goal of the eBird Status and Trends project is to use data from [eBird](https://ebird.org/home), the global community science bird monitoring program administered by The Cornell Lab of Ornithology, to generate a reliable, standardized source of biodiversity information for the world’s bird populations. To translate the eBird observations into robust data products, we use machine learning to fill spatiotemporal gaps, using local land cover descriptions derived from remote sensing data, while controlling for biases inherent in species observations collected by community scientists. See Fink et al. (2019) for more information about the analysis used to generate these data.
 
-This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for `r scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species for the year `r ebirdst::ebirdst_version()[["version_year"]]`. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.
+This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for `r scales::comma(nrow(ebirdst::ebirdst_runs) - 1)` species for the year `r ebirdst::ebirdst_version()[["status_version_year"]]`. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.
 
 # Data access {#access}
 
@@ -142,7 +142,7 @@ Each object has 52 layers, one for each week of the year, and layer names store 
 as.Date(names(abd_lr))
 ```
 
-The GeoTIFFs use the same Sinusoidal projection as NASA MODIS data. This projection is ideal for analysis, as it is an equal are projection, but is not ideal for mapping since it introduces significant distortion.
+The GeoTIFFs use the [Equal Earth](https://en.wikipedia.org/wiki/Equal_Earth_projection) coordinate reference system, an equal area projection suitable for global mapping and analysis.
 
 ## Seasonal raster estimates
 
@@ -197,10 +197,11 @@ regional <- load_regional_stats("yebsap-example")
 glimpse(regional)
 ```
 
-The five summary statistics are defined as:
+The six summary statistics are defined as:
 
 - `abundance_mean`: mean relative abundance in the region.
-- `total_pop_percent`: proportion of the seasonal modeled population falling within the region.
+- `total_pop_percent`: the proportion of the seasonal modeled population within the region.
+- `continent_pop_percent`: the proportion of the seasonal modeled population for the continent within the region. The `continent_name` column identifies the continent that the region falls within. Note that Yellow-bellied Sapsucker only occurs in North American so the total and continental proportions are identical.
 - `range_percent_occupied`: the proportion of the region occupied by the species during the given season.
 - `range_total_percent`: the proportion of the species seasonal range falling within the region.
 - `range_days_occupation`: number of days of the season that the region was occupied by this species.

@@ -11,7 +11,7 @@ Trends results for each species."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2022.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@ Trends results for each species.</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 27 variables:</p><ul><li><p><code>species_code</code>: alphanumeric eBird species code uniquely identifying the
+    <p>A data frame with 29 variables:</p><ul><li><p><code>species_code</code>: alphanumeric eBird species code uniquely identifying the
 species</p></li>
 <li><p><code>scientific_name</code>: scientific name.</p></li>
 <li><p><code>common_name</code>: English common name.</p></li>
@@ -77,6 +77,7 @@ species</p></li>
 <li><p><code>resident_quality</code>: resident quality.</p></li>
 <li><p><code>resident_start</code>: for resident species, the year-round start date.</p></li>
 <li><p><code>resident_end</code>: for resident species, the year-round end date.</p></li>
+<li><p><code>status_version_year</code>: the release version of the Status data products.</p></li>
 <li><p><code>has_trends</code>: whether or not this species has trends estimates.</p></li>
 <li><p><code>trends_season</code>: season that the trend was estimated for: breeding,
 nonbreeding, or resident.</p></li>
@@ -85,14 +86,17 @@ Note that broadly distributed species (e.g. Barn Swallow) will only have
 trend estimates for a regional subset of their full range.</p></li>
 <li><p><code>trends_start_year</code>: start year of the trend time period.</p></li>
 <li><p><code>trends_end_year</code>: end year of the trend time period.</p></li>
-<li><p><code>trends_start_date</code>: start date (<code>MM-DD</code> format) of the season for which the trend was estimated.</p></li>
-<li><p><code>trends_end_date</code>: end date (<code>MM-DD</code> format) of the season for which the trend was estimated.</p></li>
-<li><p><code>rsquared</code>: R-squared value comparing the actual and estimated trends from the simulations.</p></li>
+<li><p><code>trends_start_date</code>: start date (<code>MM-DD</code> format) of the season for which
+the trend was estimated.</p></li>
+<li><p><code>trends_end_date</code>: end date (<code>MM-DD</code> format) of the season for which the
+trend was estimated.</p></li>
+<li><p><code>rsquared</code>: R-squared value comparing the actual and estimated trends from
+the simulations.</p></li>
 <li><p><code>beta0</code>: the intercept of a linear model fitting actual vs. estimated
-trends.
-(<code>actual ~ estimated</code>) for the simulations. Positive values of <code>beta0</code>
+trends (<code>actual ~ estimated</code>) for the simulations. Positive values of <code>beta0</code>
 indicate that the models are systematically <em>underestimating</em> the simulated
 trend for this species.</p></li>
+<li><p><code>trends_version_year</code>: the release version of the Trends data products.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

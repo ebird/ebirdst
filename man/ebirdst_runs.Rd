@@ -5,7 +5,7 @@
 \alias{ebirdst_runs}
 \title{Data frame of species with eBird Status and Trends Data Products}
 \format{
-A data frame with 27 variables:
+A data frame with 29 variables:
 \itemize{
 \item \code{species_code}: alphanumeric eBird species code uniquely identifying the
 species
@@ -27,6 +27,7 @@ species
 \item \code{resident_quality}: resident quality.
 \item \code{resident_start}: for resident species, the year-round start date.
 \item \code{resident_end}: for resident species, the year-round end date.
+\item \code{status_version_year}: the release version of the Status data products.
 \item \code{has_trends}: whether or not this species has trends estimates.
 \item \code{trends_season}: season that the trend was estimated for: breeding,
 nonbreeding, or resident.
@@ -35,14 +36,17 @@ Note that broadly distributed species (e.g. Barn Swallow) will only have
 trend estimates for a regional subset of their full range.
 \item \code{trends_start_year}: start year of the trend time period.
 \item \code{trends_end_year}: end year of the trend time period.
-\item \code{trends_start_date}: start date (\code{MM-DD} format) of the season for which the trend was estimated.
-\item \code{trends_end_date}: end date (\code{MM-DD} format) of the season for which the trend was estimated.
-\item \code{rsquared}: R-squared value comparing the actual and estimated trends from the simulations.
+\item \code{trends_start_date}: start date (\code{MM-DD} format) of the season for which
+the trend was estimated.
+\item \code{trends_end_date}: end date (\code{MM-DD} format) of the season for which the
+trend was estimated.
+\item \code{rsquared}: R-squared value comparing the actual and estimated trends from
+the simulations.
 \item \code{beta0}: the intercept of a linear model fitting actual vs. estimated
-trends.
-(\code{actual ~ estimated}) for the simulations. Positive values of \code{beta0}
+trends (\code{actual ~ estimated}) for the simulations. Positive values of \code{beta0}
 indicate that the models are systematically \emph{underestimating} the simulated
 trend for this species.
+\item \code{trends_version_year}: the release version of the Trends data products.
 }
 }
 \usage{

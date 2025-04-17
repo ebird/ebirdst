@@ -112,6 +112,7 @@ load_raster <- function(species,
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -275,7 +276,7 @@ load_trends <- function(species,
   stopifnot(is.character(species), !is.na(species), dir.exists(path))
   stopifnot(is_flag(fold_estimates))
 
-  v <- ebirdst_version()[["version_year"]]
+  v <- ebirdst_version()[["trends_version_year"]]
 
   # trends species and seaons
   species_code <- get_species(species)
@@ -292,6 +293,7 @@ load_trends <- function(species,
   for (i in seq_along(species_code)) {
     p <- get_species_path(species_code[i],
                           path = path,
+                          dataset = "trends",
                           check_downloaded = FALSE)
     if (fold_estimates) {
       f <- stringr::str_glue("{species_code[i]}_{season[i]}_ebird-trends_",
@@ -368,6 +370,7 @@ load_data_coverage <- function(product = c("spatial-coverage",
   stopifnot(dir.exists(path))
 
   dc_path <- get_species_path("data_coverage", path = path,
+                              dataset = "status",
                               check_downloaded = FALSE)
   if (!dir.exists(dc_path)) {
     stop("No data coverage products were found. Ensure that the data were ",
@@ -395,7 +398,7 @@ load_data_coverage <- function(product = c("spatial-coverage",
   if (!is.null(weeks)) {
     valid_weeks <- intersect(valid_weeks, weeks)
   }
-  valid_weeks <- paste(ebirdst_version()[["version_year"]],
+  valid_weeks <- paste(ebirdst_version()[["status_version_year"]],
                        valid_weeks, sep = "-")
 
   # construct filenames
@@ -450,6 +453,7 @@ load_ranges <- function(species,
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -498,6 +502,9 @@ load_ranges <- function(species,
 #'   or other sub-national regions.
 #'   - `region_code`: alphanumeric code for the region.
 #'   - `region_name`: English name of the region.
+#'   - `continent_code`: alphanumeric code for continent that this region
+#'   belongs to.
+#'   - `continent_name`: name of the continent that this region belongs to.
 #'   - `season`: name of the season that the summary statistics were calculated
 #'   for.
 #'   - `abundance_mean`: mean relative abundance in the region.
@@ -524,6 +531,7 @@ load_regional_stats <- function(species, path = ebirdst_data_dir()) {
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -567,6 +575,7 @@ load_config <- function(species, path = ebirdst_data_dir()) {
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -603,7 +612,7 @@ load_config <- function(species, path = ebirdst_data_dir()) {
 #' data for the given species in the custom projection
 #' - `res`: a numeric vector with 2 elements giving the target resolution of
 #'    raster in the custom projection
-#' - `fa_extent_sinu`: the extent in sinusoidal projection
+#' - `fa_extent_projected`: the extent in projected (Equal Earth) coordinates
 #' - `weekly_bins`/`weekly_labels`: weekly abundance bins and labels for the
 #' full annual cycle
 #' - `seasonal_bins`/`seasonal_labels: seasonal abundance bins and labels for
@@ -624,6 +633,7 @@ load_fac_map_parameters <- function(species, path = ebirdst_data_dir()) {
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -633,32 +643,33 @@ load_fac_map_parameters <- function(species, path = ebirdst_data_dir()) {
 
   # load config file
   p <- load_config(species = species_code, path = path)
-  ext_order <- unlist(p$bbox_sinu)[c("xmin", "xmax", "ymin", "ymax")]
+  ext_order <- unlist(p$bbox_native)[c("xmin", "xmax", "ymin", "ymax")]
 
-  seasonal_bins <- list(custom_projection = p$projection$crs,
-                        fa_extent = terra::ext(p$projection$extent),
-                        res = p$projection$res,
-                        fa_extent_sinu = terra::ext(ext_order),
-                        weekly_bins = p$bins[["3km"]]$breaks,
-                        weekly_labels = p$bins[["3km"]]$labels,
-                        seasonal_bins = p$bins_seasonal[["3km"]]$breaks,
-                        seasonal_labels = p$bins_seasonal[["3km"]]$labels)
+  list(custom_projection = p$projection$crs,
+       fa_extent = terra::ext(p$projection$extent),
+       res = p$projection$res,
+       fa_extent_projected = terra::ext(ext_order),
+       weekly_bins = p$bins[["3km"]]$breaks,
+       weekly_labels = p$bins[["3km"]]$labels,
+       seasonal_bins = p$bins_seasonal[["3km"]]$breaks,
+       seasonal_labels = p$bins_seasonal[["3km"]]$labels)
 }
 
 
 #' Load predictor importance (PI) rasters
 #'
-#' The eBird Status models estimate the relative importance of each
-#' environmental predictor used in the model. These predictor importance (PI)
-#' data are converted to ranks (with a rank of 1 being the most important)
-#' relative to the full suite of environmental predictors. The ranks are
-#' summarized to a 27 km resolution raster grid for each predictor, where the
-#' cell values are the average across all models in the ensemble contributing to
-#' that cell. These data are available in raster format provided `download_pis =
-#' TRUE` was used when calling [ebirdst_download_status()]. PI estimates are
-#' available separately for both the occurrence and count sub-model and only the
-#' 30 most important predictors are distributed. Use [list_available_pis()] to
-#' see which predictors have PI data.
+#' The eBird Status models estimate the relative importance of each of the core
+#' environmental predictor used in the model (i.e. the % land and water cover
+#' variables). These predictor importance (PI) data are converted to ranks (with
+#' a rank of 1 being the most important) relative to the full suite of
+#' environmental predictors. The ranks are summarized to a 27 km resolution
+#' raster grid for each predictor, where the cell values are the average across
+#' all models in the ensemble contributing to that cell. These data are
+#' available in raster format provided `download_pis = TRUE` was used when
+#' calling [ebirdst_download_status()]. PI estimates are available separately
+#' for both the occurrence and count sub-model and only the 30 most important
+#' predictors are distributed. Use [list_available_pis()] to see which
+#' predictors have PI data.
 #'
 #' @inheritParams load_raster
 #' @param predictor character; the predictor that the PI data should be loaded
@@ -675,8 +686,8 @@ load_fac_map_parameters <- function(species, path = ebirdst_data_dir()) {
 #'
 #' [list_available_pis()] returns a data frame listing the top 30 predictors for
 #' which PI rasters can be loaded. In addition to the predictor names, the mean
-#' range-wide rank (`rangewide_rank`) is given as well as the integer rank
-#' (`rank`) relative to the other 29 predictors.
+#' range-wide rank (`rank_mean`) is given as well as the integer rank
+#' (`rank`) relative to the full suite of predictors (environmental and effort).
 #'
 #' @export
 #'
@@ -699,6 +710,7 @@ load_pi <- function(species, predictor, response = c("occurrence", "count"),
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -735,7 +747,7 @@ list_available_pis <- function(species, path = ebirdst_data_dir()) {
          "argument correctly points to the data download directory.")
   }
 
-  csv_file <- file.path(species_path, "pis", "pi_rangewide-ranks.csv")
+  csv_file <- file.path(species_path, "pis", "pi_rangewide.csv")
   if(!file.exists(csv_file)) {
     stop("The PI data could not be found. To download, use ",
          "`ebirst_download_status(download_pis = TRUE)`.")
@@ -753,7 +765,7 @@ list_available_pis <- function(species, path = ebirdst_data_dir()) {
 
   # return ranks
   top_ranks <- dplyr::as_tibble(ranks[ranks$predictor %in% preds, ])
-  top_ranks <- dplyr::arrange(top_ranks, .data$rank)
+  top_ranks <- dplyr::arrange(top_ranks, .data$response, .data$rank)
 
   return(top_ranks)
 }
@@ -777,25 +789,56 @@ list_available_pis <- function(species, path = ebirdst_data_dir()) {
 #' Eight predictive performance metrics are provided:
 #' - `binary_f1`: F1-score comparing the model predictions converted to binary
 #' with the observed detection/non-detection for the test checklists.
-#' - `binary_pr_auc`: the area on the precision-recall curve generated by
-#' comparing the model predictions converted to binary with the observed
-#' detection/non-detection for the test checklists.
+#' - `binary_mcc`: Matthews Correlation Coefficient (MCC) comparing the model
+#' predictions converted to binary with the observed detection/non-detection
+#' for the test checklists.
+#' - `binary_prevalence`: the observed detection probability after spatial
+#' subsampling.
 #' - `occ_bernoulli_dev`: Bernoulli deviance comparing the predicted occurrence
 #' with the observed detection/non-detection for the test checklists.
+#' - `occ_bin_spearman`: test observations are binned by predicted encounter
+#' rate with bin widths of 0.05, then the mean observed prevalence and predicted
+#' encounter rate are calculated within bins. This metric is the Spearman's rank
+#' correlation coefficient comparing the observed and predicted binned mean
+#' values.
+#' - `occ_brier`: the Brier score is the mean squared difference between
+#' predicted encounter rate and observered detection/non-detection.
+#' - `occ_pr_auc`: the area on the precision-recall curve (PR AUC) generated by
+#' comparing the predicted encounter rate with the observed
+#' detection/non-detection for the test checklists.
+#' - `occ_pr_auc_gt_prev`: the proportion of the ensemble for which the PR AUC
+#' is greater than observed prevalence, which indicates that the model is
+#' performing better than random guessing.
+#' - `occ_pr_auc_normalized`: the PR AUC normalized to account for class
+#' imbalance so that a value of 0 represents performance equal to random
+#' guessing and a value of 1 represents perfect classification.
+#' - `count_log_pearson`: Pearson correlation coefficient comparing the
+#' logarithm of the predicted count with the logarithm of the observed count for
+#' the subset of test checklists on which the species was detected.
+#' - `count_mae`: the mean absolute error (MAE) comparing the observed and
+#' predicted counts for the subset of test checklists on which the species was
+#' detected.
+#' - `count_poisson_dev`: Bernoulli deviance comparing the observed and
+#' predicted counts for the subset of test checklists on which the species
+#' was detected.
+#' - `count_rmse`: route mean squared error (RMSE) comparing the observed and
+#' predicted counts for the subset of test checklists on which the species was
+#' detected.
 #' - `count_spearman`: Spearman's rank correlation coefficient comparing the
-#' predicted count with the observed count for the subset of test checklists
-#' on which the species was detected.
-#' - `log_count_pearson`: Pearson correlation coefficient comparing the
-#' logarithm of the predicted count with the logarithm of the observed count
-#' for the subset of test checklists on which the species was detected.
-#' - `abd_poisson_dev`: Poisson deviance comparing the predicted relative
-#' abundance with the observed count for the full set of test checklists.
-#' - `abd_spearman`: Spearman's rank  correlation coefficient comparing the
-#' predicted relative abundance with the observed count for the full set of
-#' test checklists.
-#' - `log_abd_pearson`: Pearson correlation coefficient comparing the logarithm
+#' observed and predicted counts for the subset of test checklists on which the
+#' species was detected.
+#' - `abd_log_pearson`: Pearson correlation coefficient comparing the logarithm
 #' of the predicted relative abundance with the logarithm of the observed
 #' count for the full set of test checklists.
+#' - `abd_mae`: the mean absolute error (MAE) comparing the observed counts and
+#' predicted relative abundance for the full set of test checklists.
+#' - `abd_poisson_dev`: Poisson deviance comparing the predicted relative
+#' abundance with the observed count for the full set of test checklists.
+#' - `abd_rmse`: root mean squared error comparing the predicted relative
+#' abundance with the observed count for the full set of test checklists.
+#' - `abd_spearman`: Spearman's rank correlation coefficient comparing the
+#' predicted relative abundance with the observed count for the full set of
+#' test checklists.
 #'
 #' @return A [SpatRaster][terra::SpatRaster] object with the PPM data. For
 #'   migrants, rasters are weekly with  52 layers, where the layer names are the
@@ -814,19 +857,31 @@ list_available_pis <- function(species, path = ebirdst_data_dir()) {
 #' }
 load_ppm <- function(species,
                      ppm = c("binary_f1",
-                             "binary_pr_auc",
+                             "binary_mcc",
+                             "binary_prevalence",
                              "occ_bernoulli_dev",
+                             "occ_bin_spearman",
+                             "occ_brier",
+                             "occ_pr_auc",
+                             "occ_pr_auc_gt_prev",
+                             "occ_pr_auc_normalized",
+                             "count_log_pearson",
+                             "count_mae",
+                             "count_poisson_dev",
+                             "count_rmse",
                              "count_spearman",
-                             "log_count_pearson",
+                             "abd_log_pearson",
+                             "abd_mae",
                              "abd_poisson_dev",
-                             "abd_spearman",
-                             "log_abd_pearson"),
+                             "abd_rmse",
+                             "abd_spearman"),
                      path = ebirdst_data_dir()) {
   stopifnot(is.character(species), length(species) == 1, dir.exists(path))
   ppm <- match.arg(ppm)
 
   species_code <- get_species(species)
   species_path <- get_species_path(species, path = path,
+                                   dataset = "status",
                                    check_downloaded = FALSE)
   if (!dir.exists(species_path)) {
     stop("No data found for the requested species. Ensure that the data were ",
@@ -837,7 +892,7 @@ load_ppm <- function(species,
   # construct file name
   year <- load_config(species = species, path = path)[["srd_pred_year"]]
   p <- stringr::str_replace_all(ppm, "_", "-")
-  tif <- stringr::str_glue("{species_code}_ppm_{p}_27km_{year}.tif")
+  tif <- stringr::str_glue("{species_code}_ppm_{p}_mean_27km_{year}.tif")
   tif <- file.path(species_path, "ppms", tif)
   if (!file.exists(tif)) {
     stop("GeoTIFF for ", ppm, " PPM could not be found. To download ",
