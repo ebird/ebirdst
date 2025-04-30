@@ -22,7 +22,6 @@
 2023/yebsap-example/ppms/yebsap-example_ppm_count-mae_mean_27km_2023.tif
 2023/yebsap-example/ppms/yebsap-example_ppm_count-poisson-dev_mean_27km_2023.tif
 2023/yebsap-example/ppms/yebsap-example_ppm_count-rmse_mean_27km_2023.tif
-2023/yebsap-example/ppms/yebsap-example_ppm_count-spearman_mean_27km_2023.tif
 2023/yebsap-example/ppms/yebsap-example_ppm_occ-bernoulli-dev_mean_27km_2023.tif
 2023/yebsap-example/ppms/yebsap-example_ppm_occ-bin-spearman_mean_27km_2023.tif
 2023/yebsap-example/ppms/yebsap-example_ppm_occ-brier_mean_27km_2023.tif
