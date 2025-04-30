@@ -40,7 +40,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("ebird/ebirdst")
 ```
 
-This version of `ebirdst` is designed to work with the eBird Status and Trends Data Products estimated for the year `r ebirdst::ebirdst_version()[["version_year"]]` released in `r ebirdst::ebirdst_version()[["release_year"]]`. **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.
+This version of `ebirdst` is designed to work with the `r ebirdst::ebirdst_version()[["status_version_year"]]` version of Status Data Products and the `r ebirdst::ebirdst_version()[["trends_version_year"]]` version of Trends Data Products. **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.
 
 ## Webinars
 
@@ -65,19 +65,25 @@ For those interested in accessing these data outside of R, there are two alterna
 - The most widely used data products are available for direct download through the [Status and Trends website](https://science.ebird.org/en/status-and-trends). Spatial data are accessible in widely adopted GeoTIFF and GeoPackage formats, which can be opened in QGIS, ArcGIS, or other GIS software.
 - There is an API for programmatic access outside of R. For more information on the eBird Status and Trends Data Products API, consult the [associated vignette](https://ebird.github.io/ebirdst/articles/api.html).
 
-## Versions
-
-The eBird Status and Trends Data Products provide estimates of relative abundance, and other variables, for a particular year. This estimation year is used to identify the version of the data products. Each version of this R package is associated with a particular version of the data. For example, the current version of the R package is `r utils::packageVersion("ebirdst")` and, as indicated by the year in the version number, it is designed to work with the `r ebirdst::ebirdst_version()[["version_year"]]` data products. Every year, typically in November, the Status and Trends Data Products are updated, and users are encouraged to update this R package and transition to using the new version of the data products. After the data products are updated, there will be a brief period where access to the previous version is also provided, allowing users to finish any analyses with this previous version. If you intended to continue using the older data products during this period you must not update the R package.
-
 ## Citation
 
-If you use the the eBird Status and Trends data please cite it with: 
+The eBird Status Data Products and eBird Trends Data Products come from different versions and require different citations.
+
+Please cite the **eBird Status Data Products** with: 
+
+<blockquote>
+Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, C. Davis, M. Stokowski, P. Sharma, V. Pantoja, D. Burgin, P. Crowe, M. Bell, S. Ray, I. Davies, V. Ruiz-Gutierrez, C. Wood, A. Rodewald. 2024. eBird Status and Trends, Data Version: 2023; Released: 2025. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/WZTW8903" class="uri">https://doi.org/10.2173/WZTW8903</a>
+</blockquote>
+
+[Download a BibTeX version](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation_2023.bib).
+
+Please cite the **eBird Trends Data Products** with: 
 
 <blockquote>
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, I. Davies, A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023. eBird Status and Trends, Data Version: 2022; Released: 2023. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2022" class="uri">https://doi.org/10.2173/ebirdst.2022</a>
 </blockquote>
 
-[Download BibTeX](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation.bib).
+[Download a BibTeX version](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation_2022.bib).
 
 ## Vignettes
 

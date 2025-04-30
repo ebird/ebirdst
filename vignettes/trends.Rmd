@@ -28,6 +28,8 @@ knitr::opts_chunk$set(warning = FALSE,
 knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 ```
 
+**Version Note:** In 2025, the eBird Status Data Products were updated to the 2023 version year, however, none of the Trends data products were updated. Therefore the Trends Data Products currently available via `ebirdst` are for the 2022 prediction year.
+
 The eBird Trends Data Products provide estimates of trends in relative abundance based on eBird data. Trend estimates are made on a 27 km by 27 km grid for a single season per species (breeding, non-breeding, or resident). For further details on the methodology used to estimate these trends consult the associated paper:
 
 <blockquote>
@@ -52,7 +54,7 @@ trends_runs <- ebirdst_runs |>
          trends_season, trends_region,
          trends_start_year, trends_end_year,
          trends_start_date, trends_end_date,
-         rsquared, beta0)
+         rsquared, beta0, trends_version_year)
 glimpse(trends_runs)
 ```
 
@@ -66,6 +68,7 @@ Information is provided on the trends model for each species, including two pred
 - `trends_start_date/trends_end_date`: the start and end dates (`MM-DD` format) of the season for which the trend was estimated.
 - `rsquared`: R-squared value comparing the actual and estimated trends from the simulations.
 - `beta0`: the intercept of a linear model fitting actual vs. estimated trends (`actual ~ estimated`) for the simulations. Positive values of `beta0` indicate that the models are systematically *underestimating* the simulated trend for this species.
+- `trends_version_year`: the version year for the trends data projects.
 
 Note that some season dates span two calendar years, for example Canvasback has 2011-2021 trends estimates for a non-breeding season defined as December 20 to January 25. In this case, the first season will be December 20, 2011 to January 25, 2012.
 

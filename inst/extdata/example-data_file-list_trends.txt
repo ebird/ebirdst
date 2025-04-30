@@ -1,0 +1,3 @@
+2022/yebsap-example/trends/yebsap-example_breeding_ebird-trends_2022.parquet
+2022/yebsap-example/trends/yebsap-example_breeding_ebird-trends_folds_2022.parquet
+2022/yebsap-example/trends/yebsap-example_breeding_ebird-trends_model-summary.csv

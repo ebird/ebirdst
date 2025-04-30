@@ -27,6 +27,9 @@ A data frame containing regional summary statistics with columns:
 or other sub-national regions.
 \item \code{region_code}: alphanumeric code for the region.
 \item \code{region_name}: English name of the region.
+\item \code{continent_code}: alphanumeric code for continent that this region
+belongs to.
+\item \code{continent_name}: name of the continent that this region belongs to.
 \item \code{season}: name of the season that the summary statistics were calculated
 for.
 \item \code{abundance_mean}: mean relative abundance in the region.

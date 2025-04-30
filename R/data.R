@@ -31,7 +31,7 @@
 #' - `turkey_plus`: Turkey, Cyprus, Israel, Palestine, Greece, Armenia, and
 #' Georgia
 #'
-#' @format A data frame with 27 variables:
+#' @format A data frame with 29 variables:
 #' - `species_code`: alphanumeric eBird species code uniquely identifying the
 #' species
 #' - `scientific_name`: scientific name.
@@ -52,6 +52,7 @@
 #' - `resident_quality`: resident quality.
 #' - `resident_start`: for resident species, the year-round start date.
 #' - `resident_end`: for resident species, the year-round end date.
+#' - `status_version_year`: the release version of the Status data products.
 #' - `has_trends`: whether or not this species has trends estimates.
 #' - `trends_season`: season that the trend was estimated for: breeding,
 #' nonbreeding, or resident.
@@ -60,14 +61,17 @@
 #' trend estimates for a regional subset of their full range.
 #' - `trends_start_year`: start year of the trend time period.
 #' - `trends_end_year`: end year of the trend time period.
-#' - `trends_start_date`: start date (`MM-DD` format) of the season for which the trend was estimated.
-#' - `trends_end_date`: end date (`MM-DD` format) of the season for which the trend was estimated.
-#' - `rsquared`: R-squared value comparing the actual and estimated trends from the simulations.
+#' - `trends_start_date`: start date (`MM-DD` format) of the season for which
+#' the trend was estimated.
+#' - `trends_end_date`: end date (`MM-DD` format) of the season for which the
+#' trend was estimated.
+#' - `rsquared`: R-squared value comparing the actual and estimated trends from
+#' the simulations.
 #' - `beta0`: the intercept of a linear model fitting actual vs. estimated
-#' trends.
-#' (`actual ~ estimated`) for the simulations. Positive values of `beta0`
+#' trends (`actual ~ estimated`) for the simulations. Positive values of `beta0`
 #' indicate that the models are systematically *underestimating* the simulated
 #' trend for this species.
+#' - `trends_version_year`: the release version of the Trends data products.
 "ebirdst_runs"
 
 #' eBird Status and Trends predictor variables

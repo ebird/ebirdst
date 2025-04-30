@@ -5,13 +5,13 @@ library(tidyverse)
 # feature set - status + trends
 pred_list <- file.path("data-raw", "config_status.json") |>
   read_json(simplifyVector = TRUE) |>
-  pluck("PREDICTOR_LIST") |>
-  # add in trends predictors
-  c("longitude", "latitude", .,
-    "mcd12q1_lccs2_c9_ed", "mcd12q1_lccs2_c9_pland")
+  pluck("PREDICTOR_LIST")
+# add in trends predictors
+pred_list <- c("longitude", "latitude", pred_list,
+               "mcd12q1_lccs2_c9_ed", "mcd12q1_lccs2_c9_pland")
 
 # categories
-p <- read_csv("data-raw/ebirdst_features_2022 - predictors.csv") |>
+p <- read_csv("data-raw/ebirdst_features_2023 - predictors.csv") |>
   mutate(row = row_number())
 
 # don't need to split
@@ -46,7 +46,8 @@ ebirdst_predictors <- bind_rows(p_nosplit, p_split) |>
 usethis::use_data(ebirdst_predictors, overwrite = TRUE)
 
 # predictor datasets
-ebirdst_predictor_descriptions <- read_csv("data-raw/ebirdst_features_2022 - predictor_descriptions.csv") |>
+ebirdst_predictor_descriptions <- read_csv("data-raw/ebirdst_features_2023 - predictor_datasets.csv") |>
+  select(!index) |>
   filter(str_detect(predictor, "\\{") | predictor %in% pred_list) |>
   as_tibble()
 

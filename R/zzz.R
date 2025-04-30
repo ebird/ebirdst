@@ -1,25 +1,31 @@
 .onAttach <- function(libname, pkgname) {
   v <- ebirdst_version()
-  vy <- v[["version_year"]]
-  ry <- v[["release_year"]]
-  aed <- format(v[["access_end_date"]], "%B %Y")
-  citation <- stringr::str_glue(
-    "Please cite the eBird Status and Trends data using: ",
+  svy <- v[["status_version_year"]]
+  tvy <- v[["trends_version_year"]]
+
+  status_citation <- paste(
+    "Cite the eBird Status Data Products using: ",
+    "Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson,",
+    "W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, C. Davis,",
+    "M. Stokowski, P. Sharma, V. Pantoja, D. Burgin, P. Crowe, M. Bell, S. Ray,",
+    "I. Davies, V. Ruiz-Gutierrez, C. Wood, A. Rodewald. 2024. eBird Status and",
+    "Trends, Data Version: 2023; Released: 2025. Cornell Lab of Ornithology, Ithaca,",
+    "New York. https://doi.org/10.2173/WZTW8903", sep = "\n  ")
+
+  trends_citation <- paste(
+    "Cite the eBird Trends Data Products using: ",
     "Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, ",
     "W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, I. Davies, ",
-    "A. Rodewald, V. Ruiz-Gutierrez, C. Wood. {ry}.",
-    "eBird Status and Trends, Data Version: {vy}; Released: {ry}. Cornell Lab of",
-    "Ornithology, Ithaca, New York. https://doi.org/10.2173/ebirdst.{vy}",
-    .sep = "\n  ", .trim = FALSE)
+    "A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 20. eBird Status and Trends, Data",
+    "Version: 2022; Released: 2023. Cornell Lab of Ornithology, Ithaca, New York. ",
+    "https://doi.org/10.2173/ebirdst.2022", sep = "\n  ")
+
   m <- stringr::str_glue(
-    "{citation}",
-    "",
-    "This version of the package provides access to the {vy} version of the eBird",
-    "Status and Trends Data Products. Access to the {vy} data will be provided ",
-    "until {aed} when it will be replaced by the {vy + 1} data. At that ",
-    "point, you will be required to update this R package and transition to using ",
-    "the new data.",
-    .sep = "\n", .trim = FALSE
+    "This version of the ebirdst package provides access to the {svy} version of ",
+    "the eBird Status Data Products and the {tvy} version of the eBird Trends Data ",
+    "Products.\n\n",
+    "{status_citation}", "\n\n", "{trends_citation}",
+    .sep = "", .trim = FALSE
   )
   packageStartupMessage(as.character(m))
 }

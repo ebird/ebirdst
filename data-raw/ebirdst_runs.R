@@ -1,8 +1,9 @@
 library(tidyverse)
 library(auk)
-library(lubridate)
-library(jsonlite)
+library(ebirdst)
 library(glue)
+library(jsonlite)
+library(lubridate)
 
 pred_year <- file.path("data-raw", "config_status.json") |>
   read_json(simplifyVector = TRUE) |>
@@ -64,11 +65,12 @@ convert_to_date <- function(x) {
   ymd(ifelse(is.na(x), NA_character_, paste0(pred_year, "-", x)))
 }
 ebirdst_runs <- runs |>
-  select(-common_name) |>
+  select(!c(common_name, taxon_order)) |>
   inner_join(ebird_taxonomy, by = "species_code") |>
   arrange(taxon_order) |>
   mutate(across(ends_with("start"), convert_to_date),
-         across(ends_with("end"), convert_to_date)) |>
+         across(ends_with("end"), convert_to_date),
+         status_version_year = ebirdst_version()[["status_version_year"]]) |>
   select(species_code, scientific_name, common_name,
          is_resident = summarize_as_resident,
          breeding_quality, breeding_start, breeding_end,
@@ -77,7 +79,8 @@ ebirdst_runs <- runs |>
          postbreeding_migration_start, postbreeding_migration_end,
          prebreeding_migration_quality,
          prebreeding_migration_start, prebreeding_migration_end,
-         resident_quality, resident_start, resident_end)
+         resident_quality, resident_start, resident_end,
+         status_version_year)
 
 # trends runs
 trends <- read_csv("data-raw/ebird-trends_runs_2022.csv",
@@ -92,7 +95,8 @@ trends <- read_csv("data-raw/ebird-trends_runs_2022.csv",
             trends_end_year = end_year,
             trends_start_date = start_date,
             trends_end_date = end_date,
-            rsquared, beta0)
+            rsquared, beta0,
+            trends_version_year = ebirdst_version()[["trends_version_year"]])
 
 # combine
 ebirdst_runs <- left_join(ebirdst_runs, trends, by = "species_code") |>

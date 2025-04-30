@@ -4,7 +4,12 @@
 \alias{get_species_path}
 \title{Get the path to the data package for a given species}
 \usage{
-get_species_path(species, path = ebirdst_data_dir(), check_downloaded = TRUE)
+get_species_path(
+  species,
+  path = ebirdst_data_dir(),
+  dataset = c("status", "trends"),
+  check_downloaded = TRUE
+)
 }
 \arguments{
 \item{species}{character; a single species given as a scientific name, common
@@ -18,6 +23,9 @@ data version year, e.g. "2020" for the 2020 Status Data Products. Each
 species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
+
+\item{dataset}{character; whether the path to the Status or Trends data
+products should be returned.}
 
 \item{check_downloaded}{logical; raise an error if no data have been
 downloaded for this species.}

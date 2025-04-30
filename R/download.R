@@ -110,9 +110,13 @@ ebirdst_download_status <- function(species,
   }
 
   # complete list of all available files for this species
-  files <- get_download_file_list(species_code = species, path = path)
+  files <- get_download_file_list(species_code = species,
+                                  path = path,
+                                  dataset = "status")
   # path to data package
-  run_path <- file.path(path, ebirdst_version()[["version_year"]], species)
+  run_path <- file.path(path,
+                        ebirdst_version()[["status_version_year"]],
+                        species)
 
   # decide which files to download
   # always download config file
@@ -243,9 +247,11 @@ ebirdst_download_trends <- function(species,
   run_paths <- character()
   for (s in species_code) {
     # complete list of all available files for this species
-    files <- get_download_file_list(species_code = s, path = path)
+    files <- get_download_file_list(species_code = s,
+                                    path = path,
+                                    dataset = "trends")
     # path to data package
-    run_path <- file.path(path, ebirdst_version()[["version_year"]], s)
+    run_path <- file.path(path, ebirdst_version()[["trends_version_year"]], s)
 
     # only trends files
     files <- files[stringr::str_detect(files$file, "/trends/"), ]
@@ -302,7 +308,7 @@ ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
   files <- get_download_file_list(species_code = "data_coverage", path = path)
   # path to data package
   run_path <- file.path(path,
-                        ebirdst_version()[["version_year"]],
+                        ebirdst_version()[["status_version_year"]],
                         "data_coverage")
 
   # apply pattern
@@ -340,6 +346,8 @@ ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
 #'
 #' @param check_downloaded logical; raise an error if no data have been
 #'   downloaded for this species.
+#' @param dataset character; whether the path to the Status or Trends data
+#'   products should be returned.
 #' @inheritParams ebirdst_download_status
 #'
 #' @return The path to the data package directory.
@@ -357,10 +365,12 @@ ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
 #' path <- get_species_path("yebsap")
 #' }
 get_species_path <- function(species, path = ebirdst_data_dir(),
+                             dataset = c("status", "trends"),
                              check_downloaded = TRUE) {
   stopifnot(is.character(species), length(species) == 1)
   stopifnot(is.character(path), length(path) == 1, dir.exists(path))
   stopifnot(is_flag(check_downloaded))
+  dataset <- match.arg(dataset)
 
   if (species == "data_coverage") {
     species_code <- "data_coverage"
@@ -370,9 +380,8 @@ get_species_path <- function(species, path = ebirdst_data_dir(),
   if (is.na(species_code)) {
     stop(species, " does not correspond to a valid Status and Trends species.")
   }
-  species_path <- path.expand(file.path(path,
-                                        ebirdst_version()[["version_year"]],
-                                        species_code))
+  version_year <- ebirdst_version()[[paste0(dataset, "_version_year")]]
+  species_path <- path.expand(file.path(path, version_year, species_code))
   if (check_downloaded && !dir.exists(species_path)) {
     stop("No data package found for species: ", species)
   }
@@ -405,35 +414,33 @@ ebirdst_data_dir <- function() {
 #'
 #' Identify the version of the eBird Status and Trends Data Products that this
 #' version of the R package works with. Versions are defined by the year that
-#' all model estimates are made for. In addition, the release data and end date
-#' for access of this version of the data are provided. Note that after the
-#' given access end data you will no longer be able to download this version of
-#' the data and will be required to update the R package and transition to using
-#' a newer data version.
+#' all model estimates are made for.
 #'
-#' @return A list with three components: `version_year` is the year the model
-#'   estimates are made for in this version of the data, `release_year` is the
-#'   year this version of the data were released, and `access_end_date` is the
-#'   last date that users will be able to download this version of the data.
+#' @return A list with three components: `status_version_year` is the version year for
+#'   the eBird Status Data Products, `trends_version_year` is the version year for the
+#'   eBird Trends Data Products, `release_year` is the year this version of the
+#'   data were released.
 #' @export
 #'
 #' @examples
 #' ebirdst_version()
 ebirdst_version <- function() {
-  list(version_year = 2022,
-       release_year = 2023,
-       access_end_date = as.Date("2025-01-15"))
+  list(status_version_year = 2023,
+       trends_version_year = 2022,
+       release_year = 2025)
 }
 
 
 # internal ----
 
-get_download_file_list <- function(species_code, path) {
+get_download_file_list <- function(species_code, path,
+                                   dataset = c("status", "trends")) {
   stopifnot(is.character(species_code), length(species_code) == 1,
             !is.na(species_code))
+  dataset <- match.arg(dataset)
 
   # version of the data products that this package version corresponds to
-  version_year <- ebirdst_version()[["version_year"]]
+  version_year <- ebirdst_version()[[paste0(dataset, "_version_year")]]
   # example data or a full data package
   is_example <- (species_code == "yebsap-example")
 
@@ -445,7 +452,8 @@ get_download_file_list <- function(species_code, path) {
                       "ebird/ebirdst_example-data/main/",
                       "example-data/")
     # file list
-    fl <- system.file("extdata", "example-data_file-list.txt",
+    fl <- system.file("extdata",
+                      paste0("example-data_file-list_", dataset, ".txt"),
                       package = "ebirdst")
     files <- readLines(fl)
   } else {

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2022.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,13 +176,13 @@ load that a polygon defining the boundary of that region using
 <div class="section level3">
 <h3 id="map-projection">Projection<a class="anchor" aria-label="anchor" href="#map-projection"></a>
 </h3>
-<p>The raster data are all provided in the same equal area sinusoidal
-projection as NASA MODIS data. While this projection is suitable for
-analysis, it is not ideal for mapping since it introduces significant
-distortion. Instead, it’s best to select an equal area projection
-tailored to your region. A good general purpose choice is a Lambert’s
-azimuthal equal area projection centered on the focal region. This can
-be defined programmatically as follows.</p>
+<p>The raster data are all provided in the same equal area Earth Earth
+coordinate reference system. This projection is designed to work for any
+location on Earth; however, it is not ideal for mapping smaller regions.
+Instead, it’s best to select an equal area projection tailored to your
+region. A good general purpose choice is a Lambert’s azimuthal equal
+area projection centered on the focal region. This can be defined
+programmatically as follows.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># find the centroid of the region</span></span>
 <span><span class="va">region_centroid</span> <span class="op">&lt;-</span> <span class="va">region_boundary</span> <span class="op">|&gt;</span> </span>
@@ -419,7 +419,7 @@ abundance.</p>
 <span>                           week <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_median</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                           median <span class="op">=</span> <span class="va">prop_pop_median</span>,</span>
 <span>                           lower <span class="op">=</span> <span class="va">prop_pop_lower</span>,</span>
-<span>                           upper <span class="op">=</span> <span class="va">prop_pop_upper</span><span class="op">)</span></span>
+<span>                           upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">prop_pop_upper</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># combine with other species</span></span>
 <span>  <span class="va">chronologies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">chronologies</span>, <span class="va">chronology</span><span class="op">)</span></span>
@@ -528,20 +528,20 @@ play a more important role for smaller regions.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">breeding</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; |---------|---------|---------|---------|=========================================                                          </span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_pop</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      state    breeding  nonbreeding prebreeding_migration</span></span>
-<span><span class="co">#&gt; 1   Alaska 0.059539077 1.246767e-05            0.18449229</span></span>
-<span><span class="co">#&gt; 2  Wyoming 0.024791619 4.237502e-02            0.02376162</span></span>
-<span><span class="co">#&gt; 3  Montana 0.021015488 4.665311e-02            0.02299377</span></span>
-<span><span class="co">#&gt; 4   Nevada 0.014276172 3.525481e-02            0.01667688</span></span>
-<span><span class="co">#&gt; 5     Utah 0.013512905 3.705198e-02            0.01845320</span></span>
-<span><span class="co">#&gt; 6 Colorado 0.008481925 2.615300e-02            0.01133763</span></span>
+<span><span class="co">#&gt;        state   breeding  nonbreeding prebreeding_migration</span></span>
+<span><span class="co">#&gt; 1     Alaska 0.07868446 9.979945e-05           0.198995523</span></span>
+<span><span class="co">#&gt; 2    Wyoming 0.02749171 4.757064e-02           0.026007670</span></span>
+<span><span class="co">#&gt; 3    Montana 0.02354169 5.629944e-02           0.026315816</span></span>
+<span><span class="co">#&gt; 4       Utah 0.01155014 3.725202e-02           0.016403725</span></span>
+<span><span class="co">#&gt; 5     Nevada 0.01102989 3.515999e-02           0.015289441</span></span>
+<span><span class="co">#&gt; 6 California 0.01018862 2.247653e-02           0.009888532</span></span>
 <span><span class="co">#&gt;   postbreeding_migration</span></span>
-<span><span class="co">#&gt; 1             0.06922753</span></span>
-<span><span class="co">#&gt; 2             0.02112028</span></span>
-<span><span class="co">#&gt; 3             0.03463215</span></span>
-<span><span class="co">#&gt; 4             0.01537817</span></span>
-<span><span class="co">#&gt; 5             0.01493372</span></span>
-<span><span class="co">#&gt; 6             0.01077595</span></span></code></pre></div>
+<span><span class="co">#&gt; 1             0.07670290</span></span>
+<span><span class="co">#&gt; 2             0.02503700</span></span>
+<span><span class="co">#&gt; 3             0.03123912</span></span>
+<span><span class="co">#&gt; 4             0.01270763</span></span>
+<span><span class="co">#&gt; 5             0.01244097</span></span>
+<span><span class="co">#&gt; 6             0.00955948</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stats-relative">Proportion of North American population<a class="anchor" aria-label="anchor" href="#stats-relative"></a>
@@ -549,12 +549,12 @@ play a more important role for smaller regions.</p>
 <p>For broadly distributed species, such as Golden Eagle, it may be
 desirable to estimate the proportion of the population relative to a
 subset of the full range. For example, let’s calculate the proportion of
-the North American population falling within each state, where we define
-North America to include the United States, Canada, and Mexico. We’ll
-start by creating a polygon for the boundary of North America, using
-this to mask the seasonal relative abundance raster, then dividing the
-masked relative abundance raster by the total relative abundance across
-all of North America to generate layers showing the proportion of North
+the North American population within each state, where we define North
+America to include the United States, Canada, and Mexico. We’ll start by
+creating a polygon for the boundary of North America, using this to mask
+the seasonal relative abundance raster, then dividing the masked
+relative abundance raster by the total relative abundance across all of
+North America to generate layers showing the proportion of North
 American population.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal relative abundance</span></span>
@@ -589,13 +589,20 @@ same method as in the previous section.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">breeding</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; |---------|---------|---------|---------|=========================================                                          </span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_noram_pop</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      state   breeding  nonbreeding prebreeding_migration postbreeding_migration</span></span>
-<span><span class="co">#&gt; 1   Alaska 0.23794508 0.0000337296            0.35744748             0.16047911</span></span>
-<span><span class="co">#&gt; 2  Wyoming 0.09942421 0.1146398620            0.04606608             0.04913360</span></span>
-<span><span class="co">#&gt; 3  Montana 0.08428043 0.1262136568            0.04457747             0.08056719</span></span>
-<span><span class="co">#&gt; 4   Nevada 0.05725310 0.0953771106            0.03233106             0.03577531</span></span>
-<span><span class="co">#&gt; 5     Utah 0.05419210 0.1002391073            0.03577476             0.03474136</span></span>
-<span><span class="co">#&gt; 6 Colorado 0.03401588 0.0707534000            0.02198000             0.02506885</span></span></code></pre></div>
+<span><span class="co">#&gt;        state   breeding  nonbreeding prebreeding_migration</span></span>
+<span><span class="co">#&gt; 1     Alaska 0.28015381 0.0002490995            0.37901331</span></span>
+<span><span class="co">#&gt; 2    Wyoming 0.09848225 0.1236457195            0.04958722</span></span>
+<span><span class="co">#&gt; 3    Montana 0.08433231 0.1463336443            0.05017475</span></span>
+<span><span class="co">#&gt; 4       Utah 0.04137551 0.0968255492            0.03127597</span></span>
+<span><span class="co">#&gt; 5     Nevada 0.03951184 0.0913879306            0.02915144</span></span>
+<span><span class="co">#&gt; 6 California 0.03645739 0.0583876463            0.01884387</span></span>
+<span><span class="co">#&gt;   postbreeding_migration</span></span>
+<span><span class="co">#&gt; 1             0.19813731</span></span>
+<span><span class="co">#&gt; 2             0.06488325</span></span>
+<span><span class="co">#&gt; 3             0.08095603</span></span>
+<span><span class="co">#&gt; 4             0.03293174</span></span>
+<span><span class="co">#&gt; 5             0.03224071</span></span>
+<span><span class="co">#&gt; 6             0.02475229</span></span></code></pre></div>
 <p>Notice that the proportions are higher than those in the previous
 section since we’re now estimating the proportion of the North American
 population rather than the proportion of the global population. For
@@ -641,12 +648,12 @@ previous section.</p>
 <span>  prop_pop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">cali_prop_noram_pop</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prop_pop_weekly_noram</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         week   prop_pop</span></span>
-<span><span class="co">#&gt; 1 2022-01-04 0.05982915</span></span>
-<span><span class="co">#&gt; 2 2022-01-11 0.05356687</span></span>
-<span><span class="co">#&gt; 3 2022-01-18 0.05547690</span></span>
-<span><span class="co">#&gt; 4 2022-01-25 0.05428955</span></span>
-<span><span class="co">#&gt; 5 2022-02-01 0.05839619</span></span>
-<span><span class="co">#&gt; 6 2022-02-08 0.06418506</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 2023-01-04 0.06017463</span></span>
+<span><span class="co">#&gt; 2 2023-01-11 0.05451982</span></span>
+<span><span class="co">#&gt; 3 2023-01-18 0.05542206</span></span>
+<span><span class="co">#&gt; 4 2023-01-25 0.05536107</span></span>
+<span><span class="co">#&gt; 5 2023-02-01 0.05683880</span></span>
+<span><span class="co">#&gt; 6 2023-02-08 0.06034179</span></span></code></pre></div>
 <p>This data frame gives the weekly proportion of the North American
 population of Golden Eagle in California; the structure is very similar
 to the data we generated in the <a href="#chron">migration
@@ -657,8 +664,8 @@ January.</p>
 <code class="sourceCode R"><span><span class="va">prop_pop_weekly_noram</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">week</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>prop_pop <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">prop_pop</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     prop_pop</span></span>
-<span><span class="co">#&gt; 1 0.05579062</span></span></code></pre></div>
+<span><span class="co">#&gt;    prop_pop</span></span>
+<span><span class="co">#&gt; 1 0.0563694</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stats-coastal">Coastal species<a class="anchor" aria-label="anchor" href="#stats-coastal"></a>
@@ -690,7 +697,7 @@ using the naive approach used in the previous examples.</p>
 <span><span class="co"># proportion in mexico</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   nonbreeding</span></span>
-<span><span class="co">#&gt; 1   0.2049178</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  0.06253108</span></span></code></pre></div>
 <p>According to this method, about 20% of the non-breeding population of
 Surf Scoter occurs in Mexico. However, Surf Scoter is an exclusively
 coastal species and this naive estimate is missing a large part of the
@@ -709,7 +716,7 @@ will be included.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">abd_nonbreeding</span>, <span class="va">mexico_buffer</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>        touches <span class="op">=</span> <span class="cn">TRUE</span>, ID <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   nonbreeding</span></span>
-<span><span class="co">#&gt; 1   0.3336408</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  0.07994288</span></span></code></pre></div>
 <p>With these adjustments the proportion of the population has increased
 substantially from 20% to 33%. These approaches are not perfect and care
 should always be taken when working with eBird Status and Trends Data

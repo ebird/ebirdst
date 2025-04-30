@@ -7,19 +7,15 @@
 ebirdst_version()
 }
 \value{
-A list with three components: \code{version_year} is the year the model
-estimates are made for in this version of the data, \code{release_year} is the
-year this version of the data were released, and \code{access_end_date} is the
-last date that users will be able to download this version of the data.
+A list with three components: \code{status_version_year} is the version year for
+the eBird Status Data Products, \code{trends_version_year} is the version year for the
+eBird Trends Data Products, \code{release_year} is the year this version of the
+data were released.
 }
 \description{
 Identify the version of the eBird Status and Trends Data Products that this
 version of the R package works with. Versions are defined by the year that
-all model estimates are made for. In addition, the release data and end date
-for access of this version of the data are provided. Note that after the
-given access end data you will no longer be able to download this version of
-the data and will be required to update the R package and transition to using
-a newer data version.
+all model estimates are made for.
 }
 \examples{
 ebirdst_version()

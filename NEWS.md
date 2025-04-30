@@ -1,5 +1,6 @@
-# ebirdst 3.2022.4
+# ebirdst 3.2023.0
 
+- update for 2023 data release
 - add capability to download and load data coverage layers
 - Northern Goshawk species code was incorrect
 - on some VPNs downloading from https raises an error, switch to http in these cases
