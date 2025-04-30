@@ -8,6 +8,120 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+## 2023 Changelog
+
+**Data Version:** 2023 (available May 2025)
+
+**Citation:** 
+<blockquote>
+Citation: Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, C. Davis, M. Stokowski, P. Sharma, V. Pantoja, D. Burgin, P. Crowe, M. Bell, S. Ray, I. Davies, V. Ruiz-Gutierrez, C. Wood, A. Rodewald. 2024. eBird Status and Trends, Data Version: 2023; Released: 2025. Cornell Lab of Ornithology, Ithaca, New York. https://doi.org/10.2173/WZTW8903
+</blockquote>
+
+### Trends
+
+There were no new eBird Trends generated or released in this version. The existing versions will remain on the website; please see the [previous changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trends).
+
+### Status
+
+#### Data Inputs
+
+##### eBird Checklists
+- CHANGED: Input data includes checklists from January 1 2009 through December 31 2023, updated from January 1 2008 through December 31 2022.
+- CHANGED: Checklists where all observations were marked as not public in the review process have been excluded (85,882 checklists).
+
+##### Effort Covariates
+- No changes.
+
+##### Environmental Covariates
+- CHANGED: The source for bathymetry data was changed to GEBCO, using the ice-surface elevation version.
+- ADDED: Bathymetric slope was calculated as an additional feature, using the `terra::slope` function with default parameters on the updated [GEBCO](https://www.gebco.net/data-products/gridded-bathymetry-data) bathymetry data and summarized within the 1.5km radius neighborhood (consistent with all other features).
+- ADDED: The [Global Mountain Biodiversity Assessment](https://www.nature.com/articles/s41597-022-01256-y) (GBMA) of mountain ranges was included as a categorical feature at Level 4. Mountain ranges received unique integer IDs and all other locations received a value of 0. The feature was treated as a factor in the models.
+- ADDED: Monthly 4km mean Chlorophyll concentration from the [NOAA Ocean Color Lab](https://oceancolor.gsfc.nasa.gov/) was added and summarized as single point values (not neighborhood summaries) due to the coarse spatial resolution of these data.
+- ADDED: Monthly 4km mean Sea Surface Temperature from the [NOAA Ocean Color Lab](https://oceancolor.gsfc.nasa.gov/) was added and summarized as single point values (not neighborhood summaries) due to the coarse spatial resolution of these data.
+- ADDED: Monthly 5km Sea Surface Temperature Anomaly from the [NOAA Coral Reef Watch](https://coralreefwatch.noaa.gov/product/5km/index.php) was added and summarized as single point values (not neighborhood summaries) due to the coarse spatial resolution of these data.
+- REMOVED: Annual intertidal mudflat cover was removed as it was not being maintained and updated.
+- REMOVED: The permanent surface water feature from the Joint Research Center Global Surface Water yearly dataset was dropped, while the seasonal water feature was kept.
+
+#### Workflow and Code Changes
+
+##### Base Model
+- CHANGED: The MCC-F1 thresholding that was applied to the occurrence rate model to determine presence/absence (binary) estimates has been replaced with a separate binary classification model. This model is extremely similar to the occurrence rate model, but instead of estimating probability of occurrence on a scale of 0-1, this version of random forest predicts a binary 0 or 1 for each prediction (checklist or prediction grid cell). Our implementation of this model uses the same feature set, factor handling, and balanced sampling as the occurrence rate model in operation. Switching from a stixel-wide (covering four weeks and all locations) presence/absence threshold to checklist- and- prediction-specific estimates of presence/absence greatly improved the stability of estimates through space and time, especially migration timing, and dramatically simplified the calculation and interpretation of range boundary estimates. Further, the response of expert reviewers to the quality of the map predictions with the new binary classification model was much better than for previous versions. This change resulted in a number of smaller, downstream changes:
+  - Previously, when making range boundary presence/absence estimates on the prediction grid, we predicted to a separate set of maximized effort values (as opposed to the prediction unit of 1 hour and 2 kilometers for occurrence rate, count, and relative abundance) to extract as much range boundary signal as possible. This was removed and range boundary presence/absence estimates are now for the standard prediction units of 1 hour and 2 kilometers.
+  - Previously, when grid sampling the checklist data in each stixel for each species, we oversampled species detections if the detection probability fell below 25%. In applying the binary classification model, we found that doing this led to overfitting, by providing too much duplicated signal through oversampling, and that it degraded predictive performance. As a result, oversampling of detections was excluded from the binary classification model and has been removed from the occurrence rate model.
+  - Previously, at the ensemble level, the prediction grid cell-level calculation of the range boundary was done by taking an average of the number of occurrence rate estimates in the ensemble that were greater than the stixel-level local mccf1 threshold and comparing that to an arbitrarily set value of 0.14 (1 out of seven, or theoretically once in a week) across the ensemble. This value was sometimes lowered by expert reviewers, especially for cryptic species, to improve the range boundary. Now that threshold is set at 0.5 for all species, such that estimated presence means that the binary classification model predicted the species to be present at a given location more than half of the time. Expert reviewers can no longer change this value.
+- FIXED: We discovered a [bug](https://github.com/imbs-hl/ranger/issues/733) in the R `ranger` package which is used for the base models, relating to how features were sorted and sampled in the trees. In the count model, for approximately 20-30% of stixels this bug caused features, most often the predicted occurrence, which is a feature in the count model, to be randomly excluded from tree building even when we specified that these features must be included. The bug was fixed by the package author, but we continued to encounter this issue in ~5% of stixels in the version of `ranger` distributed by CRAN, so we have maintained a branch of the package which fully fixes this issue.
+- CHANGED: The “hurdle” model was removed and the count model now includes only checklists with observed counts greater than zero, as opposed to previously including checklists with observed counts greater than zero as well as checklists predicted to be present by the occurrence rate model and `mccf1` threshold and having a count of zero. After fixing the above bug and implementing the new binary classification model, we discovered a significant decline in the quality of the count and relative abundance estimates, as seen in predictive performance metrics (PPMs), particularly the Poisson deviance for the count and relative abundance estimates. This was attributed to an increase in checklists in which species were predicted to be present but with an observed count of zero entering the count model, as result of adding the binary classification model and potentially exacerbated by all count models seeing all features after the bugfix. The solution was to remove the “hurdle” and exclude checklists predicted to be present but having observed counts of zero and only include checklists with non-zero observed counts in the count model. This resulted in a substantial improvement in the PPMs for the count and relative abundance estimates, especially the Poisson deviance measure, across a set of 20 test species at their full spatiotemporal extent. This change also means that the relative abundance values themselves are much higher than in previous versions.
+- CHANGED: To improve computational performance and simplify feature sets, we now drop all features in a stixel that have the same value, as random forest effectively ignores these features in fitting models.
+
+##### Prediction
+- CHANGED: We have transitioned to a new 3 km X 3 km prediction grid in the widely used [Equal Earth equal area projection](https://equal-earth.com/equal-earth-projection.html). Previously the predictions were made to a 2.96 km X 2.96 km prediction grid using a non-standard sinusoidal projection.
+
+##### Ensemble
+- Land and Ocean
+  - CHANGED: At a high level, the workflow has been changed to be run land-only (making predictions to only land grid cells and only including checklists up to 10km in length anywhere) or land-and-ocean (making predictions to all locations and including checklists up to 30km in length at locations that are over 50% ocean). This includes a number of changes to the stixel design, data coverage, and resulting masking rules described below. This was done to more fully represent species with at-sea distributions and significant land and sea distributions (e.g., Phalaropes, Jaegers).
+- Stixels
+  - CHANGED: The maximum allowable stixel size has been reduced from 3000km on a side to 1600km on side, due to computational constraints and the previous size generating too much extrapolation.
+  - CHANGED: The number of stixel iterations run for each species has been reduced from 200 to 100.
+  - CHANGED: The minimum number of checklists in a stixel has been increased from 500 to 1000.
+- CHANGED: Stixels are generated separately for both land-only and land-and-ocean workflow runs. In land-only stixel generation, the rules allow subdividing coastal stixels, even when this would produce small ocean stixels with too few checklists to model, because ocean stixels are not included in these runs. For land-and-ocean stixels, this distinction is not made, allowing large coastal stixels. Additionally, the set of checklists considered by each run differs as mentioned above: land-and-ocean stixel generation includes checklists with travel distances of up to 30km that cover more than 50% ocean.
+- Data Coverage and Masking
+  - CHANGED: All species’ results are masked by two predictions generated from separate “data coverage” workflows (run separately for land-only and land-and-ocean): a) weekly estimates of site selection probability (0-1; the probability a grid cell of a certain habitat configuration receiving a checklist in a region and season), and b) spatial coverage (0-1; the regional-seasonal fraction of 3km grid cells that received checklists in a given week). These are used to mask out species predictions from locations with very low values of these estimates, to control extrapolation in areas with insufficient coverage (both spatially and habitat-specific). Land-only and land-and-ocean workflows have slightly different cutoffs and application of these values (see below). Finally, the spatial coverage values are used to add “assumed zeroes” or areas where there was sufficient data coverage to assume that a species was likely not present without running models (this is the difference between “Modeled Area” and “No prediction” on the maps).
+
+**Masking Threshold Values**
+
+|                                                   | Land-only | Land-and-ocean |
+| ------------------------------------------------- | --------- | -------------- |
+| Site Selection Probability Threshold              | 0.25%     | Not applied    |
+| Spatial Coverage Threshold                        | 0.03%     | 0.03%          |
+| Spatial Coverage Threshold for Assumed Zero Layer | 1%        | 1%             |
+
+  - FIXED: Previously, spatial coverage for the land-only workflow incorrectly included grid cells over water in the calculation of spatial coverage, resulting in incorrectly low values below the threshold in areas with small amounts of land and large amounts of water (e.g., French Polynesia). Subsequently, these areas were masked out, despite having sufficient spatial coverage over land. Now, spatial coverage for the land-only workflow only considers grid cells over land in the spatial coverage calculation, and both land and ocean for the land-and-ocean calculation.
+- Ensemble-level Range Boundaries
+  - Ensemble-level range-wide boundaries are defined by using the information on how many models for each species, across an ensemble with 100 members, made predictions at each prediction grid cell. We call this “ensemble support.” Range-wide boundaries are set on a weekly basis by choosing the highest value of ensemble support, or number of models making predictions, represented as a percent (e.g., 50 out of 100 models reporting is 50%) that maintains a true positive rate of 99.5% among grid sampled species detections for the given week, constrained to be between 50% and 95% ensemble support.
+    - This year, “ensemble support” has been calculated separately from the species base models by counting how many models would have had sufficient data to run the species base models. The requirements for sufficient data to run the species models within a stixel were: a) at least 10 species detections, and b) 50 checklists overall after grid sampling. This has been done across a larger number of stixel iterations, without running the actual base models on all iterations. This allowed decreasing the number of base mode; stixel iterations from 200 to 100 while increasing the number of stixel iterations used by ensemble support from 200 to 400. Overall this led to a significant computational cost reduction as well as higher quality ensemble support range boundaries.
+  - CHANGED: The minimum ensemble-level range boundary threshold has been increased from 50% to 75% of models reporting estimates, with an unchanged maximum value of 95%, to control extrapolation. However, expert map reviewers can override this (only for all weeks of the year) in the review process to be 50%, 90%, 95% or 99%, to further control extrapolation or omission, if needed.
+Confidence intervals
+- CHANGED: The method for the summarization of confidence intervals for occurrence, count, and relative abundance estimates has been changed from [Geyer subsampling](https://www.stat.umn.edu/geyer/5601/notes/sub.pdf) to simple 90th and 10th quantiles. 
+
+##### Predictive Performance Metrics (PPMs)
+- CHANGED:
+  - Occurrence PPMs
+    - Precision-Recall AUC uses the occurrence probability estimates, not the binary presence/absence estimates and has been renamed “occ-pr-auc”.
+    - Spearman correlation has been dropped.
+  - Relative Abundance PPMs
+    - No longer require a minimum mean count (in the test data) to be calculated (previously required a value of 0.25).
+    - Are only calculated if 50 or more grid-sampled test checklists in a stixel were estimated by the binary classification model to be present.
+  - Count PPMs
+    - No longer requires a minimum mean count (in the test data) to be calculated (previously required a value of 0.25).
+    - Are only calculated if 50 or more grid-sampled test checklists in a stixel have an observed count greater than 0.
+- CHANGED: The list of PPMs available has been expanded. See table below.
+
+| Updated PPMs              | Land-only                                                | Land-and-ocean        |
+| ------------------------- | -------------------------------------------------------- | --------------------- |
+| Estimate                  | Statistic                                                | Name                  |
+| Binary                    | F1                                                       | binary-f1             |
+| Binary                    | Matthew’s Correlation Coefficient (MCC)                  | binary-mcc            |
+| Binary                    | Prevalence                                               | binary-prevalence     |
+| Occurrence                | Bernoulli Deviance                                       | occ-bernoulli-dev     |
+| Occurrence                | Brier Score                                              | occ-brier             |
+| Occurrence                | Precision-Recall AUC (PR AUC)                            | occ-pr-auc            |
+| Occurrence                | PR AUC Greater than Prevalence                           | occ-pr-auc-gt-prev    |
+| Occurrence                | [PR AUC Normalized](https://icml.cc/2012/papers/349.pdf) | occ-pr-auc-normalized |
+| Count, Relative Abundance | Log Pearson Correlation                                  | count/abd-log-pearson |
+| Count, Relative Abundance | Mean Absolute Error (MAE)                                | count/abd-mae         |
+| Count, Relative Abundance | Poisson Deviance                                         | count/abd-poisson-dev |
+| Count, Relative Abundance | Root Mean Squared Error (RMSE)                           | count/abd-rmse        |
+| Count, Relative Abundance | Spearman Correlation                                     | count/abd-spearman    |
+
+##### Web Products
+- ADDED: The Regional Range and Abundance Stats now includes estimates of the proportion of the continental population within each region in addition to the proportion of the global population. See the [FAQ item](https://science.ebird.org/en/status-and-trends/faq#continents) for a map of continent definitions.
+- ADDED: The Regional Range and Abundance Stats now includes new regions providing summary stats for the Economic Exclusion Zones (EEZs) encapsulating the offshore waters of each country. EEZ boundaries were provided by the Flanders Marine Institute’s [Maritime Boundaries and Exclusive Economic Zones v12](https://doi.org/10.14284/632). EEZ summaries are only provided for species modeled using the land-and-ocean workflow. 
+- CHANGED: On the download page for each species on the website, it was previously only possible to download the Weekly Abundance Geospatial Data (raster) GeoTIFFs one week at a time. An option to download all 52 weeks as a zipped raster cube has been added.
+
+##### Data Products
+- CHANGED: The spatial predictor importance (PI) layers previously expressed the mean rank of each predictor within each grid cell. These layers are now the average of the predictor importance normalized within each stixel so that the predictor importances for land and water features described as percent cover, not including edge density, sum to one.
+- ADDED: Two data products from our “data coverage” workflows are now available: a) weekly estimates of site selection probability (0-1; the probability that a grid cell of a certain habitat configuration received a checklist in a region and season), and b) spatial coverage (0-1; the regional-seasonal fraction of 3km grid cells that received checklists in a given week). Both are available as weekly 3 km resolution rasters in GeoTIFF format.
+
 ## 2022 Changelog
 
 **Data Version:** 2022 (available November 2023)

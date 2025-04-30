@@ -69,7 +69,488 @@
     
     
 <div class="section level2">
-<h2 id="changelog">2022 Changelog<a class="anchor" aria-label="anchor" href="#changelog"></a>
+<h2 id="changelog">2023 Changelog<a class="anchor" aria-label="anchor" href="#changelog"></a>
+</h2>
+<p><strong>Data Version:</strong> 2023 (available May 2025)</p>
+<strong>Citation:</strong>
+<blockquote>
+Citation: Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki,
+O. Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A.
+Stillman, C. Davis, M. Stokowski, P. Sharma, V. Pantoja, D. Burgin, P.
+Crowe, M. Bell, S. Ray, I. Davies, V. Ruiz-Gutierrez, C. Wood, A.
+Rodewald. 2024. eBird Status and Trends, Data Version: 2023; Released:
+2025. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/WZTW8903" class="external-link uri">https://doi.org/10.2173/WZTW8903</a>
+</blockquote>
+<div class="section level3">
+<h3 id="trends">Trends<a class="anchor" aria-label="anchor" href="#trends"></a>
+</h3>
+<p>There were no new eBird Trends generated or released in this version.
+The existing versions will remain on the website; please see the <a href="https://ebird.github.io/ebirdst/articles/product-changelog.html#trends">previous
+changelog</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="status">Status<a class="anchor" aria-label="anchor" href="#status"></a>
+</h3>
+<div class="section level4">
+<h4 id="data-inputs">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs"></a>
+</h4>
+<div class="section level5">
+<h5 id="ebird-checklists">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists"></a>
+</h5>
+<ul>
+<li>CHANGED: Input data includes checklists from January 1 2009 through
+December 31 2023, updated from January 1 2008 through December 31
+2022.</li>
+<li>CHANGED: Checklists where all observations were marked as not public
+in the review process have been excluded (85,882 checklists).</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="effort-covariates">Effort Covariates<a class="anchor" aria-label="anchor" href="#effort-covariates"></a>
+</h5>
+<ul>
+<li>No changes.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="environmental-covariates">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates"></a>
+</h5>
+<ul>
+<li>CHANGED: The source for bathymetry data was changed to GEBCO, using
+the ice-surface elevation version.</li>
+<li>ADDED: Bathymetric slope was calculated as an additional feature,
+using the <code>terra::slope</code> function with default parameters on
+the updated <a href="https://www.gebco.net/data-products/gridded-bathymetry-data" class="external-link">GEBCO</a>
+bathymetry data and summarized within the 1.5km radius neighborhood
+(consistent with all other features).</li>
+<li>ADDED: The <a href="https://www.nature.com/articles/s41597-022-01256-y" class="external-link">Global
+Mountain Biodiversity Assessment</a> (GBMA) of mountain ranges was
+included as a categorical feature at Level 4. Mountain ranges received
+unique integer IDs and all other locations received a value of 0. The
+feature was treated as a factor in the models.</li>
+<li>ADDED: Monthly 4km mean Chlorophyll concentration from the <a href="https://oceancolor.gsfc.nasa.gov/" class="external-link">NOAA Ocean Color Lab</a> was
+added and summarized as single point values (not neighborhood summaries)
+due to the coarse spatial resolution of these data.</li>
+<li>ADDED: Monthly 4km mean Sea Surface Temperature from the <a href="https://oceancolor.gsfc.nasa.gov/" class="external-link">NOAA Ocean Color Lab</a> was
+added and summarized as single point values (not neighborhood summaries)
+due to the coarse spatial resolution of these data.</li>
+<li>ADDED: Monthly 5km Sea Surface Temperature Anomaly from the <a href="https://coralreefwatch.noaa.gov/product/5km/index.php" class="external-link">NOAA Coral
+Reef Watch</a> was added and summarized as single point values (not
+neighborhood summaries) due to the coarse spatial resolution of these
+data.</li>
+<li>REMOVED: Annual intertidal mudflat cover was removed as it was not
+being maintained and updated.</li>
+<li>REMOVED: The permanent surface water feature from the Joint Research
+Center Global Surface Water yearly dataset was dropped, while the
+seasonal water feature was kept.</li>
+</ul>
+</div>
+</div>
+<div class="section level4">
+<h4 id="workflow-and-code-changes">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes"></a>
+</h4>
+<div class="section level5">
+<h5 id="base-model">Base Model<a class="anchor" aria-label="anchor" href="#base-model"></a>
+</h5>
+<ul>
+<li>CHANGED: The MCC-F1 thresholding that was applied to the occurrence
+rate model to determine presence/absence (binary) estimates has been
+replaced with a separate binary classification model. This model is
+extremely similar to the occurrence rate model, but instead of
+estimating probability of occurrence on a scale of 0-1, this version of
+random forest predicts a binary 0 or 1 for each prediction (checklist or
+prediction grid cell). Our implementation of this model uses the same
+feature set, factor handling, and balanced sampling as the occurrence
+rate model in operation. Switching from a stixel-wide (covering four
+weeks and all locations) presence/absence threshold to checklist- and-
+prediction-specific estimates of presence/absence greatly improved the
+stability of estimates through space and time, especially migration
+timing, and dramatically simplified the calculation and interpretation
+of range boundary estimates. Further, the response of expert reviewers
+to the quality of the map predictions with the new binary classification
+model was much better than for previous versions. This change resulted
+in a number of smaller, downstream changes:
+<ul>
+<li>Previously, when making range boundary presence/absence estimates on
+the prediction grid, we predicted to a separate set of maximized effort
+values (as opposed to the prediction unit of 1 hour and 2 kilometers for
+occurrence rate, count, and relative abundance) to extract as much range
+boundary signal as possible. This was removed and range boundary
+presence/absence estimates are now for the standard prediction units of
+1 hour and 2 kilometers.</li>
+<li>Previously, when grid sampling the checklist data in each stixel for
+each species, we oversampled species detections if the detection
+probability fell below 25%. In applying the binary classification model,
+we found that doing this led to overfitting, by providing too much
+duplicated signal through oversampling, and that it degraded predictive
+performance. As a result, oversampling of detections was excluded from
+the binary classification model and has been removed from the occurrence
+rate model.</li>
+<li>Previously, at the ensemble level, the prediction grid cell-level
+calculation of the range boundary was done by taking an average of the
+number of occurrence rate estimates in the ensemble that were greater
+than the stixel-level local mccf1 threshold and comparing that to an
+arbitrarily set value of 0.14 (1 out of seven, or theoretically once in
+a week) across the ensemble. This value was sometimes lowered by expert
+reviewers, especially for cryptic species, to improve the range
+boundary. Now that threshold is set at 0.5 for all species, such that
+estimated presence means that the binary classification model predicted
+the species to be present at a given location more than half of the
+time. Expert reviewers can no longer change this value.</li>
+</ul>
+</li>
+<li>FIXED: We discovered a <a href="https://github.com/imbs-hl/ranger/issues/733" class="external-link">bug</a> in the R
+<code>ranger</code> package which is used for the base models, relating
+to how features were sorted and sampled in the trees. In the count
+model, for approximately 20-30% of stixels this bug caused features,
+most often the predicted occurrence, which is a feature in the count
+model, to be randomly excluded from tree building even when we specified
+that these features must be included. The bug was fixed by the package
+author, but we continued to encounter this issue in ~5% of stixels in
+the version of <code>ranger</code> distributed by CRAN, so we have
+maintained a branch of the package which fully fixes this issue.</li>
+<li>CHANGED: The “hurdle” model was removed and the count model now
+includes only checklists with observed counts greater than zero, as
+opposed to previously including checklists with observed counts greater
+than zero as well as checklists predicted to be present by the
+occurrence rate model and <code>mccf1</code> threshold and having a
+count of zero. After fixing the above bug and implementing the new
+binary classification model, we discovered a significant decline in the
+quality of the count and relative abundance estimates, as seen in
+predictive performance metrics (PPMs), particularly the Poisson deviance
+for the count and relative abundance estimates. This was attributed to
+an increase in checklists in which species were predicted to be present
+but with an observed count of zero entering the count model, as result
+of adding the binary classification model and potentially exacerbated by
+all count models seeing all features after the bugfix. The solution was
+to remove the “hurdle” and exclude checklists predicted to be present
+but having observed counts of zero and only include checklists with
+non-zero observed counts in the count model. This resulted in a
+substantial improvement in the PPMs for the count and relative abundance
+estimates, especially the Poisson deviance measure, across a set of 20
+test species at their full spatiotemporal extent. This change also means
+that the relative abundance values themselves are much higher than in
+previous versions.</li>
+<li>CHANGED: To improve computational performance and simplify feature
+sets, we now drop all features in a stixel that have the same value, as
+random forest effectively ignores these features in fitting models.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="prediction">Prediction<a class="anchor" aria-label="anchor" href="#prediction"></a>
+</h5>
+<ul>
+<li>CHANGED: We have transitioned to a new 3 km X 3 km prediction grid
+in the widely used <a href="https://equal-earth.com/equal-earth-projection.html" class="external-link">Equal Earth
+equal area projection</a>. Previously the predictions were made to a
+2.96 km X 2.96 km prediction grid using a non-standard sinusoidal
+projection.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="ensemble">Ensemble<a class="anchor" aria-label="anchor" href="#ensemble"></a>
+</h5>
+<ul>
+<li>Land and Ocean
+<ul>
+<li>CHANGED: At a high level, the workflow has been changed to be run
+land-only (making predictions to only land grid cells and only including
+checklists up to 10km in length anywhere) or land-and-ocean (making
+predictions to all locations and including checklists up to 30km in
+length at locations that are over 50% ocean). This includes a number of
+changes to the stixel design, data coverage, and resulting masking rules
+described below. This was done to more fully represent species with
+at-sea distributions and significant land and sea distributions (e.g.,
+Phalaropes, Jaegers).</li>
+</ul>
+</li>
+<li>Stixels
+<ul>
+<li>CHANGED: The maximum allowable stixel size has been reduced from
+3000km on a side to 1600km on side, due to computational constraints and
+the previous size generating too much extrapolation.</li>
+<li>CHANGED: The number of stixel iterations run for each species has
+been reduced from 200 to 100.</li>
+<li>CHANGED: The minimum number of checklists in a stixel has been
+increased from 500 to 1000.</li>
+</ul>
+</li>
+<li>CHANGED: Stixels are generated separately for both land-only and
+land-and-ocean workflow runs. In land-only stixel generation, the rules
+allow subdividing coastal stixels, even when this would produce small
+ocean stixels with too few checklists to model, because ocean stixels
+are not included in these runs. For land-and-ocean stixels, this
+distinction is not made, allowing large coastal stixels. Additionally,
+the set of checklists considered by each run differs as mentioned above:
+land-and-ocean stixel generation includes checklists with travel
+distances of up to 30km that cover more than 50% ocean.</li>
+<li>Data Coverage and Masking
+<ul>
+<li>CHANGED: All species’ results are masked by two predictions
+generated from separate “data coverage” workflows (run separately for
+land-only and land-and-ocean): a) weekly estimates of site selection
+probability (0-1; the probability a grid cell of a certain habitat
+configuration receiving a checklist in a region and season), and b)
+spatial coverage (0-1; the regional-seasonal fraction of 3km grid cells
+that received checklists in a given week). These are used to mask out
+species predictions from locations with very low values of these
+estimates, to control extrapolation in areas with insufficient coverage
+(both spatially and habitat-specific). Land-only and land-and-ocean
+workflows have slightly different cutoffs and application of these
+values (see below). Finally, the spatial coverage values are used to add
+“assumed zeroes” or areas where there was sufficient data coverage to
+assume that a species was likely not present without running models
+(this is the difference between “Modeled Area” and “No prediction” on
+the maps).</li>
+</ul>
+</li>
+</ul>
+<p><strong>Masking Threshold Values</strong></p>
+<table class="table">
+<colgroup>
+<col width="68%">
+<col width="12%">
+<col width="19%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th>Land-only</th>
+<th>Land-and-ocean</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Site Selection Probability Threshold</td>
+<td>0.25%</td>
+<td>Not applied</td>
+</tr>
+<tr class="even">
+<td>Spatial Coverage Threshold</td>
+<td>0.03%</td>
+<td>0.03%</td>
+</tr>
+<tr class="odd">
+<td>Spatial Coverage Threshold for Assumed Zero Layer</td>
+<td>1%</td>
+<td>1%</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>FIXED: Previously, spatial coverage for the land-only workflow
+incorrectly included grid cells over water in the calculation of spatial
+coverage, resulting in incorrectly low values below the threshold in
+areas with small amounts of land and large amounts of water (e.g.,
+French Polynesia). Subsequently, these areas were masked out, despite
+having sufficient spatial coverage over land. Now, spatial coverage for
+the land-only workflow only considers grid cells over land in the
+spatial coverage calculation, and both land and ocean for the
+land-and-ocean calculation.</li>
+<li>Ensemble-level Range Boundaries
+<ul>
+<li>Ensemble-level range-wide boundaries are defined by using the
+information on how many models for each species, across an ensemble with
+100 members, made predictions at each prediction grid cell. We call this
+“ensemble support.” Range-wide boundaries are set on a weekly basis by
+choosing the highest value of ensemble support, or number of models
+making predictions, represented as a percent (e.g., 50 out of 100 models
+reporting is 50%) that maintains a true positive rate of 99.5% among
+grid sampled species detections for the given week, constrained to be
+between 50% and 95% ensemble support.
+<ul>
+<li>This year, “ensemble support” has been calculated separately from
+the species base models by counting how many models would have had
+sufficient data to run the species base models. The requirements for
+sufficient data to run the species models within a stixel were: a) at
+least 10 species detections, and b) 50 checklists overall after grid
+sampling. This has been done across a larger number of stixel
+iterations, without running the actual base models on all iterations.
+This allowed decreasing the number of base mode; stixel iterations from
+200 to 100 while increasing the number of stixel iterations used by
+ensemble support from 200 to 400. Overall this led to a significant
+computational cost reduction as well as higher quality ensemble support
+range boundaries.</li>
+</ul>
+</li>
+<li>CHANGED: The minimum ensemble-level range boundary threshold has
+been increased from 50% to 75% of models reporting estimates, with an
+unchanged maximum value of 95%, to control extrapolation. However,
+expert map reviewers can override this (only for all weeks of the year)
+in the review process to be 50%, 90%, 95% or 99%, to further control
+extrapolation or omission, if needed. Confidence intervals</li>
+</ul>
+</li>
+<li>CHANGED: The method for the summarization of confidence intervals
+for occurrence, count, and relative abundance estimates has been changed
+from <a href="https://www.stat.umn.edu/geyer/5601/notes/sub.pdf" class="external-link">Geyer
+subsampling</a> to simple 90th and 10th quantiles.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="predictive-performance-metrics-ppms">Predictive Performance Metrics (PPMs)<a class="anchor" aria-label="anchor" href="#predictive-performance-metrics-ppms"></a>
+</h5>
+<ul>
+<li>CHANGED:
+<ul>
+<li>Occurrence PPMs
+<ul>
+<li>Precision-Recall AUC uses the occurrence probability estimates, not
+the binary presence/absence estimates and has been renamed
+“occ-pr-auc”.</li>
+<li>Spearman correlation has been dropped.</li>
+</ul>
+</li>
+<li>Relative Abundance PPMs
+<ul>
+<li>No longer require a minimum mean count (in the test data) to be
+calculated (previously required a value of 0.25).</li>
+<li>Are only calculated if 50 or more grid-sampled test checklists in a
+stixel were estimated by the binary classification model to be
+present.</li>
+</ul>
+</li>
+<li>Count PPMs
+<ul>
+<li>No longer requires a minimum mean count (in the test data) to be
+calculated (previously required a value of 0.25).</li>
+<li>Are only calculated if 50 or more grid-sampled test checklists in a
+stixel have an observed count greater than 0.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CHANGED: The list of PPMs available has been expanded. See table
+below.</li>
+</ul>
+<table class="table">
+<colgroup>
+<col width="24%">
+<col width="54%">
+<col width="20%">
+</colgroup>
+<thead><tr class="header">
+<th>Updated PPMs</th>
+<th>Land-only</th>
+<th>Land-and-ocean</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Estimate</td>
+<td>Statistic</td>
+<td>Name</td>
+</tr>
+<tr class="even">
+<td>Binary</td>
+<td>F1</td>
+<td>binary-f1</td>
+</tr>
+<tr class="odd">
+<td>Binary</td>
+<td>Matthew’s Correlation Coefficient (MCC)</td>
+<td>binary-mcc</td>
+</tr>
+<tr class="even">
+<td>Binary</td>
+<td>Prevalence</td>
+<td>binary-prevalence</td>
+</tr>
+<tr class="odd">
+<td>Occurrence</td>
+<td>Bernoulli Deviance</td>
+<td>occ-bernoulli-dev</td>
+</tr>
+<tr class="even">
+<td>Occurrence</td>
+<td>Brier Score</td>
+<td>occ-brier</td>
+</tr>
+<tr class="odd">
+<td>Occurrence</td>
+<td>Precision-Recall AUC (PR AUC)</td>
+<td>occ-pr-auc</td>
+</tr>
+<tr class="even">
+<td>Occurrence</td>
+<td>PR AUC Greater than Prevalence</td>
+<td>occ-pr-auc-gt-prev</td>
+</tr>
+<tr class="odd">
+<td>Occurrence</td>
+<td><a href="https://icml.cc/2012/papers/349.pdf" class="external-link">PR AUC
+Normalized</a></td>
+<td>occ-pr-auc-normalized</td>
+</tr>
+<tr class="even">
+<td>Count, Relative Abundance</td>
+<td>Log Pearson Correlation</td>
+<td>count/abd-log-pearson</td>
+</tr>
+<tr class="odd">
+<td>Count, Relative Abundance</td>
+<td>Mean Absolute Error (MAE)</td>
+<td>count/abd-mae</td>
+</tr>
+<tr class="even">
+<td>Count, Relative Abundance</td>
+<td>Poisson Deviance</td>
+<td>count/abd-poisson-dev</td>
+</tr>
+<tr class="odd">
+<td>Count, Relative Abundance</td>
+<td>Root Mean Squared Error (RMSE)</td>
+<td>count/abd-rmse</td>
+</tr>
+<tr class="even">
+<td>Count, Relative Abundance</td>
+<td>Spearman Correlation</td>
+<td>count/abd-spearman</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level5">
+<h5 id="web-products">Web Products<a class="anchor" aria-label="anchor" href="#web-products"></a>
+</h5>
+<ul>
+<li>ADDED: The Regional Range and Abundance Stats now includes estimates
+of the proportion of the continental population within each region in
+addition to the proportion of the global population. See the <a href="https://science.ebird.org/en/status-and-trends/faq#continents" class="external-link">FAQ
+item</a> for a map of continent definitions.</li>
+<li>ADDED: The Regional Range and Abundance Stats now includes new
+regions providing summary stats for the Economic Exclusion Zones (EEZs)
+encapsulating the offshore waters of each country. EEZ boundaries were
+provided by the Flanders Marine Institute’s <a href="https://doi.org/10.14284/632" class="external-link">Maritime Boundaries and Exclusive
+Economic Zones v12</a>. EEZ summaries are only provided for species
+modeled using the land-and-ocean workflow.</li>
+<li>CHANGED: On the download page for each species on the website, it
+was previously only possible to download the Weekly Abundance Geospatial
+Data (raster) GeoTIFFs one week at a time. An option to download all 52
+weeks as a zipped raster cube has been added.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="data-products">Data Products<a class="anchor" aria-label="anchor" href="#data-products"></a>
+</h5>
+<ul>
+<li>CHANGED: The spatial predictor importance (PI) layers previously
+expressed the mean rank of each predictor within each grid cell. These
+layers are now the average of the predictor importance normalized within
+each stixel so that the predictor importances for land and water
+features described as percent cover, not including edge density, sum to
+one.</li>
+<li>ADDED: Two data products from our “data coverage” workflows are now
+available: a) weekly estimates of site selection probability (0-1; the
+probability that a grid cell of a certain habitat configuration received
+a checklist in a region and season), and b) spatial coverage (0-1; the
+regional-seasonal fraction of 3km grid cells that received checklists in
+a given week). Both are available as weekly 3 km resolution rasters in
+GeoTIFF format.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="changelog-1">2022 Changelog<a class="anchor" aria-label="anchor" href="#changelog-1"></a>
 </h2>
 <p><strong>Data Version:</strong> 2022 (available November 2023)</p>
 <strong>Citation:</strong>
@@ -81,13 +562,13 @@ eBird Status and Trends, Data Version: 2022; Released: 2023. Cornell Lab
 of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2022" class="external-link uri">https://doi.org/10.2173/ebirdst.2022</a>
 </blockquote>
 <div class="section level3">
-<h3 id="status">Status<a class="anchor" aria-label="anchor" href="#status"></a>
+<h3 id="status-1">Status<a class="anchor" aria-label="anchor" href="#status-1"></a>
 </h3>
 <div class="section level4">
-<h4 id="data-inputs">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs"></a>
+<h4 id="data-inputs-1">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-1"></a>
 </h4>
 <div class="section level5">
-<h5 id="ebird-checklists">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists"></a>
+<h5 id="ebird-checklists-1">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-1"></a>
 </h5>
 <ul>
 <li>CHANGED: Checklists are included for January 1 2008 through December
@@ -104,7 +585,7 @@ using great circle distance, not sinusoidal distance.</li>
 </ul>
 </div>
 <div class="section level5">
-<h5 id="effort-covariates">Effort Covariates<a class="anchor" aria-label="anchor" href="#effort-covariates"></a>
+<h5 id="effort-covariates-1">Effort Covariates<a class="anchor" aria-label="anchor" href="#effort-covariates-1"></a>
 </h5>
 <ul>
 <li>ADDED: Rate (as kilometers per hour) has been added as an effort
@@ -172,7 +653,7 @@ applied to smooth the raw values for each observer. CCI currently
 comprises these smoothed values.</p>
 </div>
 <div class="section level5">
-<h5 id="environmental-covariates">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates"></a>
+<h5 id="environmental-covariates-1">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-1"></a>
 </h5>
 <ul>
 <li>CHANGED: Covariate assignment now uses proper circular buffers for
@@ -220,10 +701,10 @@ updated to version 6.1.</li>
 </div>
 </div>
 <div class="section level4">
-<h4 id="workflow-and-code-changes">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes"></a>
+<h4 id="workflow-and-code-changes-1">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-1"></a>
 </h4>
 <div class="section level5">
-<h5 id="base-model">Base Model<a class="anchor" aria-label="anchor" href="#base-model"></a>
+<h5 id="base-model-1">Base Model<a class="anchor" aria-label="anchor" href="#base-model-1"></a>
 </h5>
 <ul>
 <li>CHANGED: Both migrants and residents use circularized time as the
@@ -234,7 +715,7 @@ base model level now uses mccf1, replacing Cohen’s Kappa.</li>
 </ul>
 </div>
 <div class="section level5">
-<h5 id="prediction">Prediction<a class="anchor" aria-label="anchor" href="#prediction"></a>
+<h5 id="prediction-1">Prediction<a class="anchor" aria-label="anchor" href="#prediction-1"></a>
 </h5>
 <ul>
 <li>CHANGED: The calendar dates for grid prediction have changed as a
@@ -266,7 +747,7 @@ not allowed for selection.</li>
 </ul>
 </div>
 <div class="section level5">
-<h5 id="ensemble">Ensemble<a class="anchor" aria-label="anchor" href="#ensemble"></a>
+<h5 id="ensemble-1">Ensemble<a class="anchor" aria-label="anchor" href="#ensemble-1"></a>
 </h5>
 <ul>
 <li>CHANGED: With the replacement of the base model binary
@@ -288,7 +769,7 @@ selection probability mask.</li>
 </ul>
 </div>
 <div class="section level5">
-<h5 id="data-products">Data Products<a class="anchor" aria-label="anchor" href="#data-products"></a>
+<h5 id="data-products-1">Data Products<a class="anchor" aria-label="anchor" href="#data-products-1"></a>
 </h5>
 <ul>
 <li>UPDATED: The prediction definition is now: the {occurrence, count,
@@ -304,7 +785,7 @@ distributed.</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="trends">Trends<a class="anchor" aria-label="anchor" href="#trends"></a>
+<h3 id="trends-1">Trends<a class="anchor" aria-label="anchor" href="#trends-1"></a>
 </h3>
 <div class="section level4">
 <h4 id="covariates">Covariates<a class="anchor" aria-label="anchor" href="#covariates"></a>
@@ -319,7 +800,7 @@ dataset</a>.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="ensemble-1">Ensemble<a class="anchor" aria-label="anchor" href="#ensemble-1"></a>
+<h4 id="ensemble-2">Ensemble<a class="anchor" aria-label="anchor" href="#ensemble-2"></a>
 </h4>
 <ul>
 <li>CHANGED: The residual confounding adjustment is now a
@@ -340,14 +821,14 @@ trend (e.g. December to January) will be for 2011/12 to 2021/22.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="web-products">Web Products<a class="anchor" aria-label="anchor" href="#web-products"></a>
+<h4 id="web-products-1">Web Products<a class="anchor" aria-label="anchor" href="#web-products-1"></a>
 </h4>
 <ul>
 <li>ADDED: Regional trends with CIs.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="data-products-1">Data Products<a class="anchor" aria-label="anchor" href="#data-products-1"></a>
+<h4 id="data-products-2">Data Products<a class="anchor" aria-label="anchor" href="#data-products-2"></a>
 </h4>
 <ul>
 <li>ADDED: Trends data released for the first time this year. Web
@@ -359,7 +840,7 @@ as fold-level estimates.</li>
 </div>
 </div>
 <div class="section level2">
-<h2 id="changelog-1">2021 Changelog<a class="anchor" aria-label="anchor" href="#changelog-1"></a>
+<h2 id="changelog-2">2021 Changelog<a class="anchor" aria-label="anchor" href="#changelog-2"></a>
 </h2>
 <p><strong>Data Version:</strong> 2021 (available November 2022)</p>
 <strong>Citation:</strong>
@@ -370,10 +851,10 @@ A. Spencer. 2022. eBird Status and Trends, Data Version: 2021; Released:
 2022. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2021" class="external-link uri">https://doi.org/10.2173/ebirdst.2021</a>
 </blockquote>
 <div class="section level3">
-<h3 id="data-inputs-1">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-1"></a>
+<h3 id="data-inputs-2">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-2"></a>
 </h3>
 <div class="section level4">
-<h4 id="ebird-checklists-1">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-1"></a>
+<h4 id="ebird-checklists-2">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-2"></a>
 </h4>
 <ul>
 <li>CHANGED: checklists are included for January 1 2007 through December
@@ -383,7 +864,7 @@ exotic species protocols are excluded from analysis.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="environmental-covariates-1">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-1"></a>
+<h4 id="environmental-covariates-2">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-2"></a>
 </h4>
 <ul>
 <li>UPDATED: Data for 2020 was added for the primary land cover data
@@ -392,7 +873,7 @@ source, MCD12Q1.</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="workflow-and-code-changes-1">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-1"></a>
+<h3 id="workflow-and-code-changes-2">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-2"></a>
 </h3>
 <div class="section level4">
 <h4 id="general">General<a class="anchor" aria-label="anchor" href="#general"></a>
@@ -453,7 +934,7 @@ estimates in places with a site selection probability value of less than
 </ul>
 </div>
 <div class="section level4">
-<h4 id="base-model-1">Base Model<a class="anchor" aria-label="anchor" href="#base-model-1"></a>
+<h4 id="base-model-2">Base Model<a class="anchor" aria-label="anchor" href="#base-model-2"></a>
 </h4>
 <ul>
 <li>CHANGED: The grid sample method now retains all unique values of
@@ -489,7 +970,7 @@ migrants are modeled.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="data-products-2">Data Products<a class="anchor" aria-label="anchor" href="#data-products-2"></a>
+<h4 id="data-products-3">Data Products<a class="anchor" aria-label="anchor" href="#data-products-3"></a>
 </h4>
 <ul>
 <li>CHANGED: The occurrence model prediction values for effort variables
@@ -516,7 +997,7 @@ from the website.</li>
 </div>
 </div>
 <div class="section level2">
-<h2 id="changelog-2">2020 Changelog<a class="anchor" aria-label="anchor" href="#changelog-2"></a>
+<h2 id="changelog-3">2020 Changelog<a class="anchor" aria-label="anchor" href="#changelog-3"></a>
 </h2>
 <p><strong>Data Version:</strong> 2020 (available Fall 2021)</p>
 <strong>Citation:</strong>
@@ -527,10 +1008,10 @@ Seitz. 2021. eBird Status and Trends, Data Version: 2020; Released:
 2021. Cornell Lab of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2020" class="external-link uri">https://doi.org/10.2173/ebirdst.2020</a>
 </blockquote>
 <div class="section level3">
-<h3 id="data-inputs-2">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-2"></a>
+<h3 id="data-inputs-3">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-3"></a>
 </h3>
 <div class="section level4">
-<h4 id="ebird-checklists-2">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-2"></a>
+<h4 id="ebird-checklists-3">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-3"></a>
 </h4>
 <ul>
 <li>CHANGED: checklists are included for January 1 2006 through December
@@ -549,7 +1030,7 @@ effort information had been included. These have now been excluded.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="environmental-covariates-2">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-2"></a>
+<h4 id="environmental-covariates-3">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-3"></a>
 </h4>
 <ul>
 <li>CHANGED: SRTM15+ <a href="https://doi.org/10.1029/2019EA000658" class="external-link">~250m elevation and
@@ -577,7 +1058,7 @@ reported classification errors.</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="workflow-and-code-changes-2">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-2"></a>
+<h3 id="workflow-and-code-changes-3">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-3"></a>
 </h3>
 <div class="section level4">
 <h4 id="spatiotemporal-partitioning-1">Spatiotemporal Partitioning<a class="anchor" aria-label="anchor" href="#spatiotemporal-partitioning-1"></a>
@@ -620,7 +1101,7 @@ transformation to allow the model to wrap the year.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="data-products-3">Data Products<a class="anchor" aria-label="anchor" href="#data-products-3"></a>
+<h4 id="data-products-4">Data Products<a class="anchor" aria-label="anchor" href="#data-products-4"></a>
 </h4>
 <ul>
 <li>CHANGED: The count model prediction values for effort variables are
@@ -700,7 +1181,7 @@ species.</li>
 </div>
 </div>
 <div class="section level2">
-<h2 id="changelog-3">2019 Changelog<a class="anchor" aria-label="anchor" href="#changelog-3"></a>
+<h2 id="changelog-4">2019 Changelog<a class="anchor" aria-label="anchor" href="#changelog-4"></a>
 </h2>
 <p><strong>Data Version:</strong> 2019 (available Fall 2020)</p>
 <strong>Citation:</strong>
@@ -711,10 +1192,10 @@ eBird Status and Trends, Data Version: 2019; Released: 2020. Cornell Lab
 of Ornithology, Ithaca, New York. <a href="https://doi.org/10.2173/ebirdst.2019" class="external-link uri">https://doi.org/10.2173/ebirdst.2019</a>
 </blockquote>
 <div class="section level3">
-<h3 id="data-inputs-3">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-3"></a>
+<h3 id="data-inputs-4">Data Inputs<a class="anchor" aria-label="anchor" href="#data-inputs-4"></a>
 </h3>
 <div class="section level4">
-<h4 id="ebird-checklists-3">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-3"></a>
+<h4 id="ebird-checklists-4">eBird Checklists<a class="anchor" aria-label="anchor" href="#ebird-checklists-4"></a>
 </h4>
 <ul>
 <li>CHANGED: Checklists are included for January 1, 2005 through April
@@ -729,7 +1210,7 @@ correctly.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="environmental-covariates-3">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-3"></a>
+<h4 id="environmental-covariates-4">Environmental Covariates<a class="anchor" aria-label="anchor" href="#environmental-covariates-4"></a>
 </h4>
 <ul>
 <li>CHANGED: ASTER Global Water Bodies Database at 30m for ocean, river,
@@ -742,7 +1223,7 @@ roads.</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="workflow-and-code-changes-3">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-3"></a>
+<h3 id="workflow-and-code-changes-4">Workflow and Code Changes<a class="anchor" aria-label="anchor" href="#workflow-and-code-changes-4"></a>
 </h3>
 <div class="section level4">
 <h4 id="spatiotemporal-partitioning-2">Spatiotemporal Partitioning<a class="anchor" aria-label="anchor" href="#spatiotemporal-partitioning-2"></a>
@@ -796,7 +1277,7 @@ previously averaged the entire year.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="data-products-4">Data Products<a class="anchor" aria-label="anchor" href="#data-products-4"></a>
+<h4 id="data-products-5">Data Products<a class="anchor" aria-label="anchor" href="#data-products-5"></a>
 </h4>
 <ul>
 <li>ADDED: There are now 184 species modeled at a fully global extent.
