@@ -8,9 +8,9 @@
 
 ## Test environments
 
-- local MacOS install, R 4.4
-- Windows (github actions), R 4.4
-- MacOS (github actions), R 4.4
+- local MacOS install, R 4.5
+- Windows (github actions), R 4.5
+- MacOS (github actions), R 4.5
 - ubuntu 22.04.1 (github actions), R release, devel, and oldrel-1
 - win-builder (devel and release)
 - R-hub

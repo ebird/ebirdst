@@ -313,7 +313,11 @@ load_trends <- function(species,
   }
 
   # load data
-  return(dplyr::collect(arrow::open_dataset(trends_paths)))
+  trends <- NULL
+  for (pq in trends_paths) {
+    trends <- dplyr::bind_rows(trends, arrow::read_parquet(pq))
+  }
+  return(trends)
 }
 
 

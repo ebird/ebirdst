@@ -1,5 +1,5 @@
 pandoc: '3.2'
-pkgdown: 2.1.1
+pkgdown: 2.1.2
 pkgdown_sha: ~
 articles:
   api: api.html
@@ -7,7 +7,7 @@ articles:
   product-changelog: product-changelog.html
   status: status.html
   trends: trends.html
-last_built: 2025-05-04T11:49Z
+last_built: 2025-05-04T12:55Z
 urls:
   reference: https://ebird.github.io/ebirdst/reference
   article: https://ebird.github.io/ebirdst/articles
