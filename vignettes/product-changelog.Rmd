@@ -54,7 +54,7 @@ There were no new eBird Trends generated or released in this version. The existi
 - CHANGED: To improve computational performance and simplify feature sets, we now drop all features in a stixel that have the same value, as random forest effectively ignores these features in fitting models.
 
 ##### Prediction
-- CHANGED: We have transitioned to a new 3 km X 3 km prediction grid in the widely used [Equal Earth equal area projection](https://equal-earth.com). Previously the predictions were made to a 2.96 km X 2.96 km prediction grid using a non-standard sinusoidal projection.
+- CHANGED: We have transitioned to a new 3 km X 3 km prediction grid in the widely used [Equal Earth equal area projection](https://doi.org/10.1080/13658816.2018.1504949). Previously the predictions were made to a 2.96 km X 2.96 km prediction grid using a non-standard sinusoidal projection.
 
 ##### Ensemble
 - Land and Ocean
