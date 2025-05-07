@@ -102,6 +102,7 @@ YouTube</a>.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/thomasp85/scico" class="external-link">scico</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
@@ -472,7 +473,7 @@ population falling within a given region. This information can be used
 to highlight stewardship responsibility for a species, for example, if a
 large proportion of a species’ breeding populaiton falls within a
 region, that region could be said to have a high stewardship
-resonsibility for that species.</p>
+responsibility for that species.</p>
 </blockquote>
 <p>The eBird Status and Trends website provides regional summary
 statistics at the country and state/province level for each species. For
@@ -887,6 +888,95 @@ in conjunction with the eBird Status Data Products to solve spatial
 conservation planning problems with a broad range of objectives and
 constraints.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="ppms">Assessing model performance<a class="anchor" aria-label="anchor" href="#ppms"></a>
+</h2>
+<blockquote>
+<p><strong>Goal:</strong> use the spatial predictive performance metrics
+(PPMs) to assess how model performance varies across the range of a
+species.</p>
+</blockquote>
+<p>eBird Status and Trends species species are assigned <a href="https://ebird.github.io/ebirdst/articles/status.html#species">quality
+scores (0-3)</a> for each season describing the quality of the model
+predictions across the full range of the species. For example, let’s
+look at the breeding season quality for Horned Lark.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">horlar_review</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ebirdst_runs</span>, <span class="va">species_code</span> <span class="op">==</span> <span class="st">"horlar"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">breeding_quality</span>, <span class="va">breeding_start</span>, <span class="va">breeding_end</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">horlar_review</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">#&gt;   breeding_quality breeding_start breeding_end</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2                2023-06-07     2023-08-09</span></span></code></pre></div>
+<p>This score (2) corresponds to “medium quality”, indicating there is
+some extrapolation or omission in the breeding season predictions.
+However, Horned Lark is a <a href="https://science.ebird.org/en/status-and-trends/species/horlar/abundance-map?season=breeding" class="external-link">broadly
+distributed species</a>, occurring throughout the <a href="https://en.wikipedia.org/wiki/Holarctic_realm" class="external-link">holarctic
+realm</a>. Data users are typically interested in model predictions
+within a particular region, but the quality score gives no indication of
+where the extrapolation or omission is occurring, only that it occurs
+somewhere within the range. Someone working with predictions from the
+Mongolian portion of the range may be dealing with very different
+prediction quality than someone working with predictions from the part
+of the range in the Western United States.</p>
+<p>While the model quality scores are quite coarse, the spatial
+predictive performance metrics (PPMs) available for each species provide
+much finer scale information on model quality. For migratory species
+like Horned Lark, these data products provide suite of performance
+metrics at weekly 27 km resolution. These PPMs are not downloaded by
+default by <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code>, but you can download
+them with <code>download_ppms = TRUE</code>. Let’s download the PPMs and
+load the proportion of the Bernoulli deviance explained metric, which is
+typically one of the most useful for assessing model quality.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># download and load ppm</span></span>
+<span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"horlar"</span>, download_ppms <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">bernoulli_dev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ppm.html">load_ppm</a></span><span class="op">(</span><span class="st">"horlar"</span>, ppm <span class="op">=</span> <span class="st">"occ_bernoulli_dev"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bernoulli_dev</span><span class="op">)</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; dimensions  : 618, 1276, 52  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 27000, 27000  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : -17226000, 17226000, -8343000, 8343000  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857) </span></span>
+<span><span class="co">#&gt; source      : horlar_ppm_occ-bernoulli-dev_mean_27km_2023.tif </span></span>
+<span><span class="co">#&gt; names       :      01-04,      01-11,      01-18,      01-25,      02-01,      02-08, ... </span></span>
+<span><span class="co">#&gt; min values  : -1.2016400, -0.3405171, -0.2203241, -0.1847060, -0.1675527, -0.2176256, ... </span></span>
+<span><span class="co">#&gt; max values  :  0.5162077,  0.5162077,  0.5004212,  0.4199959,  0.4199959,  0.3604106, ...</span></span></code></pre></div>
+<p>The data are in the form of a 27 km raster with 52 layers, one for
+each week of the year. Let’s average these PPMs across the weeks in the
+breeding season, subset to just the portion of the range within the
+United States and Canada, and make a map.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># subset to weeks in breeding season and average</span></span>
+<span><span class="va">breeding_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">horlar_review</span><span class="op">$</span><span class="va">breeding_start</span>, <span class="va">horlar_review</span><span class="op">$</span><span class="va">breeding_end</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="st">"%m-%d"</span><span class="op">)</span></span>
+<span><span class="va">in_breeding</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bernoulli_dev</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="va">breeding_dates</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&amp;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bernoulli_dev</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">breeding_dates</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">bernoulli_dev_breeding</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">bernoulli_dev</span><span class="op">[[</span><span class="va">in_breeding</span><span class="op">]</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># mask to just canada and the united states</span></span>
+<span><span class="va">us_ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States of America"</span>, <span class="st">"Canada"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">bernoulli_dev_breeding</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bernoulli_dev_breeding_us_ca</span> <span class="op">&lt;-</span> <span class="va">bernoulli_dev_breeding</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">us_ca</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">us_ca</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># make a map</span></span>
+<span><span class="va">ppm_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/flip.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/scico/man/scico.html" class="external-link">scico</a></span><span class="op">(</span><span class="fl">100</span>, palette <span class="op">=</span> <span class="st">"vik"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">max_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">bernoulli_dev_breeding_us_ca</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">max</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bernoulli_dev_breeding_us_ca</span>, </span>
+<span>     range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">max_val</span>, <span class="va">max_val</span><span class="op">)</span>,</span>
+<span>     col <span class="op">=</span> <span class="va">ppm_cols</span>,</span>
+<span>     axes <span class="op">=</span> <span class="cn">FALSE</span>, box <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">us_ca</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="applications_files/figure-html/ppms-subset-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>Negative proportions of the deviance explained (red in the above map)
+indicate that the occurrence model is performing worse than a NULL model
+and extra caution should be used when using predictions from these
+areas.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

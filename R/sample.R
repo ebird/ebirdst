@@ -35,7 +35,7 @@
 #' detection/non-detection. Within each stratum, [grid_sample()] is used to
 #' sample the observations on a spatiotemporal grid. In addition, if case
 #' control sampling is turned on, the detections are oversampled to increase the
-#' frequecy of detections in the dataset.
+#' frequency of detections in the dataset.
 #'
 #' The sampling grid is defined, and assignment of locations to cells occurs, in
 #' [assign_to_grid()]. Consult the help for that function for further details on

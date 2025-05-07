@@ -62,7 +62,7 @@ Information is provided on the trends model for each species, including two pred
 
 - `species_code`: the alphanumeric eBird species code uniquely identifying the species.
 - `common_name`: the English common name of the species.
--  `trends_season`: season that the trend was estimated for: breeding, nonbreeding, or resident.
+-  `trends_season`: season that the trend was estimated for: breeding, non-breeding, or resident.
 - `trends_region`: the geographic region that the trend model was run for. Note that broadly distributed species (e.g. Barn Swallow) will only have trend estimates for a regional subset of their full range.
 - `trends_start_year/trends_end_year`: the start and end years of the trend time period.
 - `trends_start_date/trends_end_date`: the start and end dates (`MM-DD` format) of the season for which the trend was estimated.

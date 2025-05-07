@@ -46,6 +46,7 @@ library(fields)
 library(ggplot2)
 library(lubridate)
 library(rnaturalearth)
+library(scico)
 library(sf)
 library(terra)
 library(tidyr)
@@ -338,7 +339,7 @@ Finally, Sprague's Pipit deserves special attention: there's a huge spike in pro
 
 # Regional proportion of population {#stats}
 
-> **Goal:** identify the proportion of a species' population falling within a given region. This information can be used to highlight stewardship responsibility for a species, for example, if a large proportion of a species' breeding populaiton falls within a region, that region could be said to have a high stewardship resonsibility for that species.
+> **Goal:** identify the proportion of a species' population falling within a given region. This information can be used to highlight stewardship responsibility for a species, for example, if a large proportion of a species' breeding populaiton falls within a region, that region could be said to have a high stewardship responsibility for that species.
 
 The eBird Status and Trends website provides regional summary statistics at the country and state/province level for each species. For example, we can use the regional stats to see that [33% of the non-breeding population of Golden Eagle falls within the United States](https://science.ebird.org/en/status-and-trends/species/goleag/abundance-map?regionCode=USA). The website also allows users to draw their own customs polygons to get summary statistics within these polygons. However, there are cases where you may want to estimate regional summary statistics in a way that isn't supported by the website. Here we'll provide a few examples for calculating the proportion of population within a region. We'll use Golden Eagle for these examples.
 
@@ -622,3 +623,58 @@ fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
 We've presented one simple example of identifying priority areas for birds using the eBird Status Data Products; however, this method is quite flexible and can be tailored to your particular use case. At the very least, the focal region, season, and species should be modified for your application. In some cases, species may be present in your focal region throughout the full annual cycle and you may want to consider an importance metric derived by combing multiple seasons of data for each species or using weekly estimates to identify the week of highest importance for each species.
 
 For a more robust approach to this this problem, you may want to use eBird Status Data Products within the framework of Systematic Conservation Prioritization. Tools such as the R package [`prioritizr`](https://prioritizr.net/) can be used in conjunction with the eBird Status Data Products to solve spatial conservation planning problems with a broad range of objectives and constraints.
+
+# Assessing model performance {#ppms}
+
+> **Goal:** use the spatial predictive performance metrics (PPMs) to assess how model performance varies across the range of a species.
+
+eBird Status and Trends species species are assigned [quality scores (0-3)](https://ebird.github.io/ebirdst/articles/status.html#species) for each season describing the quality of the model predictions across the full range of the species. For example, let's look at the breeding season quality for Horned Lark.
+
+```{r ppms-quality}
+horlar_review <- filter(ebirdst_runs, species_code == "horlar") |> 
+  select(breeding_quality, breeding_start, breeding_end)
+print(horlar_review)
+```
+
+This score (2) corresponds to "medium quality", indicating there is some extrapolation or omission in the breeding season predictions. However, Horned Lark is a [broadly distributed species](https://science.ebird.org/en/status-and-trends/species/horlar/abundance-map?season=breeding), occurring throughout the [holarctic realm](https://en.wikipedia.org/wiki/Holarctic_realm). Data users are typically interested in model predictions within a particular region, but the quality score gives no indication of where the extrapolation or omission is occurring, only that it occurs somewhere within the range. Someone working with predictions from the Mongolian portion of the range may be dealing with very different prediction quality than someone working with predictions from the part of the range in the Western United States.
+
+While the model quality scores are quite coarse, the spatial predictive performance metrics (PPMs) available for each species provide much finer scale information on model quality. For migratory species like Horned Lark, these data products provide suite of performance metrics at weekly 27 km resolution. These PPMs are not downloaded by default by `ebirdst_download_status()`, but you can download them with `download_ppms = TRUE`. Let's download the PPMs and load the proportion of the Bernoulli deviance explained metric, which is typically one of the most useful for assessing model quality.
+
+```{r ppms-dl}
+# download and load ppm
+ebirdst_download_status("horlar", download_ppms = TRUE)
+bernoulli_dev <- load_ppm("horlar", ppm = "occ_bernoulli_dev")
+print(bernoulli_dev)
+```
+
+The data are in the form of a 27 km raster with 52 layers, one for each week of the year. Let's average these PPMs across the weeks in the breeding season, subset to just the portion of the range within the United States and Canada, and make a map.
+
+```{r ppms-subset, echo=-1}
+par(mar = c(0, 0, 0, 0))
+# subset to weeks in breeding season and average
+breeding_dates <- c(horlar_review$breeding_start, horlar_review$breeding_end) |> 
+  format("%m-%d")
+in_breeding <- names(bernoulli_dev) >= breeding_dates[1] & 
+  names(bernoulli_dev) <= breeding_dates[2]
+bernoulli_dev_breeding <- mean(bernoulli_dev[[in_breeding]], na.rm = TRUE)
+
+# mask to just canada and the united states
+us_ca <- ne_countries(country = c("United States of America", "Canada")) |> 
+  st_transform(st_crs(bernoulli_dev_breeding))
+bernoulli_dev_breeding_us_ca <- bernoulli_dev_breeding |> 
+  crop(us_ca) |> 
+  mask(us_ca) |> 
+  trim()
+
+# make a map
+ppm_cols <- rev(scico(100, palette = "vik"))
+max_val <- global(abs(bernoulli_dev_breeding_us_ca), fun = max, na.rm = TRUE) |> 
+  as.numeric()
+plot(bernoulli_dev_breeding_us_ca, 
+     range = c(-max_val, max_val),
+     col = ppm_cols,
+     axes = FALSE, box = TRUE)
+plot(st_geometry(us_ca), add = TRUE)
+```
+
+Negative proportions of the deviance explained (red in the above map) indicate that the occurrence model is performing worse than a NULL model and extra caution should be used when using predictions from these areas.

@@ -289,7 +289,7 @@ which can be categorized into the following broad types:</p>
 <strong>Weekly raster estimates:</strong> weekly estimates of
 occurrence, count, relative abundance, and proportion of population on a
 regular grid in GeoTIFF format at three resolutions. These are the core
-products from which the other products are derivied.</li>
+products from which the other products are derived.</li>
 <li>
 <strong>Seasonal raster estimates:</strong> seasonal estimates of
 occurrence, count, relative abundance, and proportion of population on a
@@ -305,6 +305,10 @@ polygons in GeoPackage format.</li>
 <strong>Regional summary statistics:</strong> a variety of summary
 statistics for countries and states/provinces (e.g. proportion of total
 population in the region) in CSV format.</li>
+<li>
+<strong>Predictive performance metrics (PPMs):</strong> a suite of
+spatial predictive performance metrics on a regular 27 km by 27 km grid
+in GeoTIFF format.</li>
 </ul>
 <p>Each of these data products will be covered in more detail in the
 following sections, including details on how to load the data into R.
@@ -546,15 +550,168 @@ that the region was occupied by this species.</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h3 id="predictive-performance-metrics-ppms">Predictive performance metrics (PPMs)<a class="anchor" aria-label="anchor" href="#predictive-performance-metrics-ppms"></a>
 </h3>
+<p>A subset of 10% of the eBird observations is excluded from model
+training to be used as a test set. For each submodel making up the eBird
+Status model ensemble, model predictions are compared to actual
+occurrence and count for a spatiotemporally subsampled version of the
+test dataset to generate a suite of predictive performance metrics
+(PPMs) at the base model level. These PPMs are then summarized across
+the ensemble to a 27 km resolution raster grid, where the cell values
+are the average across all models in the ensemble contributing to that
+cell. For migrants, PPMs are provided at weekly temporal resolution, in
+the form of a stack of 52 rasters for each metric, while for residents,
+year round PPMs are provided in the form of a single raster for each
+metric.</p>
+<p>In total, nineteen predictive performance metrics are provided in
+four categories. <strong>Binary</strong> PPMs compare the predicted
+presence/absence to observed detection/non-detection for all test
+checklists.</p>
+<ul>
+<li>
+<code>binary_f1</code>: <a href="https://en.wikipedia.org/wiki/F-score" class="external-link">F1-score</a>.</li>
+<li>
+<code>binary_mcc</code>: <a href="https://en.wikipedia.org/wiki/Phi_coefficient" class="external-link">Matthews
+Correlation Coefficient (MCC)</a>.</li>
+<li>
+<code>binary_prevalence</code>: the observed detection probability
+after spatiotemporal subsampling.</li>
+</ul>
+<p><strong>Occurrence</strong> PPMs compare the predicted encounter rate
+with the observed detection/non-detection for the subset of test
+checklists within the predicted range boundary.</p>
+<ul>
+<li>
+<code>occ_bernoulli_dev</code>: the proportion of the Bernoulli
+deviance explained.</li>
+<li>
+<code>occ_bin_spearman</code>: test observations are binned by
+predicted encounter rate with bin widths of 0.05, then the mean observed
+prevalence and predicted encounter rate are calculated within bins. This
+metric is the Spearman’s rank correlation coefficient comparing the
+observed and predicted binned mean values.</li>
+<li>
+<code>occ_brier</code>: Brier score, i.e. the mean squared
+difference between predicted encounter rate and observed
+detection/non-detection.</li>
+<li>
+<code>occ_pr_auc</code>: <a href="https://doi.org/10.1111/2041-210X.13140" class="external-link">area on the
+precision-recall curve (PR-AUC)</a>
+</li>
+<li>
+<code>occ_pr_auc_gt_prev</code>: the proportion of the ensemble for
+which the PR-AUC is greater than observed prevalence, which indicates
+that the model is performing better than random guessing.</li>
+<li>
+<code>occ_pr_auc_normalized</code>: the <a href="https://icml.cc/2012/papers/349.pdf" class="external-link">PR-AUC normalized</a> to
+account for class imbalance so that a value of 0 represents performance
+equal to random guessing and a value of 1 represents perfect
+classification.</li>
+</ul>
+<p><strong>Count</strong> PPMs compare the predicted count with the
+observed count for the subset of test checklists within the predicted
+range boundary and where the species was detected.</p>
+<ul>
+<li>
+<code>count_log_pearson</code>: the Pearson correlation coefficient
+comparing the logarithm of the predicted count with the logarithm of the
+observed count.</li>
+<li>
+<code>count_mae</code>: mean absolute error (MAE).</li>
+<li>
+<code>count_poisson_dev</code>: the proportion of the Poisson
+deviance explained.</li>
+<li>
+<code>count_rmse</code>: route mean squared error (RMSE).</li>
+<li>
+<code>count_spearman</code>: Spearman’s rank correlation
+coefficient.</li>
+</ul>
+<p><strong>Abundance</strong> PPMs compare the predicted relative
+abundance with the observed count for the full set of tests
+checklists.</p>
+<ul>
+<li>
+<code>abd_log_pearson</code>: Pearson correlation coefficient
+comparing the logarithm of the predicted relative abundance with the
+logarithm of the observed count.</li>
+<li>
+<code>abd_mae</code>: the mean absolute error (MAE).</li>
+<li>
+<code>abd_poisson_dev</code>: the proportion of the Poisson deviance
+explained.</li>
+<li>
+<code>abd_rmse</code>: root mean squared error (RMSE).</li>
+<li>
+<code>abd_spearman</code>: Spearman’s rank correlation
+coefficient.</li>
+</ul>
+<p>The spatial PPMs can be loaded using <code>load_ppms()</code>. For
+example, to load the normalized PR-AUC for the example dataset use.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pr_auc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ppm.html">load_ppm</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, ppm <span class="op">=</span> <span class="st">"occ_pr_auc_normalized"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">)</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; dimensions  : 618, 1276, 52  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 27000, 27000  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : -17226000, 17226000, -8343000, 8343000  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857) </span></span>
+<span><span class="co">#&gt; source      : yebsap-example_ppm_occ-pr-auc-normalized_mean_27km_2023.tif </span></span>
+<span><span class="co">#&gt; names       :     01-04,      01-11,     01-18,     01-25,     02-01,      02-08, ... </span></span>
+<span><span class="co">#&gt; min values  : 0.1113430, 0.09812936, 0.0189133, 0.0189133, 0.0189133, 0.01403384, ... </span></span>
+<span><span class="co">#&gt; max values  : 0.7343874, 0.73438740, 0.7969337, 0.7969337, 1.0000000, 1.00000000, ...</span></span></code></pre></div>
+<p>Since Yellow-bellied Sapsucker is a migrant, there are 52 layers, one
+for each week of the year, giving the mean PR-AUC for each 27 km by 27
+km grid cell. We can produce a simple plot of PR-AUC for a week in the
+middle of the year. Note that <code><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim()</a></code> is used to trim the
+global raster down to just show the area with data (the state of
+Michigan in this example dataset).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">[[</span><span class="fl">26</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="status_files/figure-html/types_ppms_plot-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>See the <a href="https://ebird.github.io/ebirdst/articles/applications.html">applications
+vignette</a> for a more detailed example of how to use the PPMs.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="coverage">Data coverage<a class="anchor" aria-label="anchor" href="#coverage"></a>
+</h2>
+<p>In addition to the species-specific data products discussed above,
+<code>ebirdst</code> provides access to two species agnostic data
+products from out data coverage workflow. The data products in GeoTIFF
+format provide weekly estimates on a regular 3 km by 3km grid of</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Site selection probability:</strong> the modeled probability
+(0-1) that a grid cell of a certain habitat configuration received an
+eBird checklist within that region and season.</li>
+<li>
+<strong>Spatial coverage:</strong> the fraction (0-1) of grid cells
+within that region and season that checklists for the given week.</li>
+</ol>
+<p>These data products identify areas where the coverage of eBird data
+is relatively high or low, which can be used to prioritize areas for
+increased data collection. To download the data coverage data products
+use:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Then to load the data, for example, site selection probability for
+the week of May 10, and make a map, use:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">site_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_data_coverage.html">load_data_coverage</a></span><span class="op">(</span><span class="st">"selection-probability"</span>, week <span class="op">=</span> <span class="st">"05-10"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">site_sel</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="status_files/figure-html/coverage_load-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <blockquote>
 Fink, D., T. Auer, A. Johnston, V. Ruiz‐Gutierrez, W.M. Hochachka, S.
 Kelling. 2019. Modeling avian full annual cycle distribution and
 population trends with citizen science data. Ecological Applications,
 00(00):e02056. doi: 10.1002/eap.2056
 </blockquote>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

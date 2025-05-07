@@ -14,7 +14,7 @@ ebirdst_palettes(
 \item{n}{integer; the number of colors to be in the palette.}
 
 \item{type}{character; the type of color palette: "weekly" for the weekly
-relative abundance, "trends" for trends color palett, and a season name for
+relative abundance, "trends" for trends color palette, and a season name for
 the seasonal relative abundance. Note that for trends a diverging palette
 is returned, while all other palettes are sequential.}
 }

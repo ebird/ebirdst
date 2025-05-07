@@ -92,10 +92,11 @@ From this, we can see that Yellow-bellied Sapsucker was modeled as a migrant and
 
 For each species, there are a variety of data products available, which can be categorized into the following broad types:
 
-- **Weekly raster estimates:** weekly estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are the core products from which the other products are derivied.
+- **Weekly raster estimates:** weekly estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are the core products from which the other products are derived.
 - **Seasonal raster estimates:** seasonal estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are derived from the corresponding weekly raster data by summarizing across the weeks falling within each season based on the dates defined in the `ebirdst_runs` data frame. Only seasons that passed the expert review process are included.
 - **Seasonal range boundaries:** seasonal range boundary polygons in GeoPackage format.
 - **Regional summary statistics:** a variety of summary statistics for countries and states/provinces (e.g. proportion of total population in the region) in CSV format.
+- **Predictive performance metrics (PPMs):** a suite of spatial predictive performance metrics on a regular 27 km by 27 km grid in GeoTIFF format.
 
 Each of these data products will be covered in more detail in the following sections, including details on how to load the data into R. All of the loading functions take a species (given as common name, scientific name, or species code) as their first argument. If you have used a non-default `path` argument to `ebirdst_download_status()` then you will also need to provide the same `path` argument to the loading functions.
 
@@ -206,7 +207,90 @@ The six summary statistics are defined as:
 - `range_total_percent`: the proportion of the species seasonal range falling within the region.
 - `range_days_occupation`: number of days of the season that the region was occupied by this species.
 
-## References
+## Predictive performance metrics (PPMs)
+
+A subset of 10% of the eBird observations is excluded from model training to be used as a test set. For each submodel making up the eBird Status model ensemble, model predictions are compared to actual occurrence and count for a spatiotemporally subsampled version of the test dataset to generate a suite of predictive performance metrics (PPMs) at the base model level. These PPMs are then summarized across the ensemble to a 27 km resolution raster grid, where the cell values are the average across all models in the ensemble contributing to that cell. For migrants, PPMs are provided at weekly temporal resolution, in the form of a stack of 52 rasters for each metric, while for residents, year round PPMs are provided in the form of a single raster for each metric.
+
+In total, nineteen predictive performance metrics are provided in four categories. **Binary** PPMs compare the predicted presence/absence to observed detection/non-detection for all test checklists.
+
+- `binary_f1`: [F1-score](https://en.wikipedia.org/wiki/F-score).
+- `binary_mcc`: [Matthews Correlation Coefficient (MCC)](https://en.wikipedia.org/wiki/Phi_coefficient).
+- `binary_prevalence`: the observed detection probability after spatiotemporal
+subsampling.
+
+**Occurrence** PPMs compare the predicted encounter rate with the observed detection/non-detection for the subset of test checklists within the predicted range boundary.
+
+- `occ_bernoulli_dev`: the proportion of the Bernoulli deviance explained.
+- `occ_bin_spearman`: test observations are binned by predicted encounter
+rate with bin widths of 0.05, then the mean observed prevalence and predicted
+encounter rate are calculated within bins. This metric is the Spearman's rank
+correlation coefficient comparing the observed and predicted binned mean
+values.
+- `occ_brier`: Brier score, i.e. the mean squared difference between
+predicted encounter rate and observed detection/non-detection.
+- `occ_pr_auc`: [area on the precision-recall curve (PR-AUC)](https://doi.org/10.1111/2041-210X.13140)
+- `occ_pr_auc_gt_prev`: the proportion of the ensemble for which the PR-AUC
+is greater than observed prevalence, which indicates that the model is
+performing better than random guessing.
+- `occ_pr_auc_normalized`: the [PR-AUC normalized](https://icml.cc/2012/papers/349.pdf) to account for class imbalance so that a value of 0 represents performance equal to random
+guessing and a value of 1 represents perfect classification.
+
+**Count** PPMs compare the predicted count with the observed count for the subset of test checklists within the predicted range boundary and where the species was detected.
+
+- `count_log_pearson`: the Pearson correlation coefficient comparing the
+logarithm of the predicted count with the logarithm of the observed count.
+- `count_mae`: mean absolute error (MAE).
+- `count_poisson_dev`: the proportion of the Poisson deviance explained.
+- `count_rmse`: route mean squared error (RMSE).
+- `count_spearman`: Spearman's rank correlation coefficient.
+
+**Abundance** PPMs compare the predicted relative abundance with the observed count for the full set of tests checklists.
+
+- `abd_log_pearson`: Pearson correlation coefficient comparing the logarithm
+of the predicted relative abundance with the logarithm of the observed
+count.
+- `abd_mae`: the mean absolute error (MAE).
+- `abd_poisson_dev`: the proportion of the Poisson deviance explained.
+- `abd_rmse`: root mean squared error (RMSE).
+- `abd_spearman`: Spearman's rank correlation coefficient.
+
+The spatial PPMs can be loaded using `load_ppms()`. For example, to load the normalized PR-AUC for the example dataset use.
+
+```{r types_ppms}
+pr_auc <- load_ppm("yebsap-example", ppm = "occ_pr_auc_normalized")
+print(pr_auc)
+```
+
+Since Yellow-bellied Sapsucker is a migrant, there are 52 layers, one for each week of the year, giving the mean PR-AUC for each 27 km by 27 km grid cell. We can produce a simple plot of PR-AUC for a week in the middle of the year. Note that `trim()` is used to trim the global raster down to just show the area with data (the state of Michigan in this example dataset).
+
+```{r types_ppms_plot}
+plot(trim(pr_auc[[26]]))
+```
+
+See the [applications vignette](https://ebird.github.io/ebirdst/articles/applications.html) for a more detailed example of how to use the PPMs.
+
+# Data coverage {#coverage}
+
+In addition to the species-specific data products discussed above, `ebirdst` provides access to two species agnostic data products from out data coverage workflow. The data products in GeoTIFF format provide weekly estimates on a regular 3 km by 3km grid of
+
+1. **Site selection probability:** the modeled probability (0-1) that a grid cell of a certain habitat configuration received an eBird checklist within that region and season.
+2. **Spatial coverage:** the fraction (0-1) of grid cells within that region and season that checklists for the given week.
+
+These data products identify areas where the coverage of eBird data is relatively high or low, which can be used to prioritize areas for increased data collection. To download the data coverage data products use:
+
+```{r coverage_dl, eval=FALSE}
+ebirdst_download_data_coverage()
+```
+
+Then to load the data, for example, site selection probability for the week of May 10, and make a map, use:
+
+```{r coverage_load, echo=-1}
+par(mar = c(0, 0, 0, 0))
+site_sel <- load_data_coverage("selection-probability", week = "05-10")
+plot(site_sel, axes = FALSE)
+```
+
+# References
 
 <blockquote>
 Fink, D., T. Auer, A. Johnston, V. Ruiz‐Gutierrez, W.M. Hochachka, S. Kelling. 2019. Modeling avian full annual cycle distribution and population trends with citizen science data. Ecological Applications, 00(00):e02056. doi: 10.1002/eap.2056

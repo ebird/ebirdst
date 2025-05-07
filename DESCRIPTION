@@ -48,6 +48,7 @@ Suggests:
     rmarkdown,
     rnaturalearth,
     scales,
+    scico,
     testthat,
     tidyr,
     withr
