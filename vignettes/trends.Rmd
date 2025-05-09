@@ -136,10 +136,11 @@ write_sf(trends_sf, "ebird-trends_sagthr_2022.gpkg",
 
 ## Vector (abundance-scaled circles) {#spatial-circles}
 
-To produce maps similar to those on the eBird Status and Trends website the function `vectorize_trends()` will convert the tabular trends into spatial circles with areas roughly proportional to the relative abundance in each 27 km by 27 km cell. To produce circles that arean't skewed it's important to provide the coordinate reference system you intend to map the resulting trends in. This will ideally be an equal area projection and in the example before we've used the Equal Earth projection.
+To produce maps similar to those on the eBird Status and Trends website the function `vectorize_trends()` will convert the tabular trends into spatial circles with areas roughly proportional to the relative abundance in each 27 km by 27 km cell. To produce circles that arean't skewed it's important to provide the coordinate reference system you intend to map the resulting trends in. This will ideally be an equal area projection and in the example before we've used the Equal Earth projection centered on North America.
 
 ```{r spatial-circles}
-trends_circles <- vectorize_trends(trends_sagthr, crs = "+proj=eqearth")
+trends_circles <- vectorize_trends(trends_sagthr,
+                                   crs = "+proj=eqearth +lon_0=-96")
 ```
 
 Next, we'll assign colors based on the cumulative trend (`abd_trend`) using the same breaks as is used on the website.
@@ -192,8 +193,10 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = legend_colors,
            axis.args = list(at = c(0, 0.25, 0.5, 0.75, 1), 
                             labels = legend_labels,
                             col.axis = "black", fg = NA,
-                            cex.axis = 0.9, lwd.ticks = 0,
-                            line = -0.5))
+                            cex.axis = 0.7, lwd.ticks = 0,
+                            line = -0.75),
+           legend.args = list(text = "Abundance Trend [% change]",
+                              side = 2, line = 0.25))
 ```
 
 ## Raster {#spatial-raster}
