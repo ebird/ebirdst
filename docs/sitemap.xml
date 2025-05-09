@@ -15,6 +15,7 @@
 <url><loc>https://ebird.github.io/ebirdst/reference/abundance_palette-deprecated.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/assign_to_grid.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/calculate_mcc_f1.html</loc></url>
+<url><loc>https://ebird.github.io/ebirdst/reference/convert_ppy_to_cumulative.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/date_to_st_week.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/ebirdst-defunct.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/ebirdst-deprecated.html</loc></url>
@@ -44,5 +45,6 @@
 <url><loc>https://ebird.github.io/ebirdst/reference/pipe.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/rasterize_trends.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.html</loc></url>
+<url><loc>https://ebird.github.io/ebirdst/reference/vectorize_trends.html</loc></url>
 </urlset>
 

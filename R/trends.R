@@ -107,6 +107,116 @@ rasterize_trends <- function(trends,
 }
 
 
+#' Convert Trends Data Products to points or circles
+#'
+#' The eBird trends data are stored in a tabular format, where each row gives
+#' the trend estimate for a single cell in a 27 km x 27 km equal area grid. For
+#' many applications, an explicitly spatial format is more useful. This function
+#' uses the cell center coordinates to convert the tabular trend estimates to
+#' points or circles in [sf][sf::sf] format. Trends can be converted to points
+#' or to circles with areas roughly proportional to the relative abundance
+#' within that 27 km grid cell. These abundance-scaled circles are what is used
+#' to produce the trends maps on the eBird Status and Trends website.
+#'
+#' @param trends data frame; trends data for a single species as returned by
+#'   [load_trends()].
+#' @param output character; "points" outputs spatial points while "circles"
+#'   outputs circles with areas roughly proportional to the relative abundance
+#'   within that 27 km grid cell.
+#' @param crs character or `sf` [crs][sf::st_crs] object; coordinate reference
+#'   system to output the results in. For points, unprojected latitude-longitude
+#'   coordinates (the default) are most typical, while for circles use whatever
+#'   equal area CRS you intend to use when mapping the data otherwise the
+#'   "circles" will appear skewed.
+#'
+#' @returns Vetorized trends data as an [sf][sf::sf] object.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download example trends data if it hasn't already been downloaded
+#' ebirdst_download_trends("yebsap-example")
+#'
+#' # load trends
+#' trends <- load_trends("yebsap-example")
+#'
+#' # vectorize as points
+#' vectorize_trends(trends, "points")
+#' # vectorize as circles
+#' vectorize_trends(trends, "circles", crs = "+proj=eqearth")
+#' }
+vectorize_trends <- function(trends,
+                             output = c("circles", "points"),
+                             crs = 4326) {
+  req_cols <- c("species_code", "latitude", "longitude", "abd")
+  stopifnot(is.data.frame(trends), req_cols %in% names(trends))
+  output <- match.arg(output)
+  if (is.character(crs) || is.integer(crs) || is.numeric(crs)) {
+    stopifnot(length(crs) == 1, !is.na(crs))
+    crs <- sf::st_crs(crs)
+  }
+  stopifnot(inherits(crs, "crs"))
+
+  # convert trends to spatial points and project
+  trends_pts <- sf::st_as_sf(trends,
+                             coords = c("longitude", "latitude"),
+                             crs = 4326)
+  trends_pts <- sf::st_transform(trends_pts, crs = crs)
+  if (output == "points") {
+    return(trends_pts)
+  }
+
+  srd_template <- trends_raster_template()
+  radius_range <- c(min(terra::res(srd_template)) / 6,
+                    0.99 * min(terra::res(srd_template)) / 2)
+
+  # assign radii based on abundance
+  trends_pts <- split(trends_pts, trends_pts$species_code)
+  for (i in seq_along(trends_pts)) {
+    abd <- trends_pts[[i]][["abd"]]
+    abd_bins <- stats::quantile(abd[abd > 0], seq(0, 1, by = 0.05)) |>
+      unique()
+
+    if (length(abd_bins) == 1) {
+      radii <- rep(radius_range[2], length.out = length(abd))
+    } else {
+      if (length(abd_bins) == 2) {
+        abd_bins <- c(abd_bins[1], mean(abd_bins), abd_bins[2])
+      }
+      midpoint_radius <- sqrt(abd_bins[-length(abd_bins)] + diff(abd_bins) / 2)
+      abd_bins[1] <- 0
+      circle_rad <- scales::rescale(midpoint_radius, to = radius_range)
+      trends_pts[[i]][["radii"]] <- categorize(abd, abd_bins, circle_rad)
+    }
+  }
+  trends_pts <- dplyr::bind_rows(trends_pts)
+
+  # buffer based on radius
+  sf::st_buffer(trends_pts, dist = trends_pts$radii)
+}
+
+
+#' Convert percent per year trend to cumulative trend
+#'
+#' @param x numeric; percent per year trend on the 0-100 scale rather than the
+#'   0-1 scale.
+#' @param n_years integer; number of years.
+#'
+#' @return A numeric vector of the same length as `x` that contains the
+#'   cumulative trend resulting from `n_years` years of compounding annual
+#'   trend.
+#' @export
+#'
+#' @examples
+#' ppy_trend <- runif(100, min = -100, 100)
+#' cumulative_trend <- convert_ppy_to_cumulative(ppy_trend, n_years = 5)
+#' cbind(ppy_trend, cumulative_trend)
+convert_ppy_to_cumulative <- function(x, n_years) {
+  stopifnot(is.numeric(x), is_count(n_years))
+  100 * ((1 + x / 100)^n_years - 1)
+}
+
+
 # internal functions ----
 
 trends_raster_template <- function() {
@@ -115,4 +225,13 @@ trends_raster_template <- function() {
   crs <- terra::crs(paste("+proj=sinu +lon_0=0 +x_0=0 +y_0=0",
                           "+R=6371007.181 +units=m +no_defs"))
   terra::rast(e, crs = crs, nrows = 626L, ncols = 1502L)
+}
+
+categorize <- function (x, breaks, labels) {
+  stopifnot(is.numeric(x), is.numeric(breaks),
+            is.numeric(labels) || is.character(labels),
+            length(labels) == length(breaks) - 1)
+  y <- cut(x, breaks)
+  lvl <- levels(y)
+  labels[match(y, lvl)]
 }

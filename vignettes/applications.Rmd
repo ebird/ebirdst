@@ -23,7 +23,8 @@ knitr::opts_chunk$set(warning = FALSE,
                       out.width = "100%",
                       fig.height = 4, 
                       fig.width = 7, 
-                      fig.align = "center")
+                      fig.align = "center",
+                      dpi = 300)
 # only build vignettes locally and not for R CMD check
 knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 ```

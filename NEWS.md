@@ -1,3 +1,7 @@
+# ebirdst 3.2023.1
+
+- added a function to generate abundance-scaled circles for trends
+
 # ebirdst 3.2023.0
 
 - update for 2023 data release
