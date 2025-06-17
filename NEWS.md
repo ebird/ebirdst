@@ -1,6 +1,7 @@
 # ebirdst 3.2023.1
 
 - added a function to generate abundance-scaled circles for trends
+- fixed bug preventing tibbles from being passed to grid sampling functions
 
 # ebirdst 3.2023.0
 

@@ -555,11 +555,7 @@ assign_to_grid <- function(points,
   # project to equal area if unprojected
   if (is_lonlat) {
     stopifnot(all(c("longitude", "latitude") %in% names(points)))
-    coords <- terra::vect(points[, c("longitude", "latitude")],
-                          geom = c("longitude", "latitude"),
-                          crs = "epsg:4326")
-    coords <- terra::project(coords, y = "+proj=eck4")
-    coords <- as.data.frame(terra::crds(coords))
+    coords <- project_equal_area(points, c("longitude", "latitude"))
     # add temporal columns
     if ("t" %in% names(points)) {
       coords[["t"]] <- points[["t"]]
@@ -633,7 +629,8 @@ assign_to_grid <- function(points,
 # project to equal area
 project_equal_area <- function(points, coords = c("longitude", "latitude")) {
   stopifnot(all(coords %in% names(points)))
-  locs <- terra::vect(points[, coords], geom = coords, crs = "epsg:4326")
+  locs <- terra::vect(as.data.frame(points[, coords]),
+                      geom = coords, crs = "epsg:4326")
   locs <- terra::project(locs, y = "+proj=eck4")
   locs <- as.data.frame(terra::crds(locs))
   return(stats::setNames(locs, c("x", "y")))
