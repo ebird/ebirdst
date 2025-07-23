@@ -74,10 +74,12 @@ data frame.}
 sampling grid should be defined and used for all observations in \code{x} or a
 different grid should be used for each stratum.}
 
-\item{by_year}{logical; whether the sampling should be done by year, i.e.
-sampling N observations per grid cell per year, rather than across years,
-i.e. N observations per grid cell regardless of year. If using sampling by
-year, the input data frame \code{x} must have a \code{year} column.}
+\item{by_year}{logical; whether the sampling should be done stratified by
+year (TRUE) or ignoring year (FALSE). If sampling by year is turned on, N
+observations will be sampled from each grid cell for each year, while if it
+is turned off, N observations will be sampled per grid cell across all
+years. If using sampling by year, the input data frame \code{x} must have a
+\code{year} column.}
 
 \item{case_control}{logical; whether to apply case control sampling whereby
 presence and absence are sampled independently.}

@@ -140,10 +140,12 @@ different grid should be used for each stratum.</p></dd>
 
 
 <dt id="arg-by-year">by_year<a class="anchor" aria-label="anchor" href="#arg-by-year"></a></dt>
-<dd><p>logical; whether the sampling should be done by year, i.e.
-sampling N observations per grid cell per year, rather than across years,
-i.e. N observations per grid cell regardless of year. If using sampling by
-year, the input data frame <code>x</code> must have a <code>year</code> column.</p></dd>
+<dd><p>logical; whether the sampling should be done stratified by
+year (TRUE) or ignoring year (FALSE). If sampling by year is turned on, N
+observations will be sampled from each grid cell for each year, while if it
+is turned off, N observations will be sampled per grid cell across all
+years. If using sampling by year, the input data frame <code>x</code> must have a
+<code>year</code> column.</p></dd>
 
 
 <dt id="arg-case-control">case_control<a class="anchor" aria-label="anchor" href="#arg-case-control"></a></dt>

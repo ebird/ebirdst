@@ -2,6 +2,7 @@
 
 - added a function to generate abundance-scaled circles for trends
 - fixed bug preventing tibbles from being passed to grid sampling functions
+- clarified documentation for sampling function
 
 ## Test environments
 
