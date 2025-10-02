@@ -1,0 +1,104 @@
+---
+title: "eBird Status and Trends Japan Workshop"
+format:
+    html: 
+       embed-resources: true
+editor: visual
+---
+
+## Setup
+
+Before working through these examples, complete the [workshop setup instructions](https://docs.google.com/document/d/1M8asSf0xWC06SpLcn-Ff9PD2IfgZ0ghwcZYclyccdrk/edit?usp=sharing) to install the necessary software and R packages, and to gain access to the eBird Status and Trends data products.
+
+After completing the setup instructions load the R packages that we will use for this workshop.
+
+-   `ebirdst` is used for downloading and working with eBird Status and Trend data products.
+
+-    `dplyr`, `tidyr`, and `ggplot2` are used for data manipulation and plotting.
+
+-   `sf` and `terra` are used to work with spatial datasets like those you can access with `ebirdst`.
+
+-   `rnaturalearth` gives access to country and state/prefecture boundaries.
+
+```{r}
+#| message: false
+library(ebirdst)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(sf)
+library(terra)
+library(rnaturalearth)
+```
+
+## Downloading eBird Status Data Products
+
+To download the eBird Status data products you can provide the English common name or scientific name to `ebirdst_download_status()` . For example, to download data for *Delichon dasypus* (Asian House-Martin / イワツバメ) use
+
+```{r}
+ebirdst_download_status("Delichon dasypus")
+```
+
+The files are downloaded to a folder on your computer specifically for the eBird Status and Trends data products and you can load them into R using functions from `ebirdst`. The relative abundance estimates are provided in raster format with estimates for every cell of a 3 km X 3 km grid. The weekly relative abundance raster has one layer for each week of the year and can be loaded into R using
+
+```{r}
+abd_weekly <- load_raster("Delichon dasypus")
+print(abd_weekly)
+```
+
+and the seasonal relative abundance raster with one layer for each season can be loaded into R using
+
+```{r}
+abd_seasonal <- load_raster("Hirundo rustica", period = "seasonal")
+print(abd_seasonal)
+```
+
+## Migration Chronologies
+
+Migration chronologies chart the change in relative abundance throughout the year for a given region. They can be useful for identifying when a given geography receives the highest intensity of use by a species or group of species. In this example we'll produce migration chronologies for *Delichon dasypus* in two prefectures: Akita in the north and Fukuoka in the south.
+
+To start, we'll download boundaries of the two prefectures using `rnaturalearth`. We also need to transform these spatial boundaries to be in the same projection as the relative abundance raster.
+
+```{r}
+boundaries <- ne_states(country = "Japan") |>
+  filter(name %in% c("Akita", "Fukuoka")) |> 
+  select(prefecture = name) |> 
+  st_transform(crs = crs(abd_weekly))
+plot(boundaries)
+```
+
+Next we'll use the `extract()` function from the `terra` package to find the average relative abundance for each week within each prefecture.
+
+```{r}
+chronology <- extract(abd_weekly, boundaries,
+                      fun = "mean", na.rm = TRUE,
+                      bind = TRUE, ID = FALSE) |> 
+  as.data.frame()
+```
+
+Each row of this data frame gives the average weekly relative abundance for one of the prefectures. Before we can plot these results, we need to transform them so that the relative abundance estimates are in columns rather than rows.
+
+```{r}
+chronology <- pivot_longer(
+  chronology,
+  cols = starts_with("X"),
+  names_to = "week", values_to = "abd",
+  names_transform = \(x) as.Date(x, format = "X%Y.%m.%d")
+)
+print(chronology)
+```
+
+Finally, we can use this data frame to plot a migration chronology.
+
+```{r}
+ggplot(chronology) +
+  aes(x = week, y = abd, color = prefecture) +
+  geom_line() +
+  geom_point() +
+  scale_x_date(date_labels = "%b", date_breaks = "1 month") +
+  labs(x = "Week", 
+       y = "Mean relative abundance",
+       title = "Migration chronology for Delichon dasypus")
+```
+
+These migration chronologies show that *Delichon dasypus* are primarily found in the winter in Fukuoka and primarily in the fall in Akita. Furthermore, in their peak months, it appears that *Delichon dasypus* occurs in higher abundance in Akita than Fukuoka.
