@@ -671,17 +671,17 @@ variables, representing the binary presence of either seasonal or
 permanent water (JRC/GSW1_4/YearlyHistory), calculated as percent land
 cover and edge density within a neighborhood. This dataset is 30 m in
 spatial resolution.</li>
-<li>ADDED: Elevation data at 30 m resolution has been added from the <a href="https://lpdaac.usgs.gov/products/astgtmv003" class="external-link">ASTER Global Digital
-Elevation Model</a>. This is represented as mean and standard deviation
-within neighborhoods.</li>
+<li>ADDED: Elevation data at 30 m resolution has been added from the <a href="https://www.earthdata.nasa.gov/data/catalog/lpcloud-astgtm-003" class="external-link">ASTER
+Global Digital Elevation Model</a>. This is represented as mean and
+standard deviation within neighborhoods.</li>
 <li>ADDED: MODIS 16-day Enhanced Vegetation Index (EVI) has been added
-from <a href="https://lpdaac.usgs.gov/products/mod13q1v061/" class="external-link">MOD13Q1</a>. This
-has been summarized as mean and standard deviation within neighborhoods.
-As this dataset is not available for water and has an artificial
-boundary at the northern and southern latitudes based on availability of
-light, we have added a boolean covariate <code>has_evi</code> that
-describes whether the covariate was available at a given date and
-location.</li>
+from <a href="https://www.earthdata.nasa.gov/data/catalog/lpcloud-mod13q1-061" class="external-link">MOD13Q1</a>.
+This has been summarized as mean and standard deviation within
+neighborhoods. As this dataset is not available for water and has an
+artificial boundary at the northern and southern latitudes based on
+availability of light, we have added a boolean covariate
+<code>has_evi</code> that describes whether the covariate was available
+at a given date and location.</li>
 <li>ADDED: Data describing shorelines from Sayre et al. 2021 has been
 included. This includes means and standard deviations for: wave height,
 tidal range, chlorophyll, turbidity, sinuosity, slope, and outflow
@@ -793,9 +793,9 @@ distributed.</li>
 <li>ADDED: New and modified Status covariates have been added to the
 trends model. New covariates include speed (distance / duration), moon
 fraction and altitude, shoreline, and 30 m elevation.</li>
-<li>CHANGED: Water cover is now represented by the static <a href="https://lpdaac.usgs.gov/products/astwbdv001/" class="external-link">ASTER water bodies
-dataset</a> instead of the annual <a href="https://lpdaac.usgs.gov/products/mod44wv006/" class="external-link">MODIS MOD44W
-dataset</a>.</li>
+<li>CHANGED: Water cover is now represented by the static <a href="https://www.earthdata.nasa.gov/data/catalog/lpdaac-ecs-astwbd-001" class="external-link">ASTER
+water bodies dataset</a> instead of the annual <a href="https://www.earthdata.nasa.gov/data/catalog/lpcloud-mod44w-006" class="external-link">MODIS
+MOD44W dataset</a>.</li>
 </ul>
 </div>
 <div class="section level4">
