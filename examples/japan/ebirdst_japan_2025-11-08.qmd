@@ -14,7 +14,7 @@ After completing the setup instructions load the R packages that we will use for
 
 -   `ebirdst` is used for downloading and working with eBird Status and Trend data products.
 
--    `dplyr`, `tidyr`, and `ggplot2` are used for data manipulation and plotting.
+-   `dplyr`, `tidyr`, and `ggplot2` are used for data manipulation and plotting.
 
 -   `sf` and `terra` are used to work with spatial datasets like those you can access with `ebirdst`.
 

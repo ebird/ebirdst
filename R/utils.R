@@ -93,6 +93,7 @@ date_to_st_week <- function(dates, version = 2022) {
 get_species <- function(x) {
   stopifnot(is.character(x))
   r <- ebirdst::ebirdst_runs
+  r <- r[!stringr::str_detect(r$species_code, "example"), ]
   x <- tolower(trimws(x))
 
   # species code
@@ -102,7 +103,10 @@ get_species <- function(x) {
   # common names
   com <- match(x, tolower(r$common_name))
   # combine
-  r$species_code[dplyr::coalesce(code, sci, com)]
+  codes <- r$species_code[dplyr::coalesce(code, sci, com)]
+  # adjust for example dataset
+  codes[x == "yebsap-example"] <- "yebsap-example"
+  return(codes)
 }
 
 

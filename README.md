@@ -116,6 +116,7 @@ different versions and require different citations.
 Please cite the **eBird Status Data Products** with:
 
 <blockquote>
+
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O.
 Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A.
 Stillman, C. Davis, M. Stokowski, P. Sharma, V. Pantoja, D. Burgin, P.
@@ -131,6 +132,7 @@ version](https://raw.githubusercontent.com/ebird/ebirdst/main/ebirdst-citation_2
 Please cite the **eBird Trends Data Products** with:
 
 <blockquote>
+
 Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O.
 Robinson, W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A.
 Stillman, I. Davies, A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023.

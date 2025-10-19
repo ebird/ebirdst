@@ -55,7 +55,7 @@
 #'                          latitude = rnorm(n_obs, sd = 0.1),
 #'                          day_of_year = sample.int(28, n_obs, replace = TRUE),
 #'                          year = NA_integer_,
-#'                          obs = rpois(n_obs, lambda = 0.1),
+#'                          obs = rpois(n_obs, lambda = 0.05),
 #'                          forest_cover = runif(n_obs),
 #'                          island = as.integer(runif(n_obs) > 0.95))
 #' # add a year column, giving more data to recent years

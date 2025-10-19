@@ -174,8 +174,7 @@ vectorize_trends <- function(trends,
   trends_pts <- split(trends_pts, trends_pts$species_code)
   for (i in seq_along(trends_pts)) {
     abd <- trends_pts[[i]][["abd"]]
-    abd_bins <- stats::quantile(abd[abd > 0], seq(0, 1, by = 0.05)) |>
-      unique()
+    abd_bins <- unique(stats::quantile(abd[abd > 0], seq(0, 1, by = 0.05)))
 
     if (length(abd_bins) == 1) {
       radii <- rep(radius_range[2], length.out = length(abd))
