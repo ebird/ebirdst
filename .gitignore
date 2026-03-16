@@ -7,3 +7,5 @@ inst/doc
 .DS_Store
 .Rdata
 .httr-oauth
+.claude*
+CLAUDE.md

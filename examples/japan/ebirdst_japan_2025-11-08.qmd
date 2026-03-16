@@ -49,7 +49,7 @@ print(abd_weekly)
 and the seasonal relative abundance raster with one layer for each season can be loaded into R using
 
 ```{r}
-abd_seasonal <- load_raster("Hirundo rustica", period = "seasonal")
+abd_seasonal <- load_raster("Delichon dasypus", period = "seasonal")
 print(abd_seasonal)
 ```
 
