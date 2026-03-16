@@ -33,13 +33,13 @@ calculate_mcc_f1 <- function(observed, predicted) {
   tn <- cmx[2, 2]
 
   # f1 score
-  p_pat <- tp / (tp + fp)
-  r_pat <- tp / (tp + fn)
-  f1 <- 2 * ((p_pat * r_pat) / (p_pat + r_pat))
+  p_pat <- if ((tp + fp) == 0) 0 else tp / (tp + fp)
+  r_pat <- if ((tp + fn) == 0) 0 else tp / (tp + fn)
+  f1 <- if ((p_pat + r_pat) == 0) 0 else 2 * ((p_pat * r_pat) / (p_pat + r_pat))
 
   # mcc
   mcc_denom <- sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn))
-  mcc <- ((tp * tn) - (fp * fn)) / mcc_denom
+  mcc <- if (mcc_denom == 0) 0 else ((tp * tn) - (fp * fn)) / mcc_denom
   return(list(f1 = f1, mcc = mcc))
 }
 

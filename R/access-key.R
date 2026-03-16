@@ -46,7 +46,7 @@ set_ebirdst_access_key <- function(key, overwrite = FALSE) {
       # replace existing
       renv_lines[which(renv_exists)] <- key_line
     } else {
-      stop("EBIRDST_KEY already set, use overwrite = TRUE to overwite.")
+      stop("EBIRDST_KEY already set, use overwrite = TRUE to overwrite.")
     }
     # set key in .Renviron
     writeLines(renv_lines, renv_path)
@@ -70,7 +70,7 @@ get_ebirdst_access_key <- function() {
             "https://ebird.org/st/request\n",
             "2. Save the key using set_ebirdst_access_key()\n")
     stop("Valid eBird Status and Trends access key not found. ",
-         "Note that keys expire after 1 month, you may need a new key.")
+         "Note that keys expire after 6 month, you may need a new key.")
   }
   invisible(key)
 }

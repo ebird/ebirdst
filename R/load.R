@@ -134,7 +134,7 @@ load_raster <- function(species,
 
   # only low res data available for example
   is_example <- stringr::str_detect(species_code, "-example")
-  if (is_example && !resolution == "27km") {
+  if (is_example && resolution != "27km") {
     stop("The example data only contains 27 km estimates.")
   }
 
@@ -309,7 +309,7 @@ load_trends <- function(species,
     stop("No trends data found for the following species. Ensure that the ",
          "data were downloaded using ebirdst_download_trends() and that the ",
          "'path' argument correctly points to the data download directory.\n  ",
-         paste(species[file.exists(trends_paths)], collapse = ", "))
+         paste(species[!file.exists(trends_paths)], collapse = ", "))
   }
 
   # load data
@@ -367,10 +367,10 @@ load_trends <- function(species,
 #' }
 load_data_coverage <- function(product = c("spatial-coverage",
                                            "selection-probability"),
-                               weeks = NULL,
+                               weeks,
                                path = ebirdst_data_dir()) {
   product <- match.arg(product)
-  stopifnot(is.character(weeks))
+  stopifnot(!missing(weeks), is.character(weeks))
   stopifnot(dir.exists(path))
 
   dc_path <- get_species_path("data_coverage", path = path,
@@ -471,7 +471,7 @@ load_ranges <- function(species,
 
   # only low res data available for example
   is_example <- stringr::str_detect(species_code, "-example")
-  if (is_example && !resolution == "27km") {
+  if (is_example && resolution != "27km") {
     stop("The example data only contains 27 km estimates.")
   }
 
@@ -546,7 +546,7 @@ load_regional_stats <- function(species, path = ebirdst_data_dir()) {
   file <- file.path(species_path, "regional_stats.csv")
   if(!file.exists(file)) {
     stop("The regional summary stats file could not be found. To download ",
-         "file, use `ebirst_download_status(download_regional = TRUE)`.")
+         "file, use `ebirdst_download_status(download_regional = TRUE)`.")
   }
   # load stats
   stats <- dplyr::as_tibble(utils::read.csv(file, na = "", row.names = NULL))

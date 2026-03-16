@@ -147,9 +147,9 @@ grid_sample <- function(x,
   if (cell_sample_prop < 1) {
     ids <- unique(cells[["cell_id"]])
     n_cells <- max(round(cell_sample_prop * length(ids)), 1)
-    keed_ids <- safe_sample(ids, size = n_cells, replace = FALSE)
-    cells <- cells[cells[["cell_id"]] %in% keed_ids, ]
-    rm(ids, keed_ids)
+    keep_ids <- safe_sample(ids, size = n_cells, replace = FALSE)
+    cells <- cells[cells[["cell_id"]] %in% keep_ids, ]
+    rm(ids, keep_ids)
   }
 
   # sample from each cell
