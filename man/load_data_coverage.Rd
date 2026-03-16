@@ -6,7 +6,7 @@
 \usage{
 load_data_coverage(
   product = c("spatial-coverage", "selection-probability"),
-  weeks = NULL,
+  weeks,
   path = ebirdst_data_dir()
 )
 }
