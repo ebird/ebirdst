@@ -23,4 +23,6 @@ vignettes/changelog.Rmd
 ^ebirdst-citation.*\.bib$
 
 ^examples$
+
 ^CLAUDE\.md$
+^\.claude$

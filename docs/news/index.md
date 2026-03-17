@@ -1,5 +1,13 @@
 # Changelog
 
+## ebirdst 3.2023.2
+
+- Add
+  [`ebirdst_data_inventory()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_inventory.md)
+  and
+  [`ebirdst_delete()`](https://ebird.github.io/ebirdst/reference/ebirdst_delete.md)
+  to manage files downloaded by `ebirdst`
+
 ## ebirdst 3.2023.1
 
 CRAN release: 2025-10-19

@@ -12,6 +12,11 @@
   : Get the Status and Trends week that a date falls into
 - [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md)
   : Path to eBird Status and Trends data download directory
+- [`ebirdst_data_inventory()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_inventory.md)
+  [`print(`*`<ebirdst_inventory>`*`)`](https://ebird.github.io/ebirdst/reference/ebirdst_data_inventory.md)
+  : Inventory of downloaded eBird Status and Trends data
+- [`ebirdst_delete()`](https://ebird.github.io/ebirdst/reference/ebirdst_delete.md)
+  : Delete downloaded eBird Status and Trends data
 - [`ebirdst_download_data_coverage()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_data_coverage.md)
   : Download eBird Status and Trends Data Coverage Products
 - [`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)

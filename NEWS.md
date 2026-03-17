@@ -1,3 +1,7 @@
+# ebirdst 3.2023.2
+
+- Add `ebirdst_data_inventory()` and `ebirdst_delete()` to manage files downloaded by `ebirdst`
+
 # ebirdst 3.2023.1
 
 - added a function to generate abundance-scaled circles for trends

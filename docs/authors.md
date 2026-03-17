@@ -20,12 +20,12 @@ Source:
 
 Strimas-Mackey M, Ligocki S, Auer T, Fink D (2026). *ebirdst: Access and
 Analyze eBird Status and Trends Data Products*. R package version
-3.2023.1, <https://ebird.github.io/ebirdst/>.
+3.2023.2, <https://ebird.github.io/ebirdst/>.
 
     @Manual{,
       title = {ebirdst: Access and Analyze eBird Status and Trends Data Products},
       author = {Matthew Strimas-Mackey and Shawn Ligocki and Tom Auer and Daniel Fink},
       year = {2026},
-      note = {R package version 3.2023.1},
+      note = {R package version 3.2023.2},
       url = {https://ebird.github.io/ebirdst/},
     }

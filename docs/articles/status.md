@@ -87,6 +87,98 @@ to access the data. If you prefer to access data for use outside of R,
 consider downloading data via the [eBird Status and Trends
 website](https://science.ebird.org/en/status-and-trends/download-data).**
 
+### Managing downloaded data
+
+Because a new version of the data products is released each year, data
+for multiple versions can accumulate on disk over time. Use
+[`ebirdst_data_inventory()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_inventory.md)
+to get a summary of all data currently downloaded, with separate rows
+for the Status and Trends data products for each species.
+
+``` r
+ebirdst_data_inventory()
+#> eBird Status and Trends data: 51 species, 61 packages (6.1 GB)
+#> 
+#> 2022 Trends Data Products (53.1 MB)
+#>   Abert's Towhee (abetow): 3 files, 364.9 KB
+#>   Brewer's Sparrow (brespa): 3 files, 4.0 MB
+#>   Brown Pelican (brnpel): 3 files, 1.7 MB
+#>   Black-throated Green Warbler (btnwar): 3 files, 7.1 MB
+#>   Burrowing Owl (burowl): 3 files, 4.8 MB
+#>   Grasshopper Sparrow (graspa): 3 files, 7.3 MB
+#>   Limpkin (limpki): 3 files, 1.1 MB
+#>   Marsh Wren (marwre): 3 files, 5.9 MB
+#>   Prairie Warbler (prawar): 3 files, 3.3 MB
+#>   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB
+#>   Sage Thrasher (sagthr): 3 files, 2.7 MB
+#>   Seaside Sparrow (seaspa): 3 files, 215.5 KB
+#>   American Coot (y00475): 3 files, 12.2 MB
+#> 
+#> 2023 Status Data Products (6.0 GB)
+#>   Abert's Towhee (abetow): 2 files, 2.4 MB
+#>   Puerto Rican Mango (antman3): 4 files, 51.9 MB
+#>   Asian House-Martin (ashmar1): 28 files, 233.7 MB
+#>   Baird's Sparrow (baispa): 6 files, 61.5 MB
+#>   Bank Swallow (banswa): 2 files, 19.4 MB
+#>   Barn Swallow (barswa): 27 files, 1.2 GB
+#>   Black-bellied Plover (bkbplo): 3 files, 9.3 MB
+#>   Bobolink (boboli): 6 files, 103.5 MB
+#>   Brown-headed Thrush (brhthr1): 47 files, 105.2 MB
+#>   Brown Pelican (brnpel): 4 files, 68.7 MB
+#>   Black-throated Green Warbler (btnwar): 4 files, 121.2 MB
+#>   Burrowing Owl (burowl): 4 files, 415.9 MB
+#>   Cerulean Warbler (cerwar): 3 files, 583.3 KB
+#>   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB
+#>   Colima Warbler (colwar): 10 files, 4.0 MB
+#>   Data Coverage (data_coverage): 3 files, 91.9 MB
+#>   Golden Eagle (goleag): 28 files, 881.9 MB
+#>   Grasshopper Sparrow (graspa): 4 files, 139.8 MB
+#>   Horned Lark (horlar): 47 files, 741.7 MB
+#>   Kentucky Warbler (kenwar): 5 files, 31.7 MB
+#>   Limpkin (limpki): 4 files, 181.6 MB
+#>   Little Ringed Plover (lirplo): 3 files, 25.6 MB
+#>   Long-toed Stint (lotsti): 3 files, 4.9 MB
+#>   Marsh Wren (marwre): 4 files, 85.5 MB
+#>   Pectoral Sandpiper (pecsan): 2 files, 5.8 MB
+#>   Pinyon Jay (pinjay): 2 files, 828.2 KB
+#>   Prairie Warbler (prawar): 4 files, 87.1 MB
+#>   Puerto Rican Owl (prsowl): 4 files, 51.9 MB
+#>   Red Knot (redkno): 3 files, 4.2 MB
+#>   Red-necked Stint (rensti): 3 files, 4.7 MB
+#>   Rock Pigeon (rocpig): 7 files, 24.0 MB
+#>   Ruby-throated Hummingbird (rthhum): 8 files, 81.6 MB
+#>   Ruddy Turnstone (rudtur): 3 files, 8.0 MB
+#>   Rufous Hummingbird (rufhum): 5 files, 27.3 MB
+#>   Sandhill Crane (sancra): 4 files, 177.5 MB
+#>   Seaside Sparrow (seaspa): 4 files, 53.0 MB
+#>   Sprague's Pipit (sprpip): 6 files, 73.7 MB
+#>   Surf Scoter (sursco): 2 files, 2.4 MB
+#>   Taiwan Barwing (taibar1): 3 files, 837.4 KB
+#>   Tree Swallow (treswa): 2 files, 7.7 MB
+#>   Upland Sandpiper (uplsan): 6 files, 138.5 MB
+#>   Western Meadowlark (wesmea): 8 files, 225.4 MB
+#>   Western Tanager (westan): 5 files, 48.5 MB
+#>   White-cheeked Pintail (whcpin): 4 files, 85.1 MB
+#>   Whimbrel (whimbr): 4 files, 122.0 MB
+#>   American Coot (y00475): 4 files, 85.6 MB
+#>   Yellow-breasted Crake (yebcra1): 4 files, 61.0 MB
+#>   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB
+```
+
+To remove data for specific species or version years, use
+[`ebirdst_delete()`](https://ebird.github.io/ebirdst/reference/ebirdst_delete.md).
+When called interactively it will display a summary of the data to be
+removed and ask for confirmation before proceeding. To skip the prompt,
+use `force = TRUE`.
+
+``` r
+# review and confirm before deleting
+ebirdst_delete(species = "yebsap-example")
+
+# delete all data for a given version year without prompting
+ebirdst_delete(year = 2021, force = TRUE)
+```
+
 ## Species list
 
 The data frame `ebirdst_runs` lists all species with eBird Status Data

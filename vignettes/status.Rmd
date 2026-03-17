@@ -57,6 +57,24 @@ By default, `ebirdst_download_status()` downloads data to a centralized director
 
 **IMPORTANT: eBird Status and Trends Data Products are designed to be downloaded and accessed using the `ebirdst` R package. Data downloaded using this R package have a specific file structure and changing file names or locations will disrupt the ability of functions in this package to access the data. If you prefer to access data for use outside of R, consider downloading data via the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/download-data).**
 
+## Managing downloaded data
+
+Because a new version of the data products is released each year, data for multiple versions can accumulate on disk over time. Use `ebirdst_data_inventory()` to get a summary of all data currently downloaded, with separate rows for the Status and Trends data products for each species.
+
+```{r access-inventory}
+ebirdst_data_inventory()
+```
+
+To remove data for specific species or version years, use `ebirdst_delete()`. When called interactively it will display a summary of the data to be removed and ask for confirmation before proceeding. To skip the prompt, use `force = TRUE`.
+
+```{r access-delete, eval=FALSE}
+# review and confirm before deleting
+ebirdst_delete(species = "yebsap-example")
+
+# delete all data for a given version year without prompting
+ebirdst_delete(year = 2021, force = TRUE)
+```
+
 # Species list {#species}
 
 The data frame `ebirdst_runs` lists all species with eBird Status Data Products available for download.

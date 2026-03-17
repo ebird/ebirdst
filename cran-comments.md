@@ -1,9 +1,6 @@
-# ebirdst 3.2023.1
+# ebirdst 3.2023.2
 
-- added a function to generate abundance-scaled circles for trends
-- fixed bug preventing tibbles from being passed to grid sampling functions
-- clarified documentation for sampling function
-- fixed bug in `get_species()` for Yellow-bellied Sapsucker (issue #11)
+- Add `ebirdst_data_inventory()` and `ebirdst_delete()` to manage files downloaded by `ebirdst`
 
 ## Test environments
 
