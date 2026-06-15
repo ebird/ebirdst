@@ -48,7 +48,7 @@ species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
 }
 \value{
-For the weekly cubes, a \link[terra:SpatRaster-class]{SpatRaster} with 52
+For the weekly cubes, a \link[terra:SpatRaster]{SpatRaster} with 52
 layers for the given product, where the layer names are the dates
 (\code{YYYY-MM-DD} format) of the midpoint of each week. Seasonal cubes will
 have up to four layers named with the corresponding season. The full-year
@@ -59,7 +59,7 @@ Each of the eBird Status raster products is packaged as a GeoTIFF file
 representing predictions on a regular grid. The core products are occurrence,
 count, relative abundance, and proportion of population. This function loads
 one of the available data products into R as a
-\link[terra:SpatRaster-class]{SpatRaster} object. Note that data must be downloaded
+\link[terra:SpatRaster]{SpatRaster} object. Note that data must be downloaded
 using \code{\link[=ebirdst_download_status]{ebirdst_download_status()}} prior to loading it using this function.
 }
 \details{

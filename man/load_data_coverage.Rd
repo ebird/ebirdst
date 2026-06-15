@@ -28,7 +28,7 @@ species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
 }
 \value{
-A \link[terra:SpatRaster-class]{SpatRaster} with between 1 and 52 layers for
+A \link[terra:SpatRaster]{SpatRaster} with between 1 and 52 layers for
 the given product for the given weeks, where the layer names are the dates
 (\code{YYYY-MM-DD} format) of the midpoint of each week.
 }
@@ -36,7 +36,7 @@ the given product for the given weeks, where the layer names are the dates
 The data coverage products are packaged as individual GeoTIFF files for each
 product for each week of the year. This function loads one of the available
 data products for one or more weeks into R as a
-\link[terra:SpatRaster-class]{SpatRaster} object. Note that data must be downloaded
+\link[terra:SpatRaster]{SpatRaster} object. Note that data must be downloaded
 using \code{\link[=ebirdst_download_data_coverage]{ebirdst_download_data_coverage()}} prior to loading it using this
 function.
 }

@@ -31,7 +31,7 @@ species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
 }
 \value{
-A \link[terra:SpatRaster-class]{SpatRaster} object with the PPM data. For
+A \link[terra:SpatRaster]{SpatRaster} object with the PPM data. For
 migrants, rasters are weekly with  52 layers, where the layer names are the
 dates (\code{MM-DD} format) of the midpoint of each week. For residents, a
 single year round layer is returned.

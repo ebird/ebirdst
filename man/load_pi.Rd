@@ -35,7 +35,7 @@ species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
 }
 \value{
-A \link[terra:SpatRaster-class]{SpatRaster} object with the PI ranks for the
+A \link[terra:SpatRaster]{SpatRaster} object with the PI ranks for the
 given predictor. For migrants, the estimates are weekly and the raster will
 have 52 layers, where the layer names are the dates (\code{MM-DD} format) of the
 midpoint of each week. For residents, a single year round layer is
