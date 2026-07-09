@@ -107,7 +107,7 @@ grid_sample <- function(
   stopifnot(
     is.character(coords),
     length(coords) == 3,
-    all(!is.na(coords)),
+    !anyNA(coords),
     all(coords %in% names(x))
   )
   stopifnot(is_flag(is_lonlat))
@@ -152,7 +152,7 @@ grid_sample <- function(
   names(cells) <- "cell_id"
   cells[["row_number"]] <- seq_len(nrow(cells))
 
-  if (any(is.na(cells[["cell_id"]]))) {
+  if (anyNA(cells[["cell_id"]])) {
     stop("Sampling grid did not capture all points.")
   }
 
@@ -340,7 +340,7 @@ grid_sample_stratified <- function(
     if (all(locs[[".detected"]])) {
       message("No non-detections in dataset, setting case_control = FALSE")
       case_control <- FALSE
-    } else if (all(!locs[[".detected"]])) {
+    } else if (!any(locs[[".detected"]])) {
       message("No detections in dataset, setting case_control = FALSE")
       case_control <- FALSE
     } else {
@@ -595,7 +595,7 @@ assign_to_grid <- function(
     stopifnot(
       is.character(coords),
       length(coords) == length(res),
-      all(!is.na(coords)),
+      !anyNA(coords),
       all(coords %in% names(points))
     )
     if (is_lonlat) {
