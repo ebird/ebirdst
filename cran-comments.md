@@ -2,6 +2,7 @@
 
 - Add `ebirdst_data_inventory()` and `ebirdst_delete()` to manage files downloaded by `ebirdst`
 - Move to air autoformatting and jarl linting
+- Efficiency improvements for grid_sample()
 
 ## Test environments
 
