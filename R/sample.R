@@ -91,24 +91,35 @@
 #' table(sampled$island)
 #' # stratified grid sampling retain at least one observation from each level
 #' table(sampled_cc$island)
-grid_sample <- function(x,
-                        coords = c("longitude", "latitude", "day_of_year"),
-                        is_lonlat = TRUE,
-                        res = c(3000, 3000, 7), jitter_grid = TRUE,
-                        sample_size_per_cell = 1,
-                        cell_sample_prop = 0.75,
-                        keep_cell_id = FALSE,
-                        grid_definition = NULL) {
+grid_sample <- function(
+  x,
+  coords = c("longitude", "latitude", "day_of_year"),
+  is_lonlat = TRUE,
+  res = c(3000, 3000, 7),
+  jitter_grid = TRUE,
+  sample_size_per_cell = 1,
+  cell_sample_prop = 0.75,
+  keep_cell_id = FALSE,
+  grid_definition = NULL
+) {
   # input checks
   stopifnot(is.data.frame(x))
-  stopifnot(is.character(coords), length(coords) == 3, all(!is.na(coords)),
-            all(coords %in% names(x)))
+  stopifnot(
+    is.character(coords),
+    length(coords) == 3,
+    all(!is.na(coords)),
+    all(coords %in% names(x))
+  )
   stopifnot(is_flag(is_lonlat))
   stopifnot(is.numeric(res), length(res) %in% c(2, 3), all(res > 0))
   stopifnot(is_flag(jitter_grid))
   stopifnot(is_count(sample_size_per_cell), sample_size_per_cell > 0)
-  stopifnot(is.numeric(cell_sample_prop), length(cell_sample_prop) == 1,
-            cell_sample_prop > 0, cell_sample_prop <=1)
+  stopifnot(
+    is.numeric(cell_sample_prop),
+    length(cell_sample_prop) == 1,
+    cell_sample_prop > 0,
+    cell_sample_prop <= 1
+  )
   stopifnot(is_flag(keep_cell_id))
 
   # handle edge case of no observations
@@ -118,14 +129,16 @@ grid_sample <- function(x,
 
   # assign the observations to a grid
   if (!is.null(grid_definition)) {
-    cells <- assign_to_grid(points = x,
-                            grid_definition = grid_definition)
+    cells <- assign_to_grid(points = x, grid_definition = grid_definition)
   } else {
-    cells <- assign_to_grid(points = x, res = res,
-                            coords = coords,
-                            jitter_grid = jitter_grid,
-                            is_lonlat = is_lonlat,
-                            grid_definition = NULL)
+    cells <- assign_to_grid(
+      points = x,
+      res = res,
+      coords = coords,
+      jitter_grid = jitter_grid,
+      is_lonlat = is_lonlat,
+      grid_definition = NULL
+    )
   }
 
   # was this a spacetime grid or just a spatial grid
@@ -153,10 +166,13 @@ grid_sample <- function(x,
   }
 
   # sample from each cell
-  sampled <- tapply(cells[["row_number"]],
-                    INDEX = cells[["cell_id"]],
-                    FUN = safe_sample, size = sample_size_per_cell,
-                    simplify = FALSE)
+  sampled <- tapply(
+    cells[["row_number"]],
+    INDEX = cells[["cell_id"]],
+    FUN = safe_sample,
+    size = sample_size_per_cell,
+    simplify = FALSE
+  )
   sampled <- unique(do.call(c, sampled))
 
   # extract just the sampled rows of the original dataset
@@ -213,27 +229,31 @@ grid_sample <- function(x,
 #' @rdname grid_sample
 #' @export
 grid_sample_stratified <- function(
-    x,
-    coords = c("longitude", "latitude", "day_of_year"),
-    is_lonlat = TRUE,
-    unified_grid = FALSE,
-    keep_cell_id = FALSE,
-    by_year = TRUE,
-    case_control = TRUE, obs_column = "obs",
-    sample_by = NULL,
-    min_detection_probability = 0,
-    maximum_ss = NULL,
-    jitter_columns = NULL,
-    jitter_sd = 0.1,
-    ...) {
-
+  x,
+  coords = c("longitude", "latitude", "day_of_year"),
+  is_lonlat = TRUE,
+  unified_grid = FALSE,
+  keep_cell_id = FALSE,
+  by_year = TRUE,
+  case_control = TRUE,
+  obs_column = "obs",
+  sample_by = NULL,
+  min_detection_probability = 0,
+  maximum_ss = NULL,
+  jitter_columns = NULL,
+  jitter_sd = 0.1,
+  ...
+) {
   # input checks
   stopifnot(is.data.frame(x))
   stopifnot(is_flag(is_lonlat), is_flag(unified_grid), is_flag(keep_cell_id))
   stopifnot(is_flag(case_control))
   if (case_control) {
-    stopifnot(is.character(obs_column), length(obs_column) == 1,
-              obs_column %in% names(x))
+    stopifnot(
+      is.character(obs_column),
+      length(obs_column) == 1,
+      obs_column %in% names(x)
+    )
   }
   if (is.null(sample_by)) {
     sample_by <- character()
@@ -247,21 +267,24 @@ grid_sample_stratified <- function(
   if (!is.null(maximum_ss)) {
     stopifnot(is_count(maximum_ss), maximum_ss > 0)
   }
-  stopifnot(is.numeric(min_detection_probability),
-            length(min_detection_probability) == 1,
-            min_detection_probability >= 0,
-            min_detection_probability < 1)
+  stopifnot(
+    is.numeric(min_detection_probability),
+    length(min_detection_probability) == 1,
+    min_detection_probability >= 0,
+    min_detection_probability < 1
+  )
 
   if (keep_cell_id && !unified_grid) {
-    warning("Cell IDs can only be returned if unified_grid = TRUE since ",
-            "different grids are used for each stratum otherwise. Setting ",
-            "keep_cell_id = FALSE")
+    warning(
+      "Cell IDs can only be returned if unified_grid = TRUE since ",
+      "different grids are used for each stratum otherwise. Setting ",
+      "keep_cell_id = FALSE"
+    )
     keep_cell_id <- FALSE
   }
 
   if (!is.null(jitter_columns)) {
-    stopifnot(is.character(jitter_columns),
-              all(jitter_columns %in% names(x)))
+    stopifnot(is.character(jitter_columns), all(jitter_columns %in% names(x)))
     stopifnot(is.numeric(jitter_sd), length(jitter_sd) == 1, jitter_sd >= 0)
 
     # ensure columns to jitter are numeric
@@ -269,8 +292,10 @@ grid_sample_stratified <- function(
     col_types <- col_types[jitter_columns]
     not_numeric <- names(col_types)[!col_types %in% c("numeric", "integer")]
     if (length(not_numeric) > 0) {
-      stop("The following jitter columns must be of type numeric or integer: ",
-           paste(not_numeric, collapse = ", "))
+      stop(
+        "The following jitter columns must be of type numeric or integer: ",
+        paste(not_numeric, collapse = ", ")
+      )
     }
   }
 
@@ -280,8 +305,9 @@ grid_sample_stratified <- function(
   }
 
   # no strata defined
-  if (!by_year && !case_control &&
-      (is.null(sample_by) || length(sample_by) == 0)) {
+  if (
+    !by_year && !case_control && (is.null(sample_by) || length(sample_by) == 0)
+  ) {
     return(grid_sample(x, keep_cell_id = keep_cell_id, ...))
   }
 
@@ -328,21 +354,27 @@ grid_sample_stratified <- function(
   # define the grid once for all observations
   grid_definition <- NULL
   if (unified_grid) {
-    cells <- assign_to_grid(points = locs,
-                            coords = coords,
-                            is_lonlat = is_lonlat,
-                            res = c(3000, 3000, 7),
-                            jitter_grid = TRUE)
+    cells <- assign_to_grid(
+      points = locs,
+      coords = coords,
+      is_lonlat = is_lonlat,
+      res = c(3000, 3000, 7),
+      jitter_grid = TRUE
+    )
     grid_definition <- attr(cells, "grid_definition")
     rm(cells)
   }
 
   # sample from each stratum
-  sampled <- lapply(locs_split, FUN = grid_sample,
-                    coords = coords, is_lonlat = is_lonlat,
-                    keep_cell_id = keep_cell_id,
-                    grid_definition = grid_definition,
-                    ...)
+  sampled <- lapply(
+    locs_split,
+    FUN = grid_sample,
+    coords = coords,
+    is_lonlat = is_lonlat,
+    keep_cell_id = keep_cell_id,
+    grid_definition = grid_definition,
+    ...
+  )
   rm(locs_split)
   sampled <- dplyr::bind_rows(sampled)
 
@@ -365,22 +397,28 @@ grid_sample_stratified <- function(
       s <- split(sampled, f = sampled[[".detected"]], drop = TRUE)
       sample_by_nodet <- setdiff(sample_by, ".detected")
       if (target_prop_det < 1 && "TRUE" %in% names(s)) {
-        s[["TRUE"]] <- sample_stratify(s[["TRUE"]],
-                                       prop = target_prop_det,
-                                       sample_by = sample_by_nodet)
+        s[["TRUE"]] <- sample_stratify(
+          s[["TRUE"]],
+          prop = target_prop_det,
+          sample_by = sample_by_nodet
+        )
       }
       # sample non-detections
       if (target_prop_non < 1 && "FALSE" %in% names(s)) {
-        s[["FALSE"]] <- sample_stratify(s[["FALSE"]],
-                                        prop = target_prop_non,
-                                        sample_by = sample_by_nodet)
+        s[["FALSE"]] <- sample_stratify(
+          s[["FALSE"]],
+          prop = target_prop_non,
+          sample_by = sample_by_nodet
+        )
       }
       sampled <- dplyr::bind_rows(s)
       rm(s)
     } else if (nrow(sampled) > maximum_ss) {
-      sampled <- sample_stratify(sampled,
-                                 prop = sample_prop,
-                                 sample_by = sample_by)
+      sampled <- sample_stratify(
+        sampled,
+        prop = sample_prop,
+        sample_by = sample_by
+      )
     }
   }
 
@@ -421,11 +459,15 @@ grid_sample_stratified <- function(
       }
 
       # grid sample to add new detections
-      add_dets <- lapply(locs_split, FUN = grid_sample,
-                         coords = coords, is_lonlat = is_lonlat,
-                         keep_cell_id = keep_cell_id,
-                         grid_definition = grid_definition,
-                         ...)
+      add_dets <- lapply(
+        locs_split,
+        FUN = grid_sample,
+        coords = coords,
+        is_lonlat = is_lonlat,
+        keep_cell_id = keep_cell_id,
+        grid_definition = grid_definition,
+        ...
+      )
       add_dets <- dplyr::bind_rows(add_dets)
       # only take as many as required to reach the target
       if (nrow(add_dets) > n_det_add) {
@@ -455,9 +497,12 @@ grid_sample_stratified <- function(
   }
 
   # estimate standard deviation from full dataset
-  col_sd <- apply(x[, jitter_columns, drop = FALSE],
-                  MARGIN = 2,
-                  FUN = stats::sd, na.rm = TRUE)
+  col_sd <- apply(
+    x[, jitter_columns, drop = FALSE],
+    MARGIN = 2,
+    FUN = stats::sd,
+    na.rm = TRUE
+  )
   # scale standard deviation
   col_sd <- col_sd * jitter_sd
 
@@ -529,10 +574,14 @@ grid_sample_stratified <- function(
 #'                res = c(5000, 5000, 7),
 #'                coords = c("lon", "lat", "day"),
 #'                is_lonlat = TRUE)
-assign_to_grid <- function(points,
-                           coords = NULL, is_lonlat = FALSE,
-                           res, jitter_grid = TRUE,
-                           grid_definition = NULL) {
+assign_to_grid <- function(
+  points,
+  coords = NULL,
+  is_lonlat = FALSE,
+  res,
+  jitter_grid = TRUE,
+  grid_definition = NULL
+) {
   if (!is.null(grid_definition)) {
     stopifnot(all(c("res", "origin") %in% names(grid_definition)))
     res <- grid_definition[["res"]]
@@ -543,8 +592,12 @@ assign_to_grid <- function(points,
   stopifnot(is_flag(is_lonlat))
 
   if (!is.null(coords)) {
-    stopifnot(is.character(coords), length(coords) == length(res),
-              all(!is.na(coords)), all(coords %in% names(points)))
+    stopifnot(
+      is.character(coords),
+      length(coords) == length(res),
+      all(!is.na(coords)),
+      all(coords %in% names(points))
+    )
     if (is_lonlat) {
       default_names <- c("longitude", "latitude", "t")
     } else {
@@ -631,8 +684,11 @@ assign_to_grid <- function(points,
 # project to equal area
 project_equal_area <- function(points, coords = c("longitude", "latitude")) {
   stopifnot(all(coords %in% names(points)))
-  locs <- terra::vect(as.data.frame(points[, coords]),
-                      geom = coords, crs = "epsg:4326")
+  locs <- terra::vect(
+    as.data.frame(points[, coords]),
+    geom = coords,
+    crs = "epsg:4326"
+  )
   locs <- terra::project(locs, y = "+proj=eck4")
   locs <- as.data.frame(terra::crds(locs))
   return(stats::setNames(locs, c("x", "y")))
@@ -656,7 +712,11 @@ sample_stratify <- function(x, prop, sample_by) {
   # ensure at least one row is retained from each stratum
   size <- pmax(1, round(n * prop))
   # sample by group
-  sampled <- mapply(FUN = dplyr::slice_sample, .data = x, n = size,
-                    SIMPLIFY = FALSE)
+  sampled <- mapply(
+    FUN = dplyr::slice_sample,
+    .data = x,
+    n = size,
+    SIMPLIFY = FALSE
+  )
   dplyr::bind_rows(sampled)
 }
