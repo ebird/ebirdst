@@ -4,16 +4,19 @@ context("Grid sampling")
 set.seed(1)
 n_obs <- 5000L
 checklists <- data.frame(
-  longitude   = runif(n_obs, -90, -70),
-  latitude    = runif(n_obs, 35, 50),
+  longitude = runif(n_obs, -90, -70),
+  latitude = runif(n_obs, 35, 50),
   day_of_year = sample.int(365L, n_obs, replace = TRUE),
-  year        = sample(2016L:2020L, n_obs, replace = TRUE),
-  obs         = sample(c(0L, 1L), n_obs, replace = TRUE, prob = c(0.9, 0.1))
+  year = sample(2016L:2020L, n_obs, replace = TRUE),
+  obs = sample(c(0L, 1L), n_obs, replace = TRUE, prob = c(0.9, 0.1))
 )
 
 test_that("assign_to_grid() - projected XYT", {
-  pts <- data.frame(x = runif(100), y = runif(100),
-                    t = sample.int(52L, 100L, replace = TRUE))
+  pts <- data.frame(
+    x = runif(100),
+    y = runif(100),
+    t = sample.int(52L, 100L, replace = TRUE)
+  )
   cells <- assign_to_grid(pts, res = c(0.1, 0.1, 7), jitter_grid = FALSE)
   expect_s3_class(cells, "data.frame")
   expect_equal(nrow(cells), 100L)
@@ -25,10 +28,16 @@ test_that("assign_to_grid() - projected XYT", {
 })
 
 test_that("assign_to_grid() - lonlat spatial-only", {
-  pts <- data.frame(longitude = runif(50, -90, -70),
-                    latitude  = runif(50, 35, 50))
-  cells <- assign_to_grid(pts, res = c(10000, 10000),
-                          is_lonlat = TRUE, jitter_grid = FALSE)
+  pts <- data.frame(
+    longitude = runif(50, -90, -70),
+    latitude = runif(50, 35, 50)
+  )
+  cells <- assign_to_grid(
+    pts,
+    res = c(10000, 10000),
+    is_lonlat = TRUE,
+    jitter_grid = FALSE
+  )
   expect_equal(nrow(cells), 50L)
   expect_true("cell_xy" %in% names(cells))
   expect_false("cell_xyt" %in% names(cells))
@@ -53,7 +62,11 @@ test_that("grid_sample()", {
 
   # keep_cell_id adds .cell_id column
   set.seed(1)
-  sampled_id <- grid_sample(checklists, keep_cell_id = TRUE, jitter_grid = FALSE)
+  sampled_id <- grid_sample(
+    checklists,
+    keep_cell_id = TRUE,
+    jitter_grid = FALSE
+  )
   expect_true(".cell_id" %in% names(sampled_id))
 
   # empty input returns empty output with the same column structure
@@ -72,7 +85,10 @@ test_that("grid_sample_stratified()", {
 
   # maximum_ss is respected
   set.seed(1)
-  sampled_max <- grid_sample_stratified(checklists, maximum_ss = 500L,
-                                        jitter_grid = FALSE)
+  sampled_max <- grid_sample_stratified(
+    checklists,
+    maximum_ss = 500L,
+    jitter_grid = FALSE
+  )
   expect_lte(nrow(sampled_max), 500L)
 })

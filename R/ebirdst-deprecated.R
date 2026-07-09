@@ -1,4 +1,3 @@
-
 #' @title Deprecated functions in package \pkg{ebirdst}.
 #' @description The functions listed below are deprecated and support for them
 #' will eventually be dropped.
@@ -36,13 +35,18 @@ NULL
 #' @section \code{abundance_palette}:
 #' For \code{abundance_palette}, use \code{\link{ebirdst_palettes}}
 #' @export
-abundance_palette <- function(n,
-                              season = c("weekly", "breeding",
-                                         "nonbreeding",
-                                         "migration",
-                                         "prebreeding_migration",
-                                         "postbreeding_migration",
-                                         "year_round")) {
+abundance_palette <- function(
+  n,
+  season = c(
+    "weekly",
+    "breeding",
+    "nonbreeding",
+    "migration",
+    "prebreeding_migration",
+    "postbreeding_migration",
+    "year_round"
+  )
+) {
   .Deprecated(new = "ebirdst_palettes", package = "ebirdst")
   ebirdst_palettes(n = n, type = season)
 }

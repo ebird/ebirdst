@@ -26,3 +26,5 @@ vignettes/changelog.Rmd
 
 ^CLAUDE\.md$
 ^\.claude$
+^air\.toml$
+^jarl\.toml$

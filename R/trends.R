@@ -29,50 +29,71 @@
 #' # rasterize percent per year trend
 #' rasterize_trends(trends, "abd_ppy")
 #' }
-rasterize_trends <- function(trends,
-                             layers = c("abd_ppy",
-                                        "abd_ppy_lower",
-                                        "abd_ppy_upper"),
-                             trim = TRUE) {
+rasterize_trends <- function(
+  trends,
+  layers = c("abd_ppy", "abd_ppy_lower", "abd_ppy_upper"),
+  trim = TRUE
+) {
   stopifnot(is_flag(trim))
   stopifnot(is.character(layers), !is.na(layers), length(layers) > 0)
-  valid_layers <- c("abd",
-                    "abd_ppy", "abd_ppy_lower", "abd_ppy_upper",
-                    "abd_ppy_nonzero",
-                    "abd_trend", "abd_trend_lower", "abd_trend_upper")
-  if (any(!layers %in% valid_layers)) {
-    stop("All layers to be converted must be one of:\n",
-         paste(valid_layers, collapse = ", "))
+  valid_layers <- c(
+    "abd",
+    "abd_ppy",
+    "abd_ppy_lower",
+    "abd_ppy_upper",
+    "abd_ppy_nonzero",
+    "abd_trend",
+    "abd_trend_lower",
+    "abd_trend_upper"
+  )
+  if (!all(layers %in% valid_layers)) {
+    stop(
+      "All layers to be converted must be one of:\n",
+      paste(valid_layers, collapse = ", ")
+    )
   }
 
   stopifnot(is.data.frame(trends))
-  required_cols <- c("species_code", "season",
-                     "srd_id", "longitude", "latitude",
-                     layers)
-  if (any(!required_cols %in% names(trends))) {
+  required_cols <- c(
+    "species_code",
+    "season",
+    "srd_id",
+    "longitude",
+    "latitude",
+    layers
+  )
+  if (!all(required_cols %in% names(trends))) {
     missing <- required_cols[!required_cols %in% names(trends)]
-    stop("Input trends data frame must have the following columns:\n",
-         paste(missing, collapse = ", "))
+    stop(
+      "Input trends data frame must have the following columns:\n",
+      paste(missing, collapse = ", ")
+    )
   }
 
   # check that we don't have fold-level estimates
   if ("fold" %in% names(trends)) {
-    stop("Fold-level trend estimates cannot be rasterized. Try loading the ",
-         "trends with `fold_estimates = FALSE`.")
+    stop(
+      "Fold-level trend estimates cannot be rasterized. Try loading the ",
+      "trends with `fold_estimates = FALSE`."
+    )
   }
 
   # check that only one species data is present
   n_runs <- nrow(dplyr::distinct(trends, .data$species_code, .data$season))
   if (n_runs > 1) {
-    stop("There appears to be data for multiple species/season combinations ",
-         "in the trends data frame. Only one trends run can be rasterized ",
-         "at a time.")
+    stop(
+      "There appears to be data for multiple species/season combinations ",
+      "in the trends data frame. Only one trends run can be rasterized ",
+      "at a time."
+    )
   }
 
   # check for duplicate srd cell estimates
   if (nrow(trends) != dplyr::n_distinct(trends$srd_id)) {
-    stop("There are multiple rows for some cell estimates. Check that there ",
-         "are not multiple rows for the same srd_id value.")
+    stop(
+      "There are multiple rows for some cell estimates. Check that there ",
+      "are not multiple rows for the same srd_id value."
+    )
   }
 
   # raster template
@@ -81,9 +102,11 @@ rasterize_trends <- function(trends,
   # convert to vector format
   subset_cols <- c("latitude", "longitude", layers)
   trends_ss <- dplyr::select(trends, dplyr::all_of(subset_cols))
-  v <- terra::vect(trends_ss,
-                   geom = c("longitude", "latitude"),
-                   crs = "epsg:4326")
+  v <- terra::vect(
+    trends_ss,
+    geom = c("longitude", "latitude"),
+    crs = "epsg:4326"
+  )
   v <- terra::project(v, terra::crs(r))
   rm(trends, trends_ss)
 
@@ -145,9 +168,11 @@ rasterize_trends <- function(trends,
 #' # vectorize as circles
 #' vectorize_trends(trends, "circles", crs = "+proj=eqearth")
 #' }
-vectorize_trends <- function(trends,
-                             output = c("circles", "points"),
-                             crs = 4326) {
+vectorize_trends <- function(
+  trends,
+  output = c("circles", "points"),
+  crs = 4326
+) {
   req_cols <- c("species_code", "latitude", "longitude", "abd")
   stopifnot(is.data.frame(trends), req_cols %in% names(trends))
   output <- match.arg(output)
@@ -158,17 +183,21 @@ vectorize_trends <- function(trends,
   stopifnot(inherits(crs, "crs"))
 
   # convert trends to spatial points and project
-  trends_pts <- sf::st_as_sf(trends,
-                             coords = c("longitude", "latitude"),
-                             crs = 4326)
+  trends_pts <- sf::st_as_sf(
+    trends,
+    coords = c("longitude", "latitude"),
+    crs = 4326
+  )
   trends_pts <- sf::st_transform(trends_pts, crs = crs)
   if (output == "points") {
     return(trends_pts)
   }
 
   srd_template <- trends_raster_template()
-  radius_range <- c(min(terra::res(srd_template)) / 6,
-                    0.99 * min(terra::res(srd_template)) / 2)
+  radius_range <- c(
+    min(terra::res(srd_template)) / 6,
+    0.99 * min(terra::res(srd_template)) / 2
+  )
 
   # assign radii based on abundance
   trends_pts <- split(trends_pts, trends_pts$species_code)
@@ -219,17 +248,26 @@ convert_ppy_to_cumulative <- function(x, n_years) {
 # internal functions ----
 
 trends_raster_template <- function() {
-  e <- terra::ext(c(xmin = -20015109.354, xmax = 20036111.0830769,
-                    ymin = -6684911.11603599, ymax = 10007554.677))
-  crs <- terra::crs(paste("+proj=sinu +lon_0=0 +x_0=0 +y_0=0",
-                          "+R=6371007.181 +units=m +no_defs"))
+  e <- terra::ext(c(
+    xmin = -20015109.354,
+    xmax = 20036111.0830769,
+    ymin = -6684911.11603599,
+    ymax = 10007554.677
+  ))
+  crs <- terra::crs(paste(
+    "+proj=sinu +lon_0=0 +x_0=0 +y_0=0",
+    "+R=6371007.181 +units=m +no_defs"
+  ))
   terra::rast(e, crs = crs, nrows = 626L, ncols = 1502L)
 }
 
-categorize <- function (x, breaks, labels) {
-  stopifnot(is.numeric(x), is.numeric(breaks),
-            is.numeric(labels) || is.character(labels),
-            length(labels) == length(breaks) - 1)
+categorize <- function(x, breaks, labels) {
+  stopifnot(
+    is.numeric(x),
+    is.numeric(breaks),
+    is.numeric(labels) || is.character(labels),
+    length(labels) == length(breaks) - 1
+  )
   y <- cut(x, breaks)
   lvl <- levels(y)
   labels[match(y, lvl)]

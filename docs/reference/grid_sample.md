@@ -223,9 +223,9 @@ sampled_cc <- grid_sample_stratified(checklists, sample_by = "island",
 mean(checklists$obs > 0)
 #> [1] 0.0532
 mean(sampled$obs > 0)
-#> [1] 0.05492589
+#> [1] 0.0505667
 mean(sampled_cc$obs > 0)
-#> [1] 0.09831182
+#> [1] 0.09821429
 
 # stratifying by island ensures all levels are retained, even rare ones
 table(checklists$island)
@@ -235,11 +235,11 @@ table(checklists$island)
 # normal grid sampling loses rare island levels
 table(sampled$island)
 #> 
-#>    0    1    3 
-#> 1094   52    1 
+#>    0    1 
+#> 1099   48 
 # stratified grid sampling retain at least one observation from each level
 table(sampled_cc$island)
 #> 
 #>   0   1   2   3   4   5   6   7   8   9  10 
-#> 907  91   1   1   1   1   1   1   1   1   1 
+#> 908  91   1   1   1   1   1   1   1   1   1 
 ```

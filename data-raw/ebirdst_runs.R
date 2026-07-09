@@ -18,8 +18,10 @@ species_codes <- glue("aws s3 ls {s3_bucket}/{pred_year}/") |>
 
 # reviews
 gs_key <- Sys.getenv("EBIRDST_STATUS_GS_KEY")
-runs <- glue("https://docs.google.com/spreadsheets/d/{gs_key}/",
-             "export?format=csv") |>
+runs <- glue(
+  "https://docs.google.com/spreadsheets/d/{gs_key}/",
+  "export?format=csv"
+) |>
   read_csv(show_col_types = FALSE) |>
   rename_with(tolower) |>
   filter(status == "REVIEWED", full_year_quality > 0) |>
@@ -32,9 +34,13 @@ filter(runs, !species_code %in% species_codes)
 setdiff(species_codes, runs$species_code)
 
 # correctly na season dates
-seasons <- c("breeding", "nonbreeding",
-             "prebreeding_migration", "postbreeding_migration",
-             "resident")
+seasons <- c(
+  "breeding",
+  "nonbreeding",
+  "prebreeding_migration",
+  "postbreeding_migration",
+  "resident"
+)
 is_resident <- runs$summarize_as_resident
 for (s in seasons) {
   s_fail <- runs[[paste0(s, "_quality")]] == 0 |
@@ -55,8 +61,10 @@ for (s in seasons) {
 }
 
 # default residents to full year
-fy_resident <- is_resident & runs$resident_quality > 0 &
-  is.na(runs$resident_start) & is.na(runs$resident_end)
+fy_resident <- is_resident &
+  runs$resident_quality > 0 &
+  is.na(runs$resident_start) &
+  is.na(runs$resident_end)
 runs$resident_start[fy_resident] <- "01-04"
 runs$resident_end[fy_resident] <- "12-28"
 
@@ -68,35 +76,59 @@ ebirdst_runs <- runs |>
   select(!c(common_name, taxon_order)) |>
   inner_join(ebird_taxonomy, by = "species_code") |>
   arrange(taxon_order) |>
-  mutate(across(ends_with("start"), convert_to_date),
-         across(ends_with("end"), convert_to_date),
-         status_version_year = ebirdst_version()[["status_version_year"]]) |>
-  select(species_code, scientific_name, common_name,
-         is_resident = summarize_as_resident,
-         breeding_quality, breeding_start, breeding_end,
-         nonbreeding_quality, nonbreeding_start, nonbreeding_end,
-         postbreeding_migration_quality,
-         postbreeding_migration_start, postbreeding_migration_end,
-         prebreeding_migration_quality,
-         prebreeding_migration_start, prebreeding_migration_end,
-         resident_quality, resident_start, resident_end,
-         status_version_year)
+  mutate(
+    across(ends_with("start"), convert_to_date),
+    across(ends_with("end"), convert_to_date),
+    status_version_year = ebirdst_version()[["status_version_year"]]
+  ) |>
+  select(
+    species_code,
+    scientific_name,
+    common_name,
+    is_resident = summarize_as_resident,
+    breeding_quality,
+    breeding_start,
+    breeding_end,
+    nonbreeding_quality,
+    nonbreeding_start,
+    nonbreeding_end,
+    postbreeding_migration_quality,
+    postbreeding_migration_start,
+    postbreeding_migration_end,
+    prebreeding_migration_quality,
+    prebreeding_migration_start,
+    prebreeding_migration_end,
+    resident_quality,
+    resident_start,
+    resident_end,
+    status_version_year
+  )
 
 # trends runs
-trends <- read_csv("data-raw/ebird-trends_runs_2022.csv",
-                   show_col_types = FALSE) |>
-  mutate(species_code = case_match(species_code, "norgos2" ~ "norgos",
-                                   .default = species_code)) |>
-  transmute(has_trends = TRUE,
-            species_code,
-            trends_season = season,
-            trends_region = modeled_region,
-            trends_start_year = start_year,
-            trends_end_year = end_year,
-            trends_start_date = start_date,
-            trends_end_date = end_date,
-            rsquared, beta0,
-            trends_version_year = ebirdst_version()[["trends_version_year"]])
+trends <- read_csv(
+  "data-raw/ebird-trends_runs_2022.csv",
+  show_col_types = FALSE
+) |>
+  mutate(
+    species_code = case_match(
+      species_code,
+      "norgos2" ~ "norgos",
+      .default = species_code
+    )
+  ) |>
+  transmute(
+    has_trends = TRUE,
+    species_code,
+    trends_season = season,
+    trends_region = modeled_region,
+    trends_start_year = start_year,
+    trends_end_year = end_year,
+    trends_start_date = start_date,
+    trends_end_date = end_date,
+    rsquared,
+    beta0,
+    trends_version_year = ebirdst_version()[["trends_version_year"]]
+  )
 
 # combine
 ebirdst_runs <- left_join(ebirdst_runs, trends, by = "species_code") |>

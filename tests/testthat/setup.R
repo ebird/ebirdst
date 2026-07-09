@@ -8,9 +8,11 @@ if (!testthat:::on_cran()) {
   Sys.setenv(EBIRDST_DATA_DIR = temp_dir)
 
   # download example data
-  path <- ebirdst_download_status("yebsap-example",
-                                  download_all = TRUE,
-                                  show_progress = FALSE)
+  path <- ebirdst_download_status(
+    "yebsap-example",
+    download_all = TRUE,
+    show_progress = FALSE
+  )
   path <- ebirdst_download_trends("yebsap-example", show_progress = FALSE)
 
   # cleanup the mess we made above

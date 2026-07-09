@@ -13,7 +13,6 @@ test_that("format_size()", {
 })
 
 
-
 # ebirdst_data_inventory ----
 
 test_that("ebirdst_data_inventory() returns empty tibble for missing path", {
@@ -21,8 +20,18 @@ test_that("ebirdst_data_inventory() returns empty tibble for missing path", {
   expect_s3_class(inv, "ebirdst_inventory")
   expect_s3_class(inv, "tbl_df")
   expect_equal(nrow(inv), 0)
-  expect_named(inv, c("species_code", "common_name", "scientific_name",
-                       "version_year", "dataset", "n_files", "size_mb"))
+  expect_named(
+    inv,
+    c(
+      "species_code",
+      "common_name",
+      "scientific_name",
+      "version_year",
+      "dataset",
+      "n_files",
+      "size_mb"
+    )
+  )
   expect_type(inv$version_year, "integer")
   expect_type(inv$n_files, "integer")
   expect_type(inv$size_mb, "double")
@@ -117,8 +126,18 @@ test_that("ebirdst_data_inventory() returns data for downloaded example species"
   expect_s3_class(inv, "tbl_df")
   # yebsap-example should be present (downloaded in setup.R)
   expect_true("yebsap-example" %in% inv$species_code)
-  expect_named(inv, c("species_code", "common_name", "scientific_name",
-                       "version_year", "dataset", "n_files", "size_mb"))
+  expect_named(
+    inv,
+    c(
+      "species_code",
+      "common_name",
+      "scientific_name",
+      "version_year",
+      "dataset",
+      "n_files",
+      "size_mb"
+    )
+  )
   # files should have been found
   yeb <- inv[inv$species_code == "yebsap-example", ]
   expect_true(all(yeb$n_files > 0))
@@ -129,8 +148,10 @@ test_that("ebirdst_data_inventory() returns data for downloaded example species"
   expect_true(all(yeb$version_year >= 2021L))
   # sorted by version_year, species_code, dataset
   if (nrow(inv) > 1) {
-    expect_identical(inv, dplyr::arrange(inv, .data$version_year,
-                                         .data$species_code, .data$dataset))
+    expect_identical(
+      inv,
+      dplyr::arrange(inv, .data$version_year, .data$species_code, .data$dataset)
+    )
   }
 })
 
@@ -163,8 +184,8 @@ test_that("print.ebirdst_inventory() groups by year and dataset", {
   expect_true(any(grepl("2022 Trends Data Products", out)))
   expect_true(any(grepl("2023 Status Data Products", out)))
   # species line should be indented under its group
-  status_group <- which(grepl("2023 Status", out))
-  trends_group <- which(grepl("2022 Trends", out))
+  status_group <- grep("2023 Status", out)
+  trends_group <- grep("2022 Trends", out)
   expect_true(any(grepl("^  Wood Thrush", out[status_group + 1])))
   expect_true(any(grepl("^  Wood Thrush", out[trends_group + 1])))
 })
@@ -220,8 +241,7 @@ test_that("ebirdst_delete() messages when no matching species found", {
   dir.create(file.path(tmp, "2023", "yebsap"), recursive = TRUE)
   file.create(file.path(tmp, "2023", "yebsap", "dummy.tif"))
   expect_message(
-    result <- ebirdst_delete(species = "Wood Thrush", path = tmp,
-                              force = TRUE),
+    result <- ebirdst_delete(species = "Wood Thrush", path = tmp, force = TRUE),
     "No matching data found"
   )
   expect_identical(result, character(0))
@@ -291,8 +311,12 @@ test_that("ebirdst_delete() filters by species and year", {
 
   # delete only woothr in 2023
   suppressMessages(
-    deleted <- ebirdst_delete(species = "woothr", year = 2023L,
-                               path = tmp, force = TRUE)
+    deleted <- ebirdst_delete(
+      species = "woothr",
+      year = 2023L,
+      path = tmp,
+      force = TRUE
+    )
   )
   expect_equal(length(deleted), 1)
   expect_false(dir.exists(file.path(tmp, "2023", "woothr")))
@@ -310,8 +334,11 @@ test_that("ebirdst_delete() warns on unrecognized species", {
 
   expect_warning(
     suppressMessages(
-      ebirdst_delete(species = c("yebsap", "NOTASPECIES"), path = tmp,
-                      force = TRUE)
+      ebirdst_delete(
+        species = c("yebsap", "NOTASPECIES"),
+        path = tmp,
+        force = TRUE
+      )
     ),
     "Unrecognized species"
   )

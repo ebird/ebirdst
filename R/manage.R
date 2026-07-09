@@ -61,8 +61,11 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
       # are status data products
       trends_dir <- file.path(sp_dir, "trends")
       if (dir.exists(trends_dir)) {
-        trends_files <- list.files(trends_dir, recursive = TRUE,
-                                   full.names = TRUE)
+        trends_files <- list.files(
+          trends_dir,
+          recursive = TRUE,
+          full.names = TRUE
+        )
       } else {
         trends_files <- character(0)
       }
@@ -96,17 +99,31 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
   result <- dplyr::bind_rows(rows)
 
   # join with ebirdst_runs for species names
-  runs_sub <- ebirdst::ebirdst_runs[, c("species_code", "common_name",
-                                        "scientific_name")]
+  runs_sub <- ebirdst::ebirdst_runs[, c(
+    "species_code",
+    "common_name",
+    "scientific_name"
+  )]
   result <- dplyr::left_join(result, runs_sub, by = "species_code")
 
   # data coverage products are not a species but have a known common name
   result$common_name[result$species_code == "data_coverage"] <- "Data Coverage"
 
-  result <- result[, c("species_code", "common_name", "scientific_name",
-                        "version_year", "dataset", "n_files", "size_mb")]
-  result <- dplyr::arrange(result, .data$version_year, .data$species_code,
-                            .data$dataset)
+  result <- result[, c(
+    "species_code",
+    "common_name",
+    "scientific_name",
+    "version_year",
+    "dataset",
+    "n_files",
+    "size_mb"
+  )]
+  result <- dplyr::arrange(
+    result,
+    .data$version_year,
+    .data$species_code,
+    .data$dataset
+  )
   class(result) <- c("ebirdst_inventory", class(result))
   return(result)
 }
@@ -145,11 +162,17 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
 #' ebirdst_delete(species = "Yellow-bellied Sapsucker", year = 2022,
 #'                force = TRUE)
 #' }
-ebirdst_delete <- function(species = NULL, year = NULL,
-                            path = ebirdst_data_dir(), force = FALSE) {
+ebirdst_delete <- function(
+  species = NULL,
+  year = NULL,
+  path = ebirdst_data_dir(),
+  force = FALSE
+) {
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force))
-  if (!is.null(species)) stopifnot(is.character(species), length(species) >= 1)
+  if (!is.null(species)) {
+    stopifnot(is.character(species), length(species) >= 1)
+  }
   if (!is.null(year)) {
     stopifnot(is_integer(year), length(year) >= 1, all(year > 0))
     year <- as.integer(year)
@@ -171,12 +194,15 @@ ebirdst_delete <- function(species = NULL, year = NULL,
   if (!is.null(species)) {
     is_data_cov <- tolower(trimws(species)) == "data_coverage"
     resolved_codes <- character(0)
-    if (any(!is_data_cov)) {
+    if (!all(is_data_cov)) {
       codes <- get_species(species[!is_data_cov])
       unrecognized <- species[!is_data_cov][is.na(codes)]
       if (length(unrecognized) > 0) {
-        warning("Unrecognized species, skipping: ",
-                paste(unrecognized, collapse = ", "), call. = FALSE)
+        warning(
+          "Unrecognized species, skipping: ",
+          paste(unrecognized, collapse = ", "),
+          call. = FALSE
+        )
       }
       resolved_codes <- codes[!is.na(codes)]
     }
@@ -200,19 +226,25 @@ ebirdst_delete <- function(species = NULL, year = NULL,
   norm_targets <- normalizePath(target_dirs, mustWork = FALSE)
   safe <- startsWith(norm_targets, paste0(norm_base, .Platform$file.sep))
   if (!all(safe)) {
-    stop("Safety check failed: some target directories are outside the base ",
-         "path.")
+    stop(
+      "Safety check failed: some target directories are outside the base ",
+      "path."
+    )
   }
 
   # non-interactive guard
   if (!force && !interactive()) {
-    stop("Cannot prompt for confirmation in a non-interactive session. ",
-         "Use force = TRUE to delete without prompting.")
+    stop(
+      "Cannot prompt for confirmation in a non-interactive session. ",
+      "Use force = TRUE to delete without prompting."
+    )
   }
 
   if (!force) {
-    cat(sprintf("The following data packages will be deleted from:\n  %s\n\n",
-                path))
+    cat(sprintf(
+      "The following data packages will be deleted from:\n  %s\n\n",
+      path
+    ))
     print(inv)
     cat("\n")
 
@@ -238,16 +270,24 @@ ebirdst_delete <- function(species = NULL, year = NULL,
   for (yr_dir in affected_years) {
     if (dir.exists(yr_dir)) {
       # full.names = FALSE returns only subdir names, not yr_dir itself
-      if (length(list.dirs(yr_dir, recursive = FALSE, full.names = FALSE)) == 0 &&
-          length(list.files(yr_dir, recursive = TRUE)) == 0) {
+      if (
+        length(list.dirs(yr_dir, recursive = FALSE, full.names = FALSE)) == 0 &&
+          length(list.files(yr_dir, recursive = TRUE)) == 0
+      ) {
         unlink(yr_dir, recursive = TRUE)
       }
     }
   }
 
-  message("Deleted ", length(deleted_paths), " director",
-          if (length(deleted_paths) == 1) "y" else "ies",
-          " (", format_size(sum(inv$size_mb) * 1e6), ").")
+  message(
+    "Deleted ",
+    length(deleted_paths),
+    " director",
+    if (length(deleted_paths) == 1) "y" else "ies",
+    " (",
+    format_size(sum(inv$size_mb) * 1e6),
+    ")."
+  )
   return(invisible(deleted_paths))
 }
 
@@ -263,10 +303,14 @@ print.ebirdst_inventory <- function(x, ...) {
   n_pkg <- nrow(x)
   total_size <- format_size(sum(x$size_mb) * 1e6)
 
-  cat(sprintf("eBird Status and Trends data: %d %s, %d %s (%s)\n",
-              n_sp, "species",
-              n_pkg, if (n_pkg == 1L) "package" else "packages",
-              total_size))
+  cat(sprintf(
+    "eBird Status and Trends data: %d %s, %d %s (%s)\n",
+    n_sp,
+    "species",
+    n_pkg,
+    if (n_pkg == 1L) "package" else "packages",
+    total_size
+  ))
 
   if (n_pkg == 0L) {
     return(invisible(x))
@@ -301,8 +345,13 @@ print.ebirdst_inventory <- function(x, ...) {
 # internal ----
 
 format_size <- function(bytes) {
-  if (bytes >= 1e9) sprintf("%.1f GB", bytes / 1e9)
-  else if (bytes >= 1e6) sprintf("%.1f MB", bytes / 1e6)
-  else if (bytes >= 1e3) sprintf("%.1f KB", bytes / 1e3)
-  else sprintf("%.0f B", bytes)
+  if (bytes >= 1e9) {
+    sprintf("%.1f GB", bytes / 1e9)
+  } else if (bytes >= 1e6) {
+    sprintf("%.1f MB", bytes / 1e6)
+  } else if (bytes >= 1e3) {
+    sprintf("%.1f KB", bytes / 1e3)
+  } else {
+    sprintf("%.0f B", bytes)
+  }
 }

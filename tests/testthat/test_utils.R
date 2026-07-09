@@ -16,7 +16,7 @@ test_that("get_species()", {
 test_that("calculate_mcc_f1()", {
   skip_if_not_installed("PresenceAbsence")
 
-  obs  <- c(1, 1, 0, 0)
+  obs <- c(1, 1, 0, 0)
   pred <- c(1, 0, 0, 1)
   r <- calculate_mcc_f1(obs > 0, pred > 0)
   expect_equal(r$f1, 0.5)

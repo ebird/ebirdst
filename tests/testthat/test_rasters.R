@@ -4,9 +4,11 @@ skip_on_cran()
 
 test_that("load_raster()", {
   # weekly
-  abd <- load_raster("yebsap-example",
-                     product = "abundance",
-                     resolution = "27km")
+  abd <- load_raster(
+    "yebsap-example",
+    product = "abundance",
+    resolution = "27km"
+  )
   expect_is(abd, "SpatRaster")
   expect_equal(terra::nlyr(abd), 52)
 
@@ -15,14 +17,23 @@ test_that("load_raster()", {
   expect_is(as.Date(names(abd)), "Date")
 
   # seasonal
-  abd <- load_raster("yebsap-example",
-                     product = "abundance",
-                     period = "seasonal",
-                     resolution = "27km")
+  abd <- load_raster(
+    "yebsap-example",
+    product = "abundance",
+    period = "seasonal",
+    resolution = "27km"
+  )
   expect_is(abd, "SpatRaster")
   expect_equal(terra::nlyr(abd), 4)
-  expect_named(abd, c("breeding", "nonbreeding",
-                      "prebreeding_migration", "postbreeding_migration"))
+  expect_named(
+    abd,
+    c(
+      "breeding",
+      "nonbreeding",
+      "prebreeding_migration",
+      "postbreeding_migration"
+    )
+  )
 })
 
 test_that("load_raster() error", {

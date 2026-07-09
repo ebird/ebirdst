@@ -28,9 +28,14 @@ plot(boundaries)
 
 # extract values within prefecture boundaries and calculate average
 # 都道府県境界内の値を抽出し、平均を算出する
-chronology <- extract(abd_weekly, boundaries,
-                      fun = "mean", na.rm = TRUE,
-                      bind = TRUE, ID = FALSE)
+chronology <- extract(
+  abd_weekly,
+  boundaries,
+  fun = "mean",
+  na.rm = TRUE,
+  bind = TRUE,
+  ID = FALSE
+)
 # convert to a data frame
 # データフレームに変換する
 chronology <- as.data.frame(chronology)
@@ -40,7 +45,8 @@ chronology <- as.data.frame(chronology)
 chronology <- pivot_longer(
   chronology,
   cols = starts_with("X"),
-  names_to = "week", values_to = "abd",
+  names_to = "week",
+  values_to = "abd",
   names_transform = \(x) as.Date(x, format = "X%Y.%m.%d")
 )
 
@@ -50,6 +56,8 @@ ggplot(chronology) +
   geom_line() +
   geom_point() +
   scale_x_date(date_labels = "%b", date_breaks = "1 month") +
-  labs(x = "Week",
-       y = "Mean relative abundance",
-       title = "Migration chronology for Delichon dasypus")
+  labs(
+    x = "Week",
+    y = "Mean relative abundance",
+    title = "Migration chronology for Delichon dasypus"
+  )

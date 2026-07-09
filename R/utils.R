@@ -18,14 +18,18 @@ calculate_mcc_f1 <- function(observed, predicted) {
   if (!requireNamespace("PresenceAbsence", quietly = TRUE)) {
     stop("Package 'PresenceAbsence' must be installed to use this function.")
   }
-  stopifnot(is.logical(observed) || all(observed %in% c(0L, 1L)),
-            is.logical(predicted) || all(predicted %in% c(0L, 1L)),
-            length(observed) == length(predicted))
+  stopifnot(
+    is.logical(observed) || all(observed %in% c(0L, 1L)),
+    is.logical(predicted) || all(predicted %in% c(0L, 1L)),
+    length(observed) == length(predicted)
+  )
 
   # confusion matrix
-  obs_pred <- data.frame(blank = "x",
-                         obs = as.numeric(observed),
-                         pred = as.numeric(predicted))
+  obs_pred <- data.frame(
+    blank = "x",
+    obs = as.numeric(observed),
+    pred = as.numeric(predicted)
+  )
   cmx <- PresenceAbsence::cmx(obs_pred, na.rm = TRUE)
   tp <- cmx[1, 1]
   fp <- cmx[1, 2]
@@ -58,7 +62,8 @@ calculate_mcc_f1 <- function(observed, predicted) {
 date_to_st_week <- function(dates, version = 2022) {
   stopifnot(version %in% c(2021, 2022))
 
-  if (version == 2021) { # as used in ebirdst 2021 data release
+  if (version == 2021) {
+    # as used in ebirdst 2021 data release
     dv <- seq(from = 0, to = 1, length.out = 52 + 1)
     days <- (as.POSIXlt(dates)$yday + 0.5) / 366
     check_d <- function(x) {

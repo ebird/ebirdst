@@ -14,13 +14,15 @@ NULL
 
 #' @rdname ebirdst-defunct
 #' @export
-ebirdst_download <- function(species,
-                             path = ebirdst_data_dir(),
-                             tifs_only = TRUE,
-                             force = FALSE,
-                             show_progress = TRUE,
-                             pattern = NULL,
-                             dry_run = FALSE) {
+ebirdst_download <- function(
+  species,
+  path = ebirdst_data_dir(),
+  tifs_only = TRUE,
+  force = FALSE,
+  show_progress = TRUE,
+  pattern = NULL,
+  dry_run = FALSE
+) {
   .Defunct("ebirdst_download_status", package = "ebirdst")
 }
 
@@ -32,19 +34,29 @@ ebirdst_extent <- function(x, t, ...) {
 
 #' @rdname ebirdst-defunct
 #' @export
-ebirdst_habitat <- function(path, ext, data = NULL,
-                            stationary_associations = FALSE) {
+ebirdst_habitat <- function(
+  path,
+  ext,
+  data = NULL,
+  stationary_associations = FALSE
+) {
   .Defunct(package = "ebirdst")
 }
 
 #' @rdname ebirdst-defunct
+#' @export
 ebirdst_ppms <- function(path, ext, es_cutoff, pat_cutoff) {
   .Defunct(package = "ebirdst")
 }
 
 #' @rdname ebirdst-defunct
 #' @export
-ebirdst_ppms_ts <- function(ath, ext, summarize_by = c("weeks", "months"), ...){
+ebirdst_ppms_ts <- function(
+  ath,
+  ext,
+  summarize_by = c("weeks", "months"),
+  ...
+) {
   .Defunct(package = "ebirdst")
 }
 
@@ -56,17 +68,23 @@ ebirdst_subset <- function(x, crs) {
 
 #' @rdname ebirdst-defunct
 #' @export
-load_pds <- function(path,
-                     ext,
-                     model = c("occurrence", "count"),
-                     return_sf = FALSE) {
+load_pds <- function(
+  path,
+  ext,
+  model = c("occurrence", "count"),
+  return_sf = FALSE
+) {
   .Defunct(package = "ebirdst")
 }
 
 #' @rdname ebirdst-defunct
 #' @export
-load_pis <- function(path, ext,
-                     model = c("occurrence", "count"), return_sf = FALSE){
+load_pis <- function(
+  path,
+  ext,
+  model = c("occurrence", "count"),
+  return_sf = FALSE
+) {
   .Defunct(package = "ebirdst")
 }
 
@@ -78,7 +96,7 @@ load_predictions <- function(path, return_sf = FALSE) {
 
 #' @rdname ebirdst-defunct
 #' @export
-parse_raster_dates <- function(x){
+parse_raster_dates <- function(x) {
   .Defunct(package = "ebirdst")
 }
 
@@ -102,19 +120,19 @@ plot_pds <- function(path, ext, summarize_by = c("weeks", "months"), ...) {
 
 #' @rdname ebirdst-defunct
 #' @export
-plot_pis <- function(pis,
-                     ext,
-                     by_cover_class = TRUE,
-                     n_top_pred = 15,
-                     pretty_names = TRUE,
-                     plot = TRUE) {
+plot_pis <- function(
+  pis,
+  ext,
+  by_cover_class = TRUE,
+  n_top_pred = 15,
+  pretty_names = TRUE,
+  plot = TRUE
+) {
   .Defunct(package = "ebirdst")
 }
 
 #' @rdname ebirdst-defunct
 #' @export
-stixelize <- function(x){
+stixelize <- function(x) {
   .Defunct(package = "ebirdst")
 }
-
-

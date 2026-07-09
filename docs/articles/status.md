@@ -97,9 +97,9 @@ for the Status and Trends data products for each species.
 
 ``` r
 ebirdst_data_inventory()
-#> eBird Status and Trends data: 51 species, 61 packages (6.1 GB)
+#> eBird Status and Trends data: 102 species, 112 packages (9.5 GB)
 #> 
-#> 2022 Trends Data Products (53.1 MB)
+#> 2022 Trends Data Products (64.0 MB)
 #>   Abert's Towhee (abetow): 3 files, 364.9 KB
 #>   Brewer's Sparrow (brespa): 3 files, 4.0 MB
 #>   Brown Pelican (brnpel): 3 files, 1.7 MB
@@ -112,54 +112,107 @@ ebirdst_data_inventory()
 #>   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB
 #>   Sage Thrasher (sagthr): 3 files, 2.7 MB
 #>   Seaside Sparrow (seaspa): 3 files, 215.5 KB
+#>   Snow Goose (snogoo): 3 files, 3.7 MB
+#>   Wood Thrush (woothr): 3 files, 7.3 MB
 #>   American Coot (y00475): 3 files, 12.2 MB
 #> 
-#> 2023 Status Data Products (6.0 GB)
+#> 2022 Status Data Products (67.6 MB)
+#>   Western Grebe (wesgre): 8 files, 67.6 MB
+#> 
+#> 2023 Status Data Products (9.4 GB)
 #>   Abert's Towhee (abetow): 2 files, 2.4 MB
+#>   American Kestrel (amekes): 2 files, 227.8 MB
 #>   Puerto Rican Mango (antman3): 4 files, 51.9 MB
 #>   Asian House-Martin (ashmar1): 28 files, 233.7 MB
-#>   Baird's Sparrow (baispa): 6 files, 61.5 MB
+#>   Ash-throated Flycatcher (astfly): 2 files, 44.3 MB
+#>   Baird's Sparrow (baispa): 7 files, 81.3 MB
 #>   Bank Swallow (banswa): 2 files, 19.4 MB
 #>   Barn Swallow (barswa): 27 files, 1.2 GB
 #>   Black-bellied Plover (bkbplo): 3 files, 9.3 MB
-#>   Bobolink (boboli): 6 files, 103.5 MB
+#>   Bobolink (boboli): 7 files, 134.9 MB
+#>   Brewer's Blackbird (brebla): 2 files, 44.9 MB
 #>   Brown-headed Thrush (brhthr1): 47 files, 105.2 MB
+#>   American Barn Owl (brnowl): 2 files, 245.0 MB
 #>   Brown Pelican (brnpel): 4 files, 68.7 MB
 #>   Black-throated Green Warbler (btnwar): 4 files, 121.2 MB
-#>   Burrowing Owl (burowl): 4 files, 415.9 MB
+#>   Burrowing Owl (burowl): 5 files, 554.7 MB
+#>   Cassin's Kingbird (caskin): 2 files, 30.2 MB
+#>   Cassin's Sparrow (casspa): 2 files, 31.1 MB
 #>   Cerulean Warbler (cerwar): 3 files, 583.3 KB
-#>   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB
+#>   Chestnut-collared Longspur (chclon): 7 files, 112.6 MB
+#>   Clay-colored Sparrow (clcspa): 2 files, 47.2 MB
 #>   Colima Warbler (colwar): 10 files, 4.0 MB
+#>   Common Nighthawk (comnig): 2 files, 66.8 MB
+#>   Common Yellowthroat (comyel): 2 files, 85.9 MB
 #>   Data Coverage (data_coverage): 3 files, 91.9 MB
+#>   Dickcissel (dickci): 2 files, 39.3 MB
+#>   Eastern Bluebird (easblu): 2 files, 73.9 MB
+#>   Eastern Kingbird (easkin): 2 files, 56.5 MB
+#>   Eastern Meadowlark (easmea): 2 files, 64.0 MB
+#>   Ferruginous Hawk (ferhaw): 2 files, 37.2 MB
+#>   Field Sparrow (fiespa): 2 files, 59.8 MB
+#>   Green-winged Teal (gnwtea): 2 files, 11.3 MB
 #>   Golden Eagle (goleag): 28 files, 881.9 MB
-#>   Grasshopper Sparrow (graspa): 4 files, 139.8 MB
+#>   Grasshopper Sparrow (graspa): 5 files, 186.9 MB
+#>   Henslow's Sparrow (henspa): 2 files, 19.6 MB
 #>   Horned Lark (horlar): 47 files, 741.7 MB
+#>   House Sparrow (houspa): 4 files, 8.4 MB
 #>   Kentucky Warbler (kenwar): 5 files, 31.7 MB
+#>   Lark Bunting (larbun): 2 files, 34.1 MB
+#>   Lark Sparrow (larspa): 2 files, 59.4 MB
+#>   LeConte's Sparrow (lecspa): 2 files, 26.2 MB
 #>   Limpkin (limpki): 4 files, 181.6 MB
 #>   Little Ringed Plover (lirplo): 3 files, 25.6 MB
+#>   Long-billed Curlew (lobcur): 2 files, 26.7 MB
+#>   Long-eared Owl (loeowl): 2 files, 64.1 MB
+#>   Loggerhead Shrike (logshr): 2 files, 75.4 MB
 #>   Long-toed Stint (lotsti): 3 files, 4.9 MB
+#>   Marbled Godwit (margod): 2 files, 22.2 MB
 #>   Marsh Wren (marwre): 4 files, 85.5 MB
+#>   Thick-billed Longspur (mcclon): 2 files, 21.3 MB
+#>   Merlin (merlin): 2 files, 65.1 MB
+#>   Mountain Bluebird (moublu): 2 files, 45.4 MB
+#>   Mountain Plover (mouplo): 2 files, 18.2 MB
+#>   Northern Harrier (norhar2): 2 files, 74.3 MB
+#>   Northern Pintail (norpin): 2 files, 8.5 MB
 #>   Pectoral Sandpiper (pecsan): 2 files, 5.8 MB
+#>   Peregrine Falcon (perfal): 2 files, 135.0 MB
 #>   Pinyon Jay (pinjay): 2 files, 828.2 KB
+#>   Prairie Falcon (prafal): 2 files, 51.4 MB
 #>   Prairie Warbler (prawar): 4 files, 87.1 MB
 #>   Puerto Rican Owl (prsowl): 4 files, 51.9 MB
 #>   Red Knot (redkno): 3 files, 4.2 MB
 #>   Red-necked Stint (rensti): 3 files, 4.7 MB
+#>   Red-winged Blackbird (rewbla): 2 files, 90.7 MB
 #>   Rock Pigeon (rocpig): 7 files, 24.0 MB
 #>   Ruby-throated Hummingbird (rthhum): 8 files, 81.6 MB
 #>   Ruddy Turnstone (rudtur): 3 files, 8.0 MB
 #>   Rufous Hummingbird (rufhum): 5 files, 27.3 MB
 #>   Sandhill Crane (sancra): 4 files, 177.5 MB
+#>   Savannah Sparrow (savspa): 2 files, 92.9 MB
+#>   Say's Phoebe (saypho): 2 files, 64.4 MB
+#>   Scissor-tailed Flycatcher (sctfly): 2 files, 29.4 MB
 #>   Seaside Sparrow (seaspa): 4 files, 53.0 MB
-#>   Sprague's Pipit (sprpip): 6 files, 73.7 MB
+#>   Sedge Wren (sedwre1): 2 files, 30.3 MB
+#>   Short-eared Owl (sheowl): 2 files, 69.2 MB
+#>   Sprague's Pipit (sprpip): 7 files, 96.6 MB
 #>   Surf Scoter (sursco): 2 files, 2.4 MB
+#>   Swainson's Hawk (swahaw): 2 files, 45.8 MB
 #>   Taiwan Barwing (taibar1): 3 files, 837.4 KB
 #>   Tree Swallow (treswa): 2 files, 7.7 MB
-#>   Upland Sandpiper (uplsan): 6 files, 138.5 MB
-#>   Western Meadowlark (wesmea): 8 files, 225.4 MB
+#>   Tundra Swan (tunswa): 2 files, 5.3 MB
+#>   Turkey Vulture (turvul): 2 files, 311.8 MB
+#>   Upland Sandpiper (uplsan): 7 files, 180.5 MB
+#>   Vesper Sparrow (vesspa): 2 files, 68.3 MB
+#>   Western Bluebird (wesblu): 2 files, 35.1 MB
+#>   Western Kingbird (weskin): 2 files, 41.3 MB
+#>   Western Meadowlark (wesmea): 9 files, 295.3 MB
 #>   Western Tanager (westan): 5 files, 48.5 MB
 #>   White-cheeked Pintail (whcpin): 4 files, 85.1 MB
 #>   Whimbrel (whimbr): 4 files, 122.0 MB
+#>   Willet (willet1): 2 files, 25.0 MB
+#>   Wilson's Phalarope (wilpha): 2 files, 31.1 MB
+#>   Wilson's Snipe (wilsni1): 2 files, 54.1 MB
 #>   American Coot (y00475): 4 files, 85.6 MB
 #>   Yellow-breasted Crake (yebcra1): 4 files, 61.0 MB
 #>   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB
@@ -465,14 +518,14 @@ names(abd_seasonal_mean)
 #> [4] "postbreeding_migration"
 # just the breeding season layer
 abd_seasonal_mean[["breeding"]]
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 618, 1276, 1  (nrow, ncol, nlyr)
 #> resolution  : 27000, 27000  (x, y)
-#> extent      : -17226000, 17226000, -8343000, 8343000  (xmin, xmax, ymin, ymax)
-#> coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857) 
-#> source      : yebsap-example_abundance_seasonal_mean_27km_2023.tif 
-#> name        : breeding 
-#> min value   : 0.000000 
+#> extent      : -1.7226e+07, 1.7226e+07, -8343000, 8343000  (xmin, xmax, ymin, ymax)
+#> coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857)
+#> source      : yebsap-example_abundance_seasonal_mean_27km_2023.tif
+#> name        : breeding
+#> min value   :        0
 #> max value   : 1.021968
 
 # seasonal, 27km res, max occurrence
@@ -657,15 +710,15 @@ the normalized PR-AUC for the example dataset use.
 ``` r
 pr_auc <- load_ppm("yebsap-example", ppm = "occ_pr_auc_normalized")
 print(pr_auc)
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 618, 1276, 52  (nrow, ncol, nlyr)
 #> resolution  : 27000, 27000  (x, y)
-#> extent      : -17226000, 17226000, -8343000, 8343000  (xmin, xmax, ymin, ymax)
-#> coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857) 
-#> source      : yebsap-example_ppm_occ-pr-auc-normalized_mean_27km_2023.tif 
-#> names       :     01-04,      01-11,     01-18,     01-25,     02-01,      02-08, ... 
-#> min values  : 0.1113430, 0.09812936, 0.0189133, 0.0189133, 0.0189133, 0.01403384, ... 
-#> max values  : 0.7343874, 0.73438740, 0.7969337, 0.7969337, 1.0000000, 1.00000000, ...
+#> extent      : -1.7226e+07, 1.7226e+07, -8343000, 8343000  (xmin, xmax, ymin, ymax)
+#> coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857)
+#> source      : yebsap-example_ppm_occ-pr-auc-normalized_mean_27km_2023.tif
+#> names       :    01-04,    01-11,    01-18,    01-25,    02-01,    02-08, ...
+#> min values  : 0.111343, 0.098129, 0.018913, 0.018913, 0.018913, 0.014034, ...
+#> max values  : 0.734387, 0.734387, 0.796934, 0.796934,        1,        1, ...
 ```
 
 Since Yellow-bellied Sapsucker is a migrant, there are 52 layers, one

@@ -5,11 +5,14 @@ test_that("ebirdst_palettes", {
   expect_length(ebirdst_palettes(n = 10), 10)
   expect_length(ebirdst_palettes(n = 10, type = "breeding"), 10)
   expect_length(ebirdst_palettes(n = 10, type = "trends"), 10)
-  expect_match(ebirdst_palettes(n = 10, type = "nonbreeding"),
-               "#[0-9A-F]{6}")
+  expect_match(ebirdst_palettes(n = 10, type = "nonbreeding"), "#[0-9A-F]{6}")
   # all remaining types return n colors
-  for (type in c("migration", "postbreeding_migration",
-                 "prebreeding_migration", "year_round")) {
+  for (type in c(
+    "migration",
+    "postbreeding_migration",
+    "prebreeding_migration",
+    "year_round"
+  )) {
     expect_length(ebirdst_palettes(n = 10, type = type), 10)
   }
   # invalid type errors

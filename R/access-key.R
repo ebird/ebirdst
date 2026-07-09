@@ -65,12 +65,16 @@ set_ebirdst_access_key <- function(key, overwrite = FALSE) {
 get_ebirdst_access_key <- function() {
   key <- Sys.getenv("EBIRDST_KEY")
   if (is.na(key) || key == "" || nchar(key) == 0) {
-    message("An access key is required to download eBird Status and Trends ",
-            "data\n1. Get a key by filling out the request form at ",
-            "https://ebird.org/st/request\n",
-            "2. Save the key using set_ebirdst_access_key()\n")
-    stop("Valid eBird Status and Trends access key not found. ",
-         "Note that keys expire after 6 month, you may need a new key.")
+    message(
+      "An access key is required to download eBird Status and Trends ",
+      "data\n1. Get a key by filling out the request form at ",
+      "https://ebird.org/st/request\n",
+      "2. Save the key using set_ebirdst_access_key()\n"
+    )
+    stop(
+      "Valid eBird Status and Trends access key not found. ",
+      "Note that keys expire after 6 month, you may need a new key."
+    )
   }
   invisible(key)
 }

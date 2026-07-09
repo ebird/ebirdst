@@ -5,8 +5,10 @@ skip_if_offline()
 
 # only run this test if an ebirdst access key is present
 key <- Sys.getenv("EBIRDST_KEY")
-skip_if_not(!is.na(key) && key != "" && nchar(key) > 0,
-            message = "Missing ebirdst access key")
+skip_if_not(
+  !is.na(key) && key != "" && nchar(key) > 0,
+  message = "Missing ebirdst access key"
+)
 
 # status ----
 
@@ -31,9 +33,11 @@ test_that("ebirdst_download_status()", {
   expect_false(any(grepl("trends", files)))
 
   suppressMessages({
-    files_all <- ebirdst_download_status("leafly",
-                                         download_all = TRUE,
-                                         dry_run = TRUE)
+    files_all <- ebirdst_download_status(
+      "leafly",
+      download_all = TRUE,
+      dry_run = TRUE
+    )
   })
   expect_true(any(grepl("config.json$", files_all)))
   expect_true(any(grepl("occurrence", files_all)))
@@ -51,9 +55,11 @@ test_that("ebirdst_download_status()", {
 test_that("ebirdst_download_status() pattern argument", {
   # only download low resolution
   suppressMessages({
-    files <- ebirdst_download_status("leafly",
-                                     pattern = "_27km_",
-                                     dry_run = TRUE)
+    files <- ebirdst_download_status(
+      "leafly",
+      pattern = "_27km_",
+      dry_run = TRUE
+    )
   })
   expect_true(any(grepl("config.json$", files)))
   expect_true(any(grepl("27km", files)))
@@ -64,9 +70,11 @@ test_that("ebirdst_download_status() pattern argument", {
 test_that("ebirdst_download_status() missing species", {
   # only download low resolution
   suppressMessages({
-    files <- ebirdst_download_status("leafly",
-                                     pattern = "_27km_",
-                                     dry_run = TRUE)
+    files <- ebirdst_download_status(
+      "leafly",
+      pattern = "_27km_",
+      dry_run = TRUE
+    )
   })
   expect_error(ebirdst_download_status("XXXX"))
   expect_error(ebirdst_download_status("Wod Thrush"))
@@ -78,11 +86,15 @@ test_that("ebirdst_download_status() missing species", {
 
 test_that("ebirdst_download_trends()", {
   # download one species
-  path1 <- ebirdst_download_trends("Pomatorhinus musicus",
-                                   show_progress = FALSE)
+  path1 <- ebirdst_download_trends(
+    "Pomatorhinus musicus",
+    show_progress = FALSE
+  )
   # download multiple species
-  path2 <- ebirdst_download_trends(c("taibap1", "Taiwan Barbet"),
-                                   show_progress = FALSE)
+  path2 <- ebirdst_download_trends(
+    c("taibap1", "Taiwan Barbet"),
+    show_progress = FALSE
+  )
 
   paths <- file.path(c(path1, path2), "trends")
   expect_true(all(dir.exists(paths)))
@@ -106,6 +118,8 @@ test_that("get_species_path()", {
   expect_true(dir.exists(get_species_path("yebsap-example")))
   expect_error(get_species_path("XXXXX"))
   expect_error(get_species_path("XXXXX", check_downloaded = FALSE))
-  expect_false(dir.exists(get_species_path("Yellow Warbler",
-                                           check_downloaded = FALSE)))
+  expect_false(dir.exists(get_species_path(
+    "Yellow Warbler",
+    check_downloaded = FALSE
+  )))
 })

@@ -20,6 +20,9 @@ Useful links:
 
 Authors:
 
+- Matthew Strimas-Mackey <mes335@cornell.edu>
+  ([ORCID](https://orcid.org/0000-0001-8929-7776))
+
 - Shawn Ligocki <sligocki@cornell.edu>
 
 - Tom Auer <mta45@cornell.edu>

@@ -300,27 +300,27 @@ object.
 # rasterize the percent per year trend with confidence limits (default)
 ppy_raster <- rasterize_trends(trends_sagthr)
 print(ppy_raster)
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 67, 100, 3  (nrow, ncol, nlyr)
 #> resolution  : 26665.26, 26665.28  (x, y)
-#> extent      : -10602273, -7935747, 3714548, 5501122  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs 
+#> extent      : -1.060227e+07, -7935747, 3714548, 5501122  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs
 #> source(s)   : memory
-#> names       :   abd_ppy, abd_ppy_lower, abd_ppy_upper 
-#> min values  : -14.62142,     -17.52655,     -11.48219 
-#> max values  :  13.62980,      11.74418,      15.77865
+#> names       :    abd_ppy, abd_ppy_lower, abd_ppy_upper
+#> min values  : -14.621424,    -17.526549,    -11.482195
+#> max values  :  13.629797,     11.744185,      15.77865
 # rasterize the cumulative trend estimate
 trends_raster <- rasterize_trends(trends_sagthr, layers = "abd_trend")
 print(trends_raster)
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 67, 100, 1  (nrow, ncol, nlyr)
 #> resolution  : 26665.26, 26665.28  (x, y)
-#> extent      : -10602273, -7935747, 3714548, 5501122  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs 
+#> extent      : -1.060227e+07, -7935747, 3714548, 5501122  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs
 #> source(s)   : memory
-#> name        : abd_trend 
-#> min value   : -79.41793 
-#> max value   : 258.85772
+#> name        :  abd_trend
+#> min value   : -79.417929
+#> max value   :  258.85772
 ```
 
 These raster objects can be exported to GeoTIFF files for use in a GIS

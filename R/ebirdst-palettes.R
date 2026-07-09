@@ -15,13 +15,19 @@
 #' @examples
 #' # breeding season color palette
 #' ebirdst_palettes(10, type = "breeding")
-ebirdst_palettes <- function(n, type = c("weekly",
-                                         "breeding", "nonbreeding",
-                                         "migration",
-                                         "prebreeding_migration",
-                                         "postbreeding_migration",
-                                         "year_round",
-                                         "trends")) {
+ebirdst_palettes <- function(
+  n,
+  type = c(
+    "weekly",
+    "breeding",
+    "nonbreeding",
+    "migration",
+    "prebreeding_migration",
+    "postbreeding_migration",
+    "year_round",
+    "trends"
+  )
+) {
   stopifnot(is.numeric(n), length(n) == 1, n >= 1)
   type <- match.arg(type)
 
@@ -38,7 +44,7 @@ ebirdst_palettes <- function(n, type = c("weekly",
     trend_cols <- c(rev(trend_reds), "#ffffff", trend_blues)
     pal_fun <- grDevices::colorRampPalette(trend_cols)
     return(pal_fun(n))
-  }else if (type == "breeding") {
+  } else if (type == "breeding") {
     base_col <- "#cc503e"
   } else if (type == "nonbreeding") {
     base_col <- "#1d6996"
@@ -56,7 +62,11 @@ ebirdst_palettes <- function(n, type = c("weekly",
   gry <- grDevices::colorRampPalette(c(col_zero, base_col))
   mid <- grDevices::colorRampPalette(c(gry(5)[2], base_col))
   black <- grDevices::colorRampPalette(c(base_col, "#000000"))
-  pal <- grDevices::colorRampPalette(c(gry(5)[2], mid(9)[5], base_col,
-                                       black(5)[2]))
+  pal <- grDevices::colorRampPalette(c(
+    gry(5)[2],
+    mid(9)[5],
+    base_col,
+    black(5)[2]
+  ))
   return(pal(n))
 }

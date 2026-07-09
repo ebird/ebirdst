@@ -1,0 +1,18 @@
+# air formatter configuration
+# https://posit-dev.github.io/air/configuration.html
+#
+# scope: only R/ contains package code air should format. other .R files
+# (data-raw/, examples/, tests/, makefile.R) are excluded so `air format .`
+# is safe to run from the repo root.
+
+[format]
+line-width = 80
+indent-width = 2
+indent-style = "space"
+line-ending = "auto"
+exclude = [
+  "data-raw/",
+  "examples/",
+  "tests/",
+  "makefile.R",
+]

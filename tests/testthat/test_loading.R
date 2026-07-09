@@ -15,10 +15,19 @@ test_that("load_config()", {
 test_that("load_fac_map_parameters()", {
   p <- load_fac_map_parameters("yebsap-example")
   expect_is(p, "list")
-  expect_named(p, c("custom_projection", "fa_extent",
-                    "res", "fa_extent_projected",
-                    "weekly_bins", "weekly_labels",
-                    "seasonal_bins", "seasonal_labels"))
+  expect_named(
+    p,
+    c(
+      "custom_projection",
+      "fa_extent",
+      "res",
+      "fa_extent_projected",
+      "weekly_bins",
+      "weekly_labels",
+      "seasonal_bins",
+      "seasonal_labels"
+    )
+  )
 
   # check components
   # projection
@@ -50,15 +59,19 @@ test_that("list_available_pis()", {
 
 
 test_that("load_pi()", {
-  pi_occ <- load_pi("yebsap-example",
-                    predictor = "gsw_c2_pland",
-                    response = "occurrence")
+  pi_occ <- load_pi(
+    "yebsap-example",
+    predictor = "gsw_c2_pland",
+    response = "occurrence"
+  )
   expect_is(pi_occ, "SpatRaster")
   expect_equal(terra::nlyr(pi_occ), 52)
 
-  pi_count <- load_pi("yebsap-example",
-                      predictor = "mcd12q1_lccs1_c21_pland",
-                      response = "count")
+  pi_count <- load_pi(
+    "yebsap-example",
+    predictor = "mcd12q1_lccs1_c21_pland",
+    response = "count"
+  )
   expect_is(pi_count, "SpatRaster")
   expect_equal(terra::nlyr(pi_count), 52)
 

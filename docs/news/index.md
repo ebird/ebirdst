@@ -7,6 +7,7 @@
   and
   [`ebirdst_delete()`](https://ebird.github.io/ebirdst/reference/ebirdst_delete.md)
   to manage files downloaded by `ebirdst`
+- Move to air autoformatting and jarl linting
 
 ## ebirdst 3.2023.1
 

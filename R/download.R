@@ -74,30 +74,34 @@
 #' ebirdst_download_status("lobcur", pattern = "abundance_median_3km",
 #'                         dry_run = TRUE)
 #' }
-ebirdst_download_status <- function(species,
-                                    path = ebirdst_data_dir(),
-                                    download_abundance = TRUE,
-                                    download_occurrence = FALSE,
-                                    download_count = FALSE,
-                                    download_ranges = FALSE,
-                                    download_regional = FALSE,
-                                    download_pis = FALSE,
-                                    download_ppms = FALSE,
-                                    download_all = FALSE,
-                                    pattern = NULL,
-                                    dry_run = FALSE,
-                                    force = FALSE,
-                                    show_progress = TRUE) {
+ebirdst_download_status <- function(
+  species,
+  path = ebirdst_data_dir(),
+  download_abundance = TRUE,
+  download_occurrence = FALSE,
+  download_count = FALSE,
+  download_ranges = FALSE,
+  download_regional = FALSE,
+  download_pis = FALSE,
+  download_ppms = FALSE,
+  download_all = FALSE,
+  pattern = NULL,
+  dry_run = FALSE,
+  force = FALSE,
+  show_progress = TRUE
+) {
   stopifnot(is.character(species), length(species) == 1)
   stopifnot(is.character(path), length(path) == 1)
-  stopifnot(is_flag(download_abundance),
-            is_flag(download_occurrence),
-            is_flag(download_count),
-            is_flag(download_ranges),
-            is_flag(download_regional),
-            is_flag(download_pis),
-            is_flag(download_ppms),
-            is_flag(download_all))
+  stopifnot(
+    is_flag(download_abundance),
+    is_flag(download_occurrence),
+    is_flag(download_count),
+    is_flag(download_ranges),
+    is_flag(download_regional),
+    is_flag(download_pis),
+    is_flag(download_ppms),
+    is_flag(download_all)
+  )
   stopifnot(is_flag(dry_run))
   stopifnot(is_flag(force))
   stopifnot(is_flag(show_progress))
@@ -105,18 +109,24 @@ ebirdst_download_status <- function(species,
   # convert to species code
   species <- get_species(species)
   if (is.na(species)) {
-    stop("The requested species was not modeled by Status and Trends. ",
-         "Consult ebirdst_runs for a complete list of available species.")
+    stop(
+      "The requested species was not modeled by Status and Trends. ",
+      "Consult ebirdst_runs for a complete list of available species."
+    )
   }
 
   # complete list of all available files for this species
-  files <- get_download_file_list(species_code = species,
-                                  path = path,
-                                  dataset = "status")
+  files <- get_download_file_list(
+    species_code = species,
+    path = path,
+    dataset = "status"
+  )
   # path to data package
-  run_path <- file.path(path,
-                        ebirdst_version()[["status_version_year"]],
-                        species)
+  run_path <- file.path(
+    path,
+    ebirdst_version()[["status_version_year"]],
+    species
+  )
 
   # decide which files to download
   # always download config file
@@ -157,13 +167,15 @@ ebirdst_download_status <- function(species,
   if (!is.null(pattern)) {
     stopifnot(is.character(pattern), length(pattern) == 1, !is.na(pattern))
     pat_match <- stringr::str_detect(basename(files$file), pattern = pattern)
-    if (all(!pat_match)) {
+    if (!any(pat_match)) {
       stop("No files matched pattern")
     }
 
     # always download config file
-    is_config <- stringr::str_detect(basename(files$file),
-                                     pattern = "config.json$")
+    is_config <- stringr::str_detect(
+      basename(files$file),
+      pattern = "config.json$"
+    )
     files <- files[pat_match | is_config, ]
   }
 
@@ -217,10 +229,12 @@ ebirdst_download_status <- function(species,
 #' # multiple species can be downloaded at once
 #' ebirdst_download_trends(c("Sage Thrasher", "Abert's Towhee"))
 #' }
-ebirdst_download_trends <- function(species,
-                                    path = ebirdst_data_dir(),
-                                    force = FALSE,
-                                    show_progress = TRUE) {
+ebirdst_download_trends <- function(
+  species,
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = TRUE
+) {
   stopifnot(is.character(species))
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force))
@@ -228,28 +242,34 @@ ebirdst_download_trends <- function(species,
 
   # convert to species code
   species_code <- get_species(species)
-  if (any(is.na(species_code))) {
-    stop("The following species were not modeled by Status and Trends. ",
-         "Consult ebirdst_runs for a complete list of available species.\n  ",
-         paste0(species[is.na(species_code)], collapse = ", "))
+  if (anyNA(species_code)) {
+    stop(
+      "The following species were not modeled by Status and Trends. ",
+      "Consult ebirdst_runs for a complete list of available species.\n  ",
+      paste0(species[is.na(species_code)], collapse = ", ")
+    )
   }
 
   # check that trends are available
   trends_species <- ebirdst::ebirdst_runs[ebirdst::ebirdst_runs$has_trends, ]
   no_trends <- species[!species_code %in% trends_species$species_code]
   if (length(no_trends) > 0) {
-    stop("The following species do not have trends estimates. ",
-         "Species with trends estimates are identified in ebirdst_runs by the ",
-         "has_trends column.\n  ",
-         paste0(no_trends, collapse = ", "))
+    stop(
+      "The following species do not have trends estimates. ",
+      "Species with trends estimates are identified in ebirdst_runs by the ",
+      "has_trends column.\n  ",
+      paste0(no_trends, collapse = ", ")
+    )
   }
 
   run_paths <- character()
   for (s in species_code) {
     # complete list of all available files for this species
-    files <- get_download_file_list(species_code = s,
-                                    path = path,
-                                    dataset = "trends")
+    files <- get_download_file_list(
+      species_code = s,
+      path = path,
+      dataset = "trends"
+    )
     # path to data package
     run_path <- file.path(path, ebirdst_version()[["trends_version_year"]], s)
 
@@ -294,11 +314,13 @@ ebirdst_download_trends <- function(species,
 #' # download all weeks in april
 #' ebirdst_download_data_coverage(pattern = "04-")
 #' }
-ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
-                                           pattern = NULL,
-                                           dry_run = FALSE,
-                                           force = FALSE,
-                                           show_progress = TRUE) {
+ebirdst_download_data_coverage <- function(
+  path = ebirdst_data_dir(),
+  pattern = NULL,
+  dry_run = FALSE,
+  force = FALSE,
+  show_progress = TRUE
+) {
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(dry_run))
   stopifnot(is_flag(force))
@@ -307,15 +329,17 @@ ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
   # complete list of all available files for this species
   files <- get_download_file_list(species_code = "data_coverage", path = path)
   # path to data package
-  run_path <- file.path(path,
-                        ebirdst_version()[["status_version_year"]],
-                        "data_coverage")
+  run_path <- file.path(
+    path,
+    ebirdst_version()[["status_version_year"]],
+    "data_coverage"
+  )
 
   # apply pattern
   if (!is.null(pattern)) {
     stopifnot(is.character(pattern), length(pattern) == 1, !is.na(pattern))
     pat_match <- stringr::str_detect(basename(files$file), pattern = pattern)
-    if (all(!pat_match)) {
+    if (!any(pat_match)) {
       stop("No files matched pattern")
     }
     files <- files[pat_match, ]
@@ -335,7 +359,6 @@ ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
   download_files(files, force = force, show_progress = show_progress)
 
   return(invisible(normalizePath(run_path)))
-
 }
 
 
@@ -364,9 +387,12 @@ ebirdst_download_data_coverage <- function(path = ebirdst_data_dir(),
 #' path <- get_species_path("Sphyrapicus varius")
 #' path <- get_species_path("yebsap")
 #' }
-get_species_path <- function(species, path = ebirdst_data_dir(),
-                             dataset = c("status", "trends"),
-                             check_downloaded = TRUE) {
+get_species_path <- function(
+  species,
+  path = ebirdst_data_dir(),
+  dataset = c("status", "trends"),
+  check_downloaded = TRUE
+) {
   stopifnot(is.character(species), length(species) == 1)
   stopifnot(is.character(path), length(path) == 1, dir.exists(path))
   stopifnot(is_flag(check_downloaded))
@@ -425,18 +451,26 @@ ebirdst_data_dir <- function() {
 #' @examples
 #' ebirdst_version()
 ebirdst_version <- function() {
-  list(status_version_year = 2023,
-       trends_version_year = 2022,
-       release_year = 2025)
+  list(
+    status_version_year = 2023,
+    trends_version_year = 2022,
+    release_year = 2025
+  )
 }
 
 
 # internal ----
 
-get_download_file_list <- function(species_code, path,
-                                   dataset = c("status", "trends")) {
-  stopifnot(is.character(species_code), length(species_code) == 1,
-            !is.na(species_code))
+get_download_file_list <- function(
+  species_code,
+  path,
+  dataset = c("status", "trends")
+) {
+  stopifnot(
+    is.character(species_code),
+    length(species_code) == 1,
+    !is.na(species_code)
+  )
   dataset <- match.arg(dataset)
 
   # version of the data products that this package version corresponds to
@@ -448,13 +482,17 @@ get_download_file_list <- function(species_code, path,
   run_path <- file.path(path, version_year, species_code)
 
   if (is_example) {
-    api_url <- paste0("https://raw.githubusercontent.com/",
-                      "ebird/ebirdst_example-data/main/",
-                      "example-data/")
+    api_url <- paste0(
+      "https://raw.githubusercontent.com/",
+      "ebird/ebirdst_example-data/main/",
+      "example-data/"
+    )
     # file list
-    fl <- system.file("extdata",
-                      paste0("example-data_file-list_", dataset, ".txt"),
-                      package = "ebirdst")
+    fl <- system.file(
+      "extdata",
+      paste0("example-data_file-list_", dataset, ".txt"),
+      package = "ebirdst"
+    )
     files <- readLines(fl)
   } else {
     # api url and key
@@ -462,26 +500,38 @@ get_download_file_list <- function(species_code, path,
     api_url <- "https://st-download.ebird.org/v1"
 
     # get file list for this species
-    list_obj_url <- stringr::str_glue("{api_url}/list-obj/{version_year}/",
-                                      "{species_code}?key={key}")
-    files <- tryCatch(suppressWarnings({
-      jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
-    }), error = function(e) NULL)
+    list_obj_url <- stringr::str_glue(
+      "{api_url}/list-obj/{version_year}/",
+      "{species_code}?key={key}"
+    )
+    files <- tryCatch(
+      suppressWarnings({
+        jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
+      }),
+      error = function(e) NULL
+    )
     if (is.null(files)) {
       # try http instead in case of ssl issues on vpn
       api_url <- "http://st-download.ebird.org/v1"
       # get file list for this species
-      list_obj_url <- stringr::str_glue("{api_url}/list-obj/{version_year}/",
-                                        "{species_code}?key={key}")
-      files <- tryCatch(suppressWarnings({
-        jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
-      }), error = function(e) NULL)
+      list_obj_url <- stringr::str_glue(
+        "{api_url}/list-obj/{version_year}/",
+        "{species_code}?key={key}"
+      )
+      files <- tryCatch(
+        suppressWarnings({
+          jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
+        }),
+        error = function(e) NULL
+      )
       if (is.null(files)) {
-        stop("Cannot access Status and Trends data URL. Ensure that you have ",
-             "a working internet connection and a valid API key for the ",
-             "Status and Trends data. Note that the API keys expire after ",
-             "6 month, so may need to update your key. ",
-             "Visit https://ebird.org/st/request")
+        stop(
+          "Cannot access Status and Trends data URL. Ensure that you have ",
+          "a working internet connection and a valid API key for the ",
+          "Status and Trends data. Note that the API keys expire after ",
+          "6 month, so may need to update your key. ",
+          "Visit https://ebird.org/st/request"
+        )
       }
     }
 
@@ -491,8 +541,10 @@ get_download_file_list <- function(species_code, path,
 
     # remove additional species cause by bug in API
     # e.g. leafly will also return leafly2
-    only_target <- stringr::str_detect(files,
-                                       pattern = paste0("/", species_code, "/"))
+    only_target <- stringr::str_detect(
+      files,
+      pattern = paste0("/", species_code, "/")
+    )
     files <- files[only_target]
   }
 
@@ -505,8 +557,10 @@ get_download_file_list <- function(species_code, path,
   if (is_example) {
     files$src_path <- paste0(api_url, files$file)
   } else {
-    files$src_path <- stringr::str_glue("{api_url}/fetch?objKey={files$file}",
-                                        "&key={key}")
+    files$src_path <- stringr::str_glue(
+      "{api_url}/fetch?objKey={files$file}",
+      "&key={key}"
+    )
   }
   files$dest_path <- file.path(path, files$file)
   files$exists <- file.exists(files$dest_path)
@@ -529,8 +583,10 @@ download_files <- function(files, force, show_progress) {
     }
   } else if (any(files$exists)) {
     if (!isTRUE(force)) {
-      message(paste("Some files already exist, only downloading new files.",
-                    " Use force = TRUE to re-download all files."))
+      message(paste(
+        "Some files already exist, only downloading new files.",
+        " Use force = TRUE to re-download all files."
+      ))
       files <- files[!files$exists, ]
     }
   }
@@ -541,13 +597,17 @@ download_files <- function(files, force, show_progress) {
   options(timeout = max(3000, old_timeout))
   for (i in seq_len(n_files)) {
     if (show_progress) {
-      message(stringr::str_glue("  Downloading file {i} of {n_files}: ",
-                                "{basename(files$file[i])}"))
+      message(stringr::str_glue(
+        "  Downloading file {i} of {n_files}: ",
+        "{basename(files$file[i])}"
+      ))
     }
-    dl_response <- utils::download.file(files$src_path[i],
-                                        files$dest_path[i],
-                                        quiet = TRUE,
-                                        mode = "wb")
+    dl_response <- utils::download.file(
+      files$src_path[i],
+      files$dest_path[i],
+      quiet = TRUE,
+      mode = "wb"
+    )
     if (dl_response != 0) {
       stop("Error downloading file: ", files$file[i])
     }
