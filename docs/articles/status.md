@@ -616,7 +616,7 @@ glimpse(regional)
 #> $ max_week_percent_pop   <dbl> 0.4100934563, 0.9638256049, 0.9979910064, 0.985…
 ```
 
-The six summary statistics are defined as:
+The eight summary statistics are defined as:
 
 - `abundance_mean`: mean relative abundance in the region.
 - `total_pop_percent`: the proportion of the seasonal modeled population
@@ -626,12 +626,55 @@ The six summary statistics are defined as:
   column identifies the continent that the region falls within. Note
   that Yellow-bellied Sapsucker only occurs in North American so the
   total and continental proportions are identical.
-- `range_percent_occupied`: the proportion of the region occupied by the
+- `max_week`: the week of the year with the highest proportion of the
+  modeled population falling within the region.
+- `max_week_percent_pop`: the proportion of the modeled population
+  within the region in `max_week`, i.e. the maximum weekly value.
+- `range_occupied_percent`: the proportion of the region occupied by the
   species during the given season.
 - `range_total_percent`: the proportion of the species seasonal range
   falling within the region.
 - `range_days_occupation`: number of days of the season that the region
   was occupied by this species.
+
+### Regional statistics for all species
+
+The regional summary statistics described above are also compiled into a
+single dataset covering all species with eBird Status Data Products,
+rather than being split across the individual species data packages.
+This dataset can be accessed with
+[`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md).
+Unlike most data products, which are downloaded with
+[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
+and then loaded with a `load_*()` function,
+[`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
+downloads the file on first use, prompting for confirmation, and loads
+it in a single step. Subsequent calls load the already downloaded file
+directly.
+
+As an example, we can use this dataset to get a list of all species with
+breeding or resident season estimates in a given region, e.g. Taiwan. We
+subset to the region and seasons of interest, keep just the species
+code, season, and proportion of the population columns, then join to
+`ebirdst_runs` to attach the common and scientific names:
+
+``` r
+# download (on first use) and load regional stats for all species
+regional_all <- ebirdst_regional_stats()
+
+# breeding and resident species in taiwan
+taiwan <- regional_all |>
+  filter(region_name == "Taiwan",
+         season %in% c("breeding", "resident")) |>
+  select(species_code, season, total_pop_percent)
+
+# join to ebirdst_runs to attach common and scientific names
+taiwan <- taiwan |>
+  inner_join(ebirdst_runs, by = "species_code") |>
+  arrange(desc(total_pop_percent)) |> 
+  select(species_code, common_name, scientific_name, season, total_pop_percent)
+taiwan
+```
 
 ### Predictive performance metrics (PPMs)
 

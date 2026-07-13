@@ -32,7 +32,7 @@ products for each species.
 }
 \examples{
 \dontrun{
-# inventory of all downloaded data
+# inventory of all data downloaded to the default directory
 ebirdst_data_inventory()
 
 # inventory for a specific directory

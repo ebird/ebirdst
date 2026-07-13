@@ -3,6 +3,10 @@
 ## ebirdst 3.2023.2
 
 - Add
+  [`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
+  to download (on first use) and load regional summary statistics for
+  all species
+- Add
   [`ebirdst_data_inventory()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_inventory.md)
   and
   [`ebirdst_delete()`](https://ebird.github.io/ebirdst/reference/ebirdst_delete.md)

@@ -566,7 +566,11 @@ load_ranges <- function(
 #'   - `abundance_mean`: mean relative abundance in the region.
 #'   - `total_pop_percent`: proportion of the seasonal modeled population
 #'   falling within the region.
-#'   - `range_percent_occupied`: the proportion of the region occupied by the
+#'   - `max_week`: the week of the year with the highest proportion of the
+#'   modeled population falling within the region.
+#'   - `max_week_percent_pop`: the proportion of the modeled population falling
+#'   within the region in `max_week`, i.e. the maximum weekly value.
+#'   - `range_occupied_percent`: the proportion of the region occupied by the
 #'   species during the given season.
 #'   - `range_total_percent`: the proportion of the species seasonal range
 #'   falling within the region.
@@ -610,6 +614,94 @@ load_regional_stats <- function(species, path = ebirdst_data_dir()) {
   # load stats
   stats <- dplyr::as_tibble(utils::read.csv(file, na = "", row.names = NULL))
   stats[["region_area_km2"]] <- NULL
+  return(stats)
+}
+
+
+#' Regional summary statistics for all species
+#'
+#' Load a single file of regional summary statistics covering all species with
+#' eBird Status Data Products. Unlike most data products, which are downloaded
+#' with a dedicated `ebirdst_download_*()` function and then loaded with a
+#' `load_*()` function, this function downloads the file on first use and loads
+#' it in a single step. If the file is not already present in the data
+#' directory it will be downloaded, prompting for confirmation first. This
+#' differs from [load_regional_stats()], which loads the regional statistics for
+#' a single species from that species' downloaded data package.
+#'
+#' @param path character; directory that the data are stored in. Defaults to the
+#'   persistent data directory returned by [ebirdst_data_dir()].
+#' @param force logical; if the file has already been downloaded, should a fresh
+#'   copy be downloaded anyway. Setting `force = TRUE` also skips the
+#'   confirmation prompt, which is required to download in a non-interactive
+#'   session.
+#' @param show_progress logical; whether to print download progress information.
+#'
+#' @return A data frame of regional summary statistics for all species. The
+#'   columns match those returned by [load_regional_stats()].
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # download (if necessary) and load regional stats for all species
+#' regional <- ebirdst_regional_stats()
+#' }
+ebirdst_regional_stats <- function(
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = TRUE
+) {
+  stopifnot(is.character(path), length(path) == 1)
+  stopifnot(is_flag(force))
+  stopifnot(is_flag(show_progress))
+
+  # the regional stats file is stored at the annual results level, named for
+  # the status data version year
+  version_year <- ebirdst_version()[["status_version_year"]]
+  obj_key <- file.path(
+    version_year,
+    sprintf("regional-stats_%s.parquet", version_year)
+  )
+  dest_path <- file.path(path, obj_key)
+
+  # download the file if it isn't already present, prompting for confirmation
+  if (!file.exists(dest_path) || force) {
+    # cannot prompt for confirmation without an interactive session
+    if (!force && !interactive()) {
+      stop(
+        "The regional stats file has not been downloaded and confirmation ",
+        "cannot be requested in a non-interactive session. Use force = TRUE ",
+        "to download without prompting."
+      )
+    }
+
+    if (!force) {
+      cat(sprintf(
+        "The regional stats file for all species will be downloaded to:\n  %s\n\n",
+        dest_path
+      ))
+      answer <- readline("Do you want to download this file? [y/N] ")
+      if (!tolower(trimws(answer)) %in% c("y", "yes")) {
+        message("Download cancelled.")
+        return(invisible(NULL))
+      }
+    }
+
+    # build the fetch url and download using the shared download machinery
+    key <- get_ebirdst_access_key()
+    api_url <- "https://st-download.ebird.org/v1"
+    files <- data.frame(file = obj_key)
+    files$src_path <- stringr::str_glue(
+      "{api_url}/fetch?objKey={obj_key}",
+      "&key={key}"
+    )
+    files$dest_path <- dest_path
+    files$exists <- file.exists(dest_path)
+    download_files(files, force = force, show_progress = show_progress)
+  }
+
+  # load stats
+  stats <- dplyr::as_tibble(arrow::read_parquet(dest_path))
   return(stats)
 }
 

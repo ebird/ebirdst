@@ -41,7 +41,7 @@ displays the inventory grouped by version year and dataset.
 
 ``` r
 if (FALSE) { # \dontrun{
-# inventory of all downloaded data
+# inventory of all data downloaded to the default directory
 ebirdst_data_inventory()
 
 # inventory for a specific directory

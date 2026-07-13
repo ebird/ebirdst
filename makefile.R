@@ -11,7 +11,6 @@ devtools::test()
 tools:::.check_package_datasets(".")
 
 # vignettes, readme, site
-devtools::clean_vignettes()
 pkgdown::clean_site()
 Sys.setenv(BUILD_VIGNETTES = TRUE)
 devtools::build_readme()

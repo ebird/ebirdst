@@ -96,3 +96,32 @@ test_that("load_ppm()", {
   expect_error(load_ppm("yebsap-example", ppm = "pr_auc"))
   expect_error(load_ppm("yebsap-example", ppm = "elevation_250m_sd"))
 })
+
+
+test_that("ebirdst_regional_stats() loads an existing file", {
+  tmp <- withr::local_tempdir()
+  version_year <- ebirdst_version()[["status_version_year"]]
+  dir.create(file.path(tmp, version_year), recursive = TRUE)
+  file <- file.path(
+    tmp,
+    version_year,
+    sprintf("regional-stats_%s.parquet", version_year)
+  )
+  stats <- dplyr::tibble(species_code = "yebsap", total_pop_percent = 1)
+  arrow::write_parquet(stats, file)
+
+  loaded <- ebirdst_regional_stats(path = tmp)
+  expect_is(loaded, "tbl_df")
+  expect_equal(loaded, stats)
+})
+
+
+test_that("ebirdst_regional_stats() errors when file must be downloaded", {
+  tmp <- withr::local_tempdir()
+  # non-interactive session cannot prompt for confirmation
+  local_mocked_bindings(interactive = function() FALSE, .package = "base")
+  expect_error(ebirdst_regional_stats(path = tmp))
+
+  expect_error(ebirdst_regional_stats(path = 1))
+  expect_error(ebirdst_regional_stats(path = c(tmp, tmp)))
+})

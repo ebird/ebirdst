@@ -29,6 +29,8 @@
   : eBird Status and Trends predictors descriptions
 - [`ebirdst_predictors`](https://ebird.github.io/ebirdst/reference/ebirdst_predictors.md)
   : eBird Status and Trends predictor variables
+- [`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
+  : Regional summary statistics for all species
 - [`ebirdst_runs`](https://ebird.github.io/ebirdst/reference/ebirdst_runs.md)
   : Data frame of species with eBird Status and Trends Data Products
 - [`ebirdst_version()`](https://ebird.github.io/ebirdst/reference/ebirdst_version.md)

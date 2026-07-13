@@ -35,7 +35,11 @@ for.
 \item \code{abundance_mean}: mean relative abundance in the region.
 \item \code{total_pop_percent}: proportion of the seasonal modeled population
 falling within the region.
-\item \code{range_percent_occupied}: the proportion of the region occupied by the
+\item \code{max_week}: the week of the year with the highest proportion of the
+modeled population falling within the region.
+\item \code{max_week_percent_pop}: the proportion of the modeled population falling
+within the region in \code{max_week}, i.e. the maximum weekly value.
+\item \code{range_occupied_percent}: the proportion of the region occupied by the
 species during the given season.
 \item \code{range_total_percent}: the proportion of the species seasonal range
 falling within the region.

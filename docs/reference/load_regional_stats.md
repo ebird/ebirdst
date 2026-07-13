@@ -56,7 +56,14 @@ A data frame containing regional summary statistics with columns:
 - `total_pop_percent`: proportion of the seasonal modeled population
   falling within the region.
 
-- `range_percent_occupied`: the proportion of the region occupied by the
+- `max_week`: the week of the year with the highest proportion of the
+  modeled population falling within the region.
+
+- `max_week_percent_pop`: the proportion of the modeled population
+  falling within the region in `max_week`, i.e. the maximum weekly
+  value.
+
+- `range_occupied_percent`: the proportion of the region occupied by the
   species during the given season.
 
 - `range_total_percent`: the proportion of the species seasonal range

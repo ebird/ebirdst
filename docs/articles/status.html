@@ -665,7 +665,7 @@ summary statistics can be loaded with
 <span><span class="co">#&gt; $ range_days_occupation  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 98<span style="color: #949494;">, </span>112<span style="color: #949494;">, </span>91<span style="color: #949494;">, </span>63<span style="color: #949494;">, </span>98<span style="color: #949494;">, </span>112<span style="color: #949494;">, </span>91<span style="color: #949494;">, </span>49</span></span>
 <span><span class="co">#&gt; $ max_week               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2023-08-16"<span style="color: #949494;">, </span>"2023-11-22"<span style="color: #949494;">, </span>"2023-10-18"<span style="color: #949494;">, </span>"2023…</span></span>
 <span><span class="co">#&gt; $ max_week_percent_pop   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.4100934563<span style="color: #949494;">, </span>0.9638256049<span style="color: #949494;">, </span>0.9979910064<span style="color: #949494;">, </span>0.985…</span></span></code></pre></div>
-<p>The six summary statistics are defined as:</p>
+<p>The eight summary statistics are defined as:</p>
 <ul>
 <li>
 <code>abundance_mean</code>: mean relative abundance in the
@@ -681,7 +681,14 @@ region falls within. Note that Yellow-bellied Sapsucker only occurs in
 North American so the total and continental proportions are
 identical.</li>
 <li>
-<code>range_percent_occupied</code>: the proportion of the region
+<code>max_week</code>: the week of the year with the highest
+proportion of the modeled population falling within the region.</li>
+<li>
+<code>max_week_percent_pop</code>: the proportion of the modeled
+population within the region in <code>max_week</code>, i.e. the maximum
+weekly value.</li>
+<li>
+<code>range_occupied_percent</code>: the proportion of the region
 occupied by the species during the given season.</li>
 <li>
 <code>range_total_percent</code>: the proportion of the species
@@ -690,6 +697,42 @@ seasonal range falling within the region.</li>
 <code>range_days_occupation</code>: number of days of the season
 that the region was occupied by this species.</li>
 </ul>
+</div>
+<div class="section level3">
+<h3 id="regional-statistics-for-all-species">Regional statistics for all species<a class="anchor" aria-label="anchor" href="#regional-statistics-for-all-species"></a>
+</h3>
+<p>The regional summary statistics described above are also compiled
+into a single dataset covering all species with eBird Status Data
+Products, rather than being split across the individual species data
+packages. This dataset can be accessed with
+<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code>. Unlike most data products, which
+are downloaded with <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> and then
+loaded with a <code>load_*()</code> function,
+<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code> downloads the file on first use,
+prompting for confirmation, and loads it in a single step. Subsequent
+calls load the already downloaded file directly.</p>
+<p>As an example, we can use this dataset to get a list of all species
+with breeding or resident season estimates in a given region,
+e.g. Taiwan. We subset to the region and seasons of interest, keep just
+the species code, season, and proportion of the population columns, then
+join to <code>ebirdst_runs</code> to attach the common and scientific
+names:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># download (on first use) and load regional stats for all species</span></span>
+<span><span class="va">regional_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># breeding and resident species in taiwan</span></span>
+<span><span class="va">taiwan</span> <span class="op">&lt;-</span> <span class="va">regional_all</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">region_name</span> <span class="op">==</span> <span class="st">"Taiwan"</span>,</span>
+<span>         <span class="va">season</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"breeding"</span>, <span class="st">"resident"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">species_code</span>, <span class="va">season</span>, <span class="va">total_pop_percent</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># join to ebirdst_runs to attach common and scientific names</span></span>
+<span><span class="va">taiwan</span> <span class="op">&lt;-</span> <span class="va">taiwan</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">ebirdst_runs</span>, by <span class="op">=</span> <span class="st">"species_code"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">total_pop_percent</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">species_code</span>, <span class="va">common_name</span>, <span class="va">scientific_name</span>, <span class="va">season</span>, <span class="va">total_pop_percent</span><span class="op">)</span></span>
+<span><span class="va">taiwan</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="predictive-performance-metrics-ppms">Predictive performance metrics (PPMs)<a class="anchor" aria-label="anchor" href="#predictive-performance-metrics-ppms"></a>
@@ -791,7 +834,7 @@ coefficient.</li>
 </ul>
 <p>The spatial PPMs can be loaded using <code>load_ppms()</code>. For
 example, to load the normalized PR-AUC for the example dataset use.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr_auc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ppm.html">load_ppm</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, ppm <span class="op">=</span> <span class="st">"occ_pr_auc_normalized"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster</span></span>
@@ -809,7 +852,7 @@ km grid cell. We can produce a simple plot of PR-AUC for a week in the
 middle of the year. Note that <code><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim()</a></code> is used to trim the
 global raster down to just show the area with data (the state of
 Michigan in this example dataset).</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">[[</span><span class="fl">26</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="status_files/figure-html/types_ppms_plot-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>See the <a href="https://ebird.github.io/ebirdst/articles/applications.html">applications
@@ -836,11 +879,11 @@ within that region and season that checklists for the given week.</li>
 is relatively high or low, which can be used to prioritize areas for
 increased data collection. To download the data coverage data products
 use:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Then to load the data, for example, site selection probability for
 the week of May 10, and make a map, use:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">site_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_data_coverage.html">load_data_coverage</a></span><span class="op">(</span><span class="st">"selection-probability"</span>, week <span class="op">=</span> <span class="st">"05-10"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">site_sel</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="status_files/figure-html/coverage_load-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
