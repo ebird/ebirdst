@@ -1,8 +1,4 @@
-# clean up
-unlink(list.files("man", full.names = TRUE))
-
 # rebuild docs and install
-devtools::document()
 devtools::document()
 pak::local_install(ask = FALSE, dependencies = TRUE)
 
@@ -12,10 +8,8 @@ tools:::.check_package_datasets(".")
 
 # vignettes, readme, site
 pkgdown::clean_site()
-Sys.setenv(BUILD_VIGNETTES = TRUE)
 devtools::build_readme()
 pkgdown::build_site()
-Sys.unsetenv("BUILD_VIGNETTES")
 
 # local checks
 devtools::check()

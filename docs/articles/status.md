@@ -31,7 +31,7 @@ with optimal weather conditions for detecting the species.
 ## Data access
 
 Data access is granted through an Access Request Form at:
-<https://ebird.org/st/request>. Filling out this form generates a key to
+https://ebird.org/st/request. Filling out this form generates a key to
 be used with this R package. Our terms of use have been designed to be
 quite permissive in many cases, particularly academic and research use.
 When requesting data access, please be sure to carefully read the terms
@@ -242,8 +242,8 @@ Let’s look at the results of the review for our example dataset.
 
 ``` r
 
-ebirdst_runs |> 
-  filter(species_code == "yebsap-example") |> 
+ebirdst_runs |>
+  filter(species_code == "yebsap-example") |>
   glimpse()
 #> Rows: 1
 #> Columns: 30
@@ -379,18 +379,30 @@ relative abundance CIs. All raster products are loaded into R as
 ``` r
 
 # weekly, 27km res, median relative abundance
-abd_lr <- load_raster("yebsap-example", product = "abundance", 
-                      resolution = "27km")
+abd_lr <- load_raster(
+  "yebsap-example",
+  product = "abundance",
+  resolution = "27km"
+)
 
 # weekly, 27km res, median proportion of population
-prop_pop_lr <- load_raster("yebsap-example", product = "proportion-population", 
-                      resolution = "27km")
+prop_pop_lr <- load_raster(
+  "yebsap-example",
+  product = "proportion-population",
+  resolution = "27km"
+)
 
 # weekly, 27km res, abundance confidence intervals
-abd_lower <- load_raster("yebsap-example", product = "abundance", metric = "lower", 
-                         resolution = "27km")
-abd_upper <- load_raster("yebsap-example", product = "abundance", metric = "upper", 
-                         resolution = "27km")
+abd_lower <- load_raster(
+  "yebsap-example",
+  product = "abundance", metric = "lower",
+  resolution = "27km"
+)
+abd_upper <- load_raster(
+  "yebsap-example",
+  product = "abundance", metric = "upper",
+  resolution = "27km"
+)
 ```
 
 Each object has 52 layers, one for each week of the year, and layer
@@ -436,9 +448,12 @@ with the `terra` package. For example,
 ``` r
 
 # seasonal, 27km res, mean relative abundance
-abd_seasonal_mean <- load_raster("yebsap-example", product = "abundance", 
-                                 period = "seasonal", metric = "mean", 
-                                 resolution = "27km")
+abd_seasonal_mean <- load_raster(
+  "yebsap-example",
+  product = "abundance",
+  period = "seasonal", metric = "mean",
+  resolution = "27km"
+)
 # season that each layer corresponds to
 names(abd_seasonal_mean)
 #> [1] "breeding"               "nonbreeding"            "prebreeding_migration" 
@@ -456,9 +471,12 @@ abd_seasonal_mean[["breeding"]]
 #> max value   : 1.021968
 
 # seasonal, 27km res, max occurrence
-occ_seasonal_max <- load_raster("yebsap-example", product = "occurrence", 
-                                period = "seasonal", metric = "max", 
-                                resolution = "27km")
+occ_seasonal_max <- load_raster(
+  "yebsap-example",
+  product = "occurrence",
+  period = "seasonal", metric = "max",
+  resolution = "27km"
+)
 ```
 
 Finally, as a convenience, the data products include year-round rasters
@@ -472,9 +490,12 @@ species.
 ``` r
 
 # full year, 27km res, maximum relative abundance
-abd_fy_max <- load_raster("yebsap-example", product = "abundance", 
-                          period = "full-year", metric = "max", 
-                          resolution = "27km")
+abd_fy_max <- load_raster(
+  "yebsap-example",
+  product = "abundance",
+  period = "full-year", metric = "max",
+  resolution = "27km"
+)
 ```
 
 ### Range boundaries
@@ -590,14 +611,16 @@ regional_all <- ebirdst_regional_stats()
 
 # breeding and resident species in taiwan
 taiwan <- regional_all |>
-  filter(region_name == "Taiwan",
-         season %in% c("breeding", "resident")) |>
+  filter(
+    region_name == "Taiwan",
+    season %in% c("breeding", "resident")
+  ) |>
   select(species_code, season, total_pop_percent)
 
 # join to ebirdst_runs to attach common and scientific names
 taiwan <- taiwan |>
   inner_join(ebirdst_runs, by = "species_code") |>
-  arrange(desc(total_pop_percent)) |> 
+  arrange(desc(total_pop_percent)) |>
   select(species_code, common_name, scientific_name, season, total_pop_percent)
 taiwan
 ```

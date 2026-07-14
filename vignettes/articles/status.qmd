@@ -1,12 +1,17 @@
 ---
 title: "Introduction to eBird Status Data Products"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Introduction to eBird Status Data Products}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    out.width: "100%"
+    fig.height: 4
+    fig.width: 7
+    fig.align: center
+    dpi: 300
+execute:
+  warning: false
+  message: false
 ---
 
 <style type="text/css">
@@ -14,20 +19,6 @@ editor_options:
     width: 75%;
 }
 </style>
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, 
-                      message = FALSE,
-                      collapse = TRUE,
-                      comment = "#>",
-                      out.width = "100%",
-                      fig.height = 4, 
-                      fig.width = 7, 
-                      fig.align = "center",
-                      dpi = 300)
-# only build vignettes locally and not for R CMD check
-knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
-```
 
 # Background {#background}
 
@@ -75,7 +66,8 @@ ebirdst_data_inventory()
 
 To remove data for specific species or version years, use `ebirdst_delete()`. When called interactively it will display a summary of the data to be removed and ask for confirmation before proceeding. To skip the prompt, use `force = TRUE`.
 
-```{r access-delete, eval=FALSE}
+```{r access-delete}
+#| eval: false
 # review and confirm before deleting
 ebirdst_delete(species = "yebsap-example")
 
@@ -108,8 +100,8 @@ A rating of 0 implies this season failed review and model results should not be 
 Let's look at the results of the review for our example dataset.
 
 ```{r review}
-ebirdst_runs |> 
-  filter(species_code == "yebsap-example") |> 
+ebirdst_runs |>
+  filter(species_code == "yebsap-example") |>
   glimpse()
 ```
 
@@ -150,18 +142,30 @@ The function `load_raster()` is used to load these data into R and takes argumen
 
 ```{r types_weekly}
 # weekly, 27km res, median relative abundance
-abd_lr <- load_raster("yebsap-example", product = "abundance", 
-                      resolution = "27km")
+abd_lr <- load_raster(
+  "yebsap-example",
+  product = "abundance",
+  resolution = "27km"
+)
 
 # weekly, 27km res, median proportion of population
-prop_pop_lr <- load_raster("yebsap-example", product = "proportion-population", 
-                      resolution = "27km")
+prop_pop_lr <- load_raster(
+  "yebsap-example",
+  product = "proportion-population",
+  resolution = "27km"
+)
 
 # weekly, 27km res, abundance confidence intervals
-abd_lower <- load_raster("yebsap-example", product = "abundance", metric = "lower", 
-                         resolution = "27km")
-abd_upper <- load_raster("yebsap-example", product = "abundance", metric = "upper", 
-                         resolution = "27km")
+abd_lower <- load_raster(
+  "yebsap-example",
+  product = "abundance", metric = "lower",
+  resolution = "27km"
+)
+abd_upper <- load_raster(
+  "yebsap-example",
+  product = "abundance", metric = "upper",
+  resolution = "27km"
+)
 ```
 
 Each object has 52 layers, one for each week of the year, and layer names store the dates corresponding to the midpoints of each week.
@@ -180,27 +184,36 @@ The function `load_raster(period = "seasonal")` is used to load these data into 
 
 ```{r types_seasonal}
 # seasonal, 27km res, mean relative abundance
-abd_seasonal_mean <- load_raster("yebsap-example", product = "abundance", 
-                                 period = "seasonal", metric = "mean", 
-                                 resolution = "27km")
+abd_seasonal_mean <- load_raster(
+  "yebsap-example",
+  product = "abundance",
+  period = "seasonal", metric = "mean",
+  resolution = "27km"
+)
 # season that each layer corresponds to
 names(abd_seasonal_mean)
 # just the breeding season layer
 abd_seasonal_mean[["breeding"]]
 
 # seasonal, 27km res, max occurrence
-occ_seasonal_max <- load_raster("yebsap-example", product = "occurrence", 
-                                period = "seasonal", metric = "max", 
-                                resolution = "27km")
+occ_seasonal_max <- load_raster(
+  "yebsap-example",
+  product = "occurrence",
+  period = "seasonal", metric = "max",
+  resolution = "27km"
+)
 ```
 
 Finally, as a convenience, the data products include year-round rasters summarizing the mean or max across all weeks that fall within a season that passed the expert review process.  These can be accessed similarly to the seasonal products, but with `period = "full-year"` instead. For example, these layers can be used in conservation planning to assess the most important sites across the full range and full annual cycle of a species.
 
 ```{r types_fullyear}
 # full year, 27km res, maximum relative abundance
-abd_fy_max <- load_raster("yebsap-example", product = "abundance", 
-                          period = "full-year", metric = "max", 
-                          resolution = "27km")
+abd_fy_max <- load_raster(
+  "yebsap-example",
+  product = "abundance",
+  period = "full-year", metric = "max",
+  resolution = "27km"
+)
 ```
 
 ## Range boundaries
@@ -242,20 +255,23 @@ The regional summary statistics described above are also compiled into a single 
 
 As an example, we can use this dataset to get a list of all species with breeding or resident season estimates in a given region, e.g. Taiwan. We subset to the region and seasons of interest, keep just the species code, season, and proportion of the population columns, then join to `ebirdst_runs` to attach the common and scientific names:
 
-```{r types_regional_all, eval = FALSE}
+```{r types_regional_all}
+#| eval: false
 # download (on first use) and load regional stats for all species
 regional_all <- ebirdst_regional_stats()
 
 # breeding and resident species in taiwan
 taiwan <- regional_all |>
-  filter(region_name == "Taiwan",
-         season %in% c("breeding", "resident")) |>
+  filter(
+    region_name == "Taiwan",
+    season %in% c("breeding", "resident")
+  ) |>
   select(species_code, season, total_pop_percent)
 
 # join to ebirdst_runs to attach common and scientific names
 taiwan <- taiwan |>
   inner_join(ebirdst_runs, by = "species_code") |>
-  arrange(desc(total_pop_percent)) |> 
+  arrange(desc(total_pop_percent)) |>
   select(species_code, common_name, scientific_name, season, total_pop_percent)
 taiwan
 ```

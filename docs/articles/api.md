@@ -7,7 +7,7 @@ users; however, data users can interact with this API directly. For
 example, some data users may wish to use the API to access data using
 bash or Python scripts. This vignette outlines how the API is used. All
 API requests require an access key, which can be obtained by visiting
-<https://ebird.org/st/request>.
+https://ebird.org/st/request.
 
 ## API Endpoints
 

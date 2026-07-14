@@ -1,12 +1,17 @@
 ---
 title: "eBird Trends Data Products"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{eBird Trends Data Products}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    out.width: "100%"
+    fig.height: 4
+    fig.width: 7
+    fig.align: center
+    dpi: 300
+execute:
+  warning: false
+  message: false
 ---
 
 <style type="text/css">
@@ -14,20 +19,6 @@ editor_options:
     width: 75%;
 }
 </style>
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, 
-                      message = FALSE,
-                      collapse = TRUE,
-                      comment = "#>",
-                      out.width = "100%",
-                      fig.height = 4, 
-                      fig.width = 7, 
-                      fig.align = "center",
-                      dpi = 300)
-# only build vignettes locally and not for R CMD check
-knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
-```
 
 **Version Note:** In 2025, the eBird Status Data Products were updated to the 2023 version year; however, none of the Trends data products were updated. Therefore the Trends Data Products currently available via `ebirdst` are for the 2022 version year.
 
@@ -50,13 +41,15 @@ library(sf)
 library(terra)
 library(ebirdst)
 
-trends_runs <- ebirdst_runs |> 
-  filter(has_trends) |> 
-  select(species_code, common_name,
-         trends_season, trends_region,
-         trends_start_year, trends_end_year,
-         trends_start_date, trends_end_date,
-         rsquared, beta0, trends_version_year)
+trends_runs <- ebirdst_runs |>
+  filter(has_trends) |>
+  select(
+    species_code, common_name,
+    trends_season, trends_region,
+    trends_start_year, trends_end_year,
+    trends_start_date, trends_end_date,
+    rsquared, beta0, trends_version_year
+  )
 glimpse(trends_runs)
 ```
 
@@ -75,10 +68,12 @@ Information is provided on the trends model for each species, including two pred
 Note that some season dates span two calendar years, for example Canvasback has 2011-2021 trends estimates for a non-breeding season defined as December 20 to January 25. In this case, the first season will be December 20, 2011 to January 25, 2012.
 
 ```{r crossing}
-trends_runs |> 
-  filter(common_name == "Canvasback") |> 
-  select(trends_start_year, trends_end_year, 
-         trends_start_date, trends_end_date)
+trends_runs |>
+  filter(common_name == "Canvasback") |>
+  select(
+    trends_start_year, trends_end_year,
+    trends_start_date, trends_end_date
+  )
 ```
 
 # Downloading data {#download}
@@ -102,10 +97,12 @@ trends_sagthr <- load_trends("Sage Thrasher")
 Each row corresponds to the trend estimate for a 27 km by 27 km grid cell, identified by the `srd_id` column and with cell center given by the `longitude` and `latitude` coordinates. Columns beginning with `abd_ppy` provide estimates of the percent per year trend in relative abundance and 80% confidence intervals, while those beginning with `abd_trend` provide estimates of the cumulative trend in relative abundance and 80% confidence intervals over the time period. The `abd` column gives the relative abundance estimate for the middle of the trend time period (e.g. 2014 for a 2007-2021 trend). The `start_year/end_year` and `start_date/end_date` columns provide redundant information to that available in `ebirdst_runs`. Specifically for Sage Thrasher we have:
 
 ```{r dates}
-trends_runs |> 
-  filter(common_name == "Sage Thrasher") |> 
-  select(trends_start_year, trends_end_year,
-         trends_start_date, trends_end_date)
+trends_runs |>
+  filter(common_name == "Sage Thrasher") |>
+  select(
+    trends_start_year, trends_end_year,
+    trends_start_date, trends_end_date
+  )
 ```
 
 This tells us that the trend estimates are for the breeding season (May 17 to July 12) for the period 2012-2022.
@@ -119,19 +116,22 @@ The eBird trends data are stored in a tabular format, where each row gives the t
 The tabular trend data can be converted into point vector features for use with the `sf` package using the `sf` function `st_as_sf()`.
 
 ```{r spatial-points}
-trends_sf <- st_as_sf(trends_sagthr, 
-                      coords = c("longitude", "latitude"), 
-                      crs = 4326)
+trends_sf <- st_as_sf(trends_sagthr,
+  coords = c("longitude", "latitude"),
+  crs = 4326
+)
 print(trends_sf)
 ```
 
 These points can then be exported to GeoPackage for use in a GIS such as QGIS or ArcGIS with
 
-```{r spatial-points-export, eval=FALSE}
+```{r spatial-points-export}
+#| eval: false
 # be sure to modify the path to save the file to a directory of
 # your choice on your hard drive
 write_sf(trends_sf, "ebird-trends_sagthr_2022.gpkg",
-         layer = "sagthr_trends")
+  layer = "sagthr_trends"
+)
 ```
 
 ## Vector (abundance-scaled circles) {#spatial-circles}
@@ -140,7 +140,8 @@ To produce maps similar to those on the eBird Status and Trends website, the fun
 
 ```{r spatial-circles}
 trends_circles <- vectorize_trends(trends_sagthr,
-                                   crs = "+proj=eqearth +lon_0=-96")
+  crs = "+proj=eqearth +lon_0=-96"
+)
 ```
 
 Next, we'll assign colors based on the cumulative trend (`abd_trend`) using the same breaks as are used on the website.
@@ -155,9 +156,9 @@ legend_labels <- c("<=-40", -20, 0, 20, ">=40")
 legend_colors <- ebirdst_palettes(length(legend_breaks) - 1, type = "trends")
 
 # assign colors to circles
-trends_circles <- trends_circles |> 
-  mutate(color = cut(abd_trend, legend_breaks, labels = legend_colors) |> 
-           as.character())
+trends_circles <- trends_circles |>
+  mutate(color = cut(abd_trend, legend_breaks, labels = legend_colors) |>
+    as.character())
 ```
 
 Finally, we can make a trends map for this species.
@@ -165,11 +166,11 @@ Finally, we can make a trends map for this species.
 ```{r spatial-circles-map, echo=-1}
 par(mar = c(0, 0, 0, 0))
 # natural earth boundaries
-countries <- ne_countries(returnclass = "sf", continent = "North America") |> 
-  st_geometry() |> 
+countries <- ne_countries(returnclass = "sf", continent = "North America") |>
+  st_geometry() |>
   st_transform(st_crs(trends_circles))
-states <- ne_states(iso_a2 = c("US", "CA", "MX")) |> 
-  st_geometry() |> 
+states <- ne_states(iso_a2 = c("US", "CA", "MX")) |>
+  st_geometry() |>
   st_transform(st_crs(trends_circles))
 
 # set the plotting extent
@@ -178,25 +179,32 @@ plot(st_geometry(trends_circles), border = NA, col = NA)
 plot(countries, col = "#cfcfcf", border = "#888888", add = TRUE)
 # add trends
 plot(st_geometry(trends_circles),
-     col = trends_circles$color, border = NA,
-     axes = FALSE, bty = "n", reset = FALSE, add = TRUE)
+  col = trends_circles$color, border = NA,
+  axes = FALSE, bty = "n", reset = FALSE, add = TRUE
+)
 # add boundaries
 lines(vect(countries), col = "#ffffff", lwd = 3)
-lines(vect(states), col =  "#ffffff", lwd = 1.5, xpd = TRUE)
+lines(vect(states), col = "#ffffff", lwd = 1.5, xpd = TRUE)
 
 # add legend using the fields package
 # label the bottom, middle, and top
 label_breaks <- seq(0, 1, length.out = length(legend_breaks))
-image.plot(zlim = c(0, 1), breaks = label_breaks, col = legend_colors,
-           smallplot = c(0.90, 0.93, 0.15, 0.85),
-           legend.only = TRUE,
-           axis.args = list(at = c(0, 0.25, 0.5, 0.75, 1), 
-                            labels = legend_labels,
-                            col.axis = "black", fg = NA,
-                            cex.axis = 0.7, lwd.ticks = 0,
-                            line = -0.75),
-           legend.args = list(text = "Abundance Trend [% change]",
-                              side = 2, line = 0.25))
+image.plot(
+  zlim = c(0, 1), breaks = label_breaks, col = legend_colors,
+  smallplot = c(0.90, 0.93, 0.15, 0.85),
+  legend.only = TRUE,
+  axis.args = list(
+    at = c(0, 0.25, 0.5, 0.75, 1),
+    labels = legend_labels,
+    col.axis = "black", fg = NA,
+    cex.axis = 0.7, lwd.ticks = 0,
+    line = -0.75
+  ),
+  legend.args = list(
+    text = "Abundance Trend [% change]",
+    side = 2, line = 0.25
+  )
+)
 ```
 
 ## Raster {#spatial-raster}
@@ -214,7 +222,8 @@ print(trends_raster)
 
 These raster objects can be exported to GeoTIFF files for use in a GIS such as QGIS or ArcGIS with
 
-```{r spatial-raster-export, eval=FALSE}
+```{r spatial-raster-export}
+#| eval: false
 writeRaster(trends_raster, filename = "ebird-trends_sagthr_2022.tif")
 ```
 
@@ -228,11 +237,12 @@ breaks[length(breaks)] <- Inf
 pal <- ebirdst_palettes(length(breaks) - 1, type = "trends")
 
 # make a simple map
-plot(ppy_raster[["abd_ppy"]], 
-     col = pal, breaks =  breaks,
-     main = "Sage Thrasher breeding trend 2012-2022 [% change per year]",
-     cex.main = 0.75,
-     axes = FALSE)
+plot(ppy_raster[["abd_ppy"]],
+  col = pal, breaks = breaks,
+  main = "Sage Thrasher breeding trend 2012-2022 [% change per year]",
+  cex.main = 0.75,
+  axes = FALSE
+)
 ```
 
 # Uncertainty {#uncertainty}
@@ -257,9 +267,10 @@ state_boundaries <- ne_states(iso_a2 = "US", returnclass = "sf") |>
   transmute(state = iso_3166_2)
 
 # convert fold-level trends estimates to sf format
-trends_sagthr_sf <-  st_as_sf(trends_sagthr_folds,
-                              coords = c("longitude", "latitude"),
-                              crs = 4326)
+trends_sagthr_sf <- st_as_sf(trends_sagthr_folds,
+  coords = c("longitude", "latitude"),
+  crs = 4326
+)
 
 # attach state to the fold-level trends data
 trends_sagthr_sf <- st_join(trends_sagthr_sf, state_boundaries, left = FALSE)
@@ -268,16 +279,20 @@ trends_sagthr_sf <- st_join(trends_sagthr_sf, state_boundaries, left = FALSE)
 trends_states_folds <- trends_sagthr_sf |>
   st_drop_geometry() |>
   group_by(state, fold) |>
-  summarize(abd_ppy = sum(abd * abd_ppy) / sum(abd),
-            .groups = "drop")
+  summarize(
+    abd_ppy = sum(abd * abd_ppy) / sum(abd),
+    .groups = "drop"
+  )
 
 # summarize across folds for each state
-trends_states <- trends_states_folds |> 
+trends_states <- trends_states_folds |>
   group_by(state) |>
-  summarise(abd_ppy_median = median(abd_ppy, na.rm = TRUE),
-            abd_ppy_lower = quantile(abd_ppy, 0.10, na.rm = TRUE),
-            abd_ppy_upper = quantile(abd_ppy, 0.90, na.rm = TRUE),
-            .groups = "drop") |> 
+  summarise(
+    abd_ppy_median = median(abd_ppy, na.rm = TRUE),
+    abd_ppy_lower = quantile(abd_ppy, 0.10, na.rm = TRUE),
+    abd_ppy_upper = quantile(abd_ppy, 0.90, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
   arrange(abd_ppy_median)
 ```
 
@@ -287,12 +302,16 @@ We can join these state-level trends back to the state boundaries and make a map
 trends_states_sf <- left_join(state_boundaries, trends_states, by = "state")
 ggplot(trends_states_sf) +
   geom_sf(aes(fill = abd_ppy_median)) +
-  scale_fill_distiller(palette = "Reds", 
-                       limits = c(NA, 0),
-                       na.value = "grey80") +
+  scale_fill_distiller(
+    palette = "Reds",
+    limits = c(NA, 0),
+    na.value = "grey80"
+  ) +
   guides(fill = guide_colorbar(title.position = "top", barwidth = 15)) +
-  labs(title = "Sage Thrasher state-level breeding trends 2012-2022",
-       fill = "Relative abundance trend [% change / year]") +
+  labs(
+    title = "Sage Thrasher state-level breeding trends 2012-2022",
+    fill = "Relative abundance trend [% change / year]"
+  ) +
   theme_bw() +
   theme(legend.position = "bottom")
 ```
@@ -305,7 +324,7 @@ In some cases, we may be interested in the trend for an entire community of bird
 
 ```{r applications-multi-runs}
 sagebrush_species <- c("Brewer's Sparrow", "Sagebrush Sparrow", "Sage Thrasher")
-trends_runs |> 
+trends_runs |>
   filter(common_name %in% sagebrush_species)
 ```
 
@@ -315,11 +334,13 @@ Everything looks good, so we can proceed to compare trends for these species. We
 trends_sagebrush_species <- load_trends(sagebrush_species)
 
 # calculate mean trend for each cell
-trends_sagebrush <- trends_sagebrush_species |> 
-  group_by(srd_id, latitude, longitude) |> 
-  summarize(n_species = n(),
-            abd_ppy = mean(abd_ppy, na.rm = TRUE),
-            .groups = "drop")
+trends_sagebrush <- trends_sagebrush_species |>
+  group_by(srd_id, latitude, longitude) |>
+  summarize(
+    n_species = n(),
+    abd_ppy = mean(abd_ppy, na.rm = TRUE),
+    .groups = "drop"
+  )
 print(trends_sagebrush)
 ```
 
@@ -327,20 +348,26 @@ Finally, let's make a map of these sagebrush trends, focusing only on those cell
 
 ```{r applications-multi-map}
 # convert the points to sf format
-all_species <- trends_sagebrush |> 
-  filter(n_species == length(sagebrush_species)) |> 
-  st_as_sf(coords = c("longitude", "latitude"),
-           crs = 4326)
+all_species <- trends_sagebrush |>
+  filter(n_species == length(sagebrush_species)) |>
+  st_as_sf(
+    coords = c("longitude", "latitude"),
+    crs = 4326
+  )
 
 # make a map
 ggplot(all_species) +
   geom_sf(aes(color = abd_ppy), size = 2) +
-  scale_color_gradient2(low = "#CB181D", high = "#2171B5",
-                        limits = c(-4, 4), 
-                        oob = scales::oob_squish) +
+  scale_color_gradient2(
+    low = "#CB181D", high = "#2171B5",
+    limits = c(-4, 4),
+    oob = scales::oob_squish
+  ) +
   guides(color = guide_colorbar(title.position = "left", barheight = 15)) +
-  labs(title = "Sagebrush species breeding trends (2012-2022)",
-       color = "Relative abundance trend [% change / year]") +
+  labs(
+    title = "Sagebrush species breeding trends (2012-2022)",
+    color = "Relative abundance trend [% change / year]"
+  ) +
   theme_bw() +
   theme(legend.title = element_text(angle = 90))
 ```

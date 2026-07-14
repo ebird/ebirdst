@@ -1,11 +1,6 @@
 ---
 title: "eBird Status and Trends Data Products Changelog"
 author: "Tom Auer"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{eBird Status and Trends Data Products Changelog}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ## 2023 Changelog

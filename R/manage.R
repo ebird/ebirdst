@@ -222,8 +222,10 @@ ebirdst_delete <- function(
   target_dirs <- unique(file.path(path, inv$version_year, inv$species_code))
 
   # safety check: all targets must be within the base path
-  norm_base <- normalizePath(path, mustWork = FALSE)
-  norm_targets <- normalizePath(target_dirs, mustWork = FALSE)
+  # force winslash = "/" so the prefix comparison below is consistent across
+  # platforms (normalizePath() defaults to "\\" on windows)
+  norm_base <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  norm_targets <- normalizePath(target_dirs, winslash = "/", mustWork = FALSE)
   safe <- startsWith(norm_targets, paste0(norm_base, .Platform$file.sep))
   if (!all(safe)) {
     stop(

@@ -10,7 +10,9 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to eBird Status Data Products">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="status_files/libs/quarto-html/popper.min.js"></script><script src="status_files/libs/quarto-html/tippy.umd.min.js"></script><link href="status_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="status_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to eBird Status Data Products">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,7 +42,7 @@
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Function Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/product-changelog.html#2022-changelog">Changelog</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/product-changelog.html#2023-changelog">Changelog</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Version History</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -50,129 +52,61 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-
+</nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Introduction to eBird Status Data Products</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/status.Rmd" class="external-link"><code>vignettes/status.Rmd</code></a></small>
-      <div class="d-none name"><code>status.Rmd</code></div>
+
+
+
+
+      <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/articles/status.qmd" class="external-link"><code>vignettes/articles/status.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<style type="text/css">
+
+
+
+
+
+    <style type="text/css">
 .table {
     width: 75%;
 }
 </style>
-<div class="section level2">
-<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+<section class="section level2"><h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
-<p>The study and conservation of the natural world relies on detailed
-information about the distributions, abundances, and population trends
-of species over time. For many taxa, this information is challenging to
-obtain at relevant geographic scales. The goal of the eBird Status and
-Trends project is to use data from <a href="https://ebird.org/home" class="external-link">eBird</a>, the global participatory
-science bird monitoring program administered by the Cornell Lab of
-Ornithology, to generate a reliable, standardized source of biodiversity
-information for the world’s bird populations. To translate the eBird
-observations into robust data products, we use machine learning to fill
-spatiotemporal gaps, using local land cover descriptions derived from
-remote sensing data, while controlling for biases inherent in species
-observations collected by community scientists. See Fink et al. (2019)
-for more information about the analysis used to generate these data.</p>
-<p>This vignette gives an overview of the eBird Status Data Products,
-which estimate the full annual cycle distributions, relative abundances,
-and habitat associations for 2,980 species for the year 2023. For each
-species, distribution and abundance estimates are available for all 52
-weeks of the year across a regular 3 km by 3 km square grid of cells
-covering the globe. Variation in detectability associated with the
-search effort is controlled by standardizing the estimates as the
-expected occurrence rate and count of the species on a 1 hour, 2 km
-checklist by an expert eBird observer at the optimal time of day and
-with optimal weather conditions for detecting the species.</p>
-</div>
-<div class="section level2">
-<h2 id="access">Data access<a class="anchor" aria-label="anchor" href="#access"></a>
+<p>The study and conservation of the natural world relies on detailed information about the distributions, abundances, and population trends of species over time. For many taxa, this information is challenging to obtain at relevant geographic scales. The goal of the eBird Status and Trends project is to use data from <a href="https://ebird.org/home" class="external-link">eBird</a>, the global participatory science bird monitoring program administered by the Cornell Lab of Ornithology, to generate a reliable, standardized source of biodiversity information for the world’s bird populations. To translate the eBird observations into robust data products, we use machine learning to fill spatiotemporal gaps, using local land cover descriptions derived from remote sensing data, while controlling for biases inherent in species observations collected by community scientists. See Fink et al. (2019) for more information about the analysis used to generate these data.</p>
+<p>This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for 2,980 species for the year 2023. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.</p>
+</section><section class="section level2"><h2 id="access">Data access<a class="anchor" aria-label="anchor" href="#access"></a>
 </h2>
-<p>Data access is granted through an Access Request Form at: <a href="https://ebird.org/st/request" class="external-link uri">https://ebird.org/st/request</a>. Filling out this form
-generates a key to be used with this R package. Our terms of use have
-been designed to be quite permissive in many cases, particularly
-academic and research use. When requesting data access, please be sure
-to carefully read the terms of use and ensure that your intended use is
-not restricted.</p>
-<p>After completing the Access Request Form, you will be provided an
-eBird Status and Trends Data Products access key, which you will need
-when downloading data. To store the key so this package can access it
-when downloading data, use the function
-<code>set_ebirdst_access_key("XXXXX")</code>, where <code>"XXXXX"</code>
-is the access key provided to you.</p>
-<p>Throughout this vignette, we’ll use a simplified example dataset
-consisting of estimates for Yellow-bellied Sapsucker in Michigan. This
-dataset is designed to be small for faster download and, unlike data for
-other species, is accessible without a key.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>Data access is granted through an Access Request Form at: https://ebird.org/st/request. Filling out this form generates a key to be used with this R package. Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.</p>
+<p>After completing the Access Request Form, you will be provided an eBird Status and Trends Data Products access key, which you will need when downloading data. To store the key so this package can access it when downloading data, use the function <code>set_ebirdst_access_key("XXXXX")</code>, where <code>"XXXXX"</code> is the access key provided to you.</p>
+<p>Throughout this vignette, we’ll use a simplified example dataset consisting of estimates for Yellow-bellied Sapsucker in Michigan. This dataset is designed to be small for faster download and, unlike data for other species, is accessible without a key.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ebird.github.io/ebirdst/">ebirdst</a></span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
+</div>
+<section class="level2"><h3 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
 </h3>
-<p>The data loading functions in this package (those beginning with
-<code>load_</code>) will download any data they need automatically the
-first time you use them, so in most cases you don’t need to download
-data explicitly. For example, calling
-<code>load_raster("yebsap-example")</code> will download the relative
-abundance data for the example species if it isn’t already on your
-computer, then load it into R.</p>
-<p>In older versions of <code>ebirdst</code> it was necessary to
-download data with <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> before loading
-it; this is no longer required. However,
-<code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> is still useful when you want to
-download all, or a specific subset of, the data products for a species
-up front rather than one at a time as you load them. The first argument
-defines the species (as a common name, scientific name, or species code)
-and the remaining arguments control which data products are downloaded.
-By default only the most commonly used data products are downloaded, but
-since this vignette covers all the available data products, we’ll use
-<code>download_all = TRUE</code> to download everything for the example
-species now:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>The data loading functions in this package (those beginning with <code>load_</code>) will download any data they need automatically the first time you use them, so in most cases you don’t need to download data explicitly. For example, calling <code>load_raster("yebsap-example")</code> will download the relative abundance data for the example species if it isn’t already on your computer, then load it into R.</p>
+<p>In older versions of <code>ebirdst</code> it was necessary to download data with <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> before loading it; this is no longer required. However, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> is still useful when you want to download all, or a specific subset of, the data products for a species up front rather than one at a time as you load them. The first argument defines the species (as a common name, scientific name, or species code) and the remaining arguments control which data products are downloaded. By default only the most commonly used data products are downloaded, but since this vignette covers all the available data products, we’ll use <code>download_all = TRUE</code> to download everything for the example species now:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># download all data products for the example species</span></span>
 <span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"yebsap-example"</span>, download_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>By default, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> (and the
-<code>load_</code> functions) download data to a centralized directory
-on your computer. You can see what that directory is with the function
-<code><a href="../reference/ebirdst_data_dir.html">ebirdst_data_dir()</a></code> and you can change the default download
-directory by setting the environment variable
-<code>EBIRDST_DATA_DIR</code>, for example by calling
-<code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> and adding a line such as
-<code>EBIRDST_DATA_DIR=/custom/download/directory/</code>.</p>
-<p><strong>IMPORTANT: eBird Status and Trends Data Products are designed
-to be downloaded and accessed using the <code>ebirdst</code> R package.
-Data downloaded using this R package have a specific file structure and
-changing file names or locations will disrupt the ability of functions
-in this package to access the data. If you prefer to access data for use
-outside of R, consider downloading data via the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird
-Status and Trends website</a>.</strong></p>
 </div>
-<div class="section level3">
-<h3 id="managing-downloaded-data">Managing downloaded data<a class="anchor" aria-label="anchor" href="#managing-downloaded-data"></a>
+<p>By default, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> (and the <code>load_</code> functions) download data to a centralized directory on your computer. You can see what that directory is with the function <code><a href="../reference/ebirdst_data_dir.html">ebirdst_data_dir()</a></code> and you can change the default download directory by setting the environment variable <code>EBIRDST_DATA_DIR</code>, for example by calling <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> and adding a line such as <code>EBIRDST_DATA_DIR=/custom/download/directory/</code>.</p>
+<p><strong>IMPORTANT: eBird Status and Trends Data Products are designed to be downloaded and accessed using the <code>ebirdst</code> R package. Data downloaded using this R package have a specific file structure and changing file names or locations will disrupt the ability of functions in this package to access the data. If you prefer to access data for use outside of R, consider downloading data via the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird Status and Trends website</a>.</strong></p>
+</section><section class="level2"><h3 id="managing-downloaded-data">Managing downloaded data<a class="anchor" aria-label="anchor" href="#managing-downloaded-data"></a>
 </h3>
-<p>Because a new version of the data products is released each year,
-data for multiple versions can accumulate on disk over time. Use
-<code><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory()</a></code> to get a summary of all data
-currently downloaded, with separate rows for the Status and Trends data
-products for each species.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Because a new version of the data products is released each year, data for multiple versions can accumulate on disk over time. Use <code><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory()</a></code> to get a summary of all data currently downloaded, with separate rows for the Status and Trends data products for each species.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; eBird Status and Trends data: 14 species, 14 packages (816.1 MB)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -193,262 +127,177 @@ products for each species.</p>
 <span><span class="co">#&gt;   Upland Sandpiper (uplsan): 6 files, 138.5 MB</span></span>
 <span><span class="co">#&gt;   Western Meadowlark (wesmea): 6 files, 224.1 MB</span></span>
 <span><span class="co">#&gt;   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB</span></span></code></pre></div>
-<p>To remove data for specific species or version years, use
-<code><a href="../reference/ebirdst_delete.html">ebirdst_delete()</a></code>. When called interactively it will display
-a summary of the data to be removed and ask for confirmation before
-proceeding. To skip the prompt, use <code>force = TRUE</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+</div>
+<p>To remove data for specific species or version years, use <code><a href="../reference/ebirdst_delete.html">ebirdst_delete()</a></code>. When called interactively it will display a summary of the data to be removed and ask for confirmation before proceeding. To skip the prompt, use <code>force = TRUE</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># review and confirm before deleting</span></span>
 <span><span class="fu"><a href="../reference/ebirdst_delete.html">ebirdst_delete</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"yebsap-example"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># delete all data for a given version year without prompting</span></span>
 <span><span class="fu"><a href="../reference/ebirdst_delete.html">ebirdst_delete</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2021</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="species">Species list<a class="anchor" aria-label="anchor" href="#species"></a>
+</section></section><section class="section level2"><h2 id="species">Species list<a class="anchor" aria-label="anchor" href="#species"></a>
 </h2>
-<p>The data frame <code>ebirdst_runs</code> lists all species with eBird
-Status Data Products available for download.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>The data frame <code>ebirdst_runs</code> lists all species with eBird Status Data Products available for download.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">ebirdst_runs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 2,981</span></span>
 <span><span class="co">#&gt; Columns: 30</span></span>
-<span><span class="co">#&gt; $ species_code                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"<span style="color: #949494;">, </span>"abetow"<span style="color: #949494;">, </span>"absfin1"<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ scientific_name                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Sphyrapicus varius"<span style="color: #949494;">, </span>"Melozone aberti"…</span></span>
-<span><span class="co">#&gt; $ common_name                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yellow-bellied Sapsucker"<span style="color: #949494;">, </span>"Abert's To…</span></span>
-<span><span class="co">#&gt; $ is_resident                    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>F…</span></span>
-<span><span class="co">#&gt; $ breeding_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ breeding_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-17<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-05-31<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ breeding_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-16<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-08-02<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_quality            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"1"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_start              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-22<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-11-22<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_end                <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-08<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-02-22<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_quality <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"0"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_start   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-23<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-08-09<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_end     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-15<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-11-15<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_quality  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"0"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_start    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-15<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-03-01<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_end      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-10<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-05-24<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span>…</span></span>
-<span><span class="co">#&gt; $ resident_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span>"3"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"2"<span style="color: #949494;">, </span>"3…</span></span>
-<span><span class="co">#&gt; $ resident_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-01-04<span style="color: #949494;">, </span>2023-01-04<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-0…</span></span>
-<span><span class="co">#&gt; $ resident_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-12-27<span style="color: #949494;">, </span>2023-12-27<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2023-1…</span></span>
-<span><span class="co">#&gt; $ status_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>2023<span style="color: #949494;">, </span>202…</span></span>
-<span><span class="co">#&gt; $ has_trends                     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>F…</span></span>
-<span><span class="co">#&gt; $ trends_season                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"<span style="color: #949494;">, </span>"resident"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"breeding"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ trends_region                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america"<span style="color: #949494;">, </span>"north_america"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"…</span></span>
-<span><span class="co">#&gt; $ trends_start_year              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2011<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ trends_end_year                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2021<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ trends_start_date              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-24"<span style="color: #949494;">, </span>"01-25"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"05-24"<span style="color: #949494;">, </span>"11-01"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ trends_end_date                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "08-16"<span style="color: #949494;">, </span>"05-10"<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"08-02"<span style="color: #949494;">, </span>"05-03"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ rsquared                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8572896<span style="color: #949494;">, </span>0.9231821<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>0.8570363<span style="color: #949494;">, </span>0.…</span></span>
-<span><span class="co">#&gt; $ beta0                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.227000849<span style="color: #949494;">, </span>-0.013923012<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>0.689424…</span></span>
-<span><span class="co">#&gt; $ trends_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">,</span>…</span></span></code></pre></div>
-<p>If you’re working in RStudio, you can use <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> to
-interactively explore this data frame.</p>
-<p>All species go through a process of review by an expert on that
-species prior to being released. The <code>ebirdst_runs</code> data
-frame contains information from this review process. For migrants,
-reviewers assess the model estimates for each of the four seasons:
-breeding, non-breeding, pre-breeding migration, and post-breeding
-migration. Resident (i.e., non-migratory) species are identified by
-having <code>TRUE</code> in the <code>is_resident</code> column of
-<code>ebirdst_runs</code>, and these species are assessed across the
-whole year rather than seasonally. <code>ebirdst_runs</code> contains
-two important pieces of information for each season: a
-<strong>quality</strong> rating and <strong>seasonal dates</strong>.</p>
-<p>The <strong>seasonal dates</strong> define the weeks that fall within
-each season. Breeding and non-breeding season dates are defined for each
-species as the weeks during those seasons when the species’ population
-does not move. For this reason, these seasons are also described as
-stationary periods. Migration periods are defined as the periods of
-movement between the stationary non-breeding and breeding seasons. Note
-that for many species these migratory periods include not only movement
-from breeding grounds to non-breeding grounds, but also post-breeding
-dispersal, molt migration, and other movements.</p>
-<p>Reviewers also examine the model estimates for each season to assess
-the amount of extrapolation or omission present in the model, and assign
-an associated quality rating ranging from 0 (lowest quality) to 3
-(highest quality). Extrapolation refers to cases where the model
-predicts occurrence where the species is known to be absent, while
-omission refers to the model failing to predict occurrence where a
-species is known to be present.</p>
-<p>A rating of 0 implies this season failed review and model results
-should not be used at all for this period. Ratings of 1-3 correspond to
-a gradient of more to less extrapolation and/or omission, and we often
-use a traffic light analogy when referring to them:</p>
-<ol style="list-style-type: decimal">
+<span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example", "abetow", "absfin1", …</span></span>
+<span><span class="co">#&gt; $ scientific_name                &lt;chr&gt; "Sphyrapicus varius", "Melozone aberti"…</span></span>
+<span><span class="co">#&gt; $ common_name                    &lt;chr&gt; "Yellow-bellied Sapsucker", "Abert's To…</span></span>
+<span><span class="co">#&gt; $ is_resident                    &lt;lgl&gt; FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, F…</span></span>
+<span><span class="co">#&gt; $ breeding_quality               &lt;chr&gt; "3", NA, NA, "3", NA, NA, "1", NA, NA, …</span></span>
+<span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2023-05-17, NA, NA, 2023-05-31, NA, NA…</span></span>
+<span><span class="co">#&gt; $ breeding_end                   &lt;date&gt; 2023-08-16, NA, NA, 2023-08-02, NA, NA…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_quality            &lt;chr&gt; "3", NA, NA, "3", NA, NA, "1", NA, NA, …</span></span>
+<span><span class="co">#&gt; $ nonbreeding_start              &lt;date&gt; 2023-11-22, NA, NA, 2023-11-22, NA, NA…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_end                &lt;date&gt; 2023-03-08, NA, NA, 2023-02-22, NA, NA…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_quality &lt;chr&gt; "3", NA, NA, "3", NA, NA, "0", NA, NA, …</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_start   &lt;date&gt; 2023-08-23, NA, NA, 2023-08-09, NA, NA…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_end     &lt;date&gt; 2023-11-15, NA, NA, 2023-11-15, NA, NA…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_quality  &lt;chr&gt; "3", NA, NA, "3", NA, NA, "0", NA, NA, …</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2023-03-15, NA, NA, 2023-03-01, NA, NA…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2023-05-10, NA, NA, 2023-05-24, NA, NA…</span></span>
+<span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA, "3", "3", NA, "3", "3", NA, "2", "3…</span></span>
+<span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA, 2023-01-04, 2023-01-04, NA, 2023-0…</span></span>
+<span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA, 2023-12-27, 2023-12-27, NA, 2023-1…</span></span>
+<span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2023, 2023, 2023, 2023, 2023, 2023, 202…</span></span>
+<span><span class="co">#&gt; $ has_trends                     &lt;lgl&gt; TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, F…</span></span>
+<span><span class="co">#&gt; $ trends_season                  &lt;chr&gt; "breeding", "resident", NA, "breeding",…</span></span>
+<span><span class="co">#&gt; $ trends_region                  &lt;chr&gt; "north_america", "north_america", NA, "…</span></span>
+<span><span class="co">#&gt; $ trends_start_year              &lt;dbl&gt; 2012, 2012, NA, 2012, 2011, NA, NA, NA,…</span></span>
+<span><span class="co">#&gt; $ trends_end_year                &lt;dbl&gt; 2022, 2022, NA, 2022, 2021, NA, NA, NA,…</span></span>
+<span><span class="co">#&gt; $ trends_start_date              &lt;chr&gt; "05-24", "01-25", NA, "05-24", "11-01",…</span></span>
+<span><span class="co">#&gt; $ trends_end_date                &lt;chr&gt; "08-16", "05-10", NA, "08-02", "05-03",…</span></span>
+<span><span class="co">#&gt; $ rsquared                       &lt;dbl&gt; 0.8572896, 0.9231821, NA, 0.8570363, 0.…</span></span>
+<span><span class="co">#&gt; $ beta0                          &lt;dbl&gt; 0.227000849, -0.013923012, NA, 0.689424…</span></span>
+<span><span class="co">#&gt; $ trends_version_year            &lt;dbl&gt; 2022, 2022, NA, 2022, 2022, NA, NA, NA,…</span></span></code></pre></div>
+</div>
+<p>If you’re working in RStudio, you can use <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> to interactively explore this data frame.</p>
+<p>All species go through a process of review by an expert on that species prior to being released. The <code>ebirdst_runs</code> data frame contains information from this review process. For migrants, reviewers assess the model estimates for each of the four seasons: breeding, non-breeding, pre-breeding migration, and post-breeding migration. Resident (i.e., non-migratory) species are identified by having <code>TRUE</code> in the <code>is_resident</code> column of <code>ebirdst_runs</code>, and these species are assessed across the whole year rather than seasonally. <code>ebirdst_runs</code> contains two important pieces of information for each season: a <strong>quality</strong> rating and <strong>seasonal dates</strong>.</p>
+<p>The <strong>seasonal dates</strong> define the weeks that fall within each season. Breeding and non-breeding season dates are defined for each species as the weeks during those seasons when the species’ population does not move. For this reason, these seasons are also described as stationary periods. Migration periods are defined as the periods of movement between the stationary non-breeding and breeding seasons. Note that for many species these migratory periods include not only movement from breeding grounds to non-breeding grounds, but also post-breeding dispersal, molt migration, and other movements.</p>
+<p>Reviewers also examine the model estimates for each season to assess the amount of extrapolation or omission present in the model, and assign an associated quality rating ranging from 0 (lowest quality) to 3 (highest quality). Extrapolation refers to cases where the model predicts occurrence where the species is known to be absent, while omission refers to the model failing to predict occurrence where a species is known to be present.</p>
+<p>A rating of 0 implies this season failed review and model results should not be used at all for this period. Ratings of 1-3 correspond to a gradient of more to less extrapolation and/or omission, and we often use a traffic light analogy when referring to them:</p>
+<ol type="1">
 <li>
-<strong>Red light (1)</strong>: low quality, extensive extrapolation
-and/or omission and noise, but at least some regions have estimates that
-are accurate; can be used with caution in certain regions.</li>
+<strong>Red light (1)</strong>: low quality, extensive extrapolation and/or omission and noise, but at least some regions have estimates that are accurate; can be used with caution in certain regions.</li>
 <li>
-<strong>Yellow light (2)</strong>: medium quality, some
-extrapolation and/or omission; use with caution.</li>
+<strong>Yellow light (2)</strong>: medium quality, some extrapolation and/or omission; use with caution.</li>
 <li>
-<strong>Green light (3)</strong>: high quality, very little or no
-extrapolation and/or omission; these seasons can be safely used.</li>
+<strong>Green light (3)</strong>: high quality, very little or no extrapolation and/or omission; these seasons can be safely used.</li>
 </ol>
 <p>Let’s look at the results of the review for our example dataset.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ebirdst_runs</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species_code</span> <span class="op">==</span> <span class="st">"yebsap-example"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ebirdst_runs</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species_code</span> <span class="op">==</span> <span class="st">"yebsap-example"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 1</span></span>
 <span><span class="co">#&gt; Columns: 30</span></span>
-<span><span class="co">#&gt; $ species_code                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"</span></span>
-<span><span class="co">#&gt; $ scientific_name                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Sphyrapicus varius"</span></span>
-<span><span class="co">#&gt; $ common_name                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yellow-bellied Sapsucker"</span></span>
-<span><span class="co">#&gt; $ is_resident                    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE</span></span>
-<span><span class="co">#&gt; $ breeding_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ breeding_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-17</span></span>
-<span><span class="co">#&gt; $ breeding_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-16</span></span>
-<span><span class="co">#&gt; $ nonbreeding_quality            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ nonbreeding_start              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-22</span></span>
-<span><span class="co">#&gt; $ nonbreeding_end                <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-08</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_quality <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_start   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-23</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_end     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-11-15</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_quality  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "3"</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_start    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-03-15</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_end      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-05-10</span></span>
-<span><span class="co">#&gt; $ resident_quality               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; $ resident_start                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; $ resident_end                   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; $ status_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2023</span></span>
-<span><span class="co">#&gt; $ has_trends                     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE</span></span>
-<span><span class="co">#&gt; $ trends_season                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"</span></span>
-<span><span class="co">#&gt; $ trends_region                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america"</span></span>
-<span><span class="co">#&gt; $ trends_start_year              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012</span></span>
-<span><span class="co">#&gt; $ trends_end_year                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022</span></span>
-<span><span class="co">#&gt; $ trends_start_date              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-24"</span></span>
-<span><span class="co">#&gt; $ trends_end_date                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "08-16"</span></span>
-<span><span class="co">#&gt; $ rsquared                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8572896</span></span>
-<span><span class="co">#&gt; $ beta0                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.2270008</span></span>
-<span><span class="co">#&gt; $ trends_version_year            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022</span></span></code></pre></div>
-<p>From this, we can see that Yellow-bellied Sapsucker was modeled as a
-migrant and all four seasons received a quality of 3, the highest
-rating. Note that there are a variety of trends-specific columns at the
-end of this data frame that we’ll ignore for now; these columns will be
-covered in the <a href="https://ebird.github.io/ebirdst/articles/trends.html">trends
-vignette</a></p>
+<span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example"</span></span>
+<span><span class="co">#&gt; $ scientific_name                &lt;chr&gt; "Sphyrapicus varius"</span></span>
+<span><span class="co">#&gt; $ common_name                    &lt;chr&gt; "Yellow-bellied Sapsucker"</span></span>
+<span><span class="co">#&gt; $ is_resident                    &lt;lgl&gt; FALSE</span></span>
+<span><span class="co">#&gt; $ breeding_quality               &lt;chr&gt; "3"</span></span>
+<span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2023-05-17</span></span>
+<span><span class="co">#&gt; $ breeding_end                   &lt;date&gt; 2023-08-16</span></span>
+<span><span class="co">#&gt; $ nonbreeding_quality            &lt;chr&gt; "3"</span></span>
+<span><span class="co">#&gt; $ nonbreeding_start              &lt;date&gt; 2023-11-22</span></span>
+<span><span class="co">#&gt; $ nonbreeding_end                &lt;date&gt; 2023-03-08</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_quality &lt;chr&gt; "3"</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_start   &lt;date&gt; 2023-08-23</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_end     &lt;date&gt; 2023-11-15</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_quality  &lt;chr&gt; "3"</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2023-03-15</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2023-05-10</span></span>
+<span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA</span></span>
+<span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA</span></span>
+<span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA</span></span>
+<span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2023</span></span>
+<span><span class="co">#&gt; $ has_trends                     &lt;lgl&gt; TRUE</span></span>
+<span><span class="co">#&gt; $ trends_season                  &lt;chr&gt; "breeding"</span></span>
+<span><span class="co">#&gt; $ trends_region                  &lt;chr&gt; "north_america"</span></span>
+<span><span class="co">#&gt; $ trends_start_year              &lt;dbl&gt; 2012</span></span>
+<span><span class="co">#&gt; $ trends_end_year                &lt;dbl&gt; 2022</span></span>
+<span><span class="co">#&gt; $ trends_start_date              &lt;chr&gt; "05-24"</span></span>
+<span><span class="co">#&gt; $ trends_end_date                &lt;chr&gt; "08-16"</span></span>
+<span><span class="co">#&gt; $ rsquared                       &lt;dbl&gt; 0.8572896</span></span>
+<span><span class="co">#&gt; $ beta0                          &lt;dbl&gt; 0.2270008</span></span>
+<span><span class="co">#&gt; $ trends_version_year            &lt;dbl&gt; 2022</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="types">Data types<a class="anchor" aria-label="anchor" href="#types"></a>
+<p>From this, we can see that Yellow-bellied Sapsucker was modeled as a migrant and all four seasons received a quality of 3, the highest rating. Note that there are a variety of trends-specific columns at the end of this data frame that we’ll ignore for now; these columns will be covered in the <a href="https://ebird.github.io/ebirdst/articles/trends.html">trends vignette</a></p>
+</section><section class="section level2"><h2 id="types">Data types<a class="anchor" aria-label="anchor" href="#types"></a>
 </h2>
-<p>For each species, there are a variety of data products available,
-which can be categorized into the following broad types:</p>
+<p>For each species, there are a variety of data products available, which can be categorized into the following broad types:</p>
 <ul>
 <li>
-<strong>Weekly raster estimates:</strong> weekly estimates of
-occurrence, count, relative abundance, and proportion of population on a
-regular grid in GeoTIFF format at three resolutions. These are the core
-products from which the other products are derived.</li>
+<strong>Weekly raster estimates:</strong> weekly estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are the core products from which the other products are derived.</li>
 <li>
-<strong>Seasonal raster estimates:</strong> seasonal estimates of
-occurrence, count, relative abundance, and proportion of population on a
-regular grid in GeoTIFF format at three resolutions. These are derived
-from the corresponding weekly raster data by summarizing across the
-weeks falling within each season based on the dates defined in the
-<code>ebirdst_runs</code> data frame. Only seasons that passed the
-expert review process are included.</li>
+<strong>Seasonal raster estimates:</strong> seasonal estimates of occurrence, count, relative abundance, and proportion of population on a regular grid in GeoTIFF format at three resolutions. These are derived from the corresponding weekly raster data by summarizing across the weeks falling within each season based on the dates defined in the <code>ebirdst_runs</code> data frame. Only seasons that passed the expert review process are included.</li>
 <li>
-<strong>Seasonal range boundaries:</strong> seasonal range boundary
-polygons in GeoPackage format.</li>
+<strong>Seasonal range boundaries:</strong> seasonal range boundary polygons in GeoPackage format.</li>
 <li>
-<strong>Regional summary statistics:</strong> a variety of summary
-statistics for countries and states/provinces (e.g. proportion of total
-population in the region) in CSV format.</li>
+<strong>Regional summary statistics:</strong> a variety of summary statistics for countries and states/provinces (e.g. proportion of total population in the region) in CSV format.</li>
 <li>
-<strong>Predictive performance metrics (PPMs):</strong> a suite of
-spatial predictive performance metrics on a regular 27 km by 27 km grid
-in GeoTIFF format.</li>
+<strong>Predictive performance metrics (PPMs):</strong> a suite of spatial predictive performance metrics on a regular 27 km by 27 km grid in GeoTIFF format.</li>
 </ul>
-<p>Each of these data products will be covered in more detail in the
-following sections, including details on how to load the data into R.
-All of the loading functions take a species (given as common name,
-scientific name, or species code) as their first argument. If the
-requested data have not already been downloaded, the loading functions
-will download them automatically on first use, so calling
-<code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> in advance is optional. If you
-have used a non-default <code>path</code> argument to
-<code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> then you will also need to
-provide the same <code>path</code> argument to the loading
-functions.</p>
-<div class="section level3">
-<h3 id="weekly-raster-estimates">Weekly raster estimates<a class="anchor" aria-label="anchor" href="#weekly-raster-estimates"></a>
+<p>Each of these data products will be covered in more detail in the following sections, including details on how to load the data into R. All of the loading functions take a species (given as common name, scientific name, or species code) as their first argument. If the requested data have not already been downloaded, the loading functions will download them automatically on first use, so calling <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> in advance is optional. If you have used a non-default <code>path</code> argument to <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> then you will also need to provide the same <code>path</code> argument to the loading functions.</p>
+<section class="level2"><h3 id="weekly-raster-estimates">Weekly raster estimates<a class="anchor" aria-label="anchor" href="#weekly-raster-estimates"></a>
 </h3>
-<p>The core raster data products are the weekly estimates of occurrence,
-count, and relative abundance. These estimates are derived from an
-ensemble model producing 100 individual estimates of the expected value
-of each quantity. The raster data products give the median value across
-the ensemble for each quantity.</p>
-<p>The weekly estimates are all stored in the widely used GeoTIFF raster
-format, and we refer to them as “weekly cubes” (e.g. the “weekly
-abundance cube”). All cubes have 52 weeks and cover the entire globe,
-even for species with ranges only covering a small region. They come
-with areas of predicted and assumed zeroes. Any cells that are
-<code>NA</code> represent areas where we didn’t produce model
-estimates.</p>
-<p>All estimates are the ensemble median expected value for a 2 km, 1
-hour eBird Traveling Count by an expert eBird observer at the optimal
-time of day and for optimal weather conditions to observe the given
-species.</p>
+<p>The core raster data products are the weekly estimates of occurrence, count, and relative abundance. These estimates are derived from an ensemble model producing 100 individual estimates of the expected value of each quantity. The raster data products give the median value across the ensemble for each quantity.</p>
+<p>The weekly estimates are all stored in the widely used GeoTIFF raster format, and we refer to them as “weekly cubes” (e.g. the “weekly abundance cube”). All cubes have 52 weeks and cover the entire globe, even for species with ranges only covering a small region. They come with areas of predicted and assumed zeroes. Any cells that are <code>NA</code> represent areas where we didn’t produce model estimates.</p>
+<p>All estimates are the ensemble median expected value for a 2 km, 1 hour eBird Traveling Count by an expert eBird observer at the optimal time of day and for optimal weather conditions to observe the given species.</p>
 <ul>
 <li>
-<strong>Occurrence</strong>: the expected probability of
-encountering a species.</li>
+<strong>Occurrence</strong>: the expected probability of encountering a species.</li>
 <li>
-<strong>Count</strong>: the expected count of a species, conditional
-on its occurrence at the given location.</li>
+<strong>Count</strong>: the expected count of a species, conditional on its occurrence at the given location.</li>
 <li>
-<strong>Relative abundance</strong>: the expected relative abundance
-of a species, computed as the product of the probability of occurrence
-and the count conditional on occurrence. In addition to the median
-relative abundance, upper and lower confidence intervals (CIs) are
-provided, defined at the 10th and 90th quantile of relative abundance,
-respectively.</li>
+<strong>Relative abundance</strong>: the expected relative abundance of a species, computed as the product of the probability of occurrence and the count conditional on occurrence. In addition to the median relative abundance, upper and lower confidence intervals (CIs) are provided, defined at the 10th and 90th quantile of relative abundance, respectively.</li>
 <li>
-<strong>Proportion of population</strong>: the proportion of the
-total relative abundance within each cell. This is a derived product
-calculated by dividing each cell value in the relative abundance raster
-by the sum of all cell values</li>
+<strong>Proportion of population</strong>: the proportion of the total relative abundance within each cell. This is a derived product calculated by dividing each cell value in the relative abundance raster by the sum of all cell values</li>
 </ul>
-<p>All predictions are made on a standard 3 km by 3 km global grid;
-however, for convenience lower resolution GeoTIFFs are also provided,
-which are typically much faster to work with. However, note that to keep
-file sizes small, <strong>the example dataset only contains the lowest
-(27 km) resolution data</strong>. The three resolutions are:</p>
+<p>All predictions are made on a standard 3 km by 3 km global grid; however, for convenience lower resolution GeoTIFFs are also provided, which are typically much faster to work with. However, note that to keep file sizes small, <strong>the example dataset only contains the lowest (27 km) resolution data</strong>. The three resolutions are:</p>
 <ul>
 <li>High resolution (3km): the native 3 km resolution data.</li>
-<li>Medium resolution (9km): the 3 km resolution data aggregated by a
-factor of 3 in each direction resulting in a resolution of 9 km.</li>
-<li>Low resolution (27km): the 3 km resolution data aggregated by a
-factor of 9 in each direction resulting in a resolution of 27 km.</li>
+<li>Medium resolution (9km): the 3 km resolution data aggregated by a factor of 3 in each direction resulting in a resolution of 9 km.</li>
+<li>Low resolution (27km): the 3 km resolution data aggregated by a factor of 9 in each direction resulting in a resolution of 27 km.</li>
 </ul>
-<p>The function <code><a href="../reference/load_raster.html">load_raster()</a></code> is used to load these data
-into R and takes arguments for <code>product</code> and
-<code>resolution</code>. The <code>metric</code> argument can also be
-used to access the relative abundance CIs. All raster products are
-loaded into R as <code>SpatRaster</code> objects for use with the
-<code>terra</code> R package. For example,</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>The function <code><a href="../reference/load_raster.html">load_raster()</a></code> is used to load these data into R and takes arguments for <code>product</code> and <code>resolution</code>. The <code>metric</code> argument can also be used to access the relative abundance CIs. All raster products are loaded into R as <code>SpatRaster</code> objects for use with the <code>terra</code> R package. For example,</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># weekly, 27km res, median relative abundance</span></span>
-<span><span class="va">abd_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
-<span>                      resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
+<span><span class="va">abd_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"abundance"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># weekly, 27km res, median proportion of population</span></span>
-<span><span class="va">prop_pop_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"proportion-population"</span>, </span>
-<span>                      resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
+<span><span class="va">prop_pop_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"proportion-population"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># weekly, 27km res, abundance confidence intervals</span></span>
-<span><span class="va">abd_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"lower"</span>, </span>
-<span>                         resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
-<span><span class="va">abd_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"upper"</span>, </span>
-<span>                         resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span></code></pre></div>
-<p>Each object has 52 layers, one for each week of the year, and layer
-names store the dates corresponding to the midpoints of each week.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<span><span class="va">abd_lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"lower"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">abd_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"abundance"</span>, metric <span class="op">=</span> <span class="st">"upper"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>Each object has 52 layers, one for each week of the year, and layer names store the dates corresponding to the midpoints of each week.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lr</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"</span></span>
 <span><span class="co">#&gt;  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"</span></span>
@@ -461,31 +310,21 @@ names store the dates corresponding to the midpoints of each week.</p>
 <span><span class="co">#&gt; [41] "2023-10-11" "2023-10-18" "2023-10-25" "2023-11-01" "2023-11-08"</span></span>
 <span><span class="co">#&gt; [46] "2023-11-15" "2023-11-22" "2023-11-29" "2023-12-06" "2023-12-13"</span></span>
 <span><span class="co">#&gt; [51] "2023-12-20" "2023-12-27"</span></span></code></pre></div>
-<p>The GeoTIFFs use the <a href="https://en.wikipedia.org/wiki/Equal_Earth_projection" class="external-link">Equal
-Earth</a> coordinate reference system, an equal area projection suitable
-for global mapping and analysis.</p>
 </div>
-<div class="section level3">
-<h3 id="seasonal-raster-estimates">Seasonal raster estimates<a class="anchor" aria-label="anchor" href="#seasonal-raster-estimates"></a>
+<p>The GeoTIFFs use the <a href="https://en.wikipedia.org/wiki/Equal_Earth_projection" class="external-link">Equal Earth</a> coordinate reference system, an equal area projection suitable for global mapping and analysis.</p>
+</section><section class="level2"><h3 id="seasonal-raster-estimates">Seasonal raster estimates<a class="anchor" aria-label="anchor" href="#seasonal-raster-estimates"></a>
 </h3>
-<p>The seasonal raster estimates are provided for the same set of
-products and at the same three resolutions as the weekly estimates.
-They’re derived from the weekly data by taking the cell-wise mean or max
-across the weeks within each season. The seasonal boundary dates are
-defined through a process of expert review of each species, and are
-available in the data frame <code>ebirdst_runs</code>. Each season is
-also given a quality score from 0 (fail) to 3 (high quality), and
-seasons with a score of 0 are not provided.</p>
-<p>The function <code>load_raster(period = "seasonal")</code> is used to
-load these data into R and takes arguments for <code>product</code>,
-<code>metric</code> and <code>resolution</code>. The data are loaded
-into R as <code>SpatRaster</code> objects for use with the
-<code>terra</code> package. For example,</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>The seasonal raster estimates are provided for the same set of products and at the same three resolutions as the weekly estimates. They’re derived from the weekly data by taking the cell-wise mean or max across the weeks within each season. The seasonal boundary dates are defined through a process of expert review of each species, and are available in the data frame <code>ebirdst_runs</code>. Each season is also given a quality score from 0 (fail) to 3 (high quality), and seasons with a score of 0 are not provided.</p>
+<p>The function <code>load_raster(period = "seasonal")</code> is used to load these data into R and takes arguments for <code>product</code>, <code>metric</code> and <code>resolution</code>. The data are loaded into R as <code>SpatRaster</code> objects for use with the <code>terra</code> package. For example,</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal, 27km res, mean relative abundance</span></span>
-<span><span class="va">abd_seasonal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
-<span>                                 period <span class="op">=</span> <span class="st">"seasonal"</span>, metric <span class="op">=</span> <span class="st">"mean"</span>, </span>
-<span>                                 resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
+<span><span class="va">abd_seasonal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"abundance"</span>,</span>
+<span>  period <span class="op">=</span> <span class="st">"seasonal"</span>, metric <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># season that each layer corresponds to</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_seasonal_mean</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "breeding"               "nonbreeding"            "prebreeding_migration" </span></span>
@@ -503,36 +342,29 @@ into R as <code>SpatRaster</code> objects for use with the
 <span><span class="co">#&gt; max value   : 1.021968</span></span>
 <span></span>
 <span><span class="co"># seasonal, 27km res, max occurrence</span></span>
-<span><span class="va">occ_seasonal_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"occurrence"</span>, </span>
-<span>                                period <span class="op">=</span> <span class="st">"seasonal"</span>, metric <span class="op">=</span> <span class="st">"max"</span>, </span>
-<span>                                resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span></code></pre></div>
-<p>Finally, as a convenience, the data products include year-round
-rasters summarizing the mean or max across all weeks that fall within a
-season that passed the expert review process. These can be accessed
-similarly to the seasonal products, but with
-<code>period = "full-year"</code> instead. For example, these layers can
-be used in conservation planning to assess the most important sites
-across the full range and full annual cycle of a species.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># full year, 27km res, maximum relative abundance</span></span>
-<span><span class="va">abd_fy_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
-<span>                          period <span class="op">=</span> <span class="st">"full-year"</span>, metric <span class="op">=</span> <span class="st">"max"</span>, </span>
-<span>                          resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">occ_seasonal_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"occurrence"</span>,</span>
+<span>  period <span class="op">=</span> <span class="st">"seasonal"</span>, metric <span class="op">=</span> <span class="st">"max"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="range-boundaries">Range boundaries<a class="anchor" aria-label="anchor" href="#range-boundaries"></a>
+<p>Finally, as a convenience, the data products include year-round rasters summarizing the mean or max across all weeks that fall within a season that passed the expert review process. These can be accessed similarly to the seasonal products, but with <code>period = "full-year"</code> instead. For example, these layers can be used in conservation planning to assess the most important sites across the full range and full annual cycle of a species.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># full year, 27km res, maximum relative abundance</span></span>
+<span><span class="va">abd_fy_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
+<span>  <span class="st">"yebsap-example"</span>,</span>
+<span>  product <span class="op">=</span> <span class="st">"abundance"</span>,</span>
+<span>  period <span class="op">=</span> <span class="st">"full-year"</span>, metric <span class="op">=</span> <span class="st">"max"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="st">"27km"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h3 id="range-boundaries">Range boundaries<a class="anchor" aria-label="anchor" href="#range-boundaries"></a>
 </h3>
-<p>Seasonal range polygons are defined as the boundaries of non-zero
-seasonal relative abundance estimates, which are then (optionally)
-smoothed to produce more aesthetically pleasing polygons using the
-<code>smoothr</code> package. They are provided in the widely used
-GeoPackage format and can be loaded into R with
-<code><a href="../reference/load_ranges.html">load_ranges()</a></code>, which returns a set of spatial features for
-use with the <code>sf</code> R package. By default the smoothed ranges
-are returned, but using <code>smoothed = FALSE</code> will return the
-raw, unsmoothed range polygons. Note that only low and medium resolution
-ranges are provided. For example:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>Seasonal range polygons are defined as the boundaries of non-zero seasonal relative abundance estimates, which are then (optionally) smoothed to produce more aesthetically pleasing polygons using the <code>smoothr</code> package. They are provided in the widely used GeoPackage format and can be loaded into R with <code><a href="../reference/load_ranges.html">load_ranges()</a></code>, which returns a set of spatial features for use with the <code>sf</code> R package. By default the smoothed ranges are returned, but using <code>smoothed = FALSE</code> will return the raw, unsmoothed range polygons. Note that only low and medium resolution ranges are provided. For example:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal, 27km res, smoothed ranges</span></span>
 <span><span class="va">ranges</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ranges.html">load_ranges</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
 <span><span class="va">ranges</span></span>
@@ -541,214 +373,143 @@ ranges are provided. For example:</p>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: -90.41254 ymin: 41.69681 xmax: -82.4146 ymax: 48.19076</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 9</span></span>
 <span><span class="co">#&gt;   species_code scientific_name    common_name       prediction_year type  season</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range breed…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range nonbr…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range postb…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> yebsap       Sphyrapicus varius Yellow-bellied S…            <span style="text-decoration: underline;">2</span>023 range prebr…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: start_date &lt;date&gt;, end_date &lt;date&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   geom &lt;MULTIPOLYGON [°]&gt;</span></span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range breed…</span></span>
+<span><span class="co">#&gt; 2 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range nonbr…</span></span>
+<span><span class="co">#&gt; 3 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range postb…</span></span>
+<span><span class="co">#&gt; 4 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range prebr…</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: start_date &lt;date&gt;, end_date &lt;date&gt;,</span></span>
+<span><span class="co">#&gt; #   geom &lt;MULTIPOLYGON [°]&gt;</span></span>
 <span></span>
 <span><span class="co"># subset to just the breeding season range using dplyr</span></span>
 <span><span class="va">range_breeding</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ranges</span>, <span class="va">season</span> <span class="op">==</span> <span class="st">"breeding"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="regional-summary-statistics">Regional summary statistics<a class="anchor" aria-label="anchor" href="#regional-summary-statistics"></a>
+</section><section class="level2"><h3 id="regional-summary-statistics">Regional summary statistics<a class="anchor" aria-label="anchor" href="#regional-summary-statistics"></a>
 </h3>
-<p>Regional summaries of the seasonal raster estimates are also provided
-for a standard set of regions (countries and states/provinces). These
-summary statistics can be loaded with
-<code><a href="../reference/load_regional_stats.html">load_regional_stats()</a></code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>Regional summaries of the seasonal raster estimates are also provided for a standard set of regions (countries and states/provinces). These summary statistics can be loaded with <code><a href="../reference/load_regional_stats.html">load_regional_stats()</a></code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">regional</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_regional_stats.html">load_regional_stats</a></span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">regional</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 8</span></span>
 <span><span class="co">#&gt; Columns: 15</span></span>
-<span><span class="co">#&gt; $ species_code           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"<span style="color: #949494;">, </span>"yebsap-example"<span style="color: #949494;">, </span>"yebsap-exa…</span></span>
-<span><span class="co">#&gt; $ region_type            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "country"<span style="color: #949494;">, </span>"country"<span style="color: #949494;">, </span>"country"<span style="color: #949494;">, </span>"country"<span style="color: #949494;">, </span>"st…</span></span>
-<span><span class="co">#&gt; $ region_code            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "USA"<span style="color: #949494;">, </span>"USA"<span style="color: #949494;">, </span>"USA"<span style="color: #949494;">, </span>"USA"<span style="color: #949494;">, </span>"USA-MI"<span style="color: #949494;">, </span>"USA-MI"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ region_name            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "United States"<span style="color: #949494;">, </span>"United States"<span style="color: #949494;">, </span>"United State…</span></span>
-<span><span class="co">#&gt; $ continent_code         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"<span style="color: #949494;">, </span>"NA"</span></span>
-<span><span class="co">#&gt; $ continent_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "North America"<span style="color: #949494;">, </span>"North America"<span style="color: #949494;">, </span>"North Americ…</span></span>
-<span><span class="co">#&gt; $ season                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"<span style="color: #949494;">, </span>"nonbreeding"<span style="color: #949494;">, </span>"postbreeding_migrat…</span></span>
-<span><span class="co">#&gt; $ abundance_mean         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.114652605<span style="color: #949494;">, </span>0.123534772<span style="color: #949494;">, </span>0.073477334<span style="color: #949494;">, </span>0.084178…</span></span>
-<span><span class="co">#&gt; $ total_pop_percent      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3034155366<span style="color: #949494;">, </span>0.9497140025<span style="color: #949494;">, </span>0.7885750146<span style="color: #949494;">, </span>0.435…</span></span>
-<span><span class="co">#&gt; $ continent_pop_percent  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.3034155366<span style="color: #949494;">, </span>0.9497140025<span style="color: #949494;">, </span>0.7885750146<span style="color: #949494;">, </span>0.435…</span></span>
-<span><span class="co">#&gt; $ range_occupied_percent <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.25990556<span style="color: #949494;">, </span>0.40518814<span style="color: #949494;">, </span>0.54434548<span style="color: #949494;">, </span>0.49810429<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ range_total_percent    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.231714761<span style="color: #949494;">, </span>0.801986186<span style="color: #949494;">, </span>0.720437099<span style="color: #949494;">, </span>0.573623…</span></span>
-<span><span class="co">#&gt; $ range_days_occupation  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 98<span style="color: #949494;">, </span>112<span style="color: #949494;">, </span>91<span style="color: #949494;">, </span>63<span style="color: #949494;">, </span>98<span style="color: #949494;">, </span>112<span style="color: #949494;">, </span>91<span style="color: #949494;">, </span>49</span></span>
-<span><span class="co">#&gt; $ max_week               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2023-08-16"<span style="color: #949494;">, </span>"2023-11-22"<span style="color: #949494;">, </span>"2023-10-18"<span style="color: #949494;">, </span>"2023…</span></span>
-<span><span class="co">#&gt; $ max_week_percent_pop   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.4100934563<span style="color: #949494;">, </span>0.9638256049<span style="color: #949494;">, </span>0.9979910064<span style="color: #949494;">, </span>0.985…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ species_code           &lt;chr&gt; "yebsap-example", "yebsap-example", "yebsap-exa…</span></span>
+<span><span class="co">#&gt; $ region_type            &lt;chr&gt; "country", "country", "country", "country", "st…</span></span>
+<span><span class="co">#&gt; $ region_code            &lt;chr&gt; "USA", "USA", "USA", "USA", "USA-MI", "USA-MI",…</span></span>
+<span><span class="co">#&gt; $ region_name            &lt;chr&gt; "United States", "United States", "United State…</span></span>
+<span><span class="co">#&gt; $ continent_code         &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"</span></span>
+<span><span class="co">#&gt; $ continent_name         &lt;chr&gt; "North America", "North America", "North Americ…</span></span>
+<span><span class="co">#&gt; $ season                 &lt;chr&gt; "breeding", "nonbreeding", "postbreeding_migrat…</span></span>
+<span><span class="co">#&gt; $ abundance_mean         &lt;dbl&gt; 0.114652605, 0.123534772, 0.073477334, 0.084178…</span></span>
+<span><span class="co">#&gt; $ total_pop_percent      &lt;dbl&gt; 0.3034155366, 0.9497140025, 0.7885750146, 0.435…</span></span>
+<span><span class="co">#&gt; $ continent_pop_percent  &lt;dbl&gt; 0.3034155366, 0.9497140025, 0.7885750146, 0.435…</span></span>
+<span><span class="co">#&gt; $ range_occupied_percent &lt;dbl&gt; 0.25990556, 0.40518814, 0.54434548, 0.49810429,…</span></span>
+<span><span class="co">#&gt; $ range_total_percent    &lt;dbl&gt; 0.231714761, 0.801986186, 0.720437099, 0.573623…</span></span>
+<span><span class="co">#&gt; $ range_days_occupation  &lt;int&gt; 98, 112, 91, 63, 98, 112, 91, 49</span></span>
+<span><span class="co">#&gt; $ max_week               &lt;chr&gt; "2023-08-16", "2023-11-22", "2023-10-18", "2023…</span></span>
+<span><span class="co">#&gt; $ max_week_percent_pop   &lt;dbl&gt; 0.4100934563, 0.9638256049, 0.9979910064, 0.985…</span></span></code></pre></div>
+</div>
 <p>The eight summary statistics are defined as:</p>
 <ul>
 <li>
-<code>abundance_mean</code>: mean relative abundance in the
-region.</li>
+<code>abundance_mean</code>: mean relative abundance in the region.</li>
 <li>
-<code>total_pop_percent</code>: the proportion of the seasonal
-modeled population within the region.</li>
+<code>total_pop_percent</code>: the proportion of the seasonal modeled population within the region.</li>
 <li>
-<code>continent_pop_percent</code>: the proportion of the seasonal
-modeled population for the continent within the region. The
-<code>continent_name</code> column identifies the continent that the
-region falls within. Note that Yellow-bellied Sapsucker only occurs in
-North America so the total and continental proportions are
-identical.</li>
+<code>continent_pop_percent</code>: the proportion of the seasonal modeled population for the continent within the region. The <code>continent_name</code> column identifies the continent that the region falls within. Note that Yellow-bellied Sapsucker only occurs in North America so the total and continental proportions are identical.</li>
 <li>
-<code>range_occupied_percent</code>: the proportion of the region
-occupied by the species during the given season.</li>
+<code>range_occupied_percent</code>: the proportion of the region occupied by the species during the given season.</li>
 <li>
-<code>range_total_percent</code>: the proportion of the species
-seasonal range falling within the region.</li>
+<code>range_total_percent</code>: the proportion of the species seasonal range falling within the region.</li>
 <li>
-<code>range_days_occupation</code>: number of days of the season
-that the region was occupied by this species.</li>
+<code>range_days_occupation</code>: number of days of the season that the region was occupied by this species.</li>
 <li>
-<code>max_week</code>: the week of the year with the highest
-proportion of the modeled population falling within the region.</li>
+<code>max_week</code>: the week of the year with the highest proportion of the modeled population falling within the region.</li>
 <li>
-<code>max_week_percent_pop</code>: the proportion of the modeled
-population within the region in <code>max_week</code>, i.e. the maximum
-weekly value.</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="regional-statistics-for-all-species">Regional statistics for all species<a class="anchor" aria-label="anchor" href="#regional-statistics-for-all-species"></a>
+<code>max_week_percent_pop</code>: the proportion of the modeled population within the region in <code>max_week</code>, i.e. the maximum weekly value.</li>
+</ul></section><section class="level2"><h3 id="regional-statistics-for-all-species">Regional statistics for all species<a class="anchor" aria-label="anchor" href="#regional-statistics-for-all-species"></a>
 </h3>
-<p>The regional summary statistics described above are also compiled
-into a single dataset covering all species with eBird Status Data
-Products, rather than being split across the individual species data
-packages. This dataset can be accessed with
-<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code>, which downloads the file on first
-use and loads it in a single step. Subsequent calls load the already
-downloaded file directly. As with the <code>load_*()</code> functions,
-the download happens automatically without prompting.</p>
-<p>As an example, we can use this dataset to get a list of all species
-with breeding or resident season estimates in a given region,
-e.g. Taiwan. We subset to the region and seasons of interest, keep just
-the species code, season, and proportion of the population columns, then
-join to <code>ebirdst_runs</code> to attach the common and scientific
-names:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>The regional summary statistics described above are also compiled into a single dataset covering all species with eBird Status Data Products, rather than being split across the individual species data packages. This dataset can be accessed with <code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code>, which downloads the file on first use and loads it in a single step. Subsequent calls load the already downloaded file directly. As with the <code>load_*()</code> functions, the download happens automatically without prompting.</p>
+<p>As an example, we can use this dataset to get a list of all species with breeding or resident season estimates in a given region, e.g. Taiwan. We subset to the region and seasons of interest, keep just the species code, season, and proportion of the population columns, then join to <code>ebirdst_runs</code> to attach the common and scientific names:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># download (on first use) and load regional stats for all species</span></span>
 <span><span class="va">regional_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># breeding and resident species in taiwan</span></span>
 <span><span class="va">taiwan</span> <span class="op">&lt;-</span> <span class="va">regional_all</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">region_name</span> <span class="op">==</span> <span class="st">"Taiwan"</span>,</span>
-<span>         <span class="va">season</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"breeding"</span>, <span class="st">"resident"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">region_name</span> <span class="op">==</span> <span class="st">"Taiwan"</span>,</span>
+<span>    <span class="va">season</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"breeding"</span>, <span class="st">"resident"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">species_code</span>, <span class="va">season</span>, <span class="va">total_pop_percent</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># join to ebirdst_runs to attach common and scientific names</span></span>
 <span><span class="va">taiwan</span> <span class="op">&lt;-</span> <span class="va">taiwan</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">ebirdst_runs</span>, by <span class="op">=</span> <span class="st">"species_code"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">total_pop_percent</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">total_pop_percent</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">species_code</span>, <span class="va">common_name</span>, <span class="va">scientific_name</span>, <span class="va">season</span>, <span class="va">total_pop_percent</span><span class="op">)</span></span>
 <span><span class="va">taiwan</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="predictive-performance-metrics-ppms">Predictive performance metrics (PPMs)<a class="anchor" aria-label="anchor" href="#predictive-performance-metrics-ppms"></a>
+</section><section class="level2"><h3 id="predictive-performance-metrics-ppms">Predictive performance metrics (PPMs)<a class="anchor" aria-label="anchor" href="#predictive-performance-metrics-ppms"></a>
 </h3>
-<p>A subset of 10% of the eBird observations is excluded from model
-training to be used as a test set. For each submodel making up the eBird
-Status model ensemble, model predictions are compared to actual
-occurrence and count for a spatiotemporally subsampled version of the
-test dataset to generate a suite of predictive performance metrics
-(PPMs) at the base model level. These PPMs are then summarized across
-the ensemble to a 27 km resolution raster grid, where the cell values
-are the average across all models in the ensemble contributing to that
-cell. For migrants, PPMs are provided at weekly temporal resolution, in
-the form of a stack of 52 rasters for each metric, while for residents,
-year round PPMs are provided in the form of a single raster for each
-metric.</p>
-<p>In total, nineteen predictive performance metrics are provided in
-four categories. <strong>Binary</strong> PPMs compare the predicted
-presence/absence to observed detection/non-detection for all test
-checklists.</p>
+<p>A subset of 10% of the eBird observations is excluded from model training to be used as a test set. For each submodel making up the eBird Status model ensemble, model predictions are compared to actual occurrence and count for a spatiotemporally subsampled version of the test dataset to generate a suite of predictive performance metrics (PPMs) at the base model level. These PPMs are then summarized across the ensemble to a 27 km resolution raster grid, where the cell values are the average across all models in the ensemble contributing to that cell. For migrants, PPMs are provided at weekly temporal resolution, in the form of a stack of 52 rasters for each metric, while for residents, year round PPMs are provided in the form of a single raster for each metric.</p>
+<p>In total, nineteen predictive performance metrics are provided in four categories. <strong>Binary</strong> PPMs compare the predicted presence/absence to observed detection/non-detection for all test checklists.</p>
 <ul>
 <li>
 <code>binary_f1</code>: <a href="https://en.wikipedia.org/wiki/F-score" class="external-link">F1-score</a>.</li>
 <li>
-<code>binary_mcc</code>: <a href="https://en.wikipedia.org/wiki/Phi_coefficient" class="external-link">Matthews
-Correlation Coefficient (MCC)</a>.</li>
+<code>binary_mcc</code>: <a href="https://en.wikipedia.org/wiki/Phi_coefficient" class="external-link">Matthews Correlation Coefficient (MCC)</a>.</li>
 <li>
-<code>binary_prevalence</code>: the observed detection probability
-after spatiotemporal subsampling.</li>
+<code>binary_prevalence</code>: the observed detection probability after spatiotemporal subsampling.</li>
 </ul>
-<p><strong>Occurrence</strong> PPMs compare the predicted encounter rate
-with the observed detection/non-detection for the subset of test
-checklists within the predicted range boundary.</p>
+<p><strong>Occurrence</strong> PPMs compare the predicted encounter rate with the observed detection/non-detection for the subset of test checklists within the predicted range boundary.</p>
 <ul>
 <li>
-<code>occ_bernoulli_dev</code>: the proportion of the Bernoulli
-deviance explained.</li>
+<code>occ_bernoulli_dev</code>: the proportion of the Bernoulli deviance explained.</li>
 <li>
-<code>occ_bin_spearman</code>: test observations are binned by
-predicted encounter rate with bin widths of 0.05, then the mean observed
-prevalence and predicted encounter rate are calculated within bins. This
-metric is the Spearman’s rank correlation coefficient comparing the
-observed and predicted binned mean values.</li>
+<code>occ_bin_spearman</code>: test observations are binned by predicted encounter rate with bin widths of 0.05, then the mean observed prevalence and predicted encounter rate are calculated within bins. This metric is the Spearman’s rank correlation coefficient comparing the observed and predicted binned mean values.</li>
 <li>
-<code>occ_brier</code>: Brier score, i.e. the mean squared
-difference between predicted encounter rate and observed
-detection/non-detection.</li>
+<code>occ_brier</code>: Brier score, i.e. the mean squared difference between predicted encounter rate and observed detection/non-detection.</li>
 <li>
-<code>occ_pr_auc</code>: <a href="https://doi.org/10.1111/2041-210X.13140" class="external-link">area on the
-precision-recall curve (PR-AUC)</a>
+<code>occ_pr_auc</code>: <a href="https://doi.org/10.1111/2041-210X.13140" class="external-link">area on the precision-recall curve (PR-AUC)</a>
 </li>
 <li>
-<code>occ_pr_auc_gt_prev</code>: the proportion of the ensemble for
-which the PR-AUC is greater than observed prevalence, which indicates
-that the model is performing better than random guessing.</li>
+<code>occ_pr_auc_gt_prev</code>: the proportion of the ensemble for which the PR-AUC is greater than observed prevalence, which indicates that the model is performing better than random guessing.</li>
 <li>
-<code>occ_pr_auc_normalized</code>: the <a href="https://icml.cc/2012/papers/349.pdf" class="external-link">PR-AUC normalized</a> to
-account for class imbalance so that a value of 0 represents performance
-equal to random guessing and a value of 1 represents perfect
-classification.</li>
+<code>occ_pr_auc_normalized</code>: the <a href="https://icml.cc/2012/papers/349.pdf" class="external-link">PR-AUC normalized</a> to account for class imbalance so that a value of 0 represents performance equal to random guessing and a value of 1 represents perfect classification.</li>
 </ul>
-<p><strong>Count</strong> PPMs compare the predicted count with the
-observed count for the subset of test checklists within the predicted
-range boundary and where the species was detected.</p>
+<p><strong>Count</strong> PPMs compare the predicted count with the observed count for the subset of test checklists within the predicted range boundary and where the species was detected.</p>
 <ul>
 <li>
-<code>count_log_pearson</code>: the Pearson correlation coefficient
-comparing the logarithm of the predicted count with the logarithm of the
-observed count.</li>
+<code>count_log_pearson</code>: the Pearson correlation coefficient comparing the logarithm of the predicted count with the logarithm of the observed count.</li>
 <li>
 <code>count_mae</code>: mean absolute error (MAE).</li>
 <li>
-<code>count_poisson_dev</code>: the proportion of the Poisson
-deviance explained.</li>
+<code>count_poisson_dev</code>: the proportion of the Poisson deviance explained.</li>
 <li>
 <code>count_rmse</code>: root mean squared error (RMSE).</li>
 <li>
-<code>count_spearman</code>: Spearman’s rank correlation
-coefficient.</li>
+<code>count_spearman</code>: Spearman’s rank correlation coefficient.</li>
 </ul>
-<p><strong>Abundance</strong> PPMs compare the predicted relative
-abundance with the observed count for the full set of tests
-checklists.</p>
+<p><strong>Abundance</strong> PPMs compare the predicted relative abundance with the observed count for the full set of tests checklists.</p>
 <ul>
 <li>
-<code>abd_log_pearson</code>: Pearson correlation coefficient
-comparing the logarithm of the predicted relative abundance with the
-logarithm of the observed count.</li>
+<code>abd_log_pearson</code>: Pearson correlation coefficient comparing the logarithm of the predicted relative abundance with the logarithm of the observed count.</li>
 <li>
 <code>abd_mae</code>: the mean absolute error (MAE).</li>
 <li>
-<code>abd_poisson_dev</code>: the proportion of the Poisson deviance
-explained.</li>
+<code>abd_poisson_dev</code>: the proportion of the Poisson deviance explained.</li>
 <li>
 <code>abd_rmse</code>: root mean squared error (RMSE).</li>
 <li>
-<code>abd_spearman</code>: Spearman’s rank correlation
-coefficient.</li>
+<code>abd_spearman</code>: Spearman’s rank correlation coefficient.</li>
 </ul>
-<p>The spatial PPMs can be loaded using <code><a href="../reference/load_ppm.html">load_ppm()</a></code>. For
-example, to load the normalized PR-AUC for the example dataset use:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>The spatial PPMs can be loaded using <code><a href="../reference/load_ppm.html">load_ppm()</a></code>. For example, to load the normalized PR-AUC for the example dataset use:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr_auc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ppm.html">load_ppm</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, ppm <span class="op">=</span> <span class="st">"occ_pr_auc_normalized"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster</span></span>
@@ -760,62 +521,131 @@ example, to load the normalized PR-AUC for the example dataset use:</p>
 <span><span class="co">#&gt; names       :    01-04,    01-11,    01-18,    01-25,    02-01,    02-08, ...</span></span>
 <span><span class="co">#&gt; min values  : 0.111343, 0.098129, 0.018913, 0.018913, 0.018913, 0.014034, ...</span></span>
 <span><span class="co">#&gt; max values  : 0.734387, 0.734387, 0.796934, 0.796934,        1,        1, ...</span></span></code></pre></div>
-<p>Since Yellow-bellied Sapsucker is a migrant, there are 52 layers, one
-for each week of the year, giving the mean PR-AUC for each 27 km by 27
-km grid cell. We can produce a simple plot of PR-AUC for a week in the
-middle of the year. Note that <code><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim()</a></code> is used to trim the
-global raster down to just show the area with data (the state of
-Michigan in this example dataset).</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+</div>
+<p>Since Yellow-bellied Sapsucker is a migrant, there are 52 layers, one for each week of the year, giving the mean PR-AUC for each 27 km by 27 km grid cell. We can produce a simple plot of PR-AUC for a week in the middle of the year. Note that <code><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim()</a></code> is used to trim the global raster down to just show the area with data (the state of Michigan in this example dataset).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">[[</span><span class="fl">26</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="status_files/figure-html/types_ppms_plot-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
-<p>See the <a href="https://ebird.github.io/ebirdst/articles/applications.html">applications
-vignette</a> for a more detailed example of how to use the PPMs.</p>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="status_files/figure-html/types_ppms_plot-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
 </div>
-<div class="section level2">
-<h2 id="coverage">Data coverage<a class="anchor" aria-label="anchor" href="#coverage"></a>
+</div>
+<p>See the <a href="https://ebird.github.io/ebirdst/articles/applications.html">applications vignette</a> for a more detailed example of how to use the PPMs.</p>
+</section></section><section class="section level2"><h2 id="coverage">Data coverage<a class="anchor" aria-label="anchor" href="#coverage"></a>
 </h2>
-<p>In addition to the species-specific data products discussed above,
-<code>ebirdst</code> provides access to two species-agnostic data
-products from our data coverage workflow. The data products in GeoTIFF
-format provide weekly estimates on a regular 3 km by 3 km grid of</p>
-<ol style="list-style-type: decimal">
+<p>In addition to the species-specific data products discussed above, <code>ebirdst</code> provides access to two species-agnostic data products from our data coverage workflow. The data products in GeoTIFF format provide weekly estimates on a regular 3 km by 3 km grid of</p>
+<ol type="1">
 <li>
-<strong>Site selection probability:</strong> the modeled probability
-(0-1) that a grid cell of a certain habitat configuration received an
-eBird checklist within that region and season.</li>
+<strong>Site selection probability:</strong> the modeled probability (0-1) that a grid cell of a certain habitat configuration received an eBird checklist within that region and season.</li>
 <li>
-<strong>Spatial coverage:</strong> the fraction (0-1) of grid cells
-within that region and season that checklists for the given week.</li>
+<strong>Spatial coverage:</strong> the fraction (0-1) of grid cells within that region and season that checklists for the given week.</li>
 </ol>
-<p>These data products identify areas where the coverage of eBird data
-is relatively high or low, which can be used to prioritize areas for
-increased data collection. For example, to load and map the site
-selection probability for the week of May 10, use
-<code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>, which will download the requested
-weeks automatically if they haven’t already been downloaded. If you
-prefer to download the data coverage products in advance, use
-<code><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p>These data products identify areas where the coverage of eBird data is relatively high or low, which can be used to prioritize areas for increased data collection. For example, to load and map the site selection probability for the week of May 10, use <code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>, which will download the requested weeks automatically if they haven’t already been downloaded. If you prefer to download the data coverage products in advance, use <code><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">site_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_data_coverage.html">load_data_coverage</a></span><span class="op">(</span><span class="st">"selection-probability"</span>, weeks <span class="op">=</span> <span class="st">"05-10"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">site_sel</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="status_files/figure-html/coverage_load-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="status_files/figure-html/coverage_load-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</div>
+</div>
+</section><section class="section level2"><h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <blockquote>
-Fink, D., T. Auer, A. Johnston, V. Ruiz‐Gutierrez, W.M. Hochachka, S.
-Kelling. 2019. Modeling avian full annual cycle distribution and
-population trends with citizen science data. Ecological Applications,
-00(00):e02056. doi: 10.1002/eap.2056
+Fink, D., T. Auer, A. Johnston, V. Ruiz‐Gutierrez, W.M. Hochachka, S. Kelling. 2019. Modeling avian full annual cycle distribution and population trends with citizen science data. Ecological Applications, 00(00):e02056. doi: 10.1002/eap.2056
 </blockquote>
-</div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+</section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
-
 
 
     <footer><div class="pkgdown-footer-left">

@@ -61,11 +61,13 @@ we load them, so there’s no need to download them explicitly first.
 ``` r
 
 # load seasonal mean relative abundance at 3km resolution
-abd_seasonal <- load_raster("wesmea",
-                            product = "abundance",
-                            period = "seasonal",
-                            metric = "mean",
-                            resolution = "3km")
+abd_seasonal <- load_raster(
+  species = "wesmea",
+  product = "abundance",
+  period = "seasonal",
+  metric = "mean",
+  resolution = "3km"
+)
 
 # extract just the breeding season relative abundance
 abd_breeding <- abd_seasonal[["breeding"]]
@@ -104,14 +106,14 @@ load a polygon defining the boundary of that region using
 ``` r
 
 # region boundary
-region_boundary <- ne_states(iso_a2 = "US") |> 
+region_boundary <- ne_states(iso_a2 = "US") |>
   filter(name == "Montana")
 
 # project boundary to match raster data
 region_boundary_proj <- st_transform(region_boundary, st_crs(abd_breeding))
 
 # crop and mask to boundary of montana
-abd_breeding_mask <- crop(abd_breeding, region_boundary_proj) |> 
+abd_breeding_mask <- crop(abd_breeding, region_boundary_proj) |>
   mask(region_boundary_proj)
 
 # map the cropped data
@@ -133,19 +135,21 @@ programmatically as follows.
 ``` r
 
 # find the centroid of the region
-region_centroid <- region_boundary |> 
-  st_geometry() |> 
-  st_transform(crs = 4326) |> 
-  st_centroid() |> 
-  st_coordinates() |> 
+region_centroid <- region_boundary |>
+  st_geometry() |>
+  st_transform(crs = 4326) |>
+  st_centroid() |>
+  st_coordinates() |>
   round(1)
 
 # define projection
-crs_laea <- paste0("+proj=laea +lat_0=", region_centroid[2],
-                   " +lon_0=", region_centroid[1])
+crs_laea <- paste0(
+  "+proj=laea +lat_0=", region_centroid[2],
+  " +lon_0=", region_centroid[1]
+)
 
 # transform to the custom projection using nearest neighbor resampling
-abd_breeding_laea <- project(abd_breeding_mask, crs_laea, method = "near") |> 
+abd_breeding_laea <- project(abd_breeding_mask, crs_laea, method = "near") |>
   # remove areas of the raster containing no data
   trim()
 
@@ -197,42 +201,47 @@ excellent source of attribution free contextual GIS data.
 ``` r
 
 # natural earth boundaries
-countries <- ne_countries(returnclass = "sf") |> 
-  st_geometry() |> 
+countries <- ne_countries(returnclass = "sf") |>
+  st_geometry() |>
   st_transform(crs_laea)
-states <- ne_states(iso_a2 = "US") |> 
-  st_geometry() |> 
+states <- ne_states(iso_a2 = "US") |>
+  st_geometry() |>
   st_transform(crs_laea)
 
 # define the map plotting extent with the region boundary polygon
-region_boundary_laea <- region_boundary |> 
-  st_geometry() |> 
+region_boundary_laea <- region_boundary |>
+  st_geometry() |>
   st_transform(crs_laea)
 plot(region_boundary_laea)
 # add basemap
 plot(countries, col = "#cfcfcf", border = "#888888", add = TRUE)
 # add relative abundance
 plot(abd_breeding_laea,
-     breaks = breaks, col = pal, 
-     maxcell = ncell(abd_breeding_laea),
-     legend = FALSE, add = TRUE)
+  breaks = breaks, col = pal,
+  maxcell = ncell(abd_breeding_laea),
+  legend = FALSE, add = TRUE
+)
 # add boundaries
 lines(vect(countries), col = "#ffffff", lwd = 3)
-lines(vect(states), col =  "#ffffff", lwd = 1.5, xpd = TRUE)
+lines(vect(states), col = "#ffffff", lwd = 1.5, xpd = TRUE)
 lines(vect(region_boundary_laea), col = "#ffffff", lwd = 3, xpd = TRUE)
 
 # add legend using the fields package
 # label the bottom, middle, and top
 labels <- quantile(breaks, c(0, 0.5, 1))
 label_breaks <- seq(0, 1, length.out = length(breaks))
-image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
-           smallplot = c(0.90, 0.93, 0.15, 0.85),
-           legend.only = TRUE,
-           axis.args = list(at = c(0, 0.5, 1), 
-                            labels = round(labels, 2),
-                            col.axis = "black", fg = NA,
-                            cex.axis = 0.9, lwd.ticks = 0,
-                            line = -0.5))
+image.plot(
+  zlim = c(0, 1), breaks = label_breaks, col = pal,
+  smallplot = c(0.90, 0.93, 0.15, 0.85),
+  legend.only = TRUE,
+  axis.args = list(
+    at = c(0, 0.5, 1),
+    labels = round(labels, 2),
+    col.axis = "black", fg = NA,
+    cex.axis = 0.9, lwd.ticks = 0,
+    line = -0.5
+  )
+)
 ```
 
 ![](applications_files/figure-html/map-basemap-1.png)
@@ -259,7 +268,7 @@ Montana. To start we’ll load a polygon for the boundary of Montana.
 
 ``` r
 
-region_boundary <- ne_states(iso_a2 = "US") |> 
+region_boundary <- ne_states(iso_a2 = "US") |>
   filter(name == "Montana")
 ```
 
@@ -293,17 +302,22 @@ then summarizes these values using a user-provided function.
 
 # extract values within region and calculate the mean
 abd_median_region <- extract(abd_median, region_boundary_proj,
-                             fun = "mean", na.rm = TRUE, ID = FALSE)
+  fun = "mean", na.rm = TRUE, ID = FALSE
+)
 abd_lower_region <- extract(abd_lower, region_boundary_proj,
-                            fun = "mean", na.rm = TRUE, ID = FALSE)
+  fun = "mean", na.rm = TRUE, ID = FALSE
+)
 abd_upper_region <- extract(abd_upper, region_boundary_proj,
-                            fun = "mean", na.rm = TRUE, ID = FALSE)
+  fun = "mean", na.rm = TRUE, ID = FALSE
+)
 
 # transform to data frame format with rows corresponding to weeks
-chronology <- data.frame(week = as.Date(names(abd_median)),
-                         median = as.numeric(abd_median_region),
-                         lower = as.numeric(abd_lower_region),
-                         upper = as.numeric(abd_upper_region))
+chronology <- data.frame(
+  week = as.Date(names(abd_median)),
+  median = as.numeric(abd_median_region),
+  lower = as.numeric(abd_lower_region),
+  upper = as.numeric(abd_upper_region)
+)
 ```
 
 Finally, let’s use this data frame to generate a migration chronology
@@ -316,9 +330,11 @@ ggplot(chronology) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
   geom_line() +
   scale_x_date(date_labels = "%b", date_breaks = "1 month") +
-  labs(x = "Week", 
-       y = "Mean relative abundance in Montana",
-       title = "Migration chronology for Western Meadowlark in Montana")
+  labs(
+    x = "Week",
+    y = "Mean relative abundance in Montana",
+    title = "Migration chronology for Western Meadowlark in Montana"
+  )
 ```
 
 ![](applications_files/figure-html/chron-single-chart-1.png)
@@ -345,12 +361,14 @@ abundance.
 
 ``` r
 
-grassland_species <- c("Baird's Sparrow",
-                       "Bobolink",
-                       "Chestnut-collared Longspur",
-                       "Sprague's Pipit",
-                       "Upland Sandpiper",
-                       "Western Meadowlark")
+grassland_species <- c(
+  "Baird's Sparrow",
+  "Bobolink",
+  "Chestnut-collared Longspur",
+  "Sprague's Pipit",
+  "Upland Sandpiper",
+  "Western Meadowlark"
+)
 
 chronologies <- NULL
 for (species in grassland_species) {
@@ -359,30 +377,35 @@ for (species in grassland_species) {
   abd_median <- load_raster(species)
   abd_lower <- load_raster(species, metric = "lower")
   abd_upper <- load_raster(species, metric = "upper")
-  
+
   # total relative abundance across the entire modeled range of the species
   abd_total <- global(abd_median, fun = sum, na.rm = TRUE)$sum
-  
+
   # total abundance within the region of interest
   abd_median_region <- extract(abd_median, region_boundary_proj,
-                               fun = "sum", na.rm = TRUE, ID = FALSE)
+    fun = "sum", na.rm = TRUE, ID = FALSE
+  )
   abd_lower_region <- extract(abd_lower, region_boundary_proj,
-                              fun = "sum", na.rm = TRUE, ID = FALSE)
+    fun = "sum", na.rm = TRUE, ID = FALSE
+  )
   abd_upper_region <- extract(abd_upper, region_boundary_proj,
-                              fun = "sum", na.rm = TRUE, ID = FALSE)
-  
+    fun = "sum", na.rm = TRUE, ID = FALSE
+  )
+
   # proportion of population within the region of interest
   prop_pop_median <- as.numeric(abd_median_region) / abd_total
   prop_pop_lower <- as.numeric(abd_lower_region) / abd_total
   prop_pop_upper <- as.numeric(abd_upper_region) / abd_total
-  
+
   # transform to data frame format with rows corresponding to weeks
-  chronology <- data.frame(species = species,
-                           week = as.Date(names(abd_median)),
-                           median = prop_pop_median,
-                           lower = prop_pop_lower,
-                           upper = pmin(prop_pop_upper, 1))
-  
+  chronology <- data.frame(
+    species = species,
+    week = as.Date(names(abd_median)),
+    median = prop_pop_median,
+    lower = prop_pop_lower,
+    upper = pmin(prop_pop_upper, 1)
+  )
+
   # combine with other species
   chronologies <- bind_rows(chronologies, chronology)
 }
@@ -401,11 +424,13 @@ ggplot(chronologies) +
   scale_y_continuous(labels = scales::label_percent()) +
   scale_color_brewer(palette = "Set1") +
   scale_fill_brewer(palette = "Set1") +
-  labs(x = NULL, 
-       y = "Percent of population in Montana",
-       title = "Migration chronologies for grassland birds in Montana",
-       color = NULL, fill = NULL) +
-    theme(legend.position = "bottom")
+  labs(
+    x = NULL,
+    y = "Percent of population in Montana",
+    title = "Migration chronologies for grassland birds in Montana",
+    color = NULL, fill = NULL
+  ) +
+  theme(legend.position = "bottom")
 ```
 
 ![](applications_files/figure-html/chron-multi-chart-1.png)
@@ -474,14 +499,16 @@ function.
 ``` r
 
 # seasonal proportion of population
-prop_pop_seasonal <- load_raster("goleag", 
-                                 product = "proportion-population",
-                                 period = "seasonal")
+prop_pop_seasonal <- load_raster(
+  species = "goleag",
+  product = "proportion-population",
+  period = "seasonal"
+)
 
 # state boundaries, excluding hawaii
-states <- ne_states(iso_a2 = "US") |> 
-  filter(name != "Hawaii") |> 
-  select(state = name) |> 
+states <- ne_states(iso_a2 = "US") |>
+  filter(name != "Hawaii") |>
+  select(state = name) |>
   # transform to match projection of raster data
   st_transform(crs = st_crs(prop_pop_seasonal))
 ```
@@ -497,14 +524,18 @@ has little impact, but it can play a more important role for smaller
 regions.
 
 ``` r
-
-state_prop_pop <- extract(prop_pop_seasonal, states, 
-                          fun = "sum", na.rm = TRUE, weights = TRUE,
-                          bind = TRUE) |> 
-  as.data.frame() |> 
+state_prop_pop <- extract(
+  prop_pop_seasonal, states,
+  fun = "sum", na.rm = TRUE, weights = TRUE,
+  bind = TRUE
+) |>
+  as.data.frame() |>
   # sort in descending order of breeding proportion of population
   arrange(desc(breeding))
-#> |---------|---------|---------|---------|=========================================                                          
+#> 
+|---------|---------|---------|---------|
+=========================================
+                                          
 head(state_prop_pop)
 #>        state   breeding  nonbreeding prebreeding_migration
 #> 1     Alaska 0.07868446 9.979945e-05           0.198995523
@@ -538,15 +569,19 @@ American population.
 ``` r
 
 # seasonal relative abundance
-abd_seasonal <- load_raster("goleag", 
-                            product = "abundance",
-                            period = "seasonal")
+abd_seasonal <- load_raster(
+  species = "goleag",
+  product = "abundance",
+  period = "seasonal"
+)
 
 # load country polygon, union into a single polygon, and project
-noram <- ne_countries(country = c("United States of America", 
-                                  "Canada", "Mexico")) |> 
-  st_union() |> 
-  st_transform(crs = st_crs(abd_seasonal)) |> 
+noram <- ne_countries(country = c(
+  "United States of America",
+  "Canada", "Mexico"
+)) |>
+  st_union() |>
+  st_transform(crs = st_crs(abd_seasonal)) |>
   # vect converts an sf object to terra format for mask()
   vect()
 
@@ -564,14 +599,18 @@ Now we can calculate the proportion of population using exactly the same
 method as in the previous section.
 
 ``` r
-
-state_prop_noram_pop <- extract(prop_pop_noram, states, 
-                                fun = "sum", na.rm = TRUE, weights = TRUE,
-                                bind = TRUE) |> 
-  as.data.frame() |> 
+state_prop_noram_pop <- extract(
+  prop_pop_noram, states,
+  fun = "sum", na.rm = TRUE, weights = TRUE,
+  bind = TRUE
+) |>
+  as.data.frame() |>
   # sort in descending order of breeding proportion of population
   arrange(desc(breeding))
-#> |---------|---------|---------|---------|=========================================                                          
+#> 
+|---------|---------|---------|---------|
+=========================================
+                                          
 head(state_prop_noram_pop)
 #>        state   breeding  nonbreeding prebreeding_migration
 #> 1     Alaska 0.28015381 0.0002490995            0.37901331
@@ -615,9 +654,11 @@ previous section.
 ``` r
 
 # weekly relative abundance, masked to north america
-abd_weekly_noram <- load_raster("goleag", 
-                                product = "abundance", 
-                                resolution = "27km") |> 
+abd_weekly_noram <- load_raster(
+  "goleag",
+  product = "abundance",
+  resolution = "27km"
+) |>
   mask(noram)
 
 # total north american relative abundance for each week
@@ -628,12 +669,14 @@ prop_pop_weekly_noram <- abd_weekly_noram / abd_weekly_total$sum
 
 # proportion of weekly population in california
 california <- filter(states, state == "California")
-cali_prop_noram_pop <- extract(prop_pop_weekly_noram, california, 
-                               fun = "sum", na.rm = TRUE, 
-                               weights = TRUE, ID = FALSE)
+cali_prop_noram_pop <- extract(prop_pop_weekly_noram, california,
+  fun = "sum", na.rm = TRUE,
+  weights = TRUE, ID = FALSE
+)
 prop_pop_weekly_noram <- data.frame(
   week = as.Date(names(cali_prop_noram_pop)),
-  prop_pop = as.numeric(cali_prop_noram_pop[1, ]))
+  prop_pop = as.numeric(cali_prop_noram_pop[1, ])
+)
 head(prop_pop_weekly_noram)
 #>         week   prop_pop
 #> 1 2023-01-04 0.06017463
@@ -652,8 +695,8 @@ population across the weeks in the month of January.
 
 ``` r
 
-prop_pop_weekly_noram |> 
-  filter(month(week) == 1) |> 
+prop_pop_weekly_noram |>
+  filter(month(week) == 1) |>
   summarize(prop_pop = mean(prop_pop))
 #>    prop_pop
 #> 1 0.0563694
@@ -675,12 +718,13 @@ naive approach used in the previous examples.
 
 # non-breeding season proportion of population
 abd_nonbreeding <- load_raster("Surf Scoter",
-                               product = "proportion-population",
-                               period = "seasonal") |> 
+  product = "proportion-population",
+  period = "seasonal"
+) |>
   subset("nonbreeding")
 
 # load a polygon for the boundary of Mexico
-mexico <- ne_countries(country = "Mexico") |> 
+mexico <- ne_countries(country = "Mexico") |>
   st_transform(crs = st_crs(abd_nonbreeding))
 
 # proportion in mexico
@@ -706,8 +750,11 @@ be included.
 mexico_buffer <- st_buffer(mexico, dist = 5000)
 
 # proportion in mexico
-extract(abd_nonbreeding, mexico_buffer, fun = "sum", na.rm = TRUE,
-        touches = TRUE, ID = FALSE)
+extract(
+  abd_nonbreeding, mexico_buffer,
+  fun = "sum", na.rm = TRUE,
+  touches = TRUE, ID = FALSE
+)
 #>   nonbreeding
 #> 1  0.07994288
 ```
@@ -734,17 +781,19 @@ season as we used for the migration chronology example.
 ``` r
 
 # species list
-grassland_species <- c("Baird's Sparrow",
-                       "Bobolink",
-                       "Chestnut-collared Longspur",
-                       "Sprague's Pipit",
-                       "Upland Sandpiper",
-                       "Western Meadowlark")
+grassland_species <- c(
+  "Baird's Sparrow",
+  "Bobolink",
+  "Chestnut-collared Longspur",
+  "Sprague's Pipit",
+  "Upland Sandpiper",
+  "Western Meadowlark"
+)
 
 # region boundary
-region_boundary <- ne_states(iso_a2 = "US") |> 
+region_boundary <- ne_states(iso_a2 = "US") |>
   filter(name == "Montana") |>
-  st_transform(st_crs(abd_breeding)) |> 
+  st_transform(st_crs(abd_breeding)) |>
   vect()
 ```
 
@@ -809,9 +858,11 @@ prop_pop <- list()
 for (species in grassland_species) {
   # load breeding season proportion of population
   # the data are downloaded automatically the first time they're loaded
-  pp <- load_raster(species,
-                    product = "proportion-population",
-                    period = "seasonal") |>
+  pp <- load_raster(
+    species,
+    product = "proportion-population",
+    period = "seasonal"
+  ) |>
     subset("breeding")
   # crop and mask to region
   prop_pop[[species]] <- mask(crop(pp, region_boundary), region_boundary)
@@ -866,24 +917,32 @@ importance_proj <- trim(project(importance, crs_laea))
 region_boundary_proj <- project(region_boundary, crs_laea)
 # basemap
 par(mar = c(0, 0, 0, 0))
-plot(region_boundary_proj, col = "grey", axes = FALSE,
-     main = "Areas of importance for grassland birds in Montana")
+plot(region_boundary_proj,
+  col = "grey", axes = FALSE,
+  main = "Areas of importance for grassland birds in Montana"
+)
 # add importance raster
 plot(importance_proj, legend = FALSE, add = TRUE)
 # add legend
-fields::image.plot(zlim = c(0, 1), legend.only = TRUE,
-                   col = viridisLite::viridis(100),
-                   breaks = seq(0, 1, length.out = 101),
-                   smallplot = c(0.15, 0.85, 0.12, 0.15),
-                   horizontal = TRUE,
-                   axis.args = list(at = c(0, 0.5, 1),
-                                    labels = c("Low", "Medium", "High"),
-                                    fg = "black", col.axis = "black",
-                                    cex.axis = 0.75, lwd.ticks = 0.5,
-                                    padj = -1.5),
-                   legend.args = list(text = "Relative Importance",
-                                      side = 3, col = "black",
-                                      cex = 1, line = 0))
+fields::image.plot(
+  zlim = c(0, 1), legend.only = TRUE,
+  col = viridisLite::viridis(100),
+  breaks = seq(0, 1, length.out = 101),
+  smallplot = c(0.15, 0.85, 0.12, 0.15),
+  horizontal = TRUE,
+  axis.args = list(
+    at = c(0, 0.5, 1),
+    labels = c("Low", "Medium", "High"),
+    fg = "black", col.axis = "black",
+    cex.axis = 0.75, lwd.ticks = 0.5,
+    padj = -1.5
+  ),
+  legend.args = list(
+    text = "Relative Importance",
+    side = 3, col = "black",
+    cex = 1, line = 0
+  )
+)
 ```
 
 ![](applications_files/figure-html/aoi-importance-nice-1.png)
@@ -918,7 +977,7 @@ season quality for Horned Lark.
 
 ``` r
 
-horlar_review <- filter(ebirdst_runs, species_code == "horlar") |> 
+horlar_review <- filter(ebirdst_runs, species_code == "horlar") |>
   select(breeding_quality, breeding_start, breeding_end)
 print(horlar_review)
 #> # A tibble: 1 × 3
@@ -975,28 +1034,29 @@ United States and Canada, and make a map.
 ``` r
 
 # subset to weeks in breeding season and average
-breeding_dates <- c(horlar_review$breeding_start, horlar_review$breeding_end) |> 
+breeding_dates <- c(horlar_review$breeding_start, horlar_review$breeding_end) |>
   format("%m-%d")
-in_breeding <- names(bernoulli_dev) >= breeding_dates[1] & 
+in_breeding <- names(bernoulli_dev) >= breeding_dates[1] &
   names(bernoulli_dev) <= breeding_dates[2]
 bernoulli_dev_breeding <- mean(bernoulli_dev[[in_breeding]], na.rm = TRUE)
 
 # mask to just canada and the united states
-us_ca <- ne_countries(country = c("United States of America", "Canada")) |> 
+us_ca <- ne_countries(country = c("United States of America", "Canada")) |>
   st_transform(st_crs(bernoulli_dev_breeding))
-bernoulli_dev_breeding_us_ca <- bernoulli_dev_breeding |> 
-  crop(us_ca) |> 
-  mask(us_ca) |> 
+bernoulli_dev_breeding_us_ca <- bernoulli_dev_breeding |>
+  crop(us_ca) |>
+  mask(us_ca) |>
   trim()
 
 # make a map
 ppm_cols <- rev(scico(100, palette = "vik"))
-max_val <- global(abs(bernoulli_dev_breeding_us_ca), fun = max, na.rm = TRUE) |> 
+max_val <- global(abs(bernoulli_dev_breeding_us_ca), fun = max, na.rm = TRUE) |>
   as.numeric()
-plot(bernoulli_dev_breeding_us_ca, 
-     range = c(-max_val, max_val),
-     col = ppm_cols,
-     axes = FALSE, box = TRUE)
+plot(bernoulli_dev_breeding_us_ca,
+  range = c(-max_val, max_val),
+  col = ppm_cols,
+  axes = FALSE, box = TRUE
+)
 plot(st_geometry(us_ca), add = TRUE)
 ```
 

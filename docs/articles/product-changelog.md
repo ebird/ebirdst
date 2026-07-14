@@ -12,7 +12,7 @@
 > Burgin, P. Crowe, M. Bell, S. Ray, I. Davies, V. Ruiz-Gutierrez, C.
 > Wood, A. Rodewald. 2024. eBird Status and Trends, Data Version: 2023;
 > Released: 2025. Cornell Lab of Ornithology, Ithaca, New York.
-> <https://doi.org/10.2173/WZTW8903>
+> https://doi.org/10.2173/WZTW8903
 
 ### Trends
 
@@ -350,7 +350,7 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
 > Stillman, I. Davies, A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023.
 > eBird Status and Trends, Data Version: 2022; Released: 2023. Cornell
 > Lab of Ornithology, Ithaca, New York.
-> <https://doi.org/10.2173/ebirdst.2022>
+> https://doi.org/10.2173/ebirdst.2022
 
 ### Status
 
@@ -592,7 +592,7 @@ currently comprises these smoothed values.
 > Robinson, W. Hochachka, L. Jaromczyk, A. Rodewald, C. Wood, I. Davies,
 > A. Spencer. 2022. eBird Status and Trends, Data Version: 2021;
 > Released: 2022. Cornell Lab of Ornithology, Ithaca, New York.
-> <https://doi.org/10.2173/ebirdst.2021>
+> https://doi.org/10.2173/ebirdst.2021
 
 ### Data Inputs
 
@@ -639,11 +639,11 @@ currently comprises these smoothed values.
 - CHANGED: Models are now run for 200 replicates (folds).
 - CHANGED: The percent above threshold (PAT) cutoff has been replaced
   with a data-driven maximization of the MCC-F1 curve
-  (<https://arxiv.org/abs/2006.11278>), constrained between 0.05 and
-  0.25. The training data are grid sampled before optimizing using the
-  MCC-F1 curve and 25 realizations are done before taking the median PAT
-  value. For migrants, this is done weekly, for residents across the
-  whole year.
+  (https://arxiv.org/abs/2006.11278), constrained between 0.05 and 0.25.
+  The training data are grid sampled before optimizing using the MCC-F1
+  curve and 25 realizations are done before taking the median PAT value.
+  For migrants, this is done weekly, for residents across the whole
+  year.
 - CHANGED: The process for selecting the ensemble support cutoff or
   threshold (the number of models required to show predictions) has been
   updated to have the training data grid sampled first, then optimized
@@ -719,7 +719,7 @@ currently comprises these smoothed values.
 > Ligocki, W. Hochachka, L. Jaromczyk, C. Wood, I. Davies, M. Iliff, L.
 > Seitz. 2021. eBird Status and Trends, Data Version: 2020; Released:
 > 2021. Cornell Lab of Ornithology, Ithaca, New York.
-> <https://doi.org/10.2173/ebirdst.2020>
+> https://doi.org/10.2173/ebirdst.2020
 
 ### Data Inputs
 
@@ -876,7 +876,7 @@ currently comprises these smoothed values.
 > Ligocki, W. Hochachka, C. Wood, I. Davies, M. Iliff, L. Seitz. 2020.
 > eBird Status and Trends, Data Version: 2019; Released: 2020. Cornell
 > Lab of Ornithology, Ithaca, New York.
-> <https://doi.org/10.2173/ebirdst.2019>
+> https://doi.org/10.2173/ebirdst.2019
 
 ### Data Inputs
 

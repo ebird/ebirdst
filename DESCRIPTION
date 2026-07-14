@@ -40,20 +40,16 @@ Imports:
     tools,
     utils,
     viridisLite
-Suggests: 
+Suggests:
     fields,
     ggplot2,
-    knitr,
     lubridate,
     PresenceAbsence,
-    rmarkdown,
     rnaturalearth,
     scico,
     testthat,
     tidyr,
     withr
-VignetteBuilder: 
-    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

@@ -10,7 +10,9 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="eBird Trends Data Products">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="trends_files/libs/quarto-html/popper.min.js"></script><script src="trends_files/libs/quarto-html/tippy.umd.min.js"></script><link href="trends_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="trends_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="eBird Trends Data Products">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,7 +42,7 @@
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Function Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/product-changelog.html#2022-changelog">Changelog</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/product-changelog.html#2023-changelog">Changelog</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Version History</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -50,51 +52,38 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-
+</nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>eBird Trends Data Products</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/trends.Rmd" class="external-link"><code>vignettes/trends.Rmd</code></a></small>
-      <div class="d-none name"><code>trends.Rmd</code></div>
+
+
+
+
+      <small class="dont-index">Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/vignettes/articles/trends.qmd" class="external-link"><code>vignettes/articles/trends.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<style type="text/css">
+
+
+
+
+
+    <style type="text/css">
 .table {
     width: 75%;
 }
 </style>
-<p><strong>Version Note:</strong> In 2025, the eBird Status Data
-Products were updated to the 2023 version year; however, none of the
-Trends data products were updated. Therefore the Trends Data Products
-currently available via <code>ebirdst</code> are for the 2022 version
-year.</p>
-<p>The eBird Trends Data Products provide estimates of trends in
-relative abundance based on eBird data. Trend estimates are made on a 27
-km by 27 km grid for a single season per species (breeding,
-non-breeding, or resident). For further details on the methodology used
-to estimate these trends consult the associated paper:</p>
+<p><strong>Version Note:</strong> In 2025, the eBird Status Data Products were updated to the 2023 version year; however, none of the Trends data products were updated. Therefore the Trends Data Products currently available via <code>ebirdst</code> are for the 2022 version year.</p>
+<p>The eBird Trends Data Products provide estimates of trends in relative abundance based on eBird data. Trend estimates are made on a 27 km by 27 km grid for a single season per species (breeding, non-breeding, or resident). For further details on the methodology used to estimate these trends consult the associated paper:</p>
 <blockquote>
-Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M.,
-Ligocki, S., Oldham Jaromczyk, L., Robinson, O., Wood, C., Kelling, S.,
-&amp; Rodewald, A. D. (2023). A Double machine learning trend model for
-citizen science data. Methods in Ecology and Evolution, 00, 1–14. <a href="https://doi.org/10.1111/2041-210X.14186" class="external-link uri">https://doi.org/10.1111/2041-210X.14186</a>
+Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki, S., Oldham Jaromczyk, L., Robinson, O., Wood, C., Kelling, S., &amp; Rodewald, A. D. (2023). A Double machine learning trend model for citizen science data. Methods in Ecology and Evolution, 00, 1–14. https://doi.org/10.1111/2041-210X.14186
 </blockquote>
-<p>Data users who are not comfortable in R should consider directly
-downloading the data from the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird
-Status and Trends website</a>.</p>
-<p>The data frame <code>ebirdst_runs</code> indicates which species have
-trends estimates with the <code>has_trends</code> column. We can filter
-the data frame and only select those columns relevant to trends.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>Data users who are not comfortable in R should consider directly downloading the data from the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird Status and Trends website</a>.</p>
+<p>The data frame <code>ebirdst_runs</code> indicates which species have trends estimates with the <code>has_trends</code> column. We can filter the data frame and only select those columns relevant to trends.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dnychka/fieldsRPackage" class="external-link">fields</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -103,203 +92,152 @@ the data frame and only select those columns relevant to trends.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ebird.github.io/ebirdst/">ebirdst</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">trends_runs</span> <span class="op">&lt;-</span> <span class="va">ebirdst_runs</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">has_trends</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">species_code</span>, <span class="va">common_name</span>,</span>
-<span>         <span class="va">trends_season</span>, <span class="va">trends_region</span>,</span>
-<span>         <span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>,</span>
-<span>         <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span>,</span>
-<span>         <span class="va">rsquared</span>, <span class="va">beta0</span>, <span class="va">trends_version_year</span><span class="op">)</span></span>
+<span><span class="va">trends_runs</span> <span class="op">&lt;-</span> <span class="va">ebirdst_runs</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">has_trends</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">species_code</span>, <span class="va">common_name</span>,</span>
+<span>    <span class="va">trends_season</span>, <span class="va">trends_region</span>,</span>
+<span>    <span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>,</span>
+<span>    <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span>,</span>
+<span>    <span class="va">rsquared</span>, <span class="va">beta0</span>, <span class="va">trends_version_year</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">trends_runs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 842</span></span>
 <span><span class="co">#&gt; Columns: 11</span></span>
-<span><span class="co">#&gt; $ species_code        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "yebsap-example"<span style="color: #949494;">, </span>"abetow"<span style="color: #949494;">, </span>"acafly"<span style="color: #949494;">, </span>"acowoo"<span style="color: #949494;">, </span>"a…</span></span>
-<span><span class="co">#&gt; $ common_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yellow-bellied Sapsucker"<span style="color: #949494;">, </span>"Abert's Towhee"<span style="color: #949494;">, </span>"Aca…</span></span>
-<span><span class="co">#&gt; $ trends_season       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "breeding"<span style="color: #949494;">, </span>"resident"<span style="color: #949494;">, </span>"breeding"<span style="color: #949494;">, </span>"resident"<span style="color: #949494;">, </span>"b…</span></span>
-<span><span class="co">#&gt; $ trends_region       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "north_america"<span style="color: #949494;">, </span>"north_america"<span style="color: #949494;">, </span>"north_america"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ trends_start_year   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2012<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2011<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2015<span style="color: #949494;">, </span>2012<span style="color: #949494;">, </span>2011<span style="color: #949494;">, </span>20…</span></span>
-<span><span class="co">#&gt; $ trends_end_year     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2021<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2021<span style="color: #949494;">, </span>20…</span></span>
-<span><span class="co">#&gt; $ trends_start_date   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "05-24"<span style="color: #949494;">, </span>"01-25"<span style="color: #949494;">, </span>"05-24"<span style="color: #949494;">, </span>"11-01"<span style="color: #949494;">, </span>"06-21"<span style="color: #949494;">, </span>"07-2…</span></span>
-<span><span class="co">#&gt; $ trends_end_date     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "08-16"<span style="color: #949494;">, </span>"05-10"<span style="color: #949494;">, </span>"08-02"<span style="color: #949494;">, </span>"05-03"<span style="color: #949494;">, </span>"07-12"<span style="color: #949494;">, </span>"12-0…</span></span>
-<span><span class="co">#&gt; $ rsquared            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8572896<span style="color: #949494;">, </span>0.9231821<span style="color: #949494;">, </span>0.8570363<span style="color: #949494;">, </span>0.8805367<span style="color: #949494;">, </span>0.7868…</span></span>
-<span><span class="co">#&gt; $ beta0               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.227000849<span style="color: #949494;">, </span>-0.013923012<span style="color: #949494;">, </span>0.689424792<span style="color: #949494;">, </span>-0.0926707…</span></span>
-<span><span class="co">#&gt; $ trends_version_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>2022<span style="color: #949494;">, </span>20…</span></span></code></pre></div>
-<p>Information is provided on the trends model for each species,
-including two predictive performance metrics (<code>rsquared</code> and
-<code>beta0</code>) that are based on a comparison of actual and
-estimated trends for a suite of simulations (see Fink et al. 2023 for
-further details). The columns in the <code>trends_runs</code> data frame
-are as follows:</p>
+<span><span class="co">#&gt; $ species_code        &lt;chr&gt; "yebsap-example", "abetow", "acafly", "acowoo", "a…</span></span>
+<span><span class="co">#&gt; $ common_name         &lt;chr&gt; "Yellow-bellied Sapsucker", "Abert's Towhee", "Aca…</span></span>
+<span><span class="co">#&gt; $ trends_season       &lt;chr&gt; "breeding", "resident", "breeding", "resident", "b…</span></span>
+<span><span class="co">#&gt; $ trends_region       &lt;chr&gt; "north_america", "north_america", "north_america",…</span></span>
+<span><span class="co">#&gt; $ trends_start_year   &lt;dbl&gt; 2012, 2012, 2012, 2011, 2012, 2015, 2012, 2011, 20…</span></span>
+<span><span class="co">#&gt; $ trends_end_year     &lt;dbl&gt; 2022, 2022, 2022, 2021, 2022, 2022, 2022, 2021, 20…</span></span>
+<span><span class="co">#&gt; $ trends_start_date   &lt;chr&gt; "05-24", "01-25", "05-24", "11-01", "06-21", "07-2…</span></span>
+<span><span class="co">#&gt; $ trends_end_date     &lt;chr&gt; "08-16", "05-10", "08-02", "05-03", "07-12", "12-0…</span></span>
+<span><span class="co">#&gt; $ rsquared            &lt;dbl&gt; 0.8572896, 0.9231821, 0.8570363, 0.8805367, 0.7868…</span></span>
+<span><span class="co">#&gt; $ beta0               &lt;dbl&gt; 0.227000849, -0.013923012, 0.689424792, -0.0926707…</span></span>
+<span><span class="co">#&gt; $ trends_version_year &lt;dbl&gt; 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 20…</span></span></code></pre></div>
+</div>
+<p>Information is provided on the trends model for each species, including two predictive performance metrics (<code>rsquared</code> and <code>beta0</code>) that are based on a comparison of actual and estimated trends for a suite of simulations (see Fink et al. 2023 for further details). The columns in the <code>trends_runs</code> data frame are as follows:</p>
 <ul>
 <li>
-<code>species_code</code>: the alphanumeric eBird species code
-uniquely identifying the species.</li>
+<code>species_code</code>: the alphanumeric eBird species code uniquely identifying the species.</li>
 <li>
-<code>common_name</code>: the English common name of the
-species.</li>
+<code>common_name</code>: the English common name of the species.</li>
 <li>
-<code>trends_season</code>: season that the trend was estimated for:
-breeding, non-breeding, or resident.</li>
+<code>trends_season</code>: season that the trend was estimated for: breeding, non-breeding, or resident.</li>
 <li>
-<code>trends_region</code>: the geographic region that the trend
-model was run for. Note that broadly distributed species (e.g. Barn
-Swallow) will only have trend estimates for a regional subset of their
-full range.</li>
+<code>trends_region</code>: the geographic region that the trend model was run for. Note that broadly distributed species (e.g. Barn Swallow) will only have trend estimates for a regional subset of their full range.</li>
 <li>
-<code>trends_start_year/trends_end_year</code>: the start and end
-years of the trend time period.</li>
+<code>trends_start_year/trends_end_year</code>: the start and end years of the trend time period.</li>
 <li>
-<code>trends_start_date/trends_end_date</code>: the start and end
-dates (<code>MM-DD</code> format) of the season for which the trend was
-estimated.</li>
+<code>trends_start_date/trends_end_date</code>: the start and end dates (<code>MM-DD</code> format) of the season for which the trend was estimated.</li>
 <li>
-<code>rsquared</code>: R-squared value comparing the actual and
-estimated trends from the simulations.</li>
+<code>rsquared</code>: R-squared value comparing the actual and estimated trends from the simulations.</li>
 <li>
-<code>beta0</code>: the intercept of a linear model fitting actual
-vs. estimated trends (<code>actual ~ estimated</code>) for the
-simulations. Positive values of <code>beta0</code> indicate that the
-models are systematically <em>underestimating</em> the simulated trend
-for this species.</li>
+<code>beta0</code>: the intercept of a linear model fitting actual vs. estimated trends (<code>actual ~ estimated</code>) for the simulations. Positive values of <code>beta0</code> indicate that the models are systematically <em>underestimating</em> the simulated trend for this species.</li>
 <li>
-<code>trends_version_year</code>: the version year for the trends
-data products.</li>
+<code>trends_version_year</code>: the version year for the trends data products.</li>
 </ul>
-<p>Note that some season dates span two calendar years, for example
-Canvasback has 2011-2021 trends estimates for a non-breeding season
-defined as December 20 to January 25. In this case, the first season
-will be December 20, 2011 to January 25, 2012.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trends_runs</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Canvasback"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>, </span>
-<span>         <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
+<p>Note that some season dates span two calendar years, for example Canvasback has 2011-2021 trends estimates for a non-breeding season defined as December 20 to January 25. In this case, the first season will be December 20, 2011 to January 25, 2012.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trends_runs</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Canvasback"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>,</span>
+<span>    <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
 <span><span class="co">#&gt;   trends_start_year trends_end_year trends_start_date trends_end_date</span></span>
-<span><span class="co">#&gt;               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>              <span style="text-decoration: underline;">2</span>011            <span style="text-decoration: underline;">2</span>021 12-20             01-25</span></span></code></pre></div>
-<div class="section level2">
-<h2 id="download">Downloading data<a class="anchor" aria-label="anchor" href="#download"></a>
+<span><span class="co">#&gt;               &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1              2011            2021 12-20             01-25</span></span></code></pre></div>
+</div>
+<section class="section level2"><h2 id="download">Downloading data<a class="anchor" aria-label="anchor" href="#download"></a>
 </h2>
-<p>Trends data access is granted through the same process as the eBird
-Status Data Products. If you haven’t already requested an access key,
-consult the relevant section in the <a href="https://ebird.github.io/ebirdst/articles/status.html#access">Introduction
-to eBird Status Data Products vignette</a>.</p>
-<p>As with the Status Data Products, trends data are downloaded
-automatically the first time you load them, so in most cases you don’t
-need to download them explicitly. If you’d rather download data for one
-or more species in advance, use <code><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends()</a></code>,
-where the first argument is a vector of common names, scientific names,
-or species codes. Trends data are downloaded to a centralized directory
-and file management and access is performed via <code>ebirdst</code>.
-For example, we could optionally pre-download the breeding season trends
-data for Sage Thrasher with:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Trends data access is granted through the same process as the eBird Status Data Products. If you haven’t already requested an access key, consult the relevant section in the <a href="https://ebird.github.io/ebirdst/articles/status.html#access">Introduction to eBird Status Data Products vignette</a>.</p>
+<p>As with the Status Data Products, trends data are downloaded automatically the first time you load them, so in most cases you don’t need to download them explicitly. If you’d rather download data for one or more species in advance, use <code><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends()</a></code>, where the first argument is a vector of common names, scientific names, or species codes. Trends data are downloaded to a centralized directory and file management and access is performed via <code>ebirdst</code>. For example, we could optionally pre-download the breeding season trends data for Sage Thrasher with:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends</a></span><span class="op">(</span><span class="st">"Sage Thrasher"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="load">Loading data into R<a class="anchor" aria-label="anchor" href="#load"></a>
+</section><section class="section level2"><h2 id="load">Loading data into R<a class="anchor" aria-label="anchor" href="#load"></a>
 </h2>
-<p>Trends data for a set of species can be loaded into R using the
-function <code><a href="../reference/load_trends.html">load_trends()</a></code>, which downloads the data
-automatically if they aren’t already present. For example, we can load
-the Sage Thrasher trends estimates with:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Trends data for a set of species can be loaded into R using the function <code><a href="../reference/load_trends.html">load_trends()</a></code>, which downloads the data automatically if they aren’t already present. For example, we can load the Sage Thrasher trends estimates with:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_sagthr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_trends.html">load_trends</a></span><span class="op">(</span><span class="st">"Sage Thrasher"</span><span class="op">)</span></span></code></pre></div>
-<p>Each row corresponds to the trend estimate for a 27 km by 27 km grid
-cell, identified by the <code>srd_id</code> column and with cell center
-given by the <code>longitude</code> and <code>latitude</code>
-coordinates. Columns beginning with <code>abd_ppy</code> provide
-estimates of the percent per year trend in relative abundance and 80%
-confidence intervals, while those beginning with <code>abd_trend</code>
-provide estimates of the cumulative trend in relative abundance and 80%
-confidence intervals over the time period. The <code>abd</code> column
-gives the relative abundance estimate for the middle of the trend time
-period (e.g. 2014 for a 2007-2021 trend). The
-<code>start_year/end_year</code> and <code>start_date/end_date</code>
-columns provide redundant information to that available in
-<code>ebirdst_runs</code>. Specifically for Sage Thrasher we have:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trends_runs</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Sage Thrasher"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>,</span>
-<span>         <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
-<span><span class="co">#&gt;   trends_start_year trends_end_year trends_start_date trends_end_date</span></span>
-<span><span class="co">#&gt;               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>              <span style="text-decoration: underline;">2</span>012            <span style="text-decoration: underline;">2</span>022 05-17             07-12</span></span></code></pre></div>
-<p>This tells us that the trend estimates are for the breeding season
-(May 17 to July 12) for the period 2012-2022.</p>
 </div>
-<div class="section level2">
-<h2 id="spatial">Conversion to spatial formats<a class="anchor" aria-label="anchor" href="#spatial"></a>
+<p>Each row corresponds to the trend estimate for a 27 km by 27 km grid cell, identified by the <code>srd_id</code> column and with cell center given by the <code>longitude</code> and <code>latitude</code> coordinates. Columns beginning with <code>abd_ppy</code> provide estimates of the percent per year trend in relative abundance and 80% confidence intervals, while those beginning with <code>abd_trend</code> provide estimates of the cumulative trend in relative abundance and 80% confidence intervals over the time period. The <code>abd</code> column gives the relative abundance estimate for the middle of the trend time period (e.g. 2014 for a 2007-2021 trend). The <code>start_year/end_year</code> and <code>start_date/end_date</code> columns provide redundant information to that available in <code>ebirdst_runs</code>. Specifically for Sage Thrasher we have:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trends_runs</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Sage Thrasher"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">trends_start_year</span>, <span class="va">trends_end_year</span>,</span>
+<span>    <span class="va">trends_start_date</span>, <span class="va">trends_end_date</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span><span class="co">#&gt;   trends_start_year trends_end_year trends_start_date trends_end_date</span></span>
+<span><span class="co">#&gt;               &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1              2012            2022 05-17             07-12</span></span></code></pre></div>
+</div>
+<p>This tells us that the trend estimates are for the breeding season (May 17 to July 12) for the period 2012-2022.</p>
+</section><section class="section level2"><h2 id="spatial">Conversion to spatial formats<a class="anchor" aria-label="anchor" href="#spatial"></a>
 </h2>
-<p>The eBird trends data are stored in a tabular format, where each row
-gives the trend estimate for a single cell in a 27 km by 27 km equal
-area grid. For each grid cell, the coordinates (longitude and latitude)
-are provided for the center of the grid cell. For many applications, an
-explicitly spatial format is more useful and these coordinates can be
-use to convert from the tabular format to either a vector or raster
-format.</p>
-<div class="section level3">
-<h3 id="spatial-points">Vector (points)<a class="anchor" aria-label="anchor" href="#spatial-points"></a>
+<p>The eBird trends data are stored in a tabular format, where each row gives the trend estimate for a single cell in a 27 km by 27 km equal area grid. For each grid cell, the coordinates (longitude and latitude) are provided for the center of the grid cell. For many applications, an explicitly spatial format is more useful and these coordinates can be use to convert from the tabular format to either a vector or raster format.</p>
+<section class="level2"><h3 id="spatial-points">Vector (points)<a class="anchor" aria-label="anchor" href="#spatial-points"></a>
 </h3>
-<p>The tabular trend data can be converted into point vector features
-for use with the <code>sf</code> package using the <code>sf</code>
-function <code><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf()</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trends_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">trends_sagthr</span>, </span>
-<span>                      coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>, </span>
-<span>                      crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
+<p>The tabular trend data can be converted into point vector features for use with the <code>sf</code> package using the <code>sf</code> function <code><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trends_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">trends_sagthr</span>,</span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>,</span>
+<span>  crs <span class="op">=</span> <span class="fl">4326</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">trends_sf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 2462 features and 15 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POINT</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: -122.1784 ymin: 33.5256 xmax: -102.975 ymax: 49.35282</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,462 × 16</span></span></span>
+<span><span class="co">#&gt; # A tibble: 2,462 × 16</span></span>
 <span><span class="co">#&gt;    species_code season   start_year end_year start_date end_date srd_id      abd</span></span>
-<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">254</span>264 0.000<span style="text-decoration: underline;">527</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">255</span>764 0.014<span style="text-decoration: underline;">7</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">255</span>765 0.000<span style="text-decoration: underline;">214</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">257</span>264 0.001<span style="text-decoration: underline;">74</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">257</span>265 0.013<span style="text-decoration: underline;">2</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">257</span>266 0.001<span style="text-decoration: underline;">18</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">258</span>765 0.003<span style="text-decoration: underline;">35</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">258</span>766 0.019<span style="text-decoration: underline;">1</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">258</span>767 0.005<span style="text-decoration: underline;">11</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sagthr       breeding       <span style="text-decoration: underline;">2</span>012     <span style="text-decoration: underline;">2</span>022 05-17      07-12    <span style="text-decoration: underline;">260</span>264 0.000<span style="text-decoration: underline;">104</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,452 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: abd_ppy &lt;dbl&gt;, abd_ppy_lower &lt;dbl&gt;, abd_ppy_upper &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   abd_ppy_nonzero &lt;lgl&gt;, abd_trend &lt;dbl&gt;, abd_trend_lower &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   abd_trend_upper &lt;dbl&gt;, geometry &lt;POINT [°]&gt;</span></span></span></code></pre></div>
-<p>These points can then be exported to GeoPackage for use in a GIS such
-as QGIS or ArcGIS with</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;  * &lt;chr&gt;        &lt;chr&gt;         &lt;int&gt;    &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;int&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 sagthr       breeding       2012     2022 05-17      07-12    254264 0.000527</span></span>
+<span><span class="co">#&gt;  2 sagthr       breeding       2012     2022 05-17      07-12    255764 0.0147  </span></span>
+<span><span class="co">#&gt;  3 sagthr       breeding       2012     2022 05-17      07-12    255765 0.000214</span></span>
+<span><span class="co">#&gt;  4 sagthr       breeding       2012     2022 05-17      07-12    257264 0.00174 </span></span>
+<span><span class="co">#&gt;  5 sagthr       breeding       2012     2022 05-17      07-12    257265 0.0132  </span></span>
+<span><span class="co">#&gt;  6 sagthr       breeding       2012     2022 05-17      07-12    257266 0.00118 </span></span>
+<span><span class="co">#&gt;  7 sagthr       breeding       2012     2022 05-17      07-12    258765 0.00335 </span></span>
+<span><span class="co">#&gt;  8 sagthr       breeding       2012     2022 05-17      07-12    258766 0.0191  </span></span>
+<span><span class="co">#&gt;  9 sagthr       breeding       2012     2022 05-17      07-12    258767 0.00511 </span></span>
+<span><span class="co">#&gt; 10 sagthr       breeding       2012     2022 05-17      07-12    260264 0.000104</span></span>
+<span><span class="co">#&gt; # ℹ 2,452 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 8 more variables: abd_ppy &lt;dbl&gt;, abd_ppy_lower &lt;dbl&gt;, abd_ppy_upper &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   abd_ppy_nonzero &lt;lgl&gt;, abd_trend &lt;dbl&gt;, abd_trend_lower &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   abd_trend_upper &lt;dbl&gt;, geometry &lt;POINT [°]&gt;</span></span></code></pre></div>
+</div>
+<p>These points can then be exported to GeoPackage for use in a GIS such as QGIS or ArcGIS with</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># be sure to modify the path to save the file to a directory of</span></span>
 <span><span class="co"># your choice on your hard drive</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">write_sf</a></span><span class="op">(</span><span class="va">trends_sf</span>, <span class="st">"ebird-trends_sagthr_2022.gpkg"</span>,</span>
-<span>         layer <span class="op">=</span> <span class="st">"sagthr_trends"</span><span class="op">)</span></span></code></pre></div>
+<span>  layer <span class="op">=</span> <span class="st">"sagthr_trends"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="spatial-circles">Vector (abundance-scaled circles)<a class="anchor" aria-label="anchor" href="#spatial-circles"></a>
+</section><section class="level2"><h3 id="spatial-circles">Vector (abundance-scaled circles)<a class="anchor" aria-label="anchor" href="#spatial-circles"></a>
 </h3>
-<p>To produce maps similar to those on the eBird Status and Trends
-website, the function <code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> will convert the
-tabular trends into spatial circles with areas roughly proportional to
-the relative abundance in each 27 km by 27 km cell. To produce circles
-that aren’t skewed it’s important to provide the coordinate reference
-system you intend to map the resulting trends in. This will ideally be
-an equal area projection and in the example below we’ve used the Equal
-Earth projection centered on North America.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>To produce maps similar to those on the eBird Status and Trends website, the function <code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> will convert the tabular trends into spatial circles with areas roughly proportional to the relative abundance in each 27 km by 27 km cell. To produce circles that aren’t skewed it’s important to provide the coordinate reference system you intend to map the resulting trends in. This will ideally be an equal area projection and in the example below we’ve used the Equal Earth projection centered on North America.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_circles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vectorize_trends.html">vectorize_trends</a></span><span class="op">(</span><span class="va">trends_sagthr</span>,</span>
-<span>                                   crs <span class="op">=</span> <span class="st">"+proj=eqearth +lon_0=-96"</span><span class="op">)</span></span></code></pre></div>
-<p>Next, we’ll assign colors based on the cumulative trend
-(<code>abd_trend</code>) using the same breaks as are used on the
-website.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<span>  crs <span class="op">=</span> <span class="st">"+proj=eqearth +lon_0=-96"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>Next, we’ll assign colors based on the cumulative trend (<code>abd_trend</code>) using the same breaks as are used on the website.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define legend</span></span>
 <span><span class="va">max_trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">trends_circles</span><span class="op">$</span><span class="va">abd_trend</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">legend_breaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">40</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -309,17 +247,19 @@ website.</p>
 <span><span class="va">legend_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ebirdst_palettes.html">ebirdst_palettes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">legend_breaks</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, type <span class="op">=</span> <span class="st">"trends"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># assign colors to circles</span></span>
-<span><span class="va">trends_circles</span> <span class="op">&lt;-</span> <span class="va">trends_circles</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">abd_trend</span>, <span class="va">legend_breaks</span>, labels <span class="op">=</span> <span class="va">legend_colors</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>           <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">trends_circles</span> <span class="op">&lt;-</span> <span class="va">trends_circles</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">abd_trend</span>, <span class="va">legend_breaks</span>, labels <span class="op">=</span> <span class="va">legend_colors</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 <p>Finally, we can make a trends map for this species.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># natural earth boundaries</span></span>
-<span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>returnclass <span class="op">=</span> <span class="st">"sf"</span>, continent <span class="op">=</span> <span class="st">"North America"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>returnclass <span class="op">=</span> <span class="st">"sf"</span>, continent <span class="op">=</span> <span class="st">"North America"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">trends_circles</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>, <span class="st">"CA"</span>, <span class="st">"MX"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>, <span class="st">"CA"</span>, <span class="st">"MX"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">trends_circles</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># set the plotting extent</span></span>
@@ -328,36 +268,44 @@ website.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">countries</span>, col <span class="op">=</span> <span class="st">"#cfcfcf"</span>, border <span class="op">=</span> <span class="st">"#888888"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># add trends</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">trends_circles</span><span class="op">)</span>,</span>
-<span>     col <span class="op">=</span> <span class="va">trends_circles</span><span class="op">$</span><span class="va">color</span>, border <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>     axes <span class="op">=</span> <span class="cn">FALSE</span>, bty <span class="op">=</span> <span class="st">"n"</span>, reset <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  col <span class="op">=</span> <span class="va">trends_circles</span><span class="op">$</span><span class="va">color</span>, border <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span>, bty <span class="op">=</span> <span class="st">"n"</span>, reset <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># add boundaries</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">countries</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#ffffff"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">states</span><span class="op">)</span>, col <span class="op">=</span>  <span class="st">"#ffffff"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, xpd <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">states</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#ffffff"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span>, xpd <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add legend using the fields package</span></span>
 <span><span class="co"># label the bottom, middle, and top</span></span>
 <span><span class="va">label_breaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">legend_breaks</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/fields/man/image.plot.html" class="external-link">image.plot</a></span><span class="op">(</span>zlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="va">label_breaks</span>, col <span class="op">=</span> <span class="va">legend_colors</span>,</span>
-<span>           smallplot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.90</span>, <span class="fl">0.93</span>, <span class="fl">0.15</span>, <span class="fl">0.85</span><span class="op">)</span>,</span>
-<span>           legend.only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>           axis.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1</span><span class="op">)</span>, </span>
-<span>                            labels <span class="op">=</span> <span class="va">legend_labels</span>,</span>
-<span>                            col.axis <span class="op">=</span> <span class="st">"black"</span>, fg <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>                            cex.axis <span class="op">=</span> <span class="fl">0.7</span>, lwd.ticks <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>                            line <span class="op">=</span> <span class="op">-</span><span class="fl">0.75</span><span class="op">)</span>,</span>
-<span>           legend.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Abundance Trend [% change]"</span>,</span>
-<span>                              side <span class="op">=</span> <span class="fl">2</span>, line <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="trends_files/figure-html/spatial-circles-map-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
+<span><span class="fu"><a href="https://rdrr.io/pkg/fields/man/image.plot.html" class="external-link">image.plot</a></span><span class="op">(</span></span>
+<span>  zlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="va">label_breaks</span>, col <span class="op">=</span> <span class="va">legend_colors</span>,</span>
+<span>  smallplot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.90</span>, <span class="fl">0.93</span>, <span class="fl">0.15</span>, <span class="fl">0.85</span><span class="op">)</span>,</span>
+<span>  legend.only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  axis.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="va">legend_labels</span>,</span>
+<span>    col.axis <span class="op">=</span> <span class="st">"black"</span>, fg <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    cex.axis <span class="op">=</span> <span class="fl">0.7</span>, lwd.ticks <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    line <span class="op">=</span> <span class="op">-</span><span class="fl">0.75</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  legend.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    text <span class="op">=</span> <span class="st">"Abundance Trend [% change]"</span>,</span>
+<span>    side <span class="op">=</span> <span class="fl">2</span>, line <span class="op">=</span> <span class="fl">0.25</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="trends_files/figure-html/spatial-circles-map-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
-<div class="section level3">
-<h3 id="spatial-raster">Raster<a class="anchor" aria-label="anchor" href="#spatial-raster"></a>
+</div>
+</div>
+</section><section class="level2"><h3 id="spatial-raster">Raster<a class="anchor" aria-label="anchor" href="#spatial-raster"></a>
 </h3>
-<p>The tabular trend estimates can most easily be converted to raster
-format for use with the <code>terra</code> package using the function
-<code><a href="../reference/rasterize_trends.html">rasterize_trends()</a></code>. Any of the columns in the trends data
-frame can be selected using the <code>layers</code> argument and
-converted into layers in the resulting raster object.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>The tabular trend estimates can most easily be converted to raster format for use with the <code>terra</code> package using the function <code><a href="../reference/rasterize_trends.html">rasterize_trends()</a></code>. Any of the columns in the trends data frame can be selected using the <code>layers</code> argument and converted into layers in the resulting raster object.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># rasterize the percent per year trend with confidence limits (default)</span></span>
 <span><span class="va">ppy_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rasterize_trends.html">rasterize_trends</a></span><span class="op">(</span><span class="va">trends_sagthr</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ppy_raster</span><span class="op">)</span></span>
@@ -382,16 +330,15 @@ converted into layers in the resulting raster object.</p>
 <span><span class="co">#&gt; name        :  abd_trend</span></span>
 <span><span class="co">#&gt; min value   : -79.417929</span></span>
 <span><span class="co">#&gt; max value   :  258.85772</span></span></code></pre></div>
-<p>These raster objects can be exported to GeoTIFF files for use in a
-GIS such as QGIS or ArcGIS with</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+</div>
+<p>These raster objects can be exported to GeoTIFF files for use in a GIS such as QGIS or ArcGIS with</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">trends_raster</span>, filename <span class="op">=</span> <span class="st">"ebird-trends_sagthr_2022.tif"</span><span class="op">)</span></span></code></pre></div>
-<p>A simple map of these data can be produced from the raster data. For
-example, we’ll make a map of percent per year change in relative
-abundance for Sage Thrasher. Note that this is slightly different than
-the trends maps on the Status and Trends website, which show the
-cumulative trend rather than the annual trend.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+</div>
+<p>A simple map of these data can be produced from the raster data. For example, we’ll make a map of percent per year change in relative abundance for Sage Thrasher. Note that this is slightly different than the trends maps on the Status and Trends website, which show the cumulative trend rather than the annual trend.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define breaks and palettes similar to those on status and trends website</span></span>
 <span><span class="va">breaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">breaks</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="cn">Inf</span></span>
@@ -399,71 +346,57 @@ cumulative trend rather than the annual trend.</p>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ebirdst_palettes.html">ebirdst_palettes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">breaks</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, type <span class="op">=</span> <span class="st">"trends"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make a simple map</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ppy_raster</span><span class="op">[[</span><span class="st">"abd_ppy"</span><span class="op">]</span><span class="op">]</span>, </span>
-<span>     col <span class="op">=</span> <span class="va">pal</span>, breaks <span class="op">=</span>  <span class="va">breaks</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"Sage Thrasher breeding trend 2012-2022 [% change per year]"</span>,</span>
-<span>     cex.main <span class="op">=</span> <span class="fl">0.75</span>,</span>
-<span>     axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="trends_files/figure-html/spatial-raster-map-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ppy_raster</span><span class="op">[[</span><span class="st">"abd_ppy"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">pal</span>, breaks <span class="op">=</span> <span class="va">breaks</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Sage Thrasher breeding trend 2012-2022 [% change per year]"</span>,</span>
+<span>  cex.main <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="trends_files/figure-html/spatial-raster-map-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
 </div>
-<div class="section level2">
-<h2 id="uncertainty">Uncertainty<a class="anchor" aria-label="anchor" href="#uncertainty"></a>
+</div>
+</section></section><section class="section level2"><h2 id="uncertainty">Uncertainty<a class="anchor" aria-label="anchor" href="#uncertainty"></a>
 </h2>
-<p>The model used to estimate trends produces an ensemble of 100
-estimates at each location, each based on a random subsample of eBird
-data. This ensemble of estimates is used to quantify uncertainty in the
-trends estimates. The estimated trend is the median across the ensemble,
-and the 80% confidence intervals are the lower 10th and upper 90th
-percentiles across the ensemble. Those wishing to access estimates from
-the individual folds making up the ensemble can use
-<code>fold_estimates = TRUE</code> when loading data. These fold-level
-estimates can be used to quantify uncertainty, for example, when
-calculating the trend for a given region. For example, let’s load the
-fold-level estimates for Sage Thrasher:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>The model used to estimate trends produces an ensemble of 100 estimates at each location, each based on a random subsample of eBird data. This ensemble of estimates is used to quantify uncertainty in the trends estimates. The estimated trend is the median across the ensemble, and the 80% confidence intervals are the lower 10th and upper 90th percentiles across the ensemble. Those wishing to access estimates from the individual folds making up the ensemble can use <code>fold_estimates = TRUE</code> when loading data. These fold-level estimates can be used to quantify uncertainty, for example, when calculating the trend for a given region. For example, let’s load the fold-level estimates for Sage Thrasher:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_sagthr_folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_trends.html">load_trends</a></span><span class="op">(</span><span class="st">"sagthr"</span>, fold_estimates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">trends_sagthr_folds</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 246,200 × 8</span></span></span>
+<span><span class="co">#&gt; # A tibble: 246,200 × 8</span></span>
 <span><span class="co">#&gt;    species_code season    fold srd_id latitude longitude      abd abd_ppy</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sagthr       breeding     1 <span style="text-decoration: underline;">254</span>264     49.4     -<span style="color: #BB0000;">120.</span> 0.000<span style="text-decoration: underline;">527</span>  -<span style="color: #BB0000;">3.11</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> sagthr       breeding     1 <span style="text-decoration: underline;">255</span>764     49.1     -<span style="color: #BB0000;">120.</span> 0.014<span style="text-decoration: underline;">7</span>    -<span style="color: #BB0000;">2.97</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> sagthr       breeding     1 <span style="text-decoration: underline;">255</span>765     49.1     -<span style="color: #BB0000;">119.</span> 0.000<span style="text-decoration: underline;">214</span>  -<span style="color: #BB0000;">2.25</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> sagthr       breeding     1 <span style="text-decoration: underline;">257</span>264     48.9     -<span style="color: #BB0000;">120.</span> 0.001<span style="text-decoration: underline;">74</span>   -<span style="color: #BB0000;">4.53</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> sagthr       breeding     1 <span style="text-decoration: underline;">257</span>265     48.9     -<span style="color: #BB0000;">120.</span> 0.013<span style="text-decoration: underline;">2</span>    -<span style="color: #BB0000;">3.86</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> sagthr       breeding     1 <span style="text-decoration: underline;">257</span>266     48.9     -<span style="color: #BB0000;">119.</span> 0.001<span style="text-decoration: underline;">18</span>   -<span style="color: #BB0000;">4.04</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sagthr       breeding     1 <span style="text-decoration: underline;">258</span>765     48.6     -<span style="color: #BB0000;">120.</span> 0.003<span style="text-decoration: underline;">35</span>   -<span style="color: #BB0000;">3.08</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sagthr       breeding     1 <span style="text-decoration: underline;">258</span>766     48.6     -<span style="color: #BB0000;">119.</span> 0.019<span style="text-decoration: underline;">1</span>    -<span style="color: #BB0000;">0.459</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sagthr       breeding     1 <span style="text-decoration: underline;">258</span>767     48.6     -<span style="color: #BB0000;">119.</span> 0.005<span style="text-decoration: underline;">11</span>   -<span style="color: #BB0000;">6.40</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sagthr       breeding     1 <span style="text-decoration: underline;">260</span>264     48.4     -<span style="color: #BB0000;">120.</span> 0.000<span style="text-decoration: underline;">104</span>  -<span style="color: #BB0000;">2.71</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 246,190 more rows</span></span></span></code></pre></div>
-<p>This data frame is much more concise, only giving estimates of the
-mid-point relative abundance and percent per year trend in relative
-abundance for each of 100 folds for each grid cell.</p>
-<div class="section level3">
-<h3 id="applications-regional">Regional trends<a class="anchor" aria-label="anchor" href="#applications-regional"></a>
+<span><span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 sagthr       breeding     1 254264     49.4     -120. 0.000527  -3.11 </span></span>
+<span><span class="co">#&gt;  2 sagthr       breeding     1 255764     49.1     -120. 0.0147    -2.97 </span></span>
+<span><span class="co">#&gt;  3 sagthr       breeding     1 255765     49.1     -119. 0.000214  -2.25 </span></span>
+<span><span class="co">#&gt;  4 sagthr       breeding     1 257264     48.9     -120. 0.00174   -4.53 </span></span>
+<span><span class="co">#&gt;  5 sagthr       breeding     1 257265     48.9     -120. 0.0132    -3.86 </span></span>
+<span><span class="co">#&gt;  6 sagthr       breeding     1 257266     48.9     -119. 0.00118   -4.04 </span></span>
+<span><span class="co">#&gt;  7 sagthr       breeding     1 258765     48.6     -120. 0.00335   -3.08 </span></span>
+<span><span class="co">#&gt;  8 sagthr       breeding     1 258766     48.6     -119. 0.0191    -0.459</span></span>
+<span><span class="co">#&gt;  9 sagthr       breeding     1 258767     48.6     -119. 0.00511   -6.40 </span></span>
+<span><span class="co">#&gt; 10 sagthr       breeding     1 260264     48.4     -120. 0.000104  -2.71 </span></span>
+<span><span class="co">#&gt; # ℹ 246,190 more rows</span></span></code></pre></div>
+</div>
+<p>This data frame is much more concise, only giving estimates of the mid-point relative abundance and percent per year trend in relative abundance for each of 100 folds for each grid cell.</p>
+<section class="level2"><h3 id="applications-regional">Regional trends<a class="anchor" aria-label="anchor" href="#applications-regional"></a>
 </h3>
-<p>eBird trend estimates are made on a 27 km by 27 km grid, which allows
-summarization over broader regions such as states or provinces. Since
-the relative abundance of a species varies throughout its range, we need
-to weight the mean trend calculation by relative abundance
-(<code>abd</code> in the trends data frame). To quantify uncertainty in
-the regional trend, we can use the fold-level data to produce 100
-distinct estimates of the regional trend, then calculate the median and
-80% confidence intervals. As an example, let’s calculate the state-level
-mean percent per year trends in relative abundance for Sage
-Thrasher.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>eBird trend estimates are made on a 27 km by 27 km grid, which allows summarization over broader regions such as states or provinces. Since the relative abundance of a species varies throughout its range, we need to weight the mean trend calculation by relative abundance (<code>abd</code> in the trends data frame). To quantify uncertainty in the regional trend, we can use the fold-level data to produce 100 distinct estimates of the regional trend, then calculate the median and 80% confidence intervals. As an example, let’s calculate the state-level mean percent per year trends in relative abundance for Sage Thrasher.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># boundaries of states in the united states</span></span>
 <span><span class="va">state_boundaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">iso_a2</span> <span class="op">==</span> <span class="st">"US"</span>, <span class="op">!</span><span class="va">postal</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AK"</span>, <span class="st">"HI"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/transmute.html" class="external-link">transmute</a></span><span class="op">(</span>state <span class="op">=</span> <span class="va">iso_3166_2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># convert fold-level trends estimates to sf format</span></span>
-<span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">trends_sagthr_folds</span>,</span>
-<span>                              coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>,</span>
-<span>                              crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
+<span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">trends_sagthr_folds</span>,</span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>,</span>
+<span>  crs <span class="op">=</span> <span class="fl">4326</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># attach state to the fold-level trends data</span></span>
 <span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">trends_sagthr_sf</span>, <span class="va">state_boundaries</span>, left <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -472,118 +405,214 @@ Thrasher.</p>
 <span><span class="va">trends_states_folds</span> <span class="op">&lt;-</span> <span class="va">trends_sagthr_sf</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">state</span>, <span class="va">fold</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>abd_ppy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">abd</span> <span class="op">*</span> <span class="va">abd_ppy</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">abd</span><span class="op">)</span>,</span>
-<span>            .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
+<span>    abd_ppy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">abd</span> <span class="op">*</span> <span class="va">abd_ppy</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">abd</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># summarize across folds for each state</span></span>
-<span><span class="va">trends_states</span> <span class="op">&lt;-</span> <span class="va">trends_states_folds</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">trends_states</span> <span class="op">&lt;-</span> <span class="va">trends_states_folds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">state</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>abd_ppy_median <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">median</a></span><span class="op">(</span><span class="va">abd_ppy</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>            abd_ppy_lower <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">abd_ppy</span>, <span class="fl">0.10</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>            abd_ppy_upper <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">abd_ppy</span>, <span class="fl">0.90</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>            .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>    abd_ppy_median <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">median</a></span><span class="op">(</span><span class="va">abd_ppy</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    abd_ppy_lower <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">abd_ppy</span>, <span class="fl">0.10</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    abd_ppy_upper <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">abd_ppy</span>, <span class="fl">0.90</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">abd_ppy_median</span><span class="op">)</span></span></code></pre></div>
-<p>We can join these state-level trends back to the state boundaries and
-make a map with <code>ggplot2</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+</div>
+<p>We can join these state-level trends back to the state boundaries and make a map with <code>ggplot2</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_states_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">state_boundaries</span>, <span class="va">trends_states</span>, by <span class="op">=</span> <span class="st">"state"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">trends_states_sf</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">abd_ppy_median</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Reds"</span>, </span>
-<span>                       limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>                       na.value <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_distiller</a></span><span class="op">(</span></span>
+<span>    palette <span class="op">=</span> <span class="st">"Reds"</span>,</span>
+<span>    limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>    na.value <span class="op">=</span> <span class="st">"grey80"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_colourbar.html" class="external-link">guide_colorbar</a></span><span class="op">(</span>title.position <span class="op">=</span> <span class="st">"top"</span>, barwidth <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Sage Thrasher state-level breeding trends 2012-2022"</span>,</span>
-<span>       fill <span class="op">=</span> <span class="st">"Relative abundance trend [% change / year]"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Sage Thrasher state-level breeding trends 2012-2022"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Relative abundance trend [% change / year]"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="trends_files/figure-html/applications-regional-plot-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
-<p>Based on these data, Sage Thrasher populations appear to be in
-decline throughout their entire range; however, some states (e.g. South
-Dakota) are experiencing much steeper declines than others
-(e.g. California).</p>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="trends_files/figure-html/applications-regional-plot-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
-<div class="section level3">
-<h3 id="applications-multi">Multi-species trends<a class="anchor" aria-label="anchor" href="#applications-multi"></a>
+</div>
+</div>
+<p>Based on these data, Sage Thrasher populations appear to be in decline throughout their entire range; however, some states (e.g. South Dakota) are experiencing much steeper declines than others (e.g. California).</p>
+</section><section class="level2"><h3 id="applications-multi">Multi-species trends<a class="anchor" aria-label="anchor" href="#applications-multi"></a>
 </h3>
-<p>In some cases, we may be interested in the trend for an entire
-community of birds, which can be estimated by calculating the cell-wise
-mean trend across a suite of species. For example, the eBird Trends Data
-Products contain trend estimates for three species that breed in <a href="https://en.wikipedia.org/wiki/Sagebrush_steppe" class="external-link">sagebrush</a>:
-Brewer’s Sparrow, Sagebrush Sparrow, and Sage Thrasher. We can calculate
-an average trend for this group of species, which will provide an
-estimate of the trend in the sagebrush bird community. First let’s look
-at the model information to ensure all species are modeled for the same
-region, season, and range of years.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>In some cases, we may be interested in the trend for an entire community of birds, which can be estimated by calculating the cell-wise mean trend across a suite of species. For example, the eBird Trends Data Products contain trend estimates for three species that breed in <a href="https://en.wikipedia.org/wiki/Sagebrush_steppe" class="external-link">sagebrush</a>: Brewer’s Sparrow, Sagebrush Sparrow, and Sage Thrasher. We can calculate an average trend for this group of species, which will provide an estimate of the trend in the sagebrush bird community. First let’s look at the model information to ensure all species are modeled for the same region, season, and range of years.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sagebrush_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Brewer's Sparrow"</span>, <span class="st">"Sagebrush Sparrow"</span>, <span class="st">"Sage Thrasher"</span><span class="op">)</span></span>
-<span><span class="va">trends_runs</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">trends_runs</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="va">sagebrush_species</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 11</span></span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 11</span></span>
 <span><span class="co">#&gt;   species_code common_name       trends_season trends_region trends_start_year</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> brespa       Brewer's Sparrow  breeding      north_america              <span style="text-decoration: underline;">2</span>012</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> sagspa1      Sagebrush Sparrow breeding      north_america              <span style="text-decoration: underline;">2</span>012</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> sagthr       Sage Thrasher     breeding      north_america              <span style="text-decoration: underline;">2</span>012</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 more variables: trends_end_year &lt;dbl&gt;, trends_start_date &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   trends_end_date &lt;chr&gt;, rsquared &lt;dbl&gt;, beta0 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   trends_version_year &lt;dbl&gt;</span></span></span></code></pre></div>
-<p>Everything looks good, so we can proceed to compare trends for these
-species. We can load the trends for all three species with a single call
-to <code><a href="../reference/load_trends.html">load_trends()</a></code>, which downloads any species that aren’t
-already present (the Sage Thrasher data downloaded above won’t be
-re-downloaded), then calculate the cell-wise mean.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;             &lt;chr&gt;         &lt;chr&gt;                     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 brespa       Brewer's Sparrow  breeding      north_america              2012</span></span>
+<span><span class="co">#&gt; 2 sagspa1      Sagebrush Sparrow breeding      north_america              2012</span></span>
+<span><span class="co">#&gt; 3 sagthr       Sage Thrasher     breeding      north_america              2012</span></span>
+<span><span class="co">#&gt; # ℹ 6 more variables: trends_end_year &lt;dbl&gt;, trends_start_date &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   trends_end_date &lt;chr&gt;, rsquared &lt;dbl&gt;, beta0 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   trends_version_year &lt;dbl&gt;</span></span></code></pre></div>
+</div>
+<p>Everything looks good, so we can proceed to compare trends for these species. We can load the trends for all three species with a single call to <code><a href="../reference/load_trends.html">load_trends()</a></code>, which downloads any species that aren’t already present (the Sage Thrasher data downloaded above won’t be re-downloaded), then calculate the cell-wise mean.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_sagebrush_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_trends.html">load_trends</a></span><span class="op">(</span><span class="va">sagebrush_species</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># calculate mean trend for each cell</span></span>
-<span><span class="va">trends_sagebrush</span> <span class="op">&lt;-</span> <span class="va">trends_sagebrush_species</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">srd_id</span>, <span class="va">latitude</span>, <span class="va">longitude</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>n_species <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>            abd_ppy <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">abd_ppy</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>            .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span><span class="va">trends_sagebrush</span> <span class="op">&lt;-</span> <span class="va">trends_sagebrush_species</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">srd_id</span>, <span class="va">latitude</span>, <span class="va">longitude</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
+<span>    n_species <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    abd_ppy <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">abd_ppy</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">trends_sagebrush</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,265 × 5</span></span></span>
+<span><span class="co">#&gt; # A tibble: 3,265 × 5</span></span>
 <span><span class="co">#&gt;    srd_id latitude longitude n_species abd_ppy</span></span>
-<span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">234</span>764     52.5     -<span style="color: #BB0000;">118.</span>         1  -<span style="color: #BB0000;">8.61</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">234</span>765     52.5     -<span style="color: #BB0000;">117.</span>         1  -<span style="color: #BB0000;">7.91</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">234</span>766     52.5     -<span style="color: #BB0000;">117.</span>         1  -<span style="color: #BB0000;">6.30</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">236</span>265     52.2     -<span style="color: #BB0000;">118.</span>         1  -<span style="color: #BB0000;">0.521</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">236</span>266     52.2     -<span style="color: #BB0000;">117.</span>         1  -<span style="color: #BB0000;">6.90</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">236</span>267     52.2     -<span style="color: #BB0000;">117.</span>         1  -<span style="color: #BB0000;">6.56</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">236</span>268     52.2     -<span style="color: #BB0000;">116.</span>         1  -<span style="color: #BB0000;">5.27</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">237</span>765     52.0     -<span style="color: #BB0000;">118.</span>         1  -<span style="color: #BB0000;">5.89</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">237</span>766     52.0     -<span style="color: #BB0000;">117.</span>         1  -<span style="color: #BB0000;">5.68</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">237</span>767     52.0     -<span style="color: #BB0000;">117.</span>         1  -<span style="color: #BB0000;">9.76</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,255 more rows</span></span></span></code></pre></div>
-<p>Finally, let’s make a map of these sagebrush trends, focusing only on
-those cells where all three species occur.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 234764     52.5     -118.         1  -8.61 </span></span>
+<span><span class="co">#&gt;  2 234765     52.5     -117.         1  -7.91 </span></span>
+<span><span class="co">#&gt;  3 234766     52.5     -117.         1  -6.30 </span></span>
+<span><span class="co">#&gt;  4 236265     52.2     -118.         1  -0.521</span></span>
+<span><span class="co">#&gt;  5 236266     52.2     -117.         1  -6.90 </span></span>
+<span><span class="co">#&gt;  6 236267     52.2     -117.         1  -6.56 </span></span>
+<span><span class="co">#&gt;  7 236268     52.2     -116.         1  -5.27 </span></span>
+<span><span class="co">#&gt;  8 237765     52.0     -118.         1  -5.89 </span></span>
+<span><span class="co">#&gt;  9 237766     52.0     -117.         1  -5.68 </span></span>
+<span><span class="co">#&gt; 10 237767     52.0     -117.         1  -9.76 </span></span>
+<span><span class="co">#&gt; # ℹ 3,255 more rows</span></span></code></pre></div>
+</div>
+<p>Finally, let’s make a map of these sagebrush trends, focusing only on those cells where all three species occur.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># convert the points to sf format</span></span>
-<span><span class="va">all_species</span> <span class="op">&lt;-</span> <span class="va">trends_sagebrush</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n_species</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sagebrush_species</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>,</span>
-<span>           crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
+<span><span class="va">all_species</span> <span class="op">&lt;-</span> <span class="va">trends_sagebrush</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n_species</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sagebrush_species</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span></span>
+<span>    coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>,</span>
+<span>    crs <span class="op">=</span> <span class="fl">4326</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make a map</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">all_species</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">abd_ppy</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"#CB181D"</span>, high <span class="op">=</span> <span class="st">"#2171B5"</span>,</span>
-<span>                        limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>, </span>
-<span>                        oob <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/oob.html" class="external-link">oob_squish</a></span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradient2</a></span><span class="op">(</span></span>
+<span>    low <span class="op">=</span> <span class="st">"#CB181D"</span>, high <span class="op">=</span> <span class="st">"#2171B5"</span>,</span>
+<span>    limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>    oob <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/oob.html" class="external-link">oob_squish</a></span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_colourbar.html" class="external-link">guide_colorbar</a></span><span class="op">(</span>title.position <span class="op">=</span> <span class="st">"left"</span>, barheight <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Sagebrush species breeding trends (2012-2022)"</span>,</span>
-<span>       color <span class="op">=</span> <span class="st">"Relative abundance trend [% change / year]"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Sagebrush species breeding trends (2012-2022)"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"Relative abundance trend [% change / year]"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="trends_files/figure-html/applications-multi-map-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="trends_files/figure-html/applications-multi-map-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+</div>
+</section></section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
-
 
 
     <footer><div class="pkgdown-footer-left">

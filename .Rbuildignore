@@ -17,7 +17,7 @@
 ^makefile.r$
 ^\.github$
 ^pkgdown$
-vignettes/changelog.Rmd
+^vignettes$
 ^example-data$
 ^CRAN-SUBMISSION$
 ^ebirdst-citation.*\.bib$
@@ -28,3 +28,5 @@ vignettes/changelog.Rmd
 ^\.claude$
 ^air\.toml$
 ^jarl\.toml$
+^\.vscode$
+^[.]?air[.]toml$

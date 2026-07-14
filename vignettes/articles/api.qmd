@@ -1,12 +1,16 @@
 ---
 title: "eBird Status and Trends Data Products API"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{eBird Status and Trends Data Products API}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    out.width: "100%"
+    fig.height: 4
+    fig.width: 7
+    fig.align: center
+execute:
+  warning: false
+  message: false
 ---
 
 <style type="text/css">
@@ -14,17 +18,6 @@ editor_options:
     width: 50%;
 }
 </style>
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, 
-                      message = FALSE,
-                      collapse = TRUE,
-                      comment = "#>",
-                      out.width = "100%",
-                      fig.height = 4, 
-                      fig.width = 7, 
-                      fig.align = "center")
-```
 
 The eBird Status and Trends Data Products API is a programmatic interface for downloading eBird Status and Trends Data Products. The `ebirdst` R package provides a convenient interface to this API for R users; however, data users can interact with this API directly. For example, some data users may wish to use the API to access data using bash or Python scripts. This vignette outlines how the API is used. All API requests require an access key, which can be obtained by visiting https://ebird.org/st/request.
 

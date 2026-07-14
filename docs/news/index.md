@@ -5,6 +5,9 @@
 - Transition to having all the `load_*()` functions download directly
   rather than having to call
   [`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
+- Converted vignettes to Quarto and moved them to website-only pkgdown
+  articles; the package no longer ships built-in vignettes to CRAN
+  (documentation lives at <https://ebird.github.io/ebirdst/>)
 - Add
   [`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
   to load regional summary statistics for all species
