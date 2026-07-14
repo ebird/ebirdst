@@ -43,6 +43,8 @@
 #' @param force logical; if the data have already been downloaded, should a
 #'   fresh copy be downloaded anyway.
 #' @param show_progress logical; whether to print download progress information.
+#'   Defaults to `interactive()`, so downloads are silent in non-interactive
+#'   sessions (e.g. scripts and R Markdown).
 #'
 #' @details The complete data package for each species contains a large number
 #'   of files, all of which are cataloged in the vignettes. Most users will only
@@ -88,7 +90,7 @@ ebirdst_download_status <- function(
   pattern = NULL,
   dry_run = FALSE,
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 ) {
   stopifnot(is.character(species), length(species) == 1)
   stopifnot(is.character(path), length(path) == 1)
@@ -233,7 +235,7 @@ ebirdst_download_trends <- function(
   species,
   path = ebirdst_data_dir(),
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 ) {
   stopifnot(is.character(species))
   stopifnot(is.character(path), length(path) == 1)
@@ -319,7 +321,7 @@ ebirdst_download_data_coverage <- function(
   pattern = NULL,
   dry_run = FALSE,
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 ) {
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(dry_run))

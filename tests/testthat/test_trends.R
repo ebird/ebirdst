@@ -42,6 +42,13 @@ test_that("load_trends()", {
   expect_equal(nrow(trends_folds), 100 * nrow(trends))
 })
 
+test_that("load_trends() downloads data on demand", {
+  tmp <- withr::local_tempdir()
+  trends <- suppressMessages(load_trends("yebsap-example", path = tmp))
+  expect_s3_class(trends, "data.frame")
+  expect_gt(nrow(trends), 0)
+})
+
 test_that("convert_ppy_to_cumulative()", {
   # 0% per year -> 0 cumulative
   expect_equal(convert_ppy_to_cumulative(0, n_years = 10), 0)

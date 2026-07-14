@@ -10,7 +10,9 @@ load_raster(
   period = c("weekly", "seasonal", "full-year"),
   metric = NULL,
   resolution = c("3km", "9km", "27km"),
-  path = ebirdst_data_dir()
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
 )
 }
 \arguments{
@@ -46,6 +48,13 @@ data version year, e.g. "2020" for the 2020 Status Data Products. Each
 species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
+
+\item{force}{logical; if the data have already been downloaded, should a
+fresh copy be downloaded anyway.}
+
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 For the weekly cubes, a \link[terra:SpatRaster]{SpatRaster} with 52
@@ -59,8 +68,8 @@ Each of the eBird Status raster products is packaged as a GeoTIFF file
 representing predictions on a regular grid. The core products are occurrence,
 count, relative abundance, and proportion of population. This function loads
 one of the available data products into R as a
-\link[terra:SpatRaster]{SpatRaster} object. Note that data must be downloaded
-using \code{\link[=ebirdst_download_status]{ebirdst_download_status()}} prior to loading it using this function.
+\link[terra:SpatRaster]{SpatRaster} object. If the requested data have not
+already been downloaded, they will be downloaded automatically on first use.
 }
 \details{
 The core eBird Status data products provide weekly estimates across

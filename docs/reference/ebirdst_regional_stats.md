@@ -1,12 +1,9 @@
 # Regional summary statistics for all species
 
 Load a single file of regional summary statistics covering all species
-with eBird Status Data Products. Unlike most data products, which are
-downloaded with a dedicated `ebirdst_download_*()` function and then
-loaded with a `load_*()` function, this function downloads the file on
-first use and loads it in a single step. If the file is not already
-present in the data directory it will be downloaded, prompting for
-confirmation first. This differs from
+with eBird Status Data Products. This file is downloaded automatically
+on first use and loaded in a single step; subsequent calls load the
+already downloaded file directly. This differs from
 [`load_regional_stats()`](https://ebird.github.io/ebirdst/reference/load_regional_stats.md),
 which loads the regional statistics for a single species from that
 species' downloaded data package.
@@ -17,7 +14,7 @@ species' downloaded data package.
 ebirdst_regional_stats(
   path = ebirdst_data_dir(),
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 )
 ```
 
@@ -32,13 +29,14 @@ ebirdst_regional_stats(
 - force:
 
   logical; if the file has already been downloaded, should a fresh copy
-  be downloaded anyway. Setting `force = TRUE` also skips the
-  confirmation prompt, which is required to download in a
-  non-interactive session.
+  be downloaded anyway.
 
 - show_progress:
 
-  logical; whether to print download progress information.
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 

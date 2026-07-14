@@ -13,7 +13,7 @@ This function downloads these data products in raster GeoTIFF format."></head><b
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@ This function downloads these data products in raster GeoTIFF format.</p>
 <span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dry_run <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  show_progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  show_progress <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -96,7 +96,9 @@ fresh copy be downloaded anyway.</p></dd>
 
 
 <dt id="arg-show-progress">show_progress<a class="anchor" aria-label="anchor" href="#arg-show-progress"></a></dt>
-<dd><p>logical; whether to print download progress information.</p></dd>
+<dd><p>logical; whether to print download progress information.
+Defaults to <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code>, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).</p></dd>
 
 </dl></div>
     <div class="section level2">

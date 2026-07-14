@@ -18,7 +18,7 @@
     "Cite the eBird Trends Data Products using: ",
     "Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, ",
     "W. Hochachka, L. Jaromczyk, C. Crowley, K. Dunham, A. Stillman, I. Davies, ",
-    "A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 20. eBird Status and Trends, Data",
+    "A. Rodewald, V. Ruiz-Gutierrez, C. Wood. 2023. eBird Status and Trends, Data",
     "Version: 2022; Released: 2023. Cornell Lab of Ornithology, Ithaca, New York. ",
     "https://doi.org/10.2173/ebirdst.2022",
     sep = "\n  "

@@ -48,7 +48,7 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
   bathymetry data and summarized within the 1.5km radius neighborhood
   (consistent with all other features).
 - ADDED: The [Global Mountain Biodiversity
-  Assessment](https://www.nature.com/articles/s41597-022-01256-y) (GBMA)
+  Assessment](https://www.nature.com/articles/s41597-022-01256-y) (GMBA)
   of mountain ranges was included as a categorical feature at Level 4.
   Mountain ranges received unique integer IDs and all other locations
   received a value of 0. The feature was treated as a factor in the
@@ -86,7 +86,7 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
   uses the same feature set, factor handling, and balanced sampling as
   the occurrence rate model in operation. Switching from a stixel-wide
   (covering four weeks and all locations) presence/absence threshold to
-  checklist- and- prediction-specific estimates of presence/absence
+  checklist- and prediction-specific estimates of presence/absence
   greatly improved the stability of estimates through space and time,
   especially migration timing, and dramatically simplified the
   calculation and interpretation of range boundary estimates. Further,
@@ -248,7 +248,7 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
       overall after grid sampling. This has been done across a larger
       number of stixel iterations, without running the actual base
       models on all iterations. This allowed decreasing the number of
-      base mode; stixel iterations from 200 to 100 while increasing the
+      base model stixel iterations from 200 to 100 while increasing the
       number of stixel iterations used by ensemble support from 200
       to 400. Overall this led to a significant computational cost
       reduction as well as higher quality ensemble support range
@@ -258,13 +258,13 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
     an unchanged maximum value of 95%, to control extrapolation.
     However, expert map reviewers can override this (only for all weeks
     of the year) in the review process to be 50%, 90%, 95% or 99%, to
-    further control extrapolation or omission, if needed. Confidence
-    intervals
-- CHANGED: The method for the summarization of confidence intervals for
-  occurrence, count, and relative abundance estimates has been changed
-  from [Geyer
-  subsampling](https://www.stat.umn.edu/geyer/5601/notes/sub.pdf) to
-  simple 90th and 10th quantiles.
+    further control extrapolation or omission, if needed.
+- Confidence Intervals
+  - CHANGED: The method for the summarization of confidence intervals
+    for occurrence, count, and relative abundance estimates has been
+    changed from [Geyer
+    subsampling](https://www.stat.umn.edu/geyer/5601/notes/sub.pdf) to
+    simple 90th and 10th quantiles.
 
 ##### Predictive Performance Metrics (PPMs)
 
@@ -288,9 +288,8 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
 - CHANGED: The list of PPMs available has been expanded. See table
   below.
 
-| Updated PPMs | Land-only | Land-and-ocean |
-|----|----|----|
 | Estimate | Statistic | Name |
+|----|----|----|
 | Binary | F1 | binary-f1 |
 | Binary | Matthew’s Correlation Coefficient (MCC) | binary-mcc |
 | Binary | Prevalence | binary-prevalence |
@@ -313,7 +312,7 @@ changelog](https://ebird.github.io/ebirdst/articles/product-changelog.html#trend
   item](https://science.ebird.org/en/status-and-trends/faq#continents)
   for a map of continent definitions.
 - ADDED: The Regional Range and Abundance Stats now includes new regions
-  providing summary stats for the Economic Exclusion Zones (EEZs)
+  providing summary stats for the Exclusive Economic Zones (EEZs)
   encapsulating the offshore waters of each country. EEZ boundaries were
   provided by the Flanders Marine Institute’s [Maritime Boundaries and
   Exclusive Economic Zones v12](https://doi.org/10.14284/632). EEZ
@@ -399,18 +398,17 @@ particular observers.
 Prior to Version 2022, predictive features comprised weather, landcover,
 habitat diversity, protocol, day of year, and variables that are
 particular to the observer: observer_id and checklist_number (i.e.,
-index of how many checklists a user has ever submitted from any stixel
-to eBird; not to be confused with checklist_id). A mixed-effects
-generalized additive model (GAM) was fit to $`S`$. This GAM used as
-predictive features the natural log of `checklist_number`, a smooth
-spline of `solar_noon_diff`, and the raw values of all other predictors,
-with a random effect specification for `observer_id` and
-`checklist_number`. The model was used to make predictions $`p_{i}`$ of
-$`S`$ to data representing a “standardized search”, in which all
-features except `observer_id` and `checklist_number` were held constant
-(at the column-wise mean) across observations. CCI was derived from the
-variation in resulting predictions, and scaled to have mean 0 and
-variance 1.
+index of how many checklists a user has ever submitted to eBird; not to
+be confused with checklist_id). A mixed-effects generalized additive
+model (GAM) was fit to $`S`$. This GAM used as predictive features the
+natural log of `checklist_number`, a smooth spline of `solar_noon_diff`,
+and the raw values of all other predictors, with a random effect
+specification for `observer_id` and `checklist_number`. The model was
+used to make predictions $`p_{i}`$ of $`S`$ to data representing a
+“standardized search”, in which all features except `observer_id` and
+`checklist_number` were held constant (at the column-wise mean) across
+observations. CCI was derived from the variation in resulting
+predictions, and scaled to have mean 0 and variance 1.
 
 \$\$ CCI\_{i} = \\(pi - mean(p)\\) / sd(p) \$\$
 
@@ -462,9 +460,9 @@ currently comprises these smoothed values.
   included. This includes means and standard deviations for: wave
   height, tidal range, chlorophyll, turbidity, sinuosity, slope, and
   outflow density; class densities (as km of coast per square km of area
-  in neighborhood) for for four classes of erodibility, and class
-  densities (as km of coast per square km of area in neighborhood) for
-  23 Ecological Marine Units (EMUs) that describe the sea surface
+  in neighborhood) for four classes of erodibility, and class densities
+  (as km of coast per square km of area in neighborhood) for 23
+  Ecological Marine Units (EMUs) that describe the sea surface
   temperature, salinity, and dissolved oxygen, as well as covariates
   describing the unique number of erodibility and EMU classes in each
   neighborhood. As with EVI, we have included a boolean `has_shoreline`
@@ -491,7 +489,7 @@ currently comprises these smoothed values.
 - CHANGED: The prediction values for both `effort_distance_km` and
   `effort_hrs` are set to their 90th quantiles when making predictions
   to determine the range boundary. Previously these were chosen to
-  maximize the partial dependence (PD) curve.  
+  maximize the partial dependence (PD) curve.\
 - CHANGED: The prediction values for CCI and time of day
   (`solar_noon_diff`) are now chosen to maximize the abundance partial
   dependence (PD) constrained to values where the species was detected.
@@ -503,8 +501,8 @@ currently comprises these smoothed values.
 - CHANGED: The prediction value for `effort_distance_km` is now 2 km, to
   more closely reflect the distribution of checklists and to increase
   overall signal.
-- CHANGED: weather optimization arise now done for relative abundance,
-  not occurrence.
+- CHANGED: weather optimization is now done for relative abundance, not
+  occurrence.
 - CHANGED: PD maximization of solar_noon_diff allows the full range of
   quantiles to allow selection of the highest and lowest quantile values
   which are often nocturnal. Previously the outermost quantile values
@@ -519,7 +517,7 @@ currently comprises these smoothed values.
 - ADDED: In the ensemble support calculation, a new product has been
   added, spatial coverage. This represents the fraction of 3 km grid
   cell-weeks that have checklists within a given stixel, averaged across
-  the ensemble (essentially a spatial smooth. This weekly layer is then
+  the ensemble (essentially a spatial smooth). This weekly layer is then
   used to mask all predictions from all species values where the spatial
   coverage value is below 0.00025. This helps control extrapolation in
   places like Russia and central Africa.
@@ -555,13 +553,14 @@ currently comprises these smoothed values.
 
 #### Ensemble
 
-- CHANGED: The residual confounding adjustment is now a
-  spatially​explicit adjustment, calculated and applied separately for
-  each pixel. Regions, Years, and Seasons
-- CHANGED: Trends regions now have variable start years, with all trends
-  now being run for a shorter time series, to ensure all years in the
-  time series have sufficient data to model trends. For example, North
-  American trends will now start in 2012 rather than 2007.
+- CHANGED: The residual confounding adjustment is now a spatially
+  explicit adjustment, calculated and applied separately for each pixel.
+- Regions, Years, and Seasons
+  - CHANGED: Trends regions now have variable start years, with all
+    trends now being run for a shorter time series, to ensure all years
+    in the time series have sufficient data to model trends. For
+    example, North American trends will now start in 2012 rather than
+    2007.
 - CHANGED: Seasonal dates for Trends are now identical to Status
   seasonal dates.
 - CHANGED: For species with trends estimated for a season crossing the

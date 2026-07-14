@@ -1,8 +1,9 @@
-# ebirdst 3.2023.2
+# ebirdst 4.2023.0
 
-- Add `ebirdst_regional_stats()` to download (on first use) and load regional summary statistics for all species
+- Transition to having all the `load_*()` functions download directly rather than having to call `ebirdst_download_status()`
+- Add `ebirdst_regional_stats()` to load regional summary statistics for all species
 - Add `ebirdst_data_inventory()` and `ebirdst_delete()` to manage files downloaded by `ebirdst`
-- Move to air autoformatting and jarl linting
+- Move to air auto-formatting and jarl linting
 - Efficiency improvements for grid_sample()
 
 ## Test environments

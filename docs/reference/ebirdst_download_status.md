@@ -28,7 +28,7 @@ ebirdst_download_status(
   pattern = NULL,
   dry_run = FALSE,
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 )
 ```
 
@@ -110,7 +110,10 @@ ebirdst_download_status(
 
 - show_progress:
 
-  logical; whether to print download progress information.
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 

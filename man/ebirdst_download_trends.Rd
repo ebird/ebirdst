@@ -8,7 +8,7 @@ ebirdst_download_trends(
   species,
   path = ebirdst_data_dir(),
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 )
 }
 \arguments{
@@ -28,7 +28,9 @@ by calling \code{ebirdst_data_dir()}.}
 \item{force}{logical; if the data have already been downloaded, should a
 fresh copy be downloaded anyway.}
 
-\item{show_progress}{logical; whether to print download progress information.}
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 Character vector of paths to the folders containing the downloaded

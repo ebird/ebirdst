@@ -11,7 +11,9 @@ load_ppm(
     "occ_pr_auc_normalized", "count_log_pearson", "count_mae", "count_poisson_dev",
     "count_rmse", "count_spearman", "abd_log_pearson", "abd_mae", "abd_poisson_dev",
     "abd_rmse", "abd_spearman"),
-  path = ebirdst_data_dir()
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
 )
 }
 \arguments{
@@ -29,6 +31,13 @@ data version year, e.g. "2020" for the 2020 Status Data Products. Each
 species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
+
+\item{force}{logical; if the data have already been downloaded, should a
+fresh copy be downloaded anyway.}
+
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 A \link[terra:SpatRaster]{SpatRaster} object with the PPM data. For
@@ -83,7 +92,7 @@ detected.
 \item \code{count_poisson_dev}: proportion of Poisson deviance explained, comparing
 the observed and predicted counts for the subset of test checklists on which
 the species was detected.
-\item \code{count_rmse}: route mean squared error (RMSE) comparing the observed and
+\item \code{count_rmse}: root mean squared error (RMSE) comparing the observed and
 predicted counts for the subset of test checklists on which the species was
 detected.
 \item \code{count_spearman}: Spearman's rank correlation coefficient comparing the

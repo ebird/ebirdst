@@ -29,7 +29,7 @@ knitr::opts_chunk$set(warning = FALSE,
 knitr::opts_chunk$set(eval = nzchar(Sys.getenv("BUILD_VIGNETTES")))
 ```
 
-**Version Note:** In 2025, the eBird Status Data Products were updated to the 2023 version year, however, none of the Trends data products were updated. Therefore the Trends Data Products currently available via `ebirdst` are for the 2022 prediction year.
+**Version Note:** In 2025, the eBird Status Data Products were updated to the 2023 version year; however, none of the Trends data products were updated. Therefore the Trends Data Products currently available via `ebirdst` are for the 2022 version year.
 
 The eBird Trends Data Products provide estimates of trends in relative abundance based on eBird data. Trend estimates are made on a 27 km by 27 km grid for a single season per species (breeding, non-breeding, or resident). For further details on the methodology used to estimate these trends consult the associated paper:
 
@@ -70,7 +70,7 @@ Information is provided on the trends model for each species, including two pred
 - `trends_start_date/trends_end_date`: the start and end dates (`MM-DD` format) of the season for which the trend was estimated.
 - `rsquared`: R-squared value comparing the actual and estimated trends from the simulations.
 - `beta0`: the intercept of a linear model fitting actual vs. estimated trends (`actual ~ estimated`) for the simulations. Positive values of `beta0` indicate that the models are systematically *underestimating* the simulated trend for this species.
-- `trends_version_year`: the version year for the trends data projects.
+- `trends_version_year`: the version year for the trends data products.
 
 Note that some season dates span two calendar years, for example Canvasback has 2011-2021 trends estimates for a non-breeding season defined as December 20 to January 25. In this case, the first season will be December 20, 2011 to January 25, 2012.
 
@@ -83,9 +83,9 @@ trends_runs |>
 
 # Downloading data {#download}
 
-Trends data access is granted through the same process as the eBird Status Data Products. If you haven't already requested an API key, consult the relevant section in the [Introduction to eBird Status Data Products vignette](https://ebird.github.io/ebirdst/articles/status.html#access).
+Trends data access is granted through the same process as the eBird Status Data Products. If you haven't already requested an access key, consult the relevant section in the [Introduction to eBird Status Data Products vignette](https://ebird.github.io/ebirdst/articles/status.html#access).
 
-Trends data can be downloaded for one or more species using `ebirdst_download_trends()`, where the first argument is a vector of common names, scientific names, or species codes. As with the Status Data Products, trends data will be downloaded to a centralized directory and file management and access is performed via `ebirdst. For example, let's download the breeding season trends data for Sage Thrasher.
+As with the Status Data Products, trends data are downloaded automatically the first time you load them, so in most cases you don't need to download them explicitly. If you'd rather download data for one or more species in advance, use `ebirdst_download_trends()`, where the first argument is a vector of common names, scientific names, or species codes. Trends data are downloaded to a centralized directory and file management and access is performed via `ebirdst`. For example, we could optionally pre-download the breeding season trends data for Sage Thrasher with:
 
 ```{r download}
 ebirdst_download_trends("Sage Thrasher")
@@ -93,7 +93,7 @@ ebirdst_download_trends("Sage Thrasher")
 
 # Loading data into R {#load}
 
-Once the data are downloaded, the trends data for a set of species, can be loaded into R using the function `load_trends()`. For example, we can load the Sage Thrasher trends estimates we just downloaded with:
+Trends data for a set of species can be loaded into R using the function `load_trends()`, which downloads the data automatically if they aren't already present. For example, we can load the Sage Thrasher trends estimates with:
 
 ```{r load}
 trends_sagthr <- load_trends("Sage Thrasher")
@@ -128,7 +128,7 @@ print(trends_sf)
 These points can then be exported to GeoPackage for use in a GIS such as QGIS or ArcGIS with
 
 ```{r spatial-points-export, eval=FALSE}
-# be sure to modify the path to the file to save the file to directory of 
+# be sure to modify the path to save the file to a directory of
 # your choice on your hard drive
 write_sf(trends_sf, "ebird-trends_sagthr_2022.gpkg",
          layer = "sagthr_trends")
@@ -136,14 +136,14 @@ write_sf(trends_sf, "ebird-trends_sagthr_2022.gpkg",
 
 ## Vector (abundance-scaled circles) {#spatial-circles}
 
-To produce maps similar to those on the eBird Status and Trends website the function `vectorize_trends()` will convert the tabular trends into spatial circles with areas roughly proportional to the relative abundance in each 27 km by 27 km cell. To produce circles that arean't skewed it's important to provide the coordinate reference system you intend to map the resulting trends in. This will ideally be an equal area projection and in the example before we've used the Equal Earth projection centered on North America.
+To produce maps similar to those on the eBird Status and Trends website, the function `vectorize_trends()` will convert the tabular trends into spatial circles with areas roughly proportional to the relative abundance in each 27 km by 27 km cell. To produce circles that aren't skewed it's important to provide the coordinate reference system you intend to map the resulting trends in. This will ideally be an equal area projection and in the example below we've used the Equal Earth projection centered on North America.
 
 ```{r spatial-circles}
 trends_circles <- vectorize_trends(trends_sagthr,
                                    crs = "+proj=eqearth +lon_0=-96")
 ```
 
-Next, we'll assign colors based on the cumulative trend (`abd_trend`) using the same breaks as is used on the website.
+Next, we'll assign colors based on the cumulative trend (`abd_trend`) using the same breaks as are used on the website.
 
 ```{r spatial-circles-breaks}
 # define legend
@@ -215,7 +215,7 @@ print(trends_raster)
 These raster objects can be exported to GeoTIFF files for use in a GIS such as QGIS or ArcGIS with
 
 ```{r spatial-raster-export, eval=FALSE}
-writeRaster(trends_raster, filename = "ebird-trends_sagthr_2021.tif")
+writeRaster(trends_raster, filename = "ebird-trends_sagthr_2022.tif")
 ```
 
 A simple map of these data can be produced from the raster data. For example, we'll make a map of percent per year change in relative abundance for Sage Thrasher. Note that this is slightly different than the trends maps on the Status and Trends website, which show the cumulative trend rather than the annual trend.
@@ -252,17 +252,17 @@ eBird trend estimates are made on a 27 km by 27 km grid, which allows summarizat
 
 ```{r applications-regional}
 # boundaries of states in the united states
-states <- ne_states(iso_a2 = "US", returnclass = "sf") |>
+state_boundaries <- ne_states(iso_a2 = "US", returnclass = "sf") |>
   filter(iso_a2 == "US", !postal %in% c("AK", "HI")) |>
   transmute(state = iso_3166_2)
 
 # convert fold-level trends estimates to sf format
-trends_sagthr_sf <-  st_as_sf(trends_sagthr_folds, 
-                              coords = c("longitude", "latitude"), 
+trends_sagthr_sf <-  st_as_sf(trends_sagthr_folds,
+                              coords = c("longitude", "latitude"),
                               crs = 4326)
 
 # attach state to the fold-level trends data
-trends_sagthr_sf <- st_join(trends_sagthr_sf, states, left = FALSE)
+trends_sagthr_sf <- st_join(trends_sagthr_sf, state_boundaries, left = FALSE)
 
 # abundance-weighted average trend by region and fold
 trends_states_folds <- trends_sagthr_sf |>
@@ -284,7 +284,7 @@ trends_states <- trends_states_folds |>
 We can join these state-level trends back to the state boundaries and make a map with `ggplot2`.
 
 ```{r applications-regional-plot}
-trends_states_sf <- left_join(states, trends_states, by = "state")
+trends_states_sf <- left_join(state_boundaries, trends_states, by = "state")
 ggplot(trends_states_sf) +
   geom_sf(aes(fill = abd_ppy_median)) +
   scale_fill_distiller(palette = "Reds", 
@@ -309,13 +309,7 @@ trends_runs |>
   filter(common_name %in% sagebrush_species)
 ```
 
-Everything looks good, so we can proceed to compare trends for these species. Next we need to download the trends data for these species. Note that since we've already downloaded the Sage Thrasher data above it won't be re-downloaded here.
-
-```{r applications-multi-dl}
-ebirdst_download_trends(sagebrush_species)
-```
-
-Now we can load the trends and calculate the cell-wise mean.
+Everything looks good, so we can proceed to compare trends for these species. We can load the trends for all three species with a single call to `load_trends()`, which downloads any species that aren't already present (the Sage Thrasher data downloaded above won't be re-downloaded), then calculate the cell-wise mean.
 
 ```{r applications-multi}
 trends_sagebrush_species <- load_trends(sagebrush_species)

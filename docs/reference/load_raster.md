@@ -5,9 +5,8 @@ representing predictions on a regular grid. The core products are
 occurrence, count, relative abundance, and proportion of population.
 This function loads one of the available data products into R as a
 [SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
-object. Note that data must be downloaded using
-[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
-prior to loading it using this function.
+object. If the requested data have not already been downloaded, they
+will be downloaded automatically on first use.
 
 ## Usage
 
@@ -18,7 +17,9 @@ load_raster(
   period = c("weekly", "seasonal", "full-year"),
   metric = NULL,
   resolution = c("3km", "9km", "27km"),
-  path = ebirdst_data_dir()
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
 )
 ```
 
@@ -73,6 +74,18 @@ load_raster(
   eBird species code. Defaults to a persistent data directory, which can
   be found by calling
   [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md).
+
+- force:
+
+  logical; if the data have already been downloaded, should a fresh copy
+  be downloaded anyway.
+
+- show_progress:
+
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 

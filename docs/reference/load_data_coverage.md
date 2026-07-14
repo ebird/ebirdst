@@ -4,9 +4,8 @@ The data coverage products are packaged as individual GeoTIFF files for
 each product for each week of the year. This function loads one of the
 available data products for one or more weeks into R as a
 [SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
-object. Note that data must be downloaded using
-[`ebirdst_download_data_coverage()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_data_coverage.md)
-prior to loading it using this function.
+object. If the requested data have not already been downloaded, they
+will be downloaded automatically on first use.
 
 ## Usage
 
@@ -14,7 +13,9 @@ prior to loading it using this function.
 load_data_coverage(
   product = c("spatial-coverage", "selection-probability"),
   weeks,
-  path = ebirdst_data_dir()
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
 )
 ```
 
@@ -42,6 +43,18 @@ load_data_coverage(
   eBird species code. Defaults to a persistent data directory, which can
   be found by calling
   [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md).
+
+- force:
+
+  logical; if the data have already been downloaded, should a fresh copy
+  be downloaded anyway.
+
+- show_progress:
+
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 

@@ -19,7 +19,9 @@ load_ppm(
     "occ_pr_auc_normalized", "count_log_pearson", "count_mae", "count_poisson_dev",
     "count_rmse", "count_spearman", "abd_log_pearson", "abd_mae", "abd_poisson_dev",
     "abd_rmse", "abd_spearman"),
-  path = ebirdst_data_dir()
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
 )
 ```
 
@@ -48,6 +50,18 @@ load_ppm(
   eBird species code. Defaults to a persistent data directory, which can
   be found by calling
   [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md).
+
+- force:
+
+  logical; if the data have already been downloaded, should a fresh copy
+  be downloaded anyway.
+
+- show_progress:
+
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 
@@ -111,7 +125,7 @@ Nineteen predictive performance metrics are provided:
   comparing the observed and predicted counts for the subset of test
   checklists on which the species was detected.
 
-- `count_rmse`: route mean squared error (RMSE) comparing the observed
+- `count_rmse`: root mean squared error (RMSE) comparing the observed
   and predicted counts for the subset of test checklists on which the
   species was detected.
 

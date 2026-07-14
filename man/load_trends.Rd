@@ -4,7 +4,13 @@
 \alias{load_trends}
 \title{Load eBird Trends estimates for a set of species}
 \usage{
-load_trends(species, fold_estimates = FALSE, path = ebirdst_data_dir())
+load_trends(
+  species,
+  fold_estimates = FALSE,
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
+)
 }
 \arguments{
 \item{species}{character; one or more species given as scientific names,
@@ -23,6 +29,13 @@ data version year, e.g. "2020" for the 2020 Status Data Products. Each
 species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
+
+\item{force}{logical; if the data have already been downloaded, should a
+fresh copy be downloaded anyway.}
+
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 A data frame containing the trends estimates for a set of species.
@@ -68,9 +81,9 @@ period (e.g. 2014 for a 2007-2021 trend).
 \description{
 Load the relative abundance trend estimates for a single species or a set of
 species. Trends are estimated on a 27 km by 27 km grid for a single season
-per species (breeding, non-breeding, or resident).  Note that data must be
-downloaded using \code{\link[=ebirdst_download_trends]{ebirdst_download_trends()}} prior to loading it using this
-function.
+per species (breeding, non-breeding, or resident). If the requested data have
+not already been downloaded, they will be downloaded automatically on first
+use.
 }
 \details{
 The trends in relative abundance are estimated using a double machine

@@ -6,7 +6,12 @@ states/provinces.
 ## Usage
 
 ``` r
-load_regional_stats(species, path = ebirdst_data_dir())
+load_regional_stats(
+  species,
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
+)
 ```
 
 ## Arguments
@@ -29,6 +34,18 @@ load_regional_stats(species, path = ebirdst_data_dir())
   eBird species code. Defaults to a persistent data directory, which can
   be found by calling
   [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md).
+
+- force:
+
+  logical; if the data have already been downloaded, should a fresh copy
+  be downloaded anyway.
+
+- show_progress:
+
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 
@@ -55,6 +72,10 @@ A data frame containing regional summary statistics with columns:
 
 - `total_pop_percent`: proportion of the seasonal modeled population
   falling within the region.
+
+- `continent_pop_percent`: proportion of the seasonal modeled population
+  for the continent (identified by `continent_name`) falling within the
+  region.
 
 - `max_week`: the week of the year with the highest proportion of the
   modeled population falling within the region.

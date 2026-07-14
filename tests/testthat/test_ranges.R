@@ -47,6 +47,14 @@ test_that("load_ranges", {
 })
 
 test_that("load_ranges error", {
-  expect_error(load_ranges("Yellow Warbler"))
   expect_error(load_ranges("XXXX"))
+})
+
+test_that("load_ranges() downloads data on demand", {
+  tmp <- withr::local_tempdir()
+  ranges <- suppressMessages(
+    load_ranges("yebsap-example", resolution = "27km", path = tmp)
+  )
+  expect_s3_class(ranges, "sf")
+  expect_gt(nrow(ranges), 0)
 })

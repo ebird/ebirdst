@@ -9,7 +9,7 @@ ebirdst_download_data_coverage(
   pattern = NULL,
   dry_run = FALSE,
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 )
 }
 \arguments{
@@ -32,7 +32,9 @@ filter the files to download.}
 \item{force}{logical; if the data have already been downloaded, should a
 fresh copy be downloaded anyway.}
 
-\item{show_progress}{logical; whether to print download progress information.}
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 Path to the folder containing the downloaded data coverage products.

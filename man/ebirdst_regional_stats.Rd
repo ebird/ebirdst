@@ -7,7 +7,7 @@
 ebirdst_regional_stats(
   path = ebirdst_data_dir(),
   force = FALSE,
-  show_progress = TRUE
+  show_progress = interactive()
 )
 }
 \arguments{
@@ -15,11 +15,11 @@ ebirdst_regional_stats(
 persistent data directory returned by \code{\link[=ebirdst_data_dir]{ebirdst_data_dir()}}.}
 
 \item{force}{logical; if the file has already been downloaded, should a fresh
-copy be downloaded anyway. Setting \code{force = TRUE} also skips the
-confirmation prompt, which is required to download in a non-interactive
-session.}
+copy be downloaded anyway.}
 
-\item{show_progress}{logical; whether to print download progress information.}
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 A data frame of regional summary statistics for all species. The
@@ -27,13 +27,11 @@ columns match those returned by \code{\link[=load_regional_stats]{load_regional_
 }
 \description{
 Load a single file of regional summary statistics covering all species with
-eBird Status Data Products. Unlike most data products, which are downloaded
-with a dedicated \verb{ebirdst_download_*()} function and then loaded with a
-\verb{load_*()} function, this function downloads the file on first use and loads
-it in a single step. If the file is not already present in the data
-directory it will be downloaded, prompting for confirmation first. This
-differs from \code{\link[=load_regional_stats]{load_regional_stats()}}, which loads the regional statistics for
-a single species from that species' downloaded data package.
+eBird Status Data Products. This file is downloaded automatically on first
+use and loaded in a single step; subsequent calls load the already downloaded
+file directly. This differs from \code{\link[=load_regional_stats]{load_regional_stats()}}, which loads the
+regional statistics for a single species from that species' downloaded data
+package.
 }
 \examples{
 \dontrun{

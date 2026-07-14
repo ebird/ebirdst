@@ -2,15 +2,20 @@
 
 Load the relative abundance trend estimates for a single species or a
 set of species. Trends are estimated on a 27 km by 27 km grid for a
-single season per species (breeding, non-breeding, or resident). Note
-that data must be downloaded using
-[`ebirdst_download_trends()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_trends.md)
-prior to loading it using this function.
+single season per species (breeding, non-breeding, or resident). If the
+requested data have not already been downloaded, they will be downloaded
+automatically on first use.
 
 ## Usage
 
 ``` r
-load_trends(species, fold_estimates = FALSE, path = ebirdst_data_dir())
+load_trends(
+  species,
+  fold_estimates = FALSE,
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
+)
 ```
 
 ## Arguments
@@ -40,6 +45,18 @@ load_trends(species, fold_estimates = FALSE, path = ebirdst_data_dir())
   eBird species code. Defaults to a persistent data directory, which can
   be found by calling
   [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md).
+
+- force:
+
+  logical; if the data have already been downloaded, should a fresh copy
+  be downloaded anyway.
+
+- show_progress:
+
+  logical; whether to print download progress information. Defaults to
+  [`interactive()`](https://rdrr.io/r/base/interactive.html), so
+  downloads are silent in non-interactive sessions (e.g. scripts and R
+  Markdown).
 
 ## Value
 

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,7 +124,7 @@ the updated <a href="https://www.gebco.net/data-products/gridded-bathymetry-data
 bathymetry data and summarized within the 1.5km radius neighborhood
 (consistent with all other features).</li>
 <li>ADDED: The <a href="https://www.nature.com/articles/s41597-022-01256-y" class="external-link">Global
-Mountain Biodiversity Assessment</a> (GBMA) of mountain ranges was
+Mountain Biodiversity Assessment</a> (GMBA) of mountain ranges was
 included as a categorical feature at Level 4. Mountain ranges received
 unique integer IDs and all other locations received a value of 0. The
 feature was treated as a factor in the models.</li>
@@ -162,7 +162,7 @@ random forest predicts a binary 0 or 1 for each prediction (checklist or
 prediction grid cell). Our implementation of this model uses the same
 feature set, factor handling, and balanced sampling as the occurrence
 rate model in operation. Switching from a stixel-wide (covering four
-weeks and all locations) presence/absence threshold to checklist- and-
+weeks and all locations) presence/absence threshold to checklist- and
 prediction-specific estimates of presence/absence greatly improved the
 stability of estimates through space and time, especially migration
 timing, and dramatically simplified the calculation and interpretation
@@ -363,7 +363,7 @@ sufficient data to run the species models within a stixel were: a) at
 least 10 species detections, and b) 50 checklists overall after grid
 sampling. This has been done across a larger number of stixel
 iterations, without running the actual base models on all iterations.
-This allowed decreasing the number of base mode; stixel iterations from
+This allowed decreasing the number of base model stixel iterations from
 200 to 100 while increasing the number of stixel iterations used by
 ensemble support from 200 to 400. Overall this led to a significant
 computational cost reduction as well as higher quality ensemble support
@@ -375,13 +375,17 @@ been increased from 50% to 75% of models reporting estimates, with an
 unchanged maximum value of 95%, to control extrapolation. However,
 expert map reviewers can override this (only for all weeks of the year)
 in the review process to be 50%, 90%, 95% or 99%, to further control
-extrapolation or omission, if needed. Confidence intervals</li>
+extrapolation or omission, if needed.</li>
 </ul>
 </li>
+<li>Confidence Intervals
+<ul>
 <li>CHANGED: The method for the summarization of confidence intervals
 for occurrence, count, and relative abundance estimates has been changed
 from <a href="https://www.stat.umn.edu/geyer/5601/notes/sub.pdf" class="external-link">Geyer
 subsampling</a> to simple 90th and 10th quantiles.</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section level5">
@@ -424,81 +428,76 @@ below.</li>
 <colgroup>
 <col width="24%">
 <col width="54%">
-<col width="20%">
+<col width="21%">
 </colgroup>
 <thead><tr class="header">
-<th>Updated PPMs</th>
-<th>Land-only</th>
-<th>Land-and-ocean</th>
+<th>Estimate</th>
+<th>Statistic</th>
+<th>Name</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Estimate</td>
-<td>Statistic</td>
-<td>Name</td>
-</tr>
-<tr class="even">
 <td>Binary</td>
 <td>F1</td>
 <td>binary-f1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Binary</td>
 <td>Matthew’s Correlation Coefficient (MCC)</td>
 <td>binary-mcc</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Binary</td>
 <td>Prevalence</td>
 <td>binary-prevalence</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Occurrence</td>
 <td>Bernoulli Deviance</td>
 <td>occ-bernoulli-dev</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Occurrence</td>
 <td>Brier Score</td>
 <td>occ-brier</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Occurrence</td>
 <td>Precision-Recall AUC (PR AUC)</td>
 <td>occ-pr-auc</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Occurrence</td>
 <td>PR AUC Greater than Prevalence</td>
 <td>occ-pr-auc-gt-prev</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Occurrence</td>
 <td><a href="https://icml.cc/2012/papers/349.pdf" class="external-link">PR AUC
 Normalized</a></td>
 <td>occ-pr-auc-normalized</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Count, Relative Abundance</td>
 <td>Log Pearson Correlation</td>
 <td>count/abd-log-pearson</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Count, Relative Abundance</td>
 <td>Mean Absolute Error (MAE)</td>
 <td>count/abd-mae</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Count, Relative Abundance</td>
 <td>Poisson Deviance</td>
 <td>count/abd-poisson-dev</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Count, Relative Abundance</td>
 <td>Root Mean Squared Error (RMSE)</td>
 <td>count/abd-rmse</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Count, Relative Abundance</td>
 <td>Spearman Correlation</td>
 <td>count/abd-spearman</td>
@@ -515,7 +514,7 @@ of the proportion of the continental population within each region in
 addition to the proportion of the global population. See the <a href="https://science.ebird.org/en/status-and-trends/faq#continents" class="external-link">FAQ
 item</a> for a map of continent definitions.</li>
 <li>ADDED: The Regional Range and Abundance Stats now includes new
-regions providing summary stats for the Economic Exclusion Zones (EEZs)
+regions providing summary stats for the Exclusive Economic Zones (EEZs)
 encapsulating the offshore waters of each country. EEZ boundaries were
 provided by the Flanders Marine Institute’s <a href="https://doi.org/10.14284/632" class="external-link">Maritime Boundaries and Exclusive
 Economic Zones v12</a>. EEZ summaries are only provided for species
@@ -616,9 +615,9 @@ observers.</p>
 <p>Prior to Version 2022, predictive features comprised weather,
 landcover, habitat diversity, protocol, day of year, and variables that
 are particular to the observer: observer_id and checklist_number (i.e.,
-index of how many checklists a user has ever submitted from any stixel
-to eBird; not to be confused with checklist_id). A mixed-effects
-generalized additive model (GAM) was fit to
+index of how many checklists a user has ever submitted to eBird; not to
+be confused with checklist_id). A mixed-effects generalized additive
+model (GAM) was fit to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>.
 This GAM used as predictive features the natural log of
 <code>checklist_number</code>, a smooth spline of
@@ -686,8 +685,8 @@ at a given date and location.</li>
 included. This includes means and standard deviations for: wave height,
 tidal range, chlorophyll, turbidity, sinuosity, slope, and outflow
 density; class densities (as km of coast per square km of area in
-neighborhood) for for four classes of erodibility, and class densities
-(as km of coast per square km of area in neighborhood) for 23 Ecological
+neighborhood) for four classes of erodibility, and class densities (as
+km of coast per square km of area in neighborhood) for 23 Ecological
 Marine Units (EMUs) that describe the sea surface temperature, salinity,
 and dissolved oxygen, as well as covariates describing the unique number
 of erodibility and EMU classes in each neighborhood. As with EVI, we
@@ -737,7 +736,7 @@ on the range of the new version of CCI values overall.</li>
 <li>CHANGED: The prediction value for <code>effort_distance_km</code> is
 now 2 km, to more closely reflect the distribution of checklists and to
 increase overall signal.</li>
-<li>CHANGED: weather optimization arise now done for relative abundance,
+<li>CHANGED: weather optimization is now done for relative abundance,
 not occurrence.</li>
 <li>CHANGED: PD maximization of solar_noon_diff allows the full range of
 quantiles to allow selection of the highest and lowest quantile values
@@ -756,7 +755,7 @@ percent above threshold (PAT) cutoff value has been fixed at 0.14
 <li>ADDED: In the ensemble support calculation, a new product has been
 added, spatial coverage. This represents the fraction of 3 km grid
 cell-weeks that have checklists within a given stixel, averaged across
-the ensemble (essentially a spatial smooth. This weekly layer is then
+the ensemble (essentially a spatial smooth). This weekly layer is then
 used to mask all predictions from all species values where the spatial
 coverage value is below 0.00025. This helps control extrapolation in
 places like Russia and central Africa.</li>
@@ -802,13 +801,17 @@ MOD44W dataset</a>.</li>
 <h4 id="ensemble-2">Ensemble<a class="anchor" aria-label="anchor" href="#ensemble-2"></a>
 </h4>
 <ul>
-<li>CHANGED: The residual confounding adjustment is now a
-spatially​explicit adjustment, calculated and applied separately for each
-pixel. Regions, Years, and Seasons</li>
+<li>CHANGED: The residual confounding adjustment is now a spatially
+explicit adjustment, calculated and applied separately for each
+pixel.</li>
+<li>Regions, Years, and Seasons
+<ul>
 <li>CHANGED: Trends regions now have variable start years, with all
 trends now being run for a shorter time series, to ensure all years in
 the time series have sufficient data to model trends. For example, North
 American trends will now start in 2012 rather than 2007.</li>
+</ul>
+</li>
 <li>CHANGED: Seasonal dates for Trends are now identical to Status
 seasonal dates.</li>
 <li>CHANGED: For species with trends estimated for a season crossing the

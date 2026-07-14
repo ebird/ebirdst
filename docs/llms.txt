@@ -26,6 +26,7 @@ analysis.
 Install `ebirdst` from GitHub with:
 
 ``` r
+
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
@@ -165,16 +166,16 @@ data via the [eBird Status and Trends
 website](https://science.ebird.org/en/status-and-trends/download-data).**
 
 ``` r
+
 library(fields)
 library(rnaturalearth)
 library(sf)
 library(terra)
 library(ebirdst)
 
-# download example data, yellow-bellied sapsucker in michigan
-ebirdst_download_status(species = "yebsap-example")
-
-# load relative abundance raster stack with 52 layers, one for each week
+# load relative abundance raster stack for yellow-bellied sapsucker in michigan
+# consisting of 52 layers, one for each week
+# this will download the data if it has not already been downloaded
 abd <- load_raster("yebsap-example", resolution = "27km")
 
 # load species specific mapping parameters

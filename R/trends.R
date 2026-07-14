@@ -152,7 +152,7 @@ rasterize_trends <- function(
 #'   equal area CRS you intend to use when mapping the data otherwise the
 #'   "circles" will appear skewed.
 #'
-#' @returns Vetorized trends data as an [sf][sf::sf] object.
+#' @returns Vectorized trends data as an [sf][sf::sf] object.
 #' @export
 #'
 #' @examples

@@ -19,7 +19,7 @@ ebirdst_download_status()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,9 @@ raster format provided <code>download_ppms = TRUE</code> was used when calling
 <span>    <span class="st">"occ_pr_auc_normalized"</span>, <span class="st">"count_log_pearson"</span>, <span class="st">"count_mae"</span>, <span class="st">"count_poisson_dev"</span>,</span>
 <span>    <span class="st">"count_rmse"</span>, <span class="st">"count_spearman"</span>, <span class="st">"abd_log_pearson"</span>, <span class="st">"abd_mae"</span>, <span class="st">"abd_poisson_dev"</span>,</span>
 <span>    <span class="st">"abd_rmse"</span>, <span class="st">"abd_spearman"</span><span class="op">)</span>,</span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="ebirdst_data_dir.html">ebirdst_data_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="ebirdst_data_dir.html">ebirdst_data_dir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  show_progress <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -98,6 +100,17 @@ data version year, e.g. "2020" for the 2020 Status Data Products. Each
 species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling <code><a href="ebirdst_data_dir.html">ebirdst_data_dir()</a></code>.</p></dd>
+
+
+<dt id="arg-force">force<a class="anchor" aria-label="anchor" href="#arg-force"></a></dt>
+<dd><p>logical; if the data have already been downloaded, should a
+fresh copy be downloaded anyway.</p></dd>
+
+
+<dt id="arg-show-progress">show_progress<a class="anchor" aria-label="anchor" href="#arg-show-progress"></a></dt>
+<dd><p>logical; whether to print download progress information.
+Defaults to <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code>, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -144,7 +157,7 @@ detected.</p></li>
 <li><p><code>count_poisson_dev</code>: proportion of Poisson deviance explained, comparing
 the observed and predicted counts for the subset of test checklists on which
 the species was detected.</p></li>
-<li><p><code>count_rmse</code>: route mean squared error (RMSE) comparing the observed and
+<li><p><code>count_rmse</code>: root mean squared error (RMSE) comparing the observed and
 predicted counts for the subset of test checklists on which the species was
 detected.</p></li>
 <li><p><code>count_spearman</code>: Spearman's rank correlation coefficient comparing the

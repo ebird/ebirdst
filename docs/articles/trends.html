@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,9 +73,9 @@
 }
 </style>
 <p><strong>Version Note:</strong> In 2025, the eBird Status Data
-Products were updated to the 2023 version year, however, none of the
+Products were updated to the 2023 version year; however, none of the
 Trends data products were updated. Therefore the Trends Data Products
-currently available via <code>ebirdst</code> are for the 2022 prediction
+currently available via <code>ebirdst</code> are for the 2022 version
 year.</p>
 <p>The eBird Trends Data Products provide estimates of trends in
 relative abundance based on eBird data. Trend estimates are made on a 27
@@ -163,7 +163,7 @@ models are systematically <em>underestimating</em> the simulated trend
 for this species.</li>
 <li>
 <code>trends_version_year</code>: the version year for the trends
-data projects.</li>
+data products.</li>
 </ul>
 <p>Note that some season dates span two calendar years, for example
 Canvasback has 2011-2021 trends estimates for a non-breeding season
@@ -182,26 +182,28 @@ will be December 20, 2011 to January 25, 2012.</p>
 <h2 id="download">Downloading data<a class="anchor" aria-label="anchor" href="#download"></a>
 </h2>
 <p>Trends data access is granted through the same process as the eBird
-Status Data Products. If you haven’t already requested an API key,
+Status Data Products. If you haven’t already requested an access key,
 consult the relevant section in the <a href="https://ebird.github.io/ebirdst/articles/status.html#access">Introduction
 to eBird Status Data Products vignette</a>.</p>
-<p>Trends data can be downloaded for one or more species using
-<code><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends()</a></code>, where the first argument is a
-vector of common names, scientific names, or species codes. As with the
-Status Data Products, trends data will be downloaded to a centralized
-directory and file management and access is performed via `ebirdst. For
-example, let’s download the breeding season trends data for Sage
-Thrasher.</p>
+<p>As with the Status Data Products, trends data are downloaded
+automatically the first time you load them, so in most cases you don’t
+need to download them explicitly. If you’d rather download data for one
+or more species in advance, use <code><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends()</a></code>,
+where the first argument is a vector of common names, scientific names,
+or species codes. Trends data are downloaded to a centralized directory
+and file management and access is performed via <code>ebirdst</code>.
+For example, we could optionally pre-download the breeding season trends
+data for Sage Thrasher with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends</a></span><span class="op">(</span><span class="st">"Sage Thrasher"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="load">Loading data into R<a class="anchor" aria-label="anchor" href="#load"></a>
 </h2>
-<p>Once the data are downloaded, the trends data for a set of species,
-can be loaded into R using the function <code><a href="../reference/load_trends.html">load_trends()</a></code>. For
-example, we can load the Sage Thrasher trends estimates we just
-downloaded with:</p>
+<p>Trends data for a set of species can be loaded into R using the
+function <code><a href="../reference/load_trends.html">load_trends()</a></code>, which downloads the data
+automatically if they aren’t already present. For example, we can load
+the Sage Thrasher trends estimates with:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_sagthr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_trends.html">load_trends</a></span><span class="op">(</span><span class="st">"Sage Thrasher"</span><span class="op">)</span></span></code></pre></div>
 <p>Each row corresponds to the trend estimate for a 27 km by 27 km grid
@@ -275,7 +277,7 @@ function <code><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" 
 <p>These points can then be exported to GeoPackage for use in a GIS such
 as QGIS or ArcGIS with</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># be sure to modify the path to the file to save the file to directory of </span></span>
+<code class="sourceCode R"><span><span class="co"># be sure to modify the path to save the file to a directory of</span></span>
 <span><span class="co"># your choice on your hard drive</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">write_sf</a></span><span class="op">(</span><span class="va">trends_sf</span>, <span class="st">"ebird-trends_sagthr_2022.gpkg"</span>,</span>
 <span>         layer <span class="op">=</span> <span class="st">"sagthr_trends"</span><span class="op">)</span></span></code></pre></div>
@@ -284,18 +286,18 @@ as QGIS or ArcGIS with</p>
 <h3 id="spatial-circles">Vector (abundance-scaled circles)<a class="anchor" aria-label="anchor" href="#spatial-circles"></a>
 </h3>
 <p>To produce maps similar to those on the eBird Status and Trends
-website the function <code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> will convert the
+website, the function <code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> will convert the
 tabular trends into spatial circles with areas roughly proportional to
 the relative abundance in each 27 km by 27 km cell. To produce circles
-that arean’t skewed it’s important to provide the coordinate reference
+that aren’t skewed it’s important to provide the coordinate reference
 system you intend to map the resulting trends in. This will ideally be
-an equal area projection and in the example before we’ve used the Equal
+an equal area projection and in the example below we’ve used the Equal
 Earth projection centered on North America.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_circles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vectorize_trends.html">vectorize_trends</a></span><span class="op">(</span><span class="va">trends_sagthr</span>,</span>
 <span>                                   crs <span class="op">=</span> <span class="st">"+proj=eqearth +lon_0=-96"</span><span class="op">)</span></span></code></pre></div>
 <p>Next, we’ll assign colors based on the cumulative trend
-(<code>abd_trend</code>) using the same breaks as is used on the
+(<code>abd_trend</code>) using the same breaks as are used on the
 website.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define legend</span></span>
@@ -383,7 +385,7 @@ converted into layers in the resulting raster object.</p>
 <p>These raster objects can be exported to GeoTIFF files for use in a
 GIS such as QGIS or ArcGIS with</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">trends_raster</span>, filename <span class="op">=</span> <span class="st">"ebird-trends_sagthr_2021.tif"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">trends_raster</span>, filename <span class="op">=</span> <span class="st">"ebird-trends_sagthr_2022.tif"</span><span class="op">)</span></span></code></pre></div>
 <p>A simple map of these data can be produced from the raster data. For
 example, we’ll make a map of percent per year change in relative
 abundance for Sage Thrasher. Note that this is slightly different than
@@ -454,17 +456,17 @@ mean percent per year trends in relative abundance for Sage
 Thrasher.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># boundaries of states in the united states</span></span>
-<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">state_boundaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">iso_a2</span> <span class="op">==</span> <span class="st">"US"</span>, <span class="op">!</span><span class="va">postal</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AK"</span>, <span class="st">"HI"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/transmute.html" class="external-link">transmute</a></span><span class="op">(</span>state <span class="op">=</span> <span class="va">iso_3166_2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># convert fold-level trends estimates to sf format</span></span>
-<span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">trends_sagthr_folds</span>, </span>
-<span>                              coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>, </span>
+<span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">trends_sagthr_folds</span>,</span>
+<span>                              coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span>,</span>
 <span>                              crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># attach state to the fold-level trends data</span></span>
-<span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">trends_sagthr_sf</span>, <span class="va">states</span>, left <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">trends_sagthr_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">trends_sagthr_sf</span>, <span class="va">state_boundaries</span>, left <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># abundance-weighted average trend by region and fold</span></span>
 <span><span class="va">trends_states_folds</span> <span class="op">&lt;-</span> <span class="va">trends_sagthr_sf</span> <span class="op">|&gt;</span></span>
@@ -484,7 +486,7 @@ Thrasher.</p>
 <p>We can join these state-level trends back to the state boundaries and
 make a map with <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trends_states_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">states</span>, <span class="va">trends_states</span>, by <span class="op">=</span> <span class="st">"state"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">trends_states_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">state_boundaries</span>, <span class="va">trends_states</span>, by <span class="op">=</span> <span class="st">"state"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">trends_states_sf</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">abd_ppy_median</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Reds"</span>, </span>
@@ -527,13 +529,11 @@ region, season, and range of years.</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   trends_end_date &lt;chr&gt;, rsquared &lt;dbl&gt;, beta0 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   trends_version_year &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>Everything looks good, so we can proceed to compare trends for these
-species. Next we need to download the trends data for these species.
-Note that since we’ve already downloaded the Sage Thrasher data above it
-won’t be re-downloaded here.</p>
+species. We can load the trends for all three species with a single call
+to <code><a href="../reference/load_trends.html">load_trends()</a></code>, which downloads any species that aren’t
+already present (the Sage Thrasher data downloaded above won’t be
+re-downloaded), then calculate the cell-wise mean.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_trends.html">ebirdst_download_trends</a></span><span class="op">(</span><span class="va">sagebrush_species</span><span class="op">)</span></span></code></pre></div>
-<p>Now we can load the trends and calculate the cell-wise mean.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trends_sagebrush_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_trends.html">load_trends</a></span><span class="op">(</span><span class="va">sagebrush_species</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># calculate mean trend for each cell</span></span>
@@ -559,7 +559,7 @@ won’t be re-downloaded here.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,255 more rows</span></span></span></code></pre></div>
 <p>Finally, let’s make a map of these sagebrush trends, focusing only on
 those cells where all three species occur.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># convert the points to sf format</span></span>
 <span><span class="va">all_species</span> <span class="op">&lt;-</span> <span class="va">trends_sagebrush</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n_species</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sagebrush_species</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>

@@ -38,8 +38,22 @@ test_that("load_raster()", {
 
 test_that("load_raster() error", {
   # weekly
-  expect_error(load_raster("Yellow Warbler"))
+  expect_error(load_raster("XXXX"))
   expect_error(load_raster("yebsap-example", product = "abndnce"))
   expect_error(load_raster("yebsap-example", resolution = "57km"))
   expect_error(load_raster("yebsap-example", path = "/bad/path/"))
+})
+
+test_that("load_raster() downloads data on demand", {
+  tmp <- withr::local_tempdir()
+  abd <- suppressMessages(
+    load_raster(
+      "yebsap-example",
+      product = "abundance",
+      resolution = "27km",
+      path = tmp
+    )
+  )
+  expect_is(abd, "SpatRaster")
+  expect_equal(terra::nlyr(abd), 52)
 })

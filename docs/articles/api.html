@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@ file.</p>
 <p>where <code>species_code</code> is the 6-letter eBird species code,
 <code>access_key</code> is the user specific access key, and
 <code>{version_year}</code> is the version (<code>2023</code> for Status
-data products and <code>2023</code> for Trends data products). The
+data products and <code>2022</code> for Trends data products). The
 result will be a list of file objects in JSON format. For example,
 assuming your access key is <code>XXXXXXXX</code>, to list available
 Status data products for Wood Thrush (species code <code>woothr</code>)
@@ -115,7 +115,7 @@ assuming your access key is <code>XXXXXXXX</code>, if you want to
 download the 3 km seasonal mean relative abundance, first find the
 corresponding file object path in the JSON returned by the list files
 API:
-<code>2022/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2022.tif</code>.
+<code>2023/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2023.tif</code>.
 Then provide that object path to the download API:</p>
 <pre><code>https://st-download.ebird.org/v1/fetch?objKey=2023/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2023.tif&amp;key=XXXXXXXX</code></pre>
 </div>

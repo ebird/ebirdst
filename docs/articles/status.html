@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,11 +79,11 @@
 information about the distributions, abundances, and population trends
 of species over time. For many taxa, this information is challenging to
 obtain at relevant geographic scales. The goal of the eBird Status and
-Trends project is to use data from <a href="https://ebird.org/home" class="external-link">eBird</a>, the global community science
-bird monitoring program administered by The Cornell Lab of Ornithology,
-to generate a reliable, standardized source of biodiversity information
-for the world’s bird populations. To translate the eBird observations
-into robust data products, we use machine learning to fill
+Trends project is to use data from <a href="https://ebird.org/home" class="external-link">eBird</a>, the global participatory
+science bird monitoring program administered by the Cornell Lab of
+Ornithology, to generate a reliable, standardized source of biodiversity
+information for the world’s bird populations. To translate the eBird
+observations into robust data products, we use machine learning to fill
 spatiotemporal gaps, using local land cover descriptions derived from
 remote sensing data, while controlling for biases inherent in species
 observations collected by community scientists. See Fink et al. (2019)
@@ -114,33 +114,46 @@ when downloading data. To store the key so this package can access it
 when downloading data, use the function
 <code>set_ebirdst_access_key("XXXXX")</code>, where <code>"XXXXX"</code>
 is the access key provided to you.</p>
-<p>There are a wide variety of data products available for download with
-<code>ebirdst</code> via the function
-<code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code>. The first argument to this
-function defines the species (as a common name, scientific name, or
-species code) to download data for and the remaining arguments define
-the specific data products to download. Throughout this vignettes, we’ll
-use a simplified example dataset consisting of estimates for
-Yellow-bellied Sapsucker in Michigan. This dataset is designed to be
-small for faster download and is accessible without a key. By default
-<code>ebirst_download_status()</code> only downloads the most commonly
-used data products; however, since this vignette will cover all the
-available data products, we’ll use <code>download_all = TRUE</code>.
-Note that data for any species other that the example dataset requires a
-key to access.</p>
+<p>Throughout this vignette, we’ll use a simplified example dataset
+consisting of estimates for Yellow-bellied Sapsucker in Michigan. This
+dataset is designed to be small for faster download and, unlike data for
+other species, is accessible without a key.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ebird.github.io/ebirdst/">ebirdst</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># download a simplified example dataset for Yellow-bellied Sapsucker in Michigan</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ebird.github.io/ebirdst/">ebirdst</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
+</h3>
+<p>The data loading functions in this package (those beginning with
+<code>load_</code>) will download any data they need automatically the
+first time you use them, so in most cases you don’t need to download
+data explicitly. For example, calling
+<code>load_raster("yebsap-example")</code> will download the relative
+abundance data for the example species if it isn’t already on your
+computer, then load it into R.</p>
+<p>In older versions of <code>ebirdst</code> it was necessary to
+download data with <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> before loading
+it; this is no longer required. However,
+<code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> is still useful when you want to
+download all, or a specific subset of, the data products for a species
+up front rather than one at a time as you load them. The first argument
+defines the species (as a common name, scientific name, or species code)
+and the remaining arguments control which data products are downloaded.
+By default only the most commonly used data products are downloaded, but
+since this vignette covers all the available data products, we’ll use
+<code>download_all = TRUE</code> to download everything for the example
+species now:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># download all data products for the example species</span></span>
 <span><span class="fu"><a href="../reference/ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"yebsap-example"</span>, download_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>By default, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> downloads data to
-a centralized directory for on your computer. You can see what that
-directory is with the function <code><a href="../reference/ebirdst_data_dir.html">ebirdst_data_dir()</a></code> and you
-can change the default download directory by setting the environment
-variable <code>EBIRDST_DATA_DIR</code>, for example by calling
+<p>By default, <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> (and the
+<code>load_</code> functions) download data to a centralized directory
+on your computer. You can see what that directory is with the function
+<code><a href="../reference/ebirdst_data_dir.html">ebirdst_data_dir()</a></code> and you can change the default download
+directory by setting the environment variable
+<code>EBIRDST_DATA_DIR</code>, for example by calling
 <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> and adding a line such as
 <code>EBIRDST_DATA_DIR=/custom/download/directory/</code>.</p>
 <p><strong>IMPORTANT: eBird Status and Trends Data Products are designed
@@ -150,6 +163,7 @@ changing file names or locations will disrupt the ability of functions
 in this package to access the data. If you prefer to access data for use
 outside of R, consider downloading data via the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">eBird
 Status and Trends website</a>.</strong></p>
+</div>
 <div class="section level3">
 <h3 id="managing-downloaded-data">Managing downloaded data<a class="anchor" aria-label="anchor" href="#managing-downloaded-data"></a>
 </h3>
@@ -158,132 +172,32 @@ data for multiple versions can accumulate on disk over time. Use
 <code><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory()</a></code> to get a summary of all data
 currently downloaded, with separate rows for the Status and Trends data
 products for each species.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; eBird Status and Trends data: 102 species, 112 packages (9.5 GB)</span></span>
+<span><span class="co">#&gt; eBird Status and Trends data: 14 species, 14 packages (816.1 MB)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2022 Trends Data Products (64.0 MB)</span></span>
-<span><span class="co">#&gt;   Abert's Towhee (abetow): 3 files, 364.9 KB</span></span>
+<span><span class="co">#&gt; 2022 Trends Data Products (9.3 MB)</span></span>
 <span><span class="co">#&gt;   Brewer's Sparrow (brespa): 3 files, 4.0 MB</span></span>
-<span><span class="co">#&gt;   Brown Pelican (brnpel): 3 files, 1.7 MB</span></span>
-<span><span class="co">#&gt;   Black-throated Green Warbler (btnwar): 3 files, 7.1 MB</span></span>
-<span><span class="co">#&gt;   Burrowing Owl (burowl): 3 files, 4.8 MB</span></span>
-<span><span class="co">#&gt;   Grasshopper Sparrow (graspa): 3 files, 7.3 MB</span></span>
-<span><span class="co">#&gt;   Limpkin (limpki): 3 files, 1.1 MB</span></span>
-<span><span class="co">#&gt;   Marsh Wren (marwre): 3 files, 5.9 MB</span></span>
-<span><span class="co">#&gt;   Prairie Warbler (prawar): 3 files, 3.3 MB</span></span>
 <span><span class="co">#&gt;   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB</span></span>
 <span><span class="co">#&gt;   Sage Thrasher (sagthr): 3 files, 2.7 MB</span></span>
-<span><span class="co">#&gt;   Seaside Sparrow (seaspa): 3 files, 215.5 KB</span></span>
-<span><span class="co">#&gt;   Snow Goose (snogoo): 3 files, 3.7 MB</span></span>
-<span><span class="co">#&gt;   Wood Thrush (woothr): 3 files, 7.3 MB</span></span>
-<span><span class="co">#&gt;   American Coot (y00475): 3 files, 12.2 MB</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2022 Status Data Products (67.6 MB)</span></span>
-<span><span class="co">#&gt;   Western Grebe (wesgre): 8 files, 67.6 MB</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2023 Status Data Products (9.4 GB)</span></span>
-<span><span class="co">#&gt;   Abert's Towhee (abetow): 2 files, 2.4 MB</span></span>
-<span><span class="co">#&gt;   American Kestrel (amekes): 2 files, 227.8 MB</span></span>
-<span><span class="co">#&gt;   Puerto Rican Mango (antman3): 4 files, 51.9 MB</span></span>
-<span><span class="co">#&gt;   Asian House-Martin (ashmar1): 28 files, 233.7 MB</span></span>
-<span><span class="co">#&gt;   Ash-throated Flycatcher (astfly): 2 files, 44.3 MB</span></span>
-<span><span class="co">#&gt;   Baird's Sparrow (baispa): 7 files, 81.3 MB</span></span>
-<span><span class="co">#&gt;   Bank Swallow (banswa): 2 files, 19.4 MB</span></span>
-<span><span class="co">#&gt;   Barn Swallow (barswa): 27 files, 1.2 GB</span></span>
-<span><span class="co">#&gt;   Black-bellied Plover (bkbplo): 3 files, 9.3 MB</span></span>
-<span><span class="co">#&gt;   Bobolink (boboli): 7 files, 134.9 MB</span></span>
-<span><span class="co">#&gt;   Brewer's Blackbird (brebla): 2 files, 44.9 MB</span></span>
-<span><span class="co">#&gt;   Brown-headed Thrush (brhthr1): 47 files, 105.2 MB</span></span>
-<span><span class="co">#&gt;   American Barn Owl (brnowl): 2 files, 245.0 MB</span></span>
-<span><span class="co">#&gt;   Brown Pelican (brnpel): 4 files, 68.7 MB</span></span>
-<span><span class="co">#&gt;   Black-throated Green Warbler (btnwar): 4 files, 121.2 MB</span></span>
-<span><span class="co">#&gt;   Burrowing Owl (burowl): 5 files, 554.7 MB</span></span>
-<span><span class="co">#&gt;   Cassin's Kingbird (caskin): 2 files, 30.2 MB</span></span>
-<span><span class="co">#&gt;   Cassin's Sparrow (casspa): 2 files, 31.1 MB</span></span>
-<span><span class="co">#&gt;   Cerulean Warbler (cerwar): 3 files, 583.3 KB</span></span>
-<span><span class="co">#&gt;   Chestnut-collared Longspur (chclon): 7 files, 112.6 MB</span></span>
-<span><span class="co">#&gt;   Clay-colored Sparrow (clcspa): 2 files, 47.2 MB</span></span>
-<span><span class="co">#&gt;   Colima Warbler (colwar): 10 files, 4.0 MB</span></span>
-<span><span class="co">#&gt;   Common Nighthawk (comnig): 2 files, 66.8 MB</span></span>
-<span><span class="co">#&gt;   Common Yellowthroat (comyel): 2 files, 85.9 MB</span></span>
-<span><span class="co">#&gt;   Data Coverage (data_coverage): 3 files, 91.9 MB</span></span>
-<span><span class="co">#&gt;   Dickcissel (dickci): 2 files, 39.3 MB</span></span>
-<span><span class="co">#&gt;   Eastern Bluebird (easblu): 2 files, 73.9 MB</span></span>
-<span><span class="co">#&gt;   Eastern Kingbird (easkin): 2 files, 56.5 MB</span></span>
-<span><span class="co">#&gt;   Eastern Meadowlark (easmea): 2 files, 64.0 MB</span></span>
-<span><span class="co">#&gt;   Ferruginous Hawk (ferhaw): 2 files, 37.2 MB</span></span>
-<span><span class="co">#&gt;   Field Sparrow (fiespa): 2 files, 59.8 MB</span></span>
-<span><span class="co">#&gt;   Green-winged Teal (gnwtea): 2 files, 11.3 MB</span></span>
-<span><span class="co">#&gt;   Golden Eagle (goleag): 28 files, 881.9 MB</span></span>
-<span><span class="co">#&gt;   Grasshopper Sparrow (graspa): 5 files, 186.9 MB</span></span>
-<span><span class="co">#&gt;   Henslow's Sparrow (henspa): 2 files, 19.6 MB</span></span>
-<span><span class="co">#&gt;   Horned Lark (horlar): 47 files, 741.7 MB</span></span>
-<span><span class="co">#&gt;   House Sparrow (houspa): 4 files, 8.4 MB</span></span>
-<span><span class="co">#&gt;   Kentucky Warbler (kenwar): 5 files, 31.7 MB</span></span>
-<span><span class="co">#&gt;   Lark Bunting (larbun): 2 files, 34.1 MB</span></span>
-<span><span class="co">#&gt;   Lark Sparrow (larspa): 2 files, 59.4 MB</span></span>
-<span><span class="co">#&gt;   LeConte's Sparrow (lecspa): 2 files, 26.2 MB</span></span>
-<span><span class="co">#&gt;   Limpkin (limpki): 4 files, 181.6 MB</span></span>
-<span><span class="co">#&gt;   Little Ringed Plover (lirplo): 3 files, 25.6 MB</span></span>
-<span><span class="co">#&gt;   Long-billed Curlew (lobcur): 2 files, 26.7 MB</span></span>
-<span><span class="co">#&gt;   Long-eared Owl (loeowl): 2 files, 64.1 MB</span></span>
-<span><span class="co">#&gt;   Loggerhead Shrike (logshr): 2 files, 75.4 MB</span></span>
-<span><span class="co">#&gt;   Long-toed Stint (lotsti): 3 files, 4.9 MB</span></span>
-<span><span class="co">#&gt;   Marbled Godwit (margod): 2 files, 22.2 MB</span></span>
-<span><span class="co">#&gt;   Marsh Wren (marwre): 4 files, 85.5 MB</span></span>
-<span><span class="co">#&gt;   Thick-billed Longspur (mcclon): 2 files, 21.3 MB</span></span>
-<span><span class="co">#&gt;   Merlin (merlin): 2 files, 65.1 MB</span></span>
-<span><span class="co">#&gt;   Mountain Bluebird (moublu): 2 files, 45.4 MB</span></span>
-<span><span class="co">#&gt;   Mountain Plover (mouplo): 2 files, 18.2 MB</span></span>
-<span><span class="co">#&gt;   Northern Harrier (norhar2): 2 files, 74.3 MB</span></span>
-<span><span class="co">#&gt;   Northern Pintail (norpin): 2 files, 8.5 MB</span></span>
-<span><span class="co">#&gt;   Pectoral Sandpiper (pecsan): 2 files, 5.8 MB</span></span>
-<span><span class="co">#&gt;   Peregrine Falcon (perfal): 2 files, 135.0 MB</span></span>
-<span><span class="co">#&gt;   Pinyon Jay (pinjay): 2 files, 828.2 KB</span></span>
-<span><span class="co">#&gt;   Prairie Falcon (prafal): 2 files, 51.4 MB</span></span>
-<span><span class="co">#&gt;   Prairie Warbler (prawar): 4 files, 87.1 MB</span></span>
-<span><span class="co">#&gt;   Puerto Rican Owl (prsowl): 4 files, 51.9 MB</span></span>
-<span><span class="co">#&gt;   Red Knot (redkno): 3 files, 4.2 MB</span></span>
-<span><span class="co">#&gt;   Red-necked Stint (rensti): 3 files, 4.7 MB</span></span>
-<span><span class="co">#&gt;   Red-winged Blackbird (rewbla): 2 files, 90.7 MB</span></span>
-<span><span class="co">#&gt;   Rock Pigeon (rocpig): 7 files, 24.0 MB</span></span>
-<span><span class="co">#&gt;   Ruby-throated Hummingbird (rthhum): 8 files, 81.6 MB</span></span>
-<span><span class="co">#&gt;   Ruddy Turnstone (rudtur): 3 files, 8.0 MB</span></span>
-<span><span class="co">#&gt;   Rufous Hummingbird (rufhum): 5 files, 27.3 MB</span></span>
-<span><span class="co">#&gt;   Sandhill Crane (sancra): 4 files, 177.5 MB</span></span>
-<span><span class="co">#&gt;   Savannah Sparrow (savspa): 2 files, 92.9 MB</span></span>
-<span><span class="co">#&gt;   Say's Phoebe (saypho): 2 files, 64.4 MB</span></span>
-<span><span class="co">#&gt;   Scissor-tailed Flycatcher (sctfly): 2 files, 29.4 MB</span></span>
-<span><span class="co">#&gt;   Seaside Sparrow (seaspa): 4 files, 53.0 MB</span></span>
-<span><span class="co">#&gt;   Sedge Wren (sedwre1): 2 files, 30.3 MB</span></span>
-<span><span class="co">#&gt;   Short-eared Owl (sheowl): 2 files, 69.2 MB</span></span>
-<span><span class="co">#&gt;   Sprague's Pipit (sprpip): 7 files, 96.6 MB</span></span>
+<span><span class="co">#&gt; 2023 Status Data Products (806.9 MB)</span></span>
+<span><span class="co">#&gt;   Baird's Sparrow (baispa): 6 files, 61.5 MB</span></span>
+<span><span class="co">#&gt;   Bobolink (boboli): 6 files, 103.5 MB</span></span>
+<span><span class="co">#&gt;   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB</span></span>
+<span><span class="co">#&gt;   Data Coverage (data_coverage): 1 files, 52.9 MB</span></span>
+<span><span class="co">#&gt;   Golden Eagle (goleag): 5 files, 50.4 MB</span></span>
+<span><span class="co">#&gt;   Horned Lark (horlar): 2 files, 4.0 MB</span></span>
+<span><span class="co">#&gt;   Sprague's Pipit (sprpip): 6 files, 73.7 MB</span></span>
 <span><span class="co">#&gt;   Surf Scoter (sursco): 2 files, 2.4 MB</span></span>
-<span><span class="co">#&gt;   Swainson's Hawk (swahaw): 2 files, 45.8 MB</span></span>
-<span><span class="co">#&gt;   Taiwan Barwing (taibar1): 3 files, 837.4 KB</span></span>
-<span><span class="co">#&gt;   Tree Swallow (treswa): 2 files, 7.7 MB</span></span>
-<span><span class="co">#&gt;   Tundra Swan (tunswa): 2 files, 5.3 MB</span></span>
-<span><span class="co">#&gt;   Turkey Vulture (turvul): 2 files, 311.8 MB</span></span>
-<span><span class="co">#&gt;   Upland Sandpiper (uplsan): 7 files, 180.5 MB</span></span>
-<span><span class="co">#&gt;   Vesper Sparrow (vesspa): 2 files, 68.3 MB</span></span>
-<span><span class="co">#&gt;   Western Bluebird (wesblu): 2 files, 35.1 MB</span></span>
-<span><span class="co">#&gt;   Western Kingbird (weskin): 2 files, 41.3 MB</span></span>
-<span><span class="co">#&gt;   Western Meadowlark (wesmea): 9 files, 295.3 MB</span></span>
-<span><span class="co">#&gt;   Western Tanager (westan): 5 files, 48.5 MB</span></span>
-<span><span class="co">#&gt;   White-cheeked Pintail (whcpin): 4 files, 85.1 MB</span></span>
-<span><span class="co">#&gt;   Whimbrel (whimbr): 4 files, 122.0 MB</span></span>
-<span><span class="co">#&gt;   Willet (willet1): 2 files, 25.0 MB</span></span>
-<span><span class="co">#&gt;   Wilson's Phalarope (wilpha): 2 files, 31.1 MB</span></span>
-<span><span class="co">#&gt;   Wilson's Snipe (wilsni1): 2 files, 54.1 MB</span></span>
-<span><span class="co">#&gt;   American Coot (y00475): 4 files, 85.6 MB</span></span>
-<span><span class="co">#&gt;   Yellow-breasted Crake (yebcra1): 4 files, 61.0 MB</span></span>
+<span><span class="co">#&gt;   Upland Sandpiper (uplsan): 6 files, 138.5 MB</span></span>
+<span><span class="co">#&gt;   Western Meadowlark (wesmea): 6 files, 224.1 MB</span></span>
 <span><span class="co">#&gt;   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB</span></span></code></pre></div>
 <p>To remove data for specific species or version years, use
 <code><a href="../reference/ebirdst_delete.html">ebirdst_delete()</a></code>. When called interactively it will display
 a summary of the data to be removed and ask for confirmation before
 proceeding. To skip the prompt, use <code>force = TRUE</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># review and confirm before deleting</span></span>
 <span><span class="fu"><a href="../reference/ebirdst_delete.html">ebirdst_delete</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"yebsap-example"</span><span class="op">)</span></span>
 <span></span>
@@ -296,7 +210,7 @@ proceeding. To skip the prompt, use <code>force = TRUE</code>.</p>
 </h2>
 <p>The data frame <code>ebirdst_runs</code> lists all species with eBird
 Status Data Products available for download.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">ebirdst_runs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 2,981</span></span>
 <span><span class="co">#&gt; Columns: 30</span></span>
@@ -376,7 +290,7 @@ extrapolation and/or omission; use with caution.</li>
 extrapolation and/or omission; these seasons can be safely used.</li>
 </ol>
 <p>Let’s look at the results of the review for our example dataset.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ebirdst_runs</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species_code</span> <span class="op">==</span> <span class="st">"yebsap-example"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -453,8 +367,11 @@ in GeoTIFF format.</li>
 <p>Each of these data products will be covered in more detail in the
 following sections, including details on how to load the data into R.
 All of the loading functions take a species (given as common name,
-scientific name, or species code) as their first argument. If you have
-used a non-default <code>path</code> argument to
+scientific name, or species code) as their first argument. If the
+requested data have not already been downloaded, the loading functions
+will download them automatically on first use, so calling
+<code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> in advance is optional. If you
+have used a non-default <code>path</code> argument to
 <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> then you will also need to
 provide the same <code>path</code> argument to the loading
 functions.</p>
@@ -470,7 +387,7 @@ the ensemble for each quantity.</p>
 format, and we refer to them as “weekly cubes” (e.g. the “weekly
 abundance cube”). All cubes have 52 weeks and cover the entire globe,
 even for species with ranges only covering a small region. They come
-with areas of predicted and assumed zeroes, such that any cells that are
+with areas of predicted and assumed zeroes. Any cells that are
 <code>NA</code> represent areas where we didn’t produce model
 estimates.</p>
 <p>All estimates are the ensemble median expected value for a 2 km, 1
@@ -500,8 +417,8 @@ by the sum of all cell values</li>
 <p>All predictions are made on a standard 3 km by 3 km global grid;
 however, for convenience lower resolution GeoTIFFs are also provided,
 which are typically much faster to work with. However, note that to keep
-file sizes small, <strong>the example dataset only contains lowest (27
-km) resolution data</strong>. The three resolutions are:</p>
+file sizes small, <strong>the example dataset only contains the lowest
+(27 km) resolution data</strong>. The three resolutions are:</p>
 <ul>
 <li>High resolution (3km): the native 3 km resolution data.</li>
 <li>Medium resolution (9km): the 3 km resolution data aggregated by a
@@ -511,11 +428,11 @@ factor of 9 in each direction resulting in a resolution of 27 km.</li>
 </ul>
 <p>The function <code><a href="../reference/load_raster.html">load_raster()</a></code> is used to load these data
 into R and takes arguments for <code>product</code> and
-<code>resolution</code>. The <code>metric</code> argument can be also be
+<code>resolution</code>. The <code>metric</code> argument can also be
 used to access the relative abundance CIs. All raster products are
 loaded into R as <code>SpatRaster</code> objects for use with the
 <code>terra</code> R package. For example,</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># weekly, 27km res, median relative abundance</span></span>
 <span><span class="va">abd_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
 <span>                      resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
@@ -531,7 +448,7 @@ loaded into R as <code>SpatRaster</code> objects for use with the
 <span>                         resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span></code></pre></div>
 <p>Each object has 52 layers, one for each week of the year, and layer
 names store the dates corresponding to the midpoints of each week.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lr</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"</span></span>
 <span><span class="co">#&gt;  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"</span></span>
@@ -564,7 +481,7 @@ load these data into R and takes arguments for <code>product</code>,
 <code>metric</code> and <code>resolution</code>. The data are loaded
 into R as <code>SpatRaster</code> objects for use with the
 <code>terra</code> package. For example,</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal, 27km res, mean relative abundance</span></span>
 <span><span class="va">abd_seasonal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
 <span>                                 period <span class="op">=</span> <span class="st">"seasonal"</span>, metric <span class="op">=</span> <span class="st">"mean"</span>, </span>
@@ -596,7 +513,7 @@ similarly to the seasonal products, but with
 <code>period = "full-year"</code> instead. For example, these layers can
 be used in conservation planning to assess the most important sites
 across the full range and full annual cycle of a species.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># full year, 27km res, maximum relative abundance</span></span>
 <span><span class="va">abd_fy_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, product <span class="op">=</span> <span class="st">"abundance"</span>, </span>
 <span>                          period <span class="op">=</span> <span class="st">"full-year"</span>, metric <span class="op">=</span> <span class="st">"max"</span>, </span>
@@ -614,9 +531,8 @@ GeoPackage format and can be loaded into R with
 use with the <code>sf</code> R package. By default the smoothed ranges
 are returned, but using <code>smoothed = FALSE</code> will return the
 raw, unsmoothed range polygons. Note that only low and medium resolution
-ranges are provided. These range polygons can be loaded with
-<code><a href="../reference/load_ranges.html">load_ranges()</a></code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+ranges are provided. For example:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal, 27km res, smoothed ranges</span></span>
 <span><span class="va">ranges</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ranges.html">load_ranges</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span>
 <span><span class="va">ranges</span></span>
@@ -645,7 +561,7 @@ ranges are provided. These range polygons can be loaded with
 for a standard set of regions (countries and states/provinces). These
 summary statistics can be loaded with
 <code><a href="../reference/load_regional_stats.html">load_regional_stats()</a></code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">regional</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_regional_stats.html">load_regional_stats</a></span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">regional</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 8</span></span>
@@ -678,15 +594,8 @@ modeled population within the region.</li>
 modeled population for the continent within the region. The
 <code>continent_name</code> column identifies the continent that the
 region falls within. Note that Yellow-bellied Sapsucker only occurs in
-North American so the total and continental proportions are
+North America so the total and continental proportions are
 identical.</li>
-<li>
-<code>max_week</code>: the week of the year with the highest
-proportion of the modeled population falling within the region.</li>
-<li>
-<code>max_week_percent_pop</code>: the proportion of the modeled
-population within the region in <code>max_week</code>, i.e. the maximum
-weekly value.</li>
 <li>
 <code>range_occupied_percent</code>: the proportion of the region
 occupied by the species during the given season.</li>
@@ -696,6 +605,13 @@ seasonal range falling within the region.</li>
 <li>
 <code>range_days_occupation</code>: number of days of the season
 that the region was occupied by this species.</li>
+<li>
+<code>max_week</code>: the week of the year with the highest
+proportion of the modeled population falling within the region.</li>
+<li>
+<code>max_week_percent_pop</code>: the proportion of the modeled
+population within the region in <code>max_week</code>, i.e. the maximum
+weekly value.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -705,19 +621,17 @@ that the region was occupied by this species.</li>
 into a single dataset covering all species with eBird Status Data
 Products, rather than being split across the individual species data
 packages. This dataset can be accessed with
-<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code>. Unlike most data products, which
-are downloaded with <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code> and then
-loaded with a <code>load_*()</code> function,
-<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code> downloads the file on first use,
-prompting for confirmation, and loads it in a single step. Subsequent
-calls load the already downloaded file directly.</p>
+<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code>, which downloads the file on first
+use and loads it in a single step. Subsequent calls load the already
+downloaded file directly. As with the <code>load_*()</code> functions,
+the download happens automatically without prompting.</p>
 <p>As an example, we can use this dataset to get a list of all species
 with breeding or resident season estimates in a given region,
 e.g. Taiwan. We subset to the region and seasons of interest, keep just
 the species code, season, and proportion of the population columns, then
 join to <code>ebirdst_runs</code> to attach the common and scientific
 names:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># download (on first use) and load regional stats for all species</span></span>
 <span><span class="va">regional_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -808,7 +722,7 @@ observed count.</li>
 <code>count_poisson_dev</code>: the proportion of the Poisson
 deviance explained.</li>
 <li>
-<code>count_rmse</code>: route mean squared error (RMSE).</li>
+<code>count_rmse</code>: root mean squared error (RMSE).</li>
 <li>
 <code>count_spearman</code>: Spearman’s rank correlation
 coefficient.</li>
@@ -832,9 +746,9 @@ explained.</li>
 <code>abd_spearman</code>: Spearman’s rank correlation
 coefficient.</li>
 </ul>
-<p>The spatial PPMs can be loaded using <code>load_ppms()</code>. For
-example, to load the normalized PR-AUC for the example dataset use.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>The spatial PPMs can be loaded using <code><a href="../reference/load_ppm.html">load_ppm()</a></code>. For
+example, to load the normalized PR-AUC for the example dataset use:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr_auc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ppm.html">load_ppm</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, ppm <span class="op">=</span> <span class="st">"occ_pr_auc_normalized"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster</span></span>
@@ -852,7 +766,7 @@ km grid cell. We can produce a simple plot of PR-AUC for a week in the
 middle of the year. Note that <code><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim()</a></code> is used to trim the
 global raster down to just show the area with data (the state of
 Michigan in this example dataset).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="va">pr_auc</span><span class="op">[[</span><span class="fl">26</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="status_files/figure-html/types_ppms_plot-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>See the <a href="https://ebird.github.io/ebirdst/articles/applications.html">applications
@@ -863,9 +777,9 @@ vignette</a> for a more detailed example of how to use the PPMs.</p>
 <h2 id="coverage">Data coverage<a class="anchor" aria-label="anchor" href="#coverage"></a>
 </h2>
 <p>In addition to the species-specific data products discussed above,
-<code>ebirdst</code> provides access to two species agnostic data
-products from out data coverage workflow. The data products in GeoTIFF
-format provide weekly estimates on a regular 3 km by 3km grid of</p>
+<code>ebirdst</code> provides access to two species-agnostic data
+products from our data coverage workflow. The data products in GeoTIFF
+format provide weekly estimates on a regular 3 km by 3 km grid of</p>
 <ol style="list-style-type: decimal">
 <li>
 <strong>Site selection probability:</strong> the modeled probability
@@ -877,14 +791,14 @@ within that region and season that checklists for the given week.</li>
 </ol>
 <p>These data products identify areas where the coverage of eBird data
 is relatively high or low, which can be used to prioritize areas for
-increased data collection. To download the data coverage data products
-use:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Then to load the data, for example, site selection probability for
-the week of May 10, and make a map, use:</p>
+increased data collection. For example, to load and map the site
+selection probability for the week of May 10, use
+<code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>, which will download the requested
+weeks automatically if they haven’t already been downloaded. If you
+prefer to download the data coverage products in advance, use
+<code><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage()</a></code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">site_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_data_coverage.html">load_data_coverage</a></span><span class="op">(</span><span class="st">"selection-probability"</span>, week <span class="op">=</span> <span class="st">"05-10"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">site_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_data_coverage.html">load_data_coverage</a></span><span class="op">(</span><span class="st">"selection-probability"</span>, weeks <span class="op">=</span> <span class="st">"05-10"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">site_sel</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="status_files/figure-html/coverage_load-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 </div>

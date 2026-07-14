@@ -8,7 +8,9 @@ load_ranges(
   species,
   resolution = c("9km", "27km"),
   smoothed = TRUE,
-  path = ebirdst_data_dir()
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
 )
 }
 \arguments{
@@ -29,6 +31,13 @@ data version year, e.g. "2020" for the 2020 Status Data Products. Each
 species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
+
+\item{force}{logical; if the data have already been downloaded, should a
+fresh copy be downloaded anyway.}
+
+\item{show_progress}{logical; whether to print download progress information.
+Defaults to \code{interactive()}, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).}
 }
 \value{
 An \code{sf} update containing the seasonal range boundaries, with each

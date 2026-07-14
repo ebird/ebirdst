@@ -9,7 +9,7 @@ states/provinces."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.2023.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,12 @@ states/provinces.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">load_regional_stats</span><span class="op">(</span><span class="va">species</span>, path <span class="op">=</span> <span class="fu"><a href="ebirdst_data_dir.html">ebirdst_data_dir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">load_regional_stats</span><span class="op">(</span></span>
+<span>  <span class="va">species</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="ebirdst_data_dir.html">ebirdst_data_dir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  show_progress <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,6 +76,17 @@ species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling <code><a href="ebirdst_data_dir.html">ebirdst_data_dir()</a></code>.</p></dd>
 
+
+<dt id="arg-force">force<a class="anchor" aria-label="anchor" href="#arg-force"></a></dt>
+<dd><p>logical; if the data have already been downloaded, should a
+fresh copy be downloaded anyway.</p></dd>
+
+
+<dt id="arg-show-progress">show_progress<a class="anchor" aria-label="anchor" href="#arg-show-progress"></a></dt>
+<dd><p>logical; whether to print download progress information.
+Defaults to <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code>, so downloads are silent in non-interactive
+sessions (e.g. scripts and R Markdown).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -87,6 +103,9 @@ for.</p></li>
 <li><p><code>abundance_mean</code>: mean relative abundance in the region.</p></li>
 <li><p><code>total_pop_percent</code>: proportion of the seasonal modeled population
 falling within the region.</p></li>
+<li><p><code>continent_pop_percent</code>: proportion of the seasonal modeled population
+for the continent (identified by <code>continent_name</code>) falling within the
+region.</p></li>
 <li><p><code>max_week</code>: the week of the year with the highest proportion of the
 modeled population falling within the region.</p></li>
 <li><p><code>max_week_percent_pop</code>: the proportion of the modeled population falling

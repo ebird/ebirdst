@@ -7,7 +7,7 @@ information about the distributions, abundances, and population trends
 of species over time. For many taxa, this information is challenging to
 obtain at relevant geographic scales. The goal of the eBird Status and
 Trends project is to use data from [eBird](https://ebird.org/home), the
-global community science bird monitoring program administered by The
+global participatory science bird monitoring program administered by the
 Cornell Lab of Ornithology, to generate a reliable, standardized source
 of biodiversity information for the world’s bird populations. To
 translate the eBird observations into robust data products, we use
@@ -43,35 +43,51 @@ downloading data. To store the key so this package can access it when
 downloading data, use the function `set_ebirdst_access_key("XXXXX")`,
 where `"XXXXX"` is the access key provided to you.
 
-There are a wide variety of data products available for download with
-`ebirdst` via the function
-[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md).
-The first argument to this function defines the species (as a common
-name, scientific name, or species code) to download data for and the
-remaining arguments define the specific data products to download.
-Throughout this vignettes, we’ll use a simplified example dataset
+Throughout this vignette, we’ll use a simplified example dataset
 consisting of estimates for Yellow-bellied Sapsucker in Michigan. This
-dataset is designed to be small for faster download and is accessible
-without a key. By default `ebirst_download_status()` only downloads the
-most commonly used data products; however, since this vignette will
-cover all the available data products, we’ll use `download_all = TRUE`.
-Note that data for any species other that the example dataset requires a
-key to access.
+dataset is designed to be small for faster download and, unlike data for
+other species, is accessible without a key.
 
 ``` r
+
 library(dplyr)
 library(sf)
 library(terra)
 library(ebirdst)
+```
 
-# download a simplified example dataset for Yellow-bellied Sapsucker in Michigan
+### Downloading data
+
+The data loading functions in this package (those beginning with
+`load_`) will download any data they need automatically the first time
+you use them, so in most cases you don’t need to download data
+explicitly. For example, calling `load_raster("yebsap-example")` will
+download the relative abundance data for the example species if it isn’t
+already on your computer, then load it into R.
+
+In older versions of `ebirdst` it was necessary to download data with
+[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
+before loading it; this is no longer required. However,
+[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
+is still useful when you want to download all, or a specific subset of,
+the data products for a species up front rather than one at a time as
+you load them. The first argument defines the species (as a common name,
+scientific name, or species code) and the remaining arguments control
+which data products are downloaded. By default only the most commonly
+used data products are downloaded, but since this vignette covers all
+the available data products, we’ll use `download_all = TRUE` to download
+everything for the example species now:
+
+``` r
+
+# download all data products for the example species
 ebirdst_download_status(species = "yebsap-example", download_all = TRUE)
 ```
 
 By default,
 [`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
-downloads data to a centralized directory for on your computer. You can
-see what that directory is with the function
+(and the `load_` functions) download data to a centralized directory on
+your computer. You can see what that directory is with the function
 [`ebirdst_data_dir()`](https://ebird.github.io/ebirdst/reference/ebirdst_data_dir.md)
 and you can change the default download directory by setting the
 environment variable `EBIRDST_DATA_DIR`, for example by calling
@@ -96,125 +112,26 @@ to get a summary of all data currently downloaded, with separate rows
 for the Status and Trends data products for each species.
 
 ``` r
+
 ebirdst_data_inventory()
-#> eBird Status and Trends data: 102 species, 112 packages (9.5 GB)
+#> eBird Status and Trends data: 14 species, 14 packages (816.1 MB)
 #> 
-#> 2022 Trends Data Products (64.0 MB)
-#>   Abert's Towhee (abetow): 3 files, 364.9 KB
+#> 2022 Trends Data Products (9.3 MB)
 #>   Brewer's Sparrow (brespa): 3 files, 4.0 MB
-#>   Brown Pelican (brnpel): 3 files, 1.7 MB
-#>   Black-throated Green Warbler (btnwar): 3 files, 7.1 MB
-#>   Burrowing Owl (burowl): 3 files, 4.8 MB
-#>   Grasshopper Sparrow (graspa): 3 files, 7.3 MB
-#>   Limpkin (limpki): 3 files, 1.1 MB
-#>   Marsh Wren (marwre): 3 files, 5.9 MB
-#>   Prairie Warbler (prawar): 3 files, 3.3 MB
 #>   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB
 #>   Sage Thrasher (sagthr): 3 files, 2.7 MB
-#>   Seaside Sparrow (seaspa): 3 files, 215.5 KB
-#>   Snow Goose (snogoo): 3 files, 3.7 MB
-#>   Wood Thrush (woothr): 3 files, 7.3 MB
-#>   American Coot (y00475): 3 files, 12.2 MB
 #> 
-#> 2022 Status Data Products (67.6 MB)
-#>   Western Grebe (wesgre): 8 files, 67.6 MB
-#> 
-#> 2023 Status Data Products (9.4 GB)
-#>   Abert's Towhee (abetow): 2 files, 2.4 MB
-#>   American Kestrel (amekes): 2 files, 227.8 MB
-#>   Puerto Rican Mango (antman3): 4 files, 51.9 MB
-#>   Asian House-Martin (ashmar1): 28 files, 233.7 MB
-#>   Ash-throated Flycatcher (astfly): 2 files, 44.3 MB
-#>   Baird's Sparrow (baispa): 7 files, 81.3 MB
-#>   Bank Swallow (banswa): 2 files, 19.4 MB
-#>   Barn Swallow (barswa): 27 files, 1.2 GB
-#>   Black-bellied Plover (bkbplo): 3 files, 9.3 MB
-#>   Bobolink (boboli): 7 files, 134.9 MB
-#>   Brewer's Blackbird (brebla): 2 files, 44.9 MB
-#>   Brown-headed Thrush (brhthr1): 47 files, 105.2 MB
-#>   American Barn Owl (brnowl): 2 files, 245.0 MB
-#>   Brown Pelican (brnpel): 4 files, 68.7 MB
-#>   Black-throated Green Warbler (btnwar): 4 files, 121.2 MB
-#>   Burrowing Owl (burowl): 5 files, 554.7 MB
-#>   Cassin's Kingbird (caskin): 2 files, 30.2 MB
-#>   Cassin's Sparrow (casspa): 2 files, 31.1 MB
-#>   Cerulean Warbler (cerwar): 3 files, 583.3 KB
-#>   Chestnut-collared Longspur (chclon): 7 files, 112.6 MB
-#>   Clay-colored Sparrow (clcspa): 2 files, 47.2 MB
-#>   Colima Warbler (colwar): 10 files, 4.0 MB
-#>   Common Nighthawk (comnig): 2 files, 66.8 MB
-#>   Common Yellowthroat (comyel): 2 files, 85.9 MB
-#>   Data Coverage (data_coverage): 3 files, 91.9 MB
-#>   Dickcissel (dickci): 2 files, 39.3 MB
-#>   Eastern Bluebird (easblu): 2 files, 73.9 MB
-#>   Eastern Kingbird (easkin): 2 files, 56.5 MB
-#>   Eastern Meadowlark (easmea): 2 files, 64.0 MB
-#>   Ferruginous Hawk (ferhaw): 2 files, 37.2 MB
-#>   Field Sparrow (fiespa): 2 files, 59.8 MB
-#>   Green-winged Teal (gnwtea): 2 files, 11.3 MB
-#>   Golden Eagle (goleag): 28 files, 881.9 MB
-#>   Grasshopper Sparrow (graspa): 5 files, 186.9 MB
-#>   Henslow's Sparrow (henspa): 2 files, 19.6 MB
-#>   Horned Lark (horlar): 47 files, 741.7 MB
-#>   House Sparrow (houspa): 4 files, 8.4 MB
-#>   Kentucky Warbler (kenwar): 5 files, 31.7 MB
-#>   Lark Bunting (larbun): 2 files, 34.1 MB
-#>   Lark Sparrow (larspa): 2 files, 59.4 MB
-#>   LeConte's Sparrow (lecspa): 2 files, 26.2 MB
-#>   Limpkin (limpki): 4 files, 181.6 MB
-#>   Little Ringed Plover (lirplo): 3 files, 25.6 MB
-#>   Long-billed Curlew (lobcur): 2 files, 26.7 MB
-#>   Long-eared Owl (loeowl): 2 files, 64.1 MB
-#>   Loggerhead Shrike (logshr): 2 files, 75.4 MB
-#>   Long-toed Stint (lotsti): 3 files, 4.9 MB
-#>   Marbled Godwit (margod): 2 files, 22.2 MB
-#>   Marsh Wren (marwre): 4 files, 85.5 MB
-#>   Thick-billed Longspur (mcclon): 2 files, 21.3 MB
-#>   Merlin (merlin): 2 files, 65.1 MB
-#>   Mountain Bluebird (moublu): 2 files, 45.4 MB
-#>   Mountain Plover (mouplo): 2 files, 18.2 MB
-#>   Northern Harrier (norhar2): 2 files, 74.3 MB
-#>   Northern Pintail (norpin): 2 files, 8.5 MB
-#>   Pectoral Sandpiper (pecsan): 2 files, 5.8 MB
-#>   Peregrine Falcon (perfal): 2 files, 135.0 MB
-#>   Pinyon Jay (pinjay): 2 files, 828.2 KB
-#>   Prairie Falcon (prafal): 2 files, 51.4 MB
-#>   Prairie Warbler (prawar): 4 files, 87.1 MB
-#>   Puerto Rican Owl (prsowl): 4 files, 51.9 MB
-#>   Red Knot (redkno): 3 files, 4.2 MB
-#>   Red-necked Stint (rensti): 3 files, 4.7 MB
-#>   Red-winged Blackbird (rewbla): 2 files, 90.7 MB
-#>   Rock Pigeon (rocpig): 7 files, 24.0 MB
-#>   Ruby-throated Hummingbird (rthhum): 8 files, 81.6 MB
-#>   Ruddy Turnstone (rudtur): 3 files, 8.0 MB
-#>   Rufous Hummingbird (rufhum): 5 files, 27.3 MB
-#>   Sandhill Crane (sancra): 4 files, 177.5 MB
-#>   Savannah Sparrow (savspa): 2 files, 92.9 MB
-#>   Say's Phoebe (saypho): 2 files, 64.4 MB
-#>   Scissor-tailed Flycatcher (sctfly): 2 files, 29.4 MB
-#>   Seaside Sparrow (seaspa): 4 files, 53.0 MB
-#>   Sedge Wren (sedwre1): 2 files, 30.3 MB
-#>   Short-eared Owl (sheowl): 2 files, 69.2 MB
-#>   Sprague's Pipit (sprpip): 7 files, 96.6 MB
+#> 2023 Status Data Products (806.9 MB)
+#>   Baird's Sparrow (baispa): 6 files, 61.5 MB
+#>   Bobolink (boboli): 6 files, 103.5 MB
+#>   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB
+#>   Data Coverage (data_coverage): 1 files, 52.9 MB
+#>   Golden Eagle (goleag): 5 files, 50.4 MB
+#>   Horned Lark (horlar): 2 files, 4.0 MB
+#>   Sprague's Pipit (sprpip): 6 files, 73.7 MB
 #>   Surf Scoter (sursco): 2 files, 2.4 MB
-#>   Swainson's Hawk (swahaw): 2 files, 45.8 MB
-#>   Taiwan Barwing (taibar1): 3 files, 837.4 KB
-#>   Tree Swallow (treswa): 2 files, 7.7 MB
-#>   Tundra Swan (tunswa): 2 files, 5.3 MB
-#>   Turkey Vulture (turvul): 2 files, 311.8 MB
-#>   Upland Sandpiper (uplsan): 7 files, 180.5 MB
-#>   Vesper Sparrow (vesspa): 2 files, 68.3 MB
-#>   Western Bluebird (wesblu): 2 files, 35.1 MB
-#>   Western Kingbird (weskin): 2 files, 41.3 MB
-#>   Western Meadowlark (wesmea): 9 files, 295.3 MB
-#>   Western Tanager (westan): 5 files, 48.5 MB
-#>   White-cheeked Pintail (whcpin): 4 files, 85.1 MB
-#>   Whimbrel (whimbr): 4 files, 122.0 MB
-#>   Willet (willet1): 2 files, 25.0 MB
-#>   Wilson's Phalarope (wilpha): 2 files, 31.1 MB
-#>   Wilson's Snipe (wilsni1): 2 files, 54.1 MB
-#>   American Coot (y00475): 4 files, 85.6 MB
-#>   Yellow-breasted Crake (yebcra1): 4 files, 61.0 MB
+#>   Upland Sandpiper (uplsan): 6 files, 138.5 MB
+#>   Western Meadowlark (wesmea): 6 files, 224.1 MB
 #>   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB
 ```
 
@@ -225,6 +142,7 @@ removed and ask for confirmation before proceeding. To skip the prompt,
 use `force = TRUE`.
 
 ``` r
+
 # review and confirm before deleting
 ebirdst_delete(species = "yebsap-example")
 
@@ -238,6 +156,7 @@ The data frame `ebirdst_runs` lists all species with eBird Status Data
 Products available for download.
 
 ``` r
+
 glimpse(ebirdst_runs)
 #> Rows: 2,981
 #> Columns: 30
@@ -322,6 +241,7 @@ a traffic light analogy when referring to them:
 Let’s look at the results of the review for our example dataset.
 
 ``` r
+
 ebirdst_runs |> 
   filter(species_code == "yebsap-example") |> 
   glimpse()
@@ -394,8 +314,12 @@ can be categorized into the following broad types:
 Each of these data products will be covered in more detail in the
 following sections, including details on how to load the data into R.
 All of the loading functions take a species (given as common name,
-scientific name, or species code) as their first argument. If you have
-used a non-default `path` argument to
+scientific name, or species code) as their first argument. If the
+requested data have not already been downloaded, the loading functions
+will download them automatically on first use, so calling
+[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
+in advance is optional. If you have used a non-default `path` argument
+to
 [`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
 then you will also need to provide the same `path` argument to the
 loading functions.
@@ -412,8 +336,8 @@ The weekly estimates are all stored in the widely used GeoTIFF raster
 format, and we refer to them as “weekly cubes” (e.g. the “weekly
 abundance cube”). All cubes have 52 weeks and cover the entire globe,
 even for species with ranges only covering a small region. They come
-with areas of predicted and assumed zeroes, such that any cells that are
-`NA` represent areas where we didn’t produce model estimates.
+with areas of predicted and assumed zeroes. Any cells that are `NA`
+represent areas where we didn’t produce model estimates.
 
 All estimates are the ensemble median expected value for a 2 km, 1 hour
 eBird Traveling Count by an expert eBird observer at the optimal time of
@@ -436,7 +360,7 @@ day and for optimal weather conditions to observe the given species.
 All predictions are made on a standard 3 km by 3 km global grid;
 however, for convenience lower resolution GeoTIFFs are also provided,
 which are typically much faster to work with. However, note that to keep
-file sizes small, **the example dataset only contains lowest (27 km)
+file sizes small, **the example dataset only contains the lowest (27 km)
 resolution data**. The three resolutions are:
 
 - High resolution (3km): the native 3 km resolution data.
@@ -448,11 +372,12 @@ resolution data**. The three resolutions are:
 The function
 [`load_raster()`](https://ebird.github.io/ebirdst/reference/load_raster.md)
 is used to load these data into R and takes arguments for `product` and
-`resolution`. The `metric` argument can be also be used to access the
+`resolution`. The `metric` argument can also be used to access the
 relative abundance CIs. All raster products are loaded into R as
 `SpatRaster` objects for use with the `terra` R package. For example,
 
 ``` r
+
 # weekly, 27km res, median relative abundance
 abd_lr <- load_raster("yebsap-example", product = "abundance", 
                       resolution = "27km")
@@ -472,6 +397,7 @@ Each object has 52 layers, one for each week of the year, and layer
 names store the dates corresponding to the midpoints of each week.
 
 ``` r
+
 as.Date(names(abd_lr))
 #>  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"
 #>  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"
@@ -508,6 +434,7 @@ data into R and takes arguments for `product`, `metric` and
 with the `terra` package. For example,
 
 ``` r
+
 # seasonal, 27km res, mean relative abundance
 abd_seasonal_mean <- load_raster("yebsap-example", product = "abundance", 
                                  period = "seasonal", metric = "mean", 
@@ -543,6 +470,7 @@ most important sites across the full range and full annual cycle of a
 species.
 
 ``` r
+
 # full year, 27km res, maximum relative abundance
 abd_fy_max <- load_raster("yebsap-example", product = "abundance", 
                           period = "full-year", metric = "max", 
@@ -560,11 +488,10 @@ format and can be loaded into R with
 which returns a set of spatial features for use with the `sf` R package.
 By default the smoothed ranges are returned, but using
 `smoothed = FALSE` will return the raw, unsmoothed range polygons. Note
-that only low and medium resolution ranges are provided. These range
-polygons can be loaded with
-[`load_ranges()`](https://ebird.github.io/ebirdst/reference/load_ranges.md):
+that only low and medium resolution ranges are provided. For example:
 
 ``` r
+
 # seasonal, 27km res, smoothed ranges
 ranges <- load_ranges("yebsap-example", resolution = "27km")
 ranges
@@ -595,6 +522,7 @@ summary statistics can be loaded with
 [`load_regional_stats()`](https://ebird.github.io/ebirdst/reference/load_regional_stats.md):
 
 ``` r
+
 regional <- load_regional_stats("yebsap-example")
 glimpse(regional)
 #> Rows: 8
@@ -624,18 +552,18 @@ The eight summary statistics are defined as:
 - `continent_pop_percent`: the proportion of the seasonal modeled
   population for the continent within the region. The `continent_name`
   column identifies the continent that the region falls within. Note
-  that Yellow-bellied Sapsucker only occurs in North American so the
+  that Yellow-bellied Sapsucker only occurs in North America so the
   total and continental proportions are identical.
-- `max_week`: the week of the year with the highest proportion of the
-  modeled population falling within the region.
-- `max_week_percent_pop`: the proportion of the modeled population
-  within the region in `max_week`, i.e. the maximum weekly value.
 - `range_occupied_percent`: the proportion of the region occupied by the
   species during the given season.
 - `range_total_percent`: the proportion of the species seasonal range
   falling within the region.
 - `range_days_occupation`: number of days of the season that the region
   was occupied by this species.
+- `max_week`: the week of the year with the highest proportion of the
+  modeled population falling within the region.
+- `max_week_percent_pop`: the proportion of the modeled population
+  within the region in `max_week`, i.e. the maximum weekly value.
 
 ### Regional statistics for all species
 
@@ -643,14 +571,11 @@ The regional summary statistics described above are also compiled into a
 single dataset covering all species with eBird Status Data Products,
 rather than being split across the individual species data packages.
 This dataset can be accessed with
-[`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md).
-Unlike most data products, which are downloaded with
-[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)
-and then loaded with a `load_*()` function,
-[`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
-downloads the file on first use, prompting for confirmation, and loads
-it in a single step. Subsequent calls load the already downloaded file
-directly.
+[`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md),
+which downloads the file on first use and loads it in a single step.
+Subsequent calls load the already downloaded file directly. As with the
+`load_*()` functions, the download happens automatically without
+prompting.
 
 As an example, we can use this dataset to get a list of all species with
 breeding or resident season estimates in a given region, e.g. Taiwan. We
@@ -659,6 +584,7 @@ code, season, and proportion of the population columns, then join to
 `ebirdst_runs` to attach the common and scientific names:
 
 ``` r
+
 # download (on first use) and load regional stats for all species
 regional_all <- ebirdst_regional_stats()
 
@@ -733,7 +659,7 @@ where the species was detected.
   count.
 - `count_mae`: mean absolute error (MAE).
 - `count_poisson_dev`: the proportion of the Poisson deviance explained.
-- `count_rmse`: route mean squared error (RMSE).
+- `count_rmse`: root mean squared error (RMSE).
 - `count_spearman`: Spearman’s rank correlation coefficient.
 
 **Abundance** PPMs compare the predicted relative abundance with the
@@ -747,10 +673,12 @@ observed count for the full set of tests checklists.
 - `abd_rmse`: root mean squared error (RMSE).
 - `abd_spearman`: Spearman’s rank correlation coefficient.
 
-The spatial PPMs can be loaded using `load_ppms()`. For example, to load
-the normalized PR-AUC for the example dataset use.
+The spatial PPMs can be loaded using
+[`load_ppm()`](https://ebird.github.io/ebirdst/reference/load_ppm.md).
+For example, to load the normalized PR-AUC for the example dataset use:
 
 ``` r
+
 pr_auc <- load_ppm("yebsap-example", ppm = "occ_pr_auc_normalized")
 print(pr_auc)
 #> class       : SpatRaster
@@ -773,6 +701,7 @@ to trim the global raster down to just show the area with data (the
 state of Michigan in this example dataset).
 
 ``` r
+
 plot(trim(pr_auc[[26]]))
 ```
 
@@ -785,9 +714,9 @@ for a more detailed example of how to use the PPMs.
 ## Data coverage
 
 In addition to the species-specific data products discussed above,
-`ebirdst` provides access to two species agnostic data products from out
+`ebirdst` provides access to two species-agnostic data products from our
 data coverage workflow. The data products in GeoTIFF format provide
-weekly estimates on a regular 3 km by 3km grid of
+weekly estimates on a regular 3 km by 3 km grid of
 
 1.  **Site selection probability:** the modeled probability (0-1) that a
     grid cell of a certain habitat configuration received an eBird
@@ -797,18 +726,17 @@ weekly estimates on a regular 3 km by 3km grid of
 
 These data products identify areas where the coverage of eBird data is
 relatively high or low, which can be used to prioritize areas for
-increased data collection. To download the data coverage data products
-use:
+increased data collection. For example, to load and map the site
+selection probability for the week of May 10, use
+[`load_data_coverage()`](https://ebird.github.io/ebirdst/reference/load_data_coverage.md),
+which will download the requested weeks automatically if they haven’t
+already been downloaded. If you prefer to download the data coverage
+products in advance, use
+[`ebirdst_download_data_coverage()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_data_coverage.md).
 
 ``` r
-ebirdst_download_data_coverage()
-```
 
-Then to load the data, for example, site selection probability for the
-week of May 10, and make a map, use:
-
-``` r
-site_sel <- load_data_coverage("selection-probability", week = "05-10")
+site_sel <- load_data_coverage("selection-probability", weeks = "05-10")
 plot(site_sel, axes = FALSE)
 ```
 

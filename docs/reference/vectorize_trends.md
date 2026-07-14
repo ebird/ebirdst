@@ -41,7 +41,7 @@ vectorize_trends(trends, output = c("circles", "points"), crs = 4326)
 
 ## Value
 
-Vetorized trends data as an
+Vectorized trends data as an
 [sf](https://r-spatial.github.io/sf/reference/sf.html) object.
 
 ## Examples

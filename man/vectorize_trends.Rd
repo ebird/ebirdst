@@ -21,7 +21,7 @@ equal area CRS you intend to use when mapping the data otherwise the
 "circles" will appear skewed.}
 }
 \value{
-Vetorized trends data as an \link[sf:sf]{sf} object.
+Vectorized trends data as an \link[sf:sf]{sf} object.
 }
 \description{
 The eBird trends data are stored in a tabular format, where each row gives

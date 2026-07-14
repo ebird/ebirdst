@@ -23,7 +23,7 @@ To list available files for a given species use:
 
 where `species_code` is the 6-letter eBird species code, `access_key` is
 the user specific access key, and `{version_year}` is the version
-(`2023` for Status data products and `2023` for Trends data products).
+(`2023` for Status data products and `2022` for Trends data products).
 The result will be a list of file objects in JSON format. For example,
 assuming your access key is `XXXXXXXX`, to list available Status data
 products for Wood Thrush (species code `woothr`) use:
@@ -46,7 +46,7 @@ specific access key. For example, assuming your access key is
 `XXXXXXXX`, if you want to download the 3 km seasonal mean relative
 abundance, first find the corresponding file object path in the JSON
 returned by the list files API:
-`2022/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2022.tif`. Then
+`2023/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2023.tif`. Then
 provide that object path to the download API:
 
     https://st-download.ebird.org/v1/fetch?objKey=2023/woothr/seasonal/woothr_abundance_seasonal_mean_3km_2023.tif&key=XXXXXXXX
