@@ -32,6 +32,7 @@ grid_sample_stratified(
   maximum_ss = NULL,
   jitter_columns = NULL,
   jitter_sd = 0.1,
+  cell_quantile_cap = NULL,
   ...
 )
 ```
@@ -155,6 +156,19 @@ grid_sample_stratified(
 
   numeric; strength of the jittering in units of standard deviations,
   see `jitter_columns`.
+
+- cell_quantile_cap:
+
+  proportion `(0, 1]` or `NULL`; if provided, limits how many
+  observations any single spatial grid cell can contribute to the
+  grid-sampled data, reducing the influence of chronically over-sampled
+  sites (e.g. bird feeders). For each observation class, the per-cell
+  observation count is capped at this quantile of the distribution of
+  per-cell counts: cells above the quantile are randomly reduced down to
+  it, while cells at or below it are left unchanged. Because the
+  threshold is taken from the data itself, it adapts to each dataset.
+  Detections and non-detections are capped independently by the same
+  rule. `NULL` (the default) or a value of `1` applies no cap.
 
 - ...:
 

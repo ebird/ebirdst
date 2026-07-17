@@ -231,6 +231,16 @@ grid_sample <- function(
 #'   in `x` that will be jittered.
 #' @param jitter_sd numeric; strength of the jittering in units of standard
 #'   deviations, see `jitter_columns`.
+#' @param cell_quantile_cap proportion `(0, 1]` or `NULL`; if provided, limits
+#'   how many observations any single spatial grid cell can contribute to the
+#'   grid-sampled data, reducing the influence of chronically over-sampled sites
+#'   (e.g. bird feeders). For each observation class, the per-cell observation
+#'   count is capped at this quantile of the distribution of per-cell counts:
+#'   cells above the quantile are randomly reduced down to it, while cells at or
+#'   below it are left unchanged. Because the threshold is taken from the data
+#'   itself, it adapts to each dataset. Detections and non-detections are capped
+#'   independently by the same rule. `NULL` (the default) or a value of `1`
+#'   applies no cap.
 #' @param ... additional arguments defining the spatiotemporal grid; passed to
 #'   [grid_sample()].
 #'
@@ -250,6 +260,7 @@ grid_sample_stratified <- function(
   maximum_ss = NULL,
   jitter_columns = NULL,
   jitter_sd = 0.1,
+  cell_quantile_cap = NULL,
   ...
 ) {
   # input checks
@@ -281,6 +292,23 @@ grid_sample_stratified <- function(
     min_detection_probability >= 0,
     min_detection_probability < 1
   )
+  if (!is.null(cell_quantile_cap)) {
+    stopifnot(
+      is.numeric(cell_quantile_cap),
+      length(cell_quantile_cap) == 1,
+      cell_quantile_cap > 0,
+      cell_quantile_cap <= 1
+    )
+  }
+
+  # spatial resolution for the cap grid, taken from res passed via ... to
+  # grid_sample(); default matches grid_sample()'s 3km spatial default
+  dots <- list(...)
+  if (!is.null(dots[["res"]])) {
+    cap_res_xy <- dots[["res"]][seq_len(2)]
+  } else {
+    cap_res_xy <- c(3000, 3000)
+  }
 
   if (keep_cell_id && !unified_grid) {
     warning(
@@ -385,6 +413,19 @@ grid_sample_stratified <- function(
   )
   rm(locs_split)
   sampled <- dplyr::bind_rows(sampled)
+
+  # limit how many observations any single spatial cell contributes, reducing
+  # the influence of chronically over-sampled sites; see
+  # cap_cells_by_quantile(). NULL or a value of 1 applies no cap
+  if (!is.null(cell_quantile_cap) && cell_quantile_cap < 1) {
+    sampled <- cap_cells_by_quantile(
+      sampled = sampled,
+      prob = cell_quantile_cap,
+      coords = coords,
+      res_xy = cap_res_xy,
+      case_control = case_control
+    )
+  }
 
   # subsample to decrease sample size to maximum
   # TODO consider adding && nrow(sampled) > maximum_ss here
@@ -727,4 +768,69 @@ sample_stratify <- function(x, prop, sample_by) {
     SIMPLIFY = FALSE
   )
   dplyr::bind_rows(sampled)
+}
+
+# cap the number of observations contributed by each spatial grid cell at the
+# given quantile of the per-cell count distribution; cells above the quantile
+# are randomly reduced down to it, cells at or below are left unchanged. this
+# is the engine behind grid_sample_stratified()'s cell_quantile_cap argument
+#
+# sampled: data frame of grid-sampled observations, with planar (already
+#   projected) coordinate columns named by coords and, when case_control is
+#   TRUE, a logical .detected column
+# prob: proportion (0, 1]; quantile of the per-cell count distribution used
+#   as the per-cell cap
+# coords: character; coordinate column names (only the first two, the spatial
+#   ones, are used)
+# res_xy: numeric length-2; spatial grid resolution, same units as the
+#   projected coordinates
+# case_control: logical; if TRUE, detections and non-detections are capped
+#   independently by the same rule
+cap_cells_by_quantile <- function(sampled, prob, coords, res_xy, case_control) {
+  if (nrow(sampled) == 0) {
+    return(sampled)
+  }
+
+  # one consistent (un-jittered) spatial cell id per site so cell ids are
+  # comparable across all strata
+  cell <- assign_to_grid(
+    points = sampled,
+    coords = coords[seq_len(2)],
+    is_lonlat = FALSE,
+    res = res_xy,
+    jitter_grid = FALSE
+  )[["cell_xy"]]
+
+  # group by cell, and additionally by class within cell when case control is
+  # on, so the two classes are capped by the same rule but independently
+  if (case_control) {
+    group <- paste(cell, sampled[[".detected"]], sep = "\r")
+    class_label <- sampled[[".detected"]]
+  } else {
+    group <- cell
+    class_label <- rep(TRUE, nrow(sampled))
+  }
+
+  # per-row cap: the count at `prob` of the per-cell distribution, computed
+  # separately for each class
+  cap_n <- integer(nrow(sampled))
+  for (cls in unique(class_label)) {
+    in_class <- class_label == cls
+    per_cell_counts <- tabulate(match(group[in_class], unique(group[in_class])))
+    cap_n[in_class] <- ceiling(
+      stats::quantile(per_cell_counts, probs = prob, names = FALSE)
+    )
+  }
+
+  # give every row a random rank within its group, then keep the first cap_n
+  # of each group; this is a uniform random subsample per cell, fully
+  # vectorized rather than looping over cells
+  shuffled <- sample.int(nrow(sampled))
+  rank_in_group <- integer(nrow(sampled))
+  rank_in_group[shuffled] <- stats::ave(
+    seq_along(shuffled),
+    group[shuffled],
+    FUN = seq_along
+  )
+  return(sampled[rank_in_group <= cap_n, , drop = FALSE])
 }
