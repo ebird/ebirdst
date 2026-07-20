@@ -20,3 +20,6 @@ devtools::check()
 # checks
 devtools::check_win_devel()
 devtools::check_win_release()
+
+# reverse dependencies
+revdepcheck::revdep_check(num_workers = 4)
