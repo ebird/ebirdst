@@ -24,6 +24,8 @@
 
 ^examples$
 
+^revdep$
+
 ^CLAUDE\.md$
 ^\.claude$
 ^air\.toml$

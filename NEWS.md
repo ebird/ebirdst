@@ -6,6 +6,7 @@
 - Add `ebirdst_data_inventory()` and `ebirdst_delete()` to manage files downloaded by `ebirdst`
 - Move to air auto-formatting and jarl linting
 - Efficiency improvements for grid_sample()
+- `grid_sample_stratified()` gains a `cell_quantile_cap` argument to limit how many observations a single chronically over-sampled site (e.g. a bird feeder) can contribute
 
 # ebirdst 3.2023.1
 

@@ -92,3 +92,125 @@ test_that("grid_sample_stratified()", {
   )
   expect_lte(nrow(sampled_max), 500L)
 })
+
+test_that("grid_sample_stratified() validates cell_quantile_cap", {
+  expect_error(grid_sample_stratified(checklists, cell_quantile_cap = 0))
+  expect_error(grid_sample_stratified(checklists, cell_quantile_cap = -0.1))
+  expect_error(grid_sample_stratified(checklists, cell_quantile_cap = 1.5))
+  expect_error(grid_sample_stratified(checklists, cell_quantile_cap = c(0.5, 0.6)))
+  # a value of 1 is a valid no-op, not an error
+  expect_no_error(grid_sample_stratified(checklists, cell_quantile_cap = 1))
+})
+
+test_that("grid_sample_stratified() cell_quantile_cap is a no-op backwards compatible default", {
+  set.seed(1)
+  baseline <- grid_sample_stratified(checklists, jitter_grid = FALSE)
+  set.seed(1)
+  with_null <- grid_sample_stratified(
+    checklists,
+    cell_quantile_cap = NULL,
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  with_one <- grid_sample_stratified(
+    checklists,
+    cell_quantile_cap = 1,
+    jitter_grid = FALSE
+  )
+  expect_equal(with_null, baseline)
+  expect_equal(with_one, baseline)
+})
+
+test_that("grid_sample_stratified() cell_quantile_cap reduces over-sampled sites", {
+  # inject a chronically over-sampled site (e.g. a feeder) into the data
+  extra <- data.frame(
+    longitude = -80,
+    latitude = 40,
+    day_of_year = sample.int(365L, 60L, replace = TRUE),
+    year = sample(2016L:2020L, 60L, replace = TRUE),
+    obs = sample(c(0L, 1L), 60L, replace = TRUE, prob = c(0.5, 0.5))
+  )
+  x <- rbind(checklists, extra)
+
+  set.seed(1)
+  uncapped <- grid_sample_stratified(x, jitter_grid = FALSE)
+  set.seed(1)
+  capped <- grid_sample_stratified(
+    x,
+    cell_quantile_cap = 0.5,
+    jitter_grid = FALSE
+  )
+
+  expect_lte(nrow(capped), nrow(uncapped))
+  n_site_uncapped <- sum(uncapped$longitude == -80 & uncapped$latitude == 40)
+  n_site_capped <- sum(capped$longitude == -80 & capped$latitude == 40)
+  expect_lt(n_site_capped, n_site_uncapped)
+})
+
+test_that("cap_cells_by_quantile() caps over-sampled cells without case control", {
+  # one busy cell (20 obs) and one quiet cell (3 obs)
+  sampled <- data.frame(
+    x = c(rep(1, 20), rep(100, 3)),
+    y = c(rep(1, 20), rep(100, 3)),
+    t = 1
+  )
+
+  set.seed(1)
+  capped <- cap_cells_by_quantile(
+    sampled,
+    prob = 0.5,
+    coords = c("x", "y", "t"),
+    res_xy = c(10, 10),
+    case_control = FALSE
+  )
+
+  expect_true(all(names(sampled) %in% names(capped)))
+  # busy cell trimmed down to the cap, quiet cell left untouched
+  expect_equal(sum(capped$x == 1), 12L)
+  expect_equal(sum(capped$x == 100), 3L)
+})
+
+test_that("cap_cells_by_quantile() caps detections and non-detections independently", {
+  # busy cell (x = 1): 10 detections, 15 non-detections
+  # quiet cell (x = 100): 1 detection, 1 non-detection
+  sampled <- data.frame(
+    x = c(rep(1, 10), rep(1, 15), rep(100, 1), rep(100, 1)),
+    y = c(rep(1, 10), rep(1, 15), rep(100, 1), rep(100, 1)),
+    t = 1,
+    .detected = c(
+      rep(TRUE, 10),
+      rep(FALSE, 15),
+      rep(TRUE, 1),
+      rep(FALSE, 1)
+    )
+  )
+
+  set.seed(1)
+  capped <- cap_cells_by_quantile(
+    sampled,
+    prob = 0.5,
+    coords = c("x", "y", "t"),
+    res_xy = c(10, 10),
+    case_control = TRUE
+  )
+
+  # busy cell trimmed independently for each class
+  expect_equal(sum(capped$x == 1 & capped$.detected), 6L)
+  expect_equal(sum(capped$x == 1 & !capped$.detected), 8L)
+  # quiet cell is untouched, a single detection is never dropped
+  expect_equal(sum(capped$x == 100 & capped$.detected), 1L)
+  expect_equal(sum(capped$x == 100 & !capped$.detected), 1L)
+})
+
+test_that("cap_cells_by_quantile() handles empty input", {
+  sampled <- data.frame(x = numeric(0), y = numeric(0), t = numeric(0))
+  capped <- cap_cells_by_quantile(
+    sampled,
+    prob = 0.5,
+    coords = c("x", "y", "t"),
+    res_xy = c(10, 10),
+    case_control = FALSE
+  )
+  expect_equal(nrow(capped), 0L)
+  expect_equal(names(capped), names(sampled))
+})

@@ -114,25 +114,146 @@ for the Status and Trends data products for each species.
 ``` r
 
 ebirdst_data_inventory()
-#> eBird Status and Trends data: 14 species, 14 packages (816.1 MB)
+#> eBird Status and Trends data: 135 species, 135 packages (4.3 GB)
 #> 
 #> 2022 Trends Data Products (9.3 MB)
 #>   Brewer's Sparrow (brespa): 3 files, 4.0 MB
 #>   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB
 #>   Sage Thrasher (sagthr): 3 files, 2.7 MB
 #> 
-#> 2023 Status Data Products (806.9 MB)
+#> 2023 Status Data Products (4.3 GB)
+#>   Acadian Flycatcher (acafly): 2 files, 122.6 KB
+#>   American Crow (amecro): 2 files, 248.9 KB
+#>   American Goldfinch (amegfi): 2 files, 230.3 KB
+#>   American Redstart (amered): 2 files, 247.8 KB
+#>   Andean Avocet (andavo1): 3 files, 20.2 MB
 #>   Baird's Sparrow (baispa): 6 files, 61.5 MB
+#>   Baltimore Oriole (balori): 2 files, 175.9 KB
+#>   Band-tailed Earthcreeper (batear1): 2 files, 30.5 MB
+#>   Black-and-white Warbler (bawwar): 2 files, 226.8 KB
+#>   Buff-browed Foliage-gleaner (bbfgle1): 3 files, 30.2 MB
+#>   Black-hooded Sierra Finch (bhsfin1): 3 files, 26.4 MB
+#>   Bicolored Hawk (bichaw1): 3 files, 38.7 MB
+#>   Black Siskin (blasis1): 3 files, 32.0 MB
+#>   Black-bodied Woodpecker (blbwoo3): 3 files, 25.6 MB
+#>   Black-headed Duck (blhduc1): 2 files, 22.4 MB
+#>   Blue Grosbeak (blugrb1): 2 files, 180.7 KB
+#>   Blue Jay (blujay): 2 files, 199.1 KB
 #>   Bobolink (boboli): 6 files, 103.5 MB
+#>   Brown Thrasher (brnthr): 2 files, 164.3 KB
+#>   Broad-winged Hawk (brwhaw): 2 files, 208.7 KB
+#>   Bright-rumped Yellow-Finch (bryfin1): 3 files, 29.5 MB
+#>   Black-throated Blue Warbler (btbwar): 2 files, 108.1 KB
+#>   Black-throated Green Warbler (btnwar): 2 files, 164.0 KB
+#>   Blue-crowned Parakeet (bucpar): 3 files, 48.9 MB
+#>   Blue-gray Gnatcatcher (buggna): 2 files, 217.1 KB
+#>   Blue-headed Vireo (buhvir): 2 files, 181.2 KB
+#>   Blue-winged Warbler (buwwar): 2 files, 108.6 KB
+#>   Canada Warbler (canwar): 2 files, 149.0 KB
+#>   Cedar Waxwing (cedwax): 2 files, 279.0 KB
+#>   Cerulean Warbler (cerwar): 2 files, 93.1 KB
 #>   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB
+#>   Chipping Sparrow (chispa): 2 files, 299.8 KB
+#>   Chiloe Wigeon (chiwig1): 28 files, 120.2 MB
+#>   Chestnut-sided Warbler (chswar): 2 files, 146.9 KB
+#>   Chocolate-vented Tyrant (chvtyr2): 28 files, 110.6 MB
+#>   Common Chlorospingus (cobtan1): 3 files, 25.1 MB
+#>   Common Potoo (compot1): 28 files, 1.0 GB
+#>   Common Yellowthroat (comyel): 2 files, 296.5 KB
+#>   Couch's Kingbird (coukin): 2 files, 50.4 KB
 #>   Data Coverage (data_coverage): 1 files, 52.9 MB
+#>   Dusky-capped Flycatcher (ducfly): 2 files, 141.8 KB
+#>   Eastern Bluebird (easblu): 2 files, 179.1 KB
+#>   Eastern Phoebe (easpho): 2 files, 183.6 KB
+#>   Eastern Towhee (eastow): 2 files, 130.2 KB
+#>   Eastern Whip-poor-will (easwpw1): 2 files, 87.3 KB
+#>   Eastern Wood-Pewee (eawpew): 2 files, 204.3 KB
+#>   Elegant Crested-Tinamou (elctin1): 22 files, 174.6 MB
+#>   Field Sparrow (fiespa): 2 files, 148.7 KB
+#>   Green-breasted Mango (gnbman): 2 files, 61.8 KB
 #>   Golden Eagle (goleag): 5 files, 50.4 MB
+#>   Golden-winged Warbler (gowwar): 2 files, 103.1 KB
+#>   Groove-billed Ani (grbani): 2 files, 93.0 KB
+#>   Great Crested Flycatcher (grcfly): 2 files, 165.0 KB
+#>   Greenish Elaenia (greela): 2 files, 196.3 KB
+#>   Green Heron (grnher): 2 files, 181.4 KB
+#>   Gray Catbird (grycat): 2 files, 209.5 KB
+#>   Greenish Yellow-Finch (gryfin3): 3 files, 31.9 MB
+#>   Gray Hawk (gryhaw2): 2 files, 57.8 KB
+#>   Golden-spotted Ground Dove (gsgdov1): 3 files, 26.2 MB
+#>   Gray-breasted Martin (gybmar): 2 files, 293.8 KB
+#>   Gray-bellied Shrike-Tyrant (gybsht1): 2 files, 38.9 MB
+#>   Straneck's Tyrannulet (gyctyr2): 2 files, 37.1 MB
+#>   Hooded Grebe (hoogre1): 2 files, 17.5 MB
+#>   Hooded Warbler (hoowar): 2 files, 113.4 KB
 #>   Horned Lark (horlar): 2 files, 4.0 MB
+#>   Indigo Bunting (indbun): 2 files, 183.1 KB
+#>   Kentucky Warbler (kenwar): 2 files, 106.3 KB
+#>   Lake Duck (lakduc1): 2 files, 22.5 MB
+#>   Least Bittern (leabit): 2 files, 106.6 KB
+#>   Least Flycatcher (leafly): 2 files, 221.9 KB
+#>   Lesser Nighthawk (lesnig): 2 files, 156.3 KB
+#>   Louisiana Waterthrush (louwat): 2 files, 137.7 KB
+#>   Magnolia Warbler (magwar): 2 files, 188.8 KB
+#>   Mitred Parakeet (mitpar): 3 files, 21.4 MB
+#>   Mottle-cheeked Tyrannulet (moctyr2): 3 files, 29.4 MB
+#>   Northern Beardless-Tyrannulet (nobtyr): 2 files, 57.5 KB
+#>   Northern Parula (norpar): 2 files, 157.1 KB
+#>   Northern Waterthrush (norwat): 2 files, 310.3 KB
+#>   Northern Rough-winged Swallow (nrwswa): 2 files, 230.1 KB
+#>   Orchard Oriole (orcori): 2 files, 171.7 KB
+#>   Ovenbird (ovenbi1): 2 files, 192.4 KB
+#>   Patagonian Mockingbird (patmoc1): 2 files, 42.6 MB
+#>   Patagonian Tinamou (pattin1): 2 files, 21.5 MB
+#>   Prairie Warbler (prawar): 2 files, 105.7 KB
+#>   Puna Miner (punmin1): 3 files, 25.0 MB
+#>   Red-backed Sierra Finch (rbsfin1): 3 files, 20.6 MB
+#>   Variable Hawk (rebhaw2): 28 files, 305.8 MB
+#>   Red-crested Finch (recfin1): 3 files, 65.2 MB
+#>   Red Shoveler (redsho1): 2 files, 26.0 MB
+#>   Red-eyed Vireo (reevir1): 2 files, 259.9 KB
+#>   Red-fronted Coot (refcoo1): 2 files, 21.4 MB
+#>   Red-shouldered Hawk (reshaw): 2 files, 143.0 KB
+#>   Rose-breasted Grosbeak (robgro): 2 files, 188.5 KB
+#>   Rosy-billed Pochard (robpoc1): 2 files, 27.0 MB
+#>   Rose-throated Becard (rotbec): 2 files, 56.8 KB
+#>   Ruby-throated Hummingbird (rthhum): 2 files, 164.3 KB
+#>   Rufous-chested Dotterel (rucdot1): 28 files, 93.8 MB
+#>   Scarlet Tanager (scatan): 2 files, 153.5 KB
+#>   Sharp-billed Canastero (shbcan2): 2 files, 39.6 MB
+#>   Short-tailed Hawk (shthaw): 2 files, 102.3 KB
+#>   Sick's Swift (sicswi1): 3 files, 32.7 MB
+#>   Small-billed Elaenia (smbela1): 28 files, 249.7 MB
+#>   Song Sparrow (sonspa): 2 files, 278.2 KB
+#>   Southern Martin (soumar): 2 files, 24.1 MB
 #>   Sprague's Pipit (sprpip): 6 files, 73.7 MB
+#>   Summer Tanager (sumtan): 2 files, 174.3 KB
 #>   Surf Scoter (sursco): 2 files, 2.4 MB
+#>   Swainson's Warbler (swawar): 2 files, 81.0 KB
+#>   Tawny-throated Dotterel (tatdot1): 28 files, 128.2 MB
+#>   Thick-billed Siskin (thbsis1): 3 files, 24.5 MB
 #>   Upland Sandpiper (uplsan): 6 files, 138.5 MB
+#>   Vaux's Swift (vauswi): 2 files, 105.4 KB
+#>   Warbling Doradito (wardor1): 2 files, 20.7 MB
 #>   Western Meadowlark (wesmea): 6 files, 224.1 MB
+#>   White-banded Mockingbird (whbmoc1): 2 files, 48.4 MB
+#>   White-crested Elaenia (whcela1): 28 files, 185.2 MB
+#>   White-eyed Vireo (whevir): 2 files, 123.8 KB
+#>   White-throated Flycatcher (whtfly1): 2 files, 57.3 KB
+#>   White-tufted Grebe (whtgre3): 2 files, 25.2 MB
+#>   Worm-eating Warbler (woewar1): 2 files, 104.5 KB
+#>   Wood Thrush (woothr): 2 files, 132.1 KB
+#>   Yellow-crowned Night Heron (ycnher): 2 files, 122.7 KB
+#>   Yellow-breasted Chat (yebcha): 2 files, 193.4 KB
+#>   Yellow-billed Cuckoo (yebcuc): 2 files, 190.4 KB
+#>   Yellow-bellied Flycatcher (yebfly): 2 files, 187.9 KB
+#>   Yellow-bellied Sapsucker (yebsap): 2 files, 59.5 MB
 #>   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB
+#>   Yellow Cardinal (yelcar1): 2 files, 22.6 MB
+#>   Yellow Warbler (yelwar): 2 files, 358.8 KB
+#>   Yellow-throated Vireo (yetvir): 2 files, 146.9 KB
+#>   Yellow-throated Warbler (yetwar): 2 files, 117.9 KB
+#>   Yucatan Nightjar (yucnig1): 2 files, 44.3 KB
 ```
 
 To remove data for specific species or version years, use

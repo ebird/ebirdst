@@ -10,6 +10,9 @@ tools:::.check_package_datasets(".")
 pkgdown::clean_site()
 devtools::build_readme()
 pkgdown::build_site()
+# pkgdown turns every root *.md file into a page, ignoring .Rbuildignore;
+# remove the local-only CLAUDE.md page it generates
+unlink("docs/CLAUDE.html")
 
 # local checks
 devtools::check()
@@ -17,3 +20,6 @@ devtools::check()
 # checks
 devtools::check_win_devel()
 devtools::check_win_release()
+
+# reverse dependencies
+revdepcheck::revdep_check(num_workers = 4)
