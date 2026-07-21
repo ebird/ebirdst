@@ -147,6 +147,33 @@ test_that("grid_sample_stratified() cell_quantile_cap reduces over-sampled sites
   expect_lt(n_site_capped, n_site_uncapped)
 })
 
+test_that("grid_sample_stratified() cell_quantile_cap retains rare sample_by levels", {
+  # inject a chronically over-sampled site, with a single observation of a
+  # rare island level hiding among it, to confirm the cap doesn't drop it
+  x <- checklists
+  x$island <- "common"
+  extra <- data.frame(
+    longitude = -80,
+    latitude = 40,
+    day_of_year = sample.int(365L, 60L, replace = TRUE),
+    year = sample(2016L:2020L, 60L, replace = TRUE),
+    obs = sample(c(0L, 1L), 60L, replace = TRUE, prob = c(0.5, 0.5)),
+    island = c("rare_island", rep("common", 59))
+  )
+  x <- rbind(x, extra)
+
+  set.seed(1)
+  capped <- grid_sample_stratified(
+    x,
+    sample_by = "island",
+    cell_quantile_cap = 0.5,
+    jitter_grid = FALSE
+  )
+
+  expect_true("rare_island" %in% capped$island)
+  expect_true(all(unique(x$year) %in% capped$year))
+})
+
 test_that("cap_cells_by_quantile() caps over-sampled cells without case control", {
   # one busy cell (20 obs) and one quiet cell (3 obs)
   sampled <- data.frame(
@@ -200,6 +227,62 @@ test_that("cap_cells_by_quantile() caps detections and non-detections independen
   # quiet cell is untouched, a single detection is never dropped
   expect_equal(sum(capped$x == 100 & capped$.detected), 1L)
   expect_equal(sum(capped$x == 100 & !capped$.detected), 1L)
+})
+
+test_that("cap_cells_by_quantile() retains rare sample_by levels", {
+  # busy cell (x = 1): 20 obs, one carrying a rare island and one carrying a
+  # rare year; quiet cell (x = 100): 3 common obs, left untouched
+  sampled <- data.frame(
+    x = c(rep(1, 20), rep(100, 3)),
+    y = c(rep(1, 20), rep(100, 3)),
+    t = 1,
+    island = c(
+      "rare_island",
+      "common",
+      rep("common", 18),
+      rep("common", 3)
+    ),
+    year = c(2000L, 2050L, rep(2000L, 18), rep(2000L, 3))
+  )
+
+  set.seed(1)
+  capped <- cap_cells_by_quantile(
+    sampled,
+    prob = 0.5,
+    coords = c("x", "y", "t"),
+    res_xy = c(10, 10),
+    case_control = FALSE,
+    sample_by = c("island", "year")
+  )
+
+  # the cap is still enforced since the protected rows fit within it
+  expect_equal(sum(capped$x == 1), 12L)
+  expect_true("rare_island" %in% capped$island)
+  expect_true(2050L %in% capped$year)
+})
+
+test_that("cap_cells_by_quantile() keeps all protected rows even if that exceeds the cap", {
+  # busy cell (x = 1): 20 obs, 15 of which have a distinct rare island level
+  sampled <- data.frame(
+    x = c(rep(1, 20), rep(100, 3)),
+    y = c(rep(1, 20), rep(100, 3)),
+    t = 1,
+    island = c(paste0("island", seq_len(15)), rep("common", 5), rep("common", 3))
+  )
+
+  set.seed(1)
+  capped <- cap_cells_by_quantile(
+    sampled,
+    prob = 0.5,
+    coords = c("x", "y", "t"),
+    res_xy = c(10, 10),
+    case_control = FALSE,
+    sample_by = "island"
+  )
+
+  # cap_n for the busy cell is 12, but 15 rare islands must all be retained
+  expect_equal(sum(capped$x == 1), 15L)
+  expect_true(all(paste0("island", seq_len(15)) %in% capped$island))
 })
 
 test_that("cap_cells_by_quantile() handles empty input", {

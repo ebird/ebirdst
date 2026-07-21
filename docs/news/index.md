@@ -2,6 +2,8 @@
 
 ## ebirdst 4.2023.0
 
+CRAN release: 2026-07-20
+
 - Transition to having all the `load_*()` functions download directly
   rather than having to call
   [`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md)

@@ -239,7 +239,10 @@ grid_sample <- function(
 #'   cells above the quantile are randomly reduced down to it, while cells at or
 #'   below it are left unchanged. Because the threshold is taken from the data
 #'   itself, it adapts to each dataset. Detections and non-detections are capped
-#'   independently by the same rule. `NULL` (the default) or a value of `1`
+#'   independently by the same rule. At least one observation of every level of
+#'   `year` (when `by_year = TRUE`) and of every column in `sample_by` is always
+#'   retained, even if this means a cell exceeds the cap, so rare strata (e.g. a
+#'   remote island) are never lost. `NULL` (the default) or a value of `1`
 #'   applies no cap.
 #' @param ... additional arguments defining the spatiotemporal grid; passed to
 #'   [grid_sample()].
@@ -423,7 +426,8 @@ grid_sample_stratified <- function(
       prob = cell_quantile_cap,
       coords = coords,
       res_xy = cap_res_xy,
-      case_control = case_control
+      case_control = case_control,
+      sample_by = setdiff(sample_by, ".detected")
     )
   }
 
@@ -775,9 +779,13 @@ sample_stratify <- function(x, prop, sample_by) {
 # are randomly reduced down to it, cells at or below are left unchanged. this
 # is the engine behind grid_sample_stratified()'s cell_quantile_cap argument
 #
+# at least one observation of every level of every sample_by column is always
+# retained, even if that means a cell exceeds the cap; this keeps rare strata
+# (e.g. a remote island) from being lost to the random reduction
+#
 # sampled: data frame of grid-sampled observations, with planar (already
-#   projected) coordinate columns named by coords and, when case_control is
-#   TRUE, a logical .detected column
+#   projected) coordinate columns named by coords, the sample_by columns and,
+#   when case_control is TRUE, a logical .detected column
 # prob: proportion (0, 1]; quantile of the per-cell count distribution used
 #   as the per-cell cap
 # coords: character; coordinate column names (only the first two, the spatial
@@ -786,7 +794,15 @@ sample_stratify <- function(x, prop, sample_by) {
 #   projected coordinates
 # case_control: logical; if TRUE, detections and non-detections are capped
 #   independently by the same rule
-cap_cells_by_quantile <- function(sampled, prob, coords, res_xy, case_control) {
+# sample_by: character; names of columns whose levels must each be retained
+cap_cells_by_quantile <- function(
+  sampled,
+  prob,
+  coords,
+  res_xy,
+  case_control,
+  sample_by = character()
+) {
   if (nrow(sampled) == 0) {
     return(sampled)
   }
@@ -822,15 +838,31 @@ cap_cells_by_quantile <- function(sampled, prob, coords, res_xy, case_control) {
     )
   }
 
-  # give every row a random rank within its group, then keep the first cap_n
-  # of each group; this is a uniform random subsample per cell, fully
+  # mark one row per level of each sample_by column as protected; a level is
+  # never dropped, even if that pushes its cell above the cap. the row
+  # standing in for each level is chosen at random so retention doesn't
+  # systematically favor, e.g., the first row of the data frame
+  protected <- logical(nrow(sampled))
+  for (col in sample_by) {
+    vals <- sampled[[col]]
+    ord <- sample.int(nrow(sampled))
+    first_of_level <- ord[!duplicated(vals[ord])]
+    # an NA level has nothing meaningful to protect
+    first_of_level <- first_of_level[!is.na(vals[first_of_level])]
+    protected[first_of_level] <- TRUE
+  }
+
+  # give every row a random rank within its group, but sort protected rows to
+  # the front so they are never bumped by the cap; keep the first cap_n of
+  # each group plus any protected rows past that point. this is a uniform
+  # random subsample per cell subject to the retention constraint, fully
   # vectorized rather than looping over cells
-  shuffled <- sample.int(nrow(sampled))
-  rank_in_group <- integer(nrow(sampled))
-  rank_in_group[shuffled] <- stats::ave(
-    seq_along(shuffled),
-    group[shuffled],
-    FUN = seq_along
-  )
-  return(sampled[rank_in_group <= cap_n, , drop = FALSE])
+  score <- stats::runif(nrow(sampled))
+  ord <- order(group, !protected, score)
+  group_sorted <- group[ord]
+  rank_in_group <- seq_along(group_sorted) -
+    match(group_sorted, group_sorted) +
+    1
+  keep <- rank_in_group <= cap_n[ord] | protected[ord]
+  return(sampled[sort(ord[keep]), , drop = FALSE])
 }

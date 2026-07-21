@@ -127,7 +127,10 @@ count is capped at this quantile of the distribution of per-cell counts:
 cells above the quantile are randomly reduced down to it, while cells at or
 below it are left unchanged. Because the threshold is taken from the data
 itself, it adapts to each dataset. Detections and non-detections are capped
-independently by the same rule. \code{NULL} (the default) or a value of \code{1}
+independently by the same rule. At least one observation of every level of
+\code{year} (when \code{by_year = TRUE}) and of every column in \code{sample_by} is always
+retained, even if this means a cell exceeds the cap, so rare strata (e.g. a
+remote island) are never lost. \code{NULL} (the default) or a value of \code{1}
 applies no cap.}
 
 \item{...}{additional arguments defining the spatiotemporal grid; passed to
