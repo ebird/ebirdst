@@ -240,10 +240,11 @@ grid_sample <- function(
 #'   below it are left unchanged. Because the threshold is taken from the data
 #'   itself, it adapts to each dataset. Detections and non-detections are capped
 #'   independently by the same rule. At least one observation of every level of
-#'   `year` (when `by_year = TRUE`) and of every column in `sample_by` is always
-#'   retained, even if this means a cell exceeds the cap, so rare strata (e.g. a
-#'   remote island) are never lost. `NULL` (the default) or a value of `1`
-#'   applies no cap.
+#'   every column in `sample_by` is always retained, even if this means a cell
+#'   exceeds the cap, so rare strata (e.g. a remote island) are never lost;
+#'   `year` (when `by_year = TRUE`) is not protected, so years can be thinned
+#'   out of chronically over-sampled cells like any other observation. `NULL`
+#'   (the default) or a value of `1` applies no cap.
 #' @param ... additional arguments defining the spatiotemporal grid; passed to
 #'   [grid_sample()].
 #'
@@ -284,7 +285,7 @@ grid_sample_stratified <- function(
   stopifnot(is_flag(by_year))
   if (by_year) {
     stopifnot("year" %in% names(x))
-    sample_by <- unique(c("year", sample_by))
+    sample_by <- union("year", sample_by)
   }
   if (!is.null(maximum_ss)) {
     stopifnot(is_count(maximum_ss), maximum_ss > 0)
@@ -421,13 +422,14 @@ grid_sample_stratified <- function(
   # the influence of chronically over-sampled sites; see
   # cap_cells_by_quantile(). NULL or a value of 1 applies no cap
   if (!is.null(cell_quantile_cap) && cell_quantile_cap < 1) {
+    cap_sample_by <- setdiff(sample_by, c("year", ".detected"))
     sampled <- cap_cells_by_quantile(
       sampled = sampled,
       prob = cell_quantile_cap,
       coords = coords,
       res_xy = cap_res_xy,
       case_control = case_control,
-      sample_by = setdiff(sample_by, ".detected")
+      sample_by = cap_sample_by
     )
   }
 

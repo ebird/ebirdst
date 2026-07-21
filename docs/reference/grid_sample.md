@@ -168,11 +168,12 @@ grid_sample_stratified(
   it, while cells at or below it are left unchanged. Because the
   threshold is taken from the data itself, it adapts to each dataset.
   Detections and non-detections are capped independently by the same
-  rule. At least one observation of every level of `year` (when
-  `by_year = TRUE`) and of every column in `sample_by` is always
-  retained, even if this means a cell exceeds the cap, so rare strata
-  (e.g. a remote island) are never lost. `NULL` (the default) or a value
-  of `1` applies no cap.
+  rule. At least one observation of every level of every column in
+  `sample_by` is always retained, even if this means a cell exceeds the
+  cap, so rare strata (e.g. a remote island) are never lost; `year`
+  (when `by_year = TRUE`) is not protected, so years can be thinned out
+  of chronically over-sampled cells like any other observation. `NULL`
+  (the default) or a value of `1` applies no cap.
 
 - ...:
 

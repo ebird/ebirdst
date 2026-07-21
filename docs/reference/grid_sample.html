@@ -210,10 +210,11 @@ cells above the quantile are randomly reduced down to it, while cells at or
 below it are left unchanged. Because the threshold is taken from the data
 itself, it adapts to each dataset. Detections and non-detections are capped
 independently by the same rule. At least one observation of every level of
-<code>year</code> (when <code>by_year = TRUE</code>) and of every column in <code>sample_by</code> is always
-retained, even if this means a cell exceeds the cap, so rare strata (e.g. a
-remote island) are never lost. <code>NULL</code> (the default) or a value of <code>1</code>
-applies no cap.</p></dd>
+every column in <code>sample_by</code> is always retained, even if this means a cell
+exceeds the cap, so rare strata (e.g. a remote island) are never lost;
+<code>year</code> (when <code>by_year = TRUE</code>) is not protected, so years can be thinned
+out of chronically over-sampled cells like any other observation. <code>NULL</code>
+(the default) or a value of <code>1</code> applies no cap.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

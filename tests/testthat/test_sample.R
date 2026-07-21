@@ -171,7 +171,41 @@ test_that("grid_sample_stratified() cell_quantile_cap retains rare sample_by lev
   )
 
   expect_true("rare_island" %in% capped$island)
-  expect_true(all(unique(x$year) %in% capped$year))
+})
+
+test_that("grid_sample_stratified() cell_quantile_cap can drop rare year levels", {
+  # a chronically over-sampled site with one observation per year, alongside
+  # a rare island level; the cap should thin the site down to a handful of
+  # rows, dropping most years in the process, while the rare island level is
+  # still always retained
+  busy <- data.frame(
+    longitude = -80,
+    latitude = 40,
+    day_of_year = 100,
+    year = 2000:2019,
+    island = c("rare_island", rep("common", 19))
+  )
+  quiet <- data.frame(
+    longitude = seq(-79, -70, length.out = 10),
+    latitude = seq(41, 50, length.out = 10),
+    day_of_year = 100,
+    year = 2000:2009,
+    island = "common"
+  )
+  x <- rbind(busy, quiet)
+
+  set.seed(1)
+  capped <- grid_sample_stratified(
+    x,
+    sample_by = "island",
+    cell_quantile_cap = 0.5,
+    case_control = FALSE,
+    jitter_grid = FALSE
+  )
+  busy_capped <- capped[capped$longitude == -80 & capped$latitude == 40, ]
+
+  expect_true("rare_island" %in% busy_capped$island)
+  expect_lt(length(unique(busy_capped$year)), length(unique(busy$year)))
 })
 
 test_that("cap_cells_by_quantile() caps over-sampled cells without case control", {
