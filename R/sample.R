@@ -831,13 +831,18 @@ cap_cells_by_quantile <- function(
 
   # per-row cap: the count at `prob` of the per-cell distribution, computed
   # separately for each class
-  cap_n <- integer(nrow(sampled))
+  cap_n <- rep(Inf, nrow(sampled)) # default: no trimming
   for (cls in unique(class_label)) {
     in_class <- class_label == cls
     per_cell_counts <- tabulate(match(group[in_class], unique(group[in_class])))
-    cap_n[in_class] <- ceiling(
+    cap_value <- ceiling(
       stats::quantile(per_cell_counts, probs = prob, names = FALSE)
     )
+    # np >= 10 rule: need a tail of >= 10 cells to trust the quantile
+    # fixed 10 regardless of q; equals ~10/(1-q) occupied cells (~50 at q=0.8)
+    if (sum(per_cell_counts > cap_value) >= 10L) {
+      cap_n[in_class] <- cap_value
+    }
   }
 
   # mark one row per level of each sample_by column as protected; a level is
