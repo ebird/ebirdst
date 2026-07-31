@@ -1085,6 +1085,7 @@ list_available_pis <- function(
       ebirdst_download_status(
         species_code,
         path = path,
+        download_abundance = FALSE,
         download_pis = TRUE,
         force = force,
         show_progress = show_progress
