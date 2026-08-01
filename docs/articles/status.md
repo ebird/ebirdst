@@ -114,9 +114,14 @@ for the Status and Trends data products for each species.
 ``` r
 
 ebirdst_data_inventory()
-#> eBird Status and Trends data: 27 species, 27 packages (1.4 GB)
+#> eBird Status and Trends data: 30 species, 30 packages (1.5 GB)
 #> 
-#> 2023 Status Data Products (1.4 GB)
+#> 2022 Trends Data Products (9.3 MB)
+#>   Brewer's Sparrow (brespa): 3 files, 4.0 MB
+#>   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB
+#>   Sage Thrasher (sagthr): 3 files, 2.7 MB
+#> 
+#> 2023 Status Data Products (1.5 GB)
 #>   Ashy-headed Goose (ashgoo1): 1 files, 17.4 KB
 #>   Baird's Sparrow (baispa): 6 files, 61.5 MB
 #>   Black-headed Duck (blhduc1): 1 files, 17.5 KB
@@ -124,7 +129,7 @@ ebirdst_data_inventory()
 #>   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB
 #>   Chiloe Wigeon (chiwig1): 2 files, 23.8 MB
 #>   Coscoroba Swan (cosswa1): 2 files, 25.8 MB
-#>   Data Coverage (data_coverage): 1 files, 50.8 MB
+#>   Data Coverage (data_coverage): 2 files, 103.7 MB
 #>   Elegant Crested-Tinamou (elctin1): 58 files, 177.2 MB
 #>   Golden Eagle (goleag): 4 files, 49.4 MB
 #>   Horned Lark (horlar): 2 files, 4.0 MB

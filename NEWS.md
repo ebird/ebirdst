@@ -1,5 +1,12 @@
 # ebirdst 4.2023.1
 
+- Removed all functions previously listed as deprecated or defunct
+  (`abundance_palette()`, `ebirdst_download()`, `ebirdst_extent()`,
+  `ebirdst_habitat()`, `ebirdst_ppms()`, `ebirdst_ppms_ts()`,
+  `ebirdst_subset()`, `load_pds()`, `load_pis()`, `load_predictions()`,
+  `load_stixels()`, `parse_raster_dates()`, `plot_pds()`, `plot_pis()`,
+  `project_extent()`, `stixelize()`); they have been unavailable or erroring
+  since at least v3.2022.1
 - Backend approach to file download has been refactored to an on-demand first approach
 - `list_available_pis()` no longer downloads every predictor importance raster to determine availability, only `pi_rangewide.csv`
 - The http fallback for VPNs that block https now also applies to file downloads, not just file listings

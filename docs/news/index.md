@@ -2,6 +2,13 @@
 
 ## ebirdst 4.2023.1
 
+- Removed all functions previously listed as deprecated or defunct
+  (`abundance_palette()`, `ebirdst_download()`, `ebirdst_extent()`,
+  `ebirdst_habitat()`, `ebirdst_ppms()`, `ebirdst_ppms_ts()`,
+  `ebirdst_subset()`, `load_pds()`, `load_pis()`, `load_predictions()`,
+  `load_stixels()`, `parse_raster_dates()`, `plot_pds()`, `plot_pis()`,
+  `project_extent()`, `stixelize()`); they have been unavailable or
+  erroring since at least v3.2022.1
 - Backend approach to file download has been refactored to an on-demand
   first approach
 - [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
@@ -107,9 +114,8 @@ CRAN release: 2023-11-15
 CRAN release: 2023-05-09
 
 - fix bug causing stixels with missing bounds to raise an error in
-  [`ebirdst_habitat()`](https://ebird.github.io/ebirdst/reference/ebirdst-defunct.md)
-- add a function to estimate MCC-F1 for
-  [`ebirdst_ppms()`](https://ebird.github.io/ebirdst/reference/ebirdst-defunct.md)
+  `ebirdst_habitat()`
+- add a function to estimate MCC-F1 for `ebirdst_ppms()`
 
 ## ebirdst 2.2021.2
 
