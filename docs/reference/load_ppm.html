@@ -3,15 +3,15 @@
 during model training and a suite of predictive performance metrics (PPMs)
 are calculated. The PPMs for each base model are summarized to a 27 km
 resolution raster grid, where the cell values are the average across all
-models in the ensemble contributing to that cell. These data are available in
-raster format provided download_ppms = TRUE was used when calling
-ebirdst_download_status()."><meta property="og:description" content="eBird Status models are evaluated against a test set of eBird data not used
+models in the ensemble contributing to that cell. If the requested data have
+not already been downloaded, they will be downloaded automatically on first
+use."><meta property="og:description" content="eBird Status models are evaluated against a test set of eBird data not used
 during model training and a suite of predictive performance metrics (PPMs)
 are calculated. The PPMs for each base model are summarized to a 27 km
 resolution raster grid, where the cell values are the average across all
-models in the ensemble contributing to that cell. These data are available in
-raster format provided download_ppms = TRUE was used when calling
-ebirdst_download_status()."></head><body>
+models in the ensemble contributing to that cell. If the requested data have
+not already been downloaded, they will be downloaded automatically on first
+use."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -19,7 +19,7 @@ ebirdst_download_status()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,9 +57,9 @@ ebirdst_download_status()."></head><body>
 during model training and a suite of predictive performance metrics (PPMs)
 are calculated. The PPMs for each base model are summarized to a 27 km
 resolution raster grid, where the cell values are the average across all
-models in the ensemble contributing to that cell. These data are available in
-raster format provided <code>download_ppms = TRUE</code> was used when calling
-<code><a href="ebirdst_download_status.html">ebirdst_download_status()</a></code>.</p>
+models in the ensemble contributing to that cell. If the requested data have
+not already been downloaded, they will be downloaded automatically on first
+use.</p>
     </div>
 
     <div class="section level2">
@@ -181,10 +181,8 @@ test checklists.</p></li>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># download example data if hasn't already been downloaded</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, download_ppms <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load area under the precision-recall curve PPM raster</span></span></span>
+<span class="r-in"><span><span class="co"># data will be downloaded automatically if not already present</span></span></span>
 <span class="r-in"><span><span class="fu">load_ppm</span><span class="op">(</span><span class="st">"yebsap-example"</span>, ppm <span class="op">=</span> <span class="st">"binary_pr_auc"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>

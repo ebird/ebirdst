@@ -110,28 +110,9 @@ load_raster <- function(
   period <- match.arg(period)
   resolution <- match.arg(resolution)
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
+  check_gtiff_support()
 
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
-    path = path,
-    dataset = "status",
-    check_downloaded = FALSE
-  )
-
-  # check that the geotiff driver is installed
-  drv <- terra::gdal(drivers = TRUE)
-  drv <- drv$name[stringr::str_detect(drv$can, "read")]
-  if (!"GTiff" %in% drv) {
-    stop(
-      "GDAL does not have GeoTIFF support. GeoTIFF support is required to ",
-      "load Status and Trends raster data."
-    )
-  }
+  species_code <- resolve_species(species)
 
   # load config file, downloading it on demand if necessary
   p <- load_config(
@@ -156,7 +137,7 @@ load_raster <- function(
     )
   }
 
-  # construct file name and path
+  # construct file name and key
   if (period == "weekly") {
     # assess which metric is being requested
     if (is.null(metric)) {
@@ -180,7 +161,7 @@ load_raster <- function(
       "{species_code}_{product}_{metric}",
       "_{resolution}_{v}.tif"
     )
-    file <- file.path(species_path, "weekly", file)
+    key <- status_key(species_code, "weekly", file)
   } else {
     # assess which metric is being requested
     if (is.null(metric)) {
@@ -195,38 +176,19 @@ load_raster <- function(
       "{species_code}_{product}_{period}_{metric}",
       "_{resolution}_{v}.tif"
     )
-    file <- file.path(species_path, "seasonal", file)
+    key <- status_key(species_code, "seasonal", file)
   }
 
   # download the requested product on demand if it isn't already present
-  status_dl_flag <- switch(
-    product,
-    "abundance" = "download_abundance",
-    "proportion-population" = "download_abundance",
-    "count" = "download_count",
-    "occurrence" = "download_occurrence"
-  )
-  fetch_if_missing(
-    target = file,
+  local_file <- fetch_data(
+    key,
+    path = path,
     force = force,
-    downloader = function() {
-      dl_args <- list(
-        species = species_code,
-        path = path,
-        pattern = stringr::str_escape(basename(file)),
-        force = force,
-        show_progress = show_progress
-      )
-      dl_args[[status_dl_flag]] <- TRUE
-      do.call(ebirdst_download_status, dl_args)
-    }
+    show_progress = show_progress
   )
-  if (!file.exists(file)) {
-    stop("The file for the requested product does not exist: \n  ", file)
-  }
 
   # load and return raster stack
-  return(terra::rast(file))
+  return(terra::rast(local_file))
 }
 
 
@@ -322,11 +284,6 @@ load_trends <- function(
   stopifnot(is_flag(fold_estimates))
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
   v <- ebirdst_version()[["trends_version_year"]]
 
   # trends species and seaons
@@ -343,15 +300,9 @@ load_trends <- function(
     )
   }
 
-  # get paths to trends parquet files
+  # construct keys for trends parquet files
   trends_paths <- character()
   for (i in seq_along(species_code)) {
-    p <- get_species_path(
-      species_code[i],
-      path = path,
-      dataset = "trends",
-      check_downloaded = FALSE
-    )
     if (fold_estimates) {
       f <- stringr::str_glue(
         "{species_code[i]}_{season[i]}_ebird-trends_",
@@ -363,31 +314,25 @@ load_trends <- function(
         "{v}.parquet"
       )
     }
-    trends_paths <- c(trends_paths, file.path(p, "trends", f))
+    trends_paths <- c(
+      trends_paths,
+      file.path(path, trends_key(species_code[i], "trends", f))
+    )
   }
 
   # download trends data on demand for any species not already present
-  fetch_if_missing(
-    target = trends_paths,
-    force = force,
-    downloader = function() {
-      to_download <- if (isTRUE(force)) {
-        species_code
-      } else {
-        species_code[!file.exists(trends_paths)]
-      }
-      ebirdst_download_trends(
-        to_download,
-        path = path,
-        force = force,
-        show_progress = show_progress
-      )
-    }
-  )
-  if (!all(file.exists(trends_paths))) {
-    stop(
-      "Trends data could not be found for the following species:\n  ",
-      paste(species[!file.exists(trends_paths)], collapse = ", ")
+  ensure_data_dir(path)
+  if (isTRUE(force)) {
+    missing <- species_code
+  } else {
+    missing <- species_code[!file.exists(trends_paths)]
+  }
+  if (length(missing) > 0) {
+    ebirdst_download_trends(
+      missing,
+      path = path,
+      force = force,
+      show_progress = show_progress
     )
   }
 
@@ -455,27 +400,7 @@ load_data_coverage <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
-  dc_path <- get_species_path(
-    "data_coverage",
-    path = path,
-    dataset = "status",
-    check_downloaded = FALSE
-  )
-
-  # check that the geotiff driver is installed
-  drv <- terra::gdal(drivers = TRUE)
-  drv <- drv$name[stringr::str_detect(drv$can, "read")]
-  if (!"GTiff" %in% drv) {
-    stop(
-      "GDAL does not have GeoTIFF support. GeoTIFF support is required to ",
-      "load Status and Trends raster data."
-    )
-  }
+  check_gtiff_support()
 
   # generate vector of valid weeks
   valid_weeks <- as.Date(paste(2018, seq(4, 366, 7)), format = "%Y %j")
@@ -502,35 +427,17 @@ load_data_coverage <- function(
   # construct filenames
   product <- paste0(product, "_mean")
   files <- stringr::str_glue("{product}_{valid_weeks}.tif")
-  files <- file.path(dc_path, product, files)
 
   # download the requested weeks on demand if they aren't already present
-  fetch_if_missing(
-    target = files,
+  local_files <- fetch_data(
+    status_key("data_coverage", product, files),
+    path = path,
     force = force,
-    downloader = function() {
-      to_download <- if (isTRUE(force)) files else files[!file.exists(files)]
-      pattern <- paste(
-        stringr::str_escape(basename(to_download)),
-        collapse = "|"
-      )
-      ebirdst_download_data_coverage(
-        path = path,
-        pattern = pattern,
-        force = force,
-        show_progress = show_progress
-      )
-    }
+    show_progress = show_progress
   )
-  if (!all(file.exists(files))) {
-    stop(
-      "The files for the requested product could not be found:\n  ",
-      paste(basename(files[!file.exists(files)]), collapse = "\n  ")
-    )
-  }
 
   # load and return raster stack
-  return(stats::setNames(terra::rast(files), valid_weeks))
+  return(stats::setNames(terra::rast(local_files), valid_weeks))
 }
 
 
@@ -573,18 +480,7 @@ load_ranges <- function(
   stopifnot(is_flag(force), is_flag(show_progress))
   resolution <- match.arg(resolution)
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
-    path = path,
-    dataset = "status",
-    check_downloaded = FALSE
-  )
+  species_code <- resolve_species(species)
 
   # load config file, downloading it on demand if necessary
   p <- load_config(
@@ -607,29 +503,17 @@ load_ranges <- function(
     "{species_code}_range_{label}",
     "_{resolution}_{v}.gpkg"
   )
-  file <- file.path(species_path, "ranges", file)
 
   # download the ranges on demand if they aren't already present
-  fetch_if_missing(
-    target = file,
+  local_file <- fetch_data(
+    status_key(species_code, "ranges", file),
+    path = path,
     force = force,
-    downloader = function() {
-      ebirdst_download_status(
-        species_code,
-        path = path,
-        download_ranges = TRUE,
-        pattern = stringr::str_escape(basename(file)),
-        force = force,
-        show_progress = show_progress
-      )
-    }
+    show_progress = show_progress
   )
-  if (!file.exists(file)) {
-    stop("The file for the requested product does not exist: \n  ", file)
-  }
 
   # load polygons
-  p <- sf::read_sf(dsn = file, layer = "range")
+  p <- sf::read_sf(dsn = local_file, layer = "range")
 
   return(p)
 }
@@ -689,38 +573,16 @@ load_regional_stats <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
-    path = path,
-    dataset = "status",
-    check_downloaded = FALSE
-  )
+  species_code <- resolve_species(species)
 
   # download the regional stats on demand if they aren't already present
-  file <- file.path(species_path, "regional_stats.csv")
-  fetch_if_missing(
-    target = file,
+  file <- fetch_data(
+    status_key(species_code, "regional_stats.csv"),
+    path = path,
     force = force,
-    downloader = function() {
-      ebirdst_download_status(
-        species_code,
-        path = path,
-        download_regional = TRUE,
-        pattern = "regional_stats.csv",
-        force = force,
-        show_progress = show_progress
-      )
-    }
+    show_progress = show_progress
   )
-  if (!file.exists(file)) {
-    stop("The regional summary stats file could not be found for this species.")
-  }
+
   # load stats
   stats <- dplyr::as_tibble(utils::read.csv(file, na = "", row.names = NULL))
   stats[["region_area_km2"]] <- NULL
@@ -763,38 +625,21 @@ ebirdst_regional_stats <- function(
   stopifnot(is_flag(force))
   stopifnot(is_flag(show_progress))
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
   # the regional stats file is stored at the annual results level, named for
   # the status data version year
   version_year <- ebirdst_version()[["status_version_year"]]
-  obj_key <- file.path(
+  key <- file.path(
     version_year,
     sprintf("regional-stats_%s.parquet", version_year)
   )
-  dest_path <- file.path(path, obj_key)
 
   # download the file on demand if it isn't already present
-  if (!file.exists(dest_path) || force) {
-    if (show_progress) {
-      message("Downloading regional stats for all species")
-    }
-
-    # build the fetch url and download using the shared download machinery
-    key <- get_ebirdst_access_key()
-    api_url <- "https://st-download.ebird.org/v1"
-    files <- data.frame(file = obj_key)
-    files$src_path <- stringr::str_glue(
-      "{api_url}/fetch?objKey={obj_key}",
-      "&key={key}"
-    )
-    files$dest_path <- dest_path
-    files$exists <- file.exists(dest_path)
-    download_files(files, force = force, show_progress = show_progress)
-  }
+  dest_path <- fetch_data(
+    key,
+    path = path,
+    force = force,
+    show_progress = show_progress
+  )
 
   # load stats
   stats <- dplyr::as_tibble(arrow::read_parquet(dest_path))
@@ -831,39 +676,16 @@ load_config <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
+  species_code <- resolve_species(species)
 
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
+  # download the config file on demand if it isn't already present
+  cfg_file <- fetch_data(
+    status_key(species_code, "config.json"),
     path = path,
-    dataset = "status",
-    check_downloaded = FALSE
+    force = force,
+    show_progress = show_progress
   )
 
-  # download the config file on demand if it isn't already present; passing
-  # download_abundance = FALSE with no other product selected downloads only
-  # config.json
-  cfg_file <- file.path(species_path, "config.json")
-  fetch_if_missing(
-    target = cfg_file,
-    force = force,
-    downloader = function() {
-      ebirdst_download_status(
-        species_code,
-        path = path,
-        download_abundance = FALSE,
-        force = force,
-        show_progress = show_progress
-      )
-    }
-  )
-  if (!file.exists(cfg_file)) {
-    stop("The file 'config.json' does not exist in: ", species_path)
-  }
   # load configuration file
   p <- jsonlite::read_json(cfg_file, simplifyVector = TRUE)
   names(p) <- tolower(names(p))
@@ -946,12 +768,12 @@ load_fac_map_parameters <- function(
 #' a rank of 1 being the most important) relative to the full suite of
 #' environmental predictors. The ranks are summarized to a 27 km resolution
 #' raster grid for each predictor, where the cell values are the average across
-#' all models in the ensemble contributing to that cell. These data are
-#' available in raster format provided `download_pis = TRUE` was used when
-#' calling [ebirdst_download_status()]. PI estimates are available separately
-#' for both the occurrence and count sub-model and only the 30 most important
-#' predictors are distributed. Use [list_available_pis()] to see which
-#' predictors have PI data.
+#' all models in the ensemble contributing to that cell. If the requested data
+#' have not already been downloaded, they will be downloaded automatically on
+#' first use. PI estimates are available separately for both the occurrence
+#' and count sub-model and only the 30 most important predictors are
+#' distributed. Use [list_available_pis()] to see which predictors have PI
+#' data.
 #'
 #' @inheritParams load_raster
 #' @param predictor character; the predictor that the PI data should be loaded
@@ -975,10 +797,8 @@ load_fac_map_parameters <- function(
 #'
 #' @examples
 #' \dontrun{
-#' # download example data if hasn't already been downloaded
-#' ebirdst_download_status("yebsap-example", download_pis = TRUE)
-#'
 #' # identify the top predictor
+#' # data will be downloaded automatically if not already present
 #' top_preds <- list_available_pis("yebsap-example")
 #' print(top_preds[1, ])
 #'
@@ -998,55 +818,28 @@ load_pi <- function(
   stopifnot(is_flag(force), is_flag(show_progress))
   response <- match.arg(response)
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
-    path = path,
-    dataset = "status",
-    check_downloaded = FALSE
-  )
+  species_code <- resolve_species(species)
 
   # construct file name; load_config() downloads config on demand and provides
   # the data version year
   year <- load_config(
-    species = species,
+    species = species_code,
     path = path,
     force = force,
     show_progress = show_progress
   )[["srd_pred_year"]]
   p <- stringr::str_replace_all(predictor, "_", "-")
   tif <- stringr::str_glue("{species_code}_pi_{response}_{p}_27km_{year}.tif")
-  tif <- file.path(species_path, "pis", tif)
 
   # download the requested PI raster on demand if it isn't already present
-  fetch_if_missing(
-    target = tif,
+  local_tif <- fetch_data(
+    status_key(species_code, "pis", tif),
+    path = path,
     force = force,
-    downloader = function() {
-      ebirdst_download_status(
-        species_code,
-        path = path,
-        download_pis = TRUE,
-        pattern = stringr::str_escape(basename(tif)),
-        force = force,
-        show_progress = show_progress
-      )
-    }
+    show_progress = show_progress,
+    hint = "To list predictors that have PI data use list_available_pis()."
   )
-  if (!file.exists(tif)) {
-    stop(
-      "GeoTIFF for ",
-      predictor,
-      " PI could not be found. To list predictors that have PI data use ",
-      "list_available_pis()."
-    )
-  }
-  return(terra::rast(tif))
+  return(terra::rast(local_tif))
 }
 
 
@@ -1063,47 +856,20 @@ list_available_pis <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
+  species_code <- resolve_species(species)
 
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
+  # download the pi rank csv on demand if it isn't already present; this does
+  # not require downloading any of the pi rasters themselves
+  csv_file <- fetch_data(
+    status_key(species_code, "pis", "pi_rangewide.csv"),
     path = path,
-    check_downloaded = FALSE
-  )
-
-  # download the PI data on demand if not already present; the full set of PI
-  # files is needed to list the available predictors
-  csv_file <- file.path(species_path, "pis", "pi_rangewide.csv")
-  fetch_if_missing(
-    target = csv_file,
     force = force,
-    downloader = function() {
-      ebirdst_download_status(
-        species_code,
-        path = path,
-        download_abundance = FALSE,
-        download_pis = TRUE,
-        force = force,
-        show_progress = show_progress
-      )
-    }
+    show_progress = show_progress
   )
-  if (!file.exists(csv_file)) {
-    stop("The PI data could not be found for this species.")
-  }
-  # load ranks
   ranks <- utils::read.csv(csv_file, row.names = NULL, na = "")
 
-  # available pis
-  tifs <- list.files(file.path(species_path, "pis"), pattern = "*.tif")
-  tifs <- tifs[!stringr::str_detect(tifs, "n-folds")]
-  preds <- stringr::str_remove(tifs, "^[^_]+_pi_(occurrence|count)_")
-  preds <- stringr::str_extract(preds, "[-a-z0-9]+")
-  preds <- unique(stringr::str_replace_all(preds, "-", "_"))
+  # identify which of the ranked predictors have pi rasters available
+  preds <- available_pi_predictors(species_code, path = path)
   preds <- preds[preds %in% ranks$predictor]
 
   # return ranks
@@ -1120,9 +886,9 @@ list_available_pis <- function(
 #' during model training and a suite of predictive performance metrics (PPMs)
 #' are calculated. The PPMs for each base model are summarized to a 27 km
 #' resolution raster grid, where the cell values are the average across all
-#' models in the ensemble contributing to that cell. These data are available in
-#' raster format provided `download_ppms = TRUE` was used when calling
-#' [ebirdst_download_status()].
+#' models in the ensemble contributing to that cell. If the requested data have
+#' not already been downloaded, they will be downloaded automatically on first
+#' use.
 #'
 #' @inheritParams load_raster
 #' @param ppm character; the name of a single metric to load data for. See
@@ -1194,10 +960,8 @@ list_available_pis <- function(
 #'
 #' @examples
 #' \dontrun{
-#' # download example data if hasn't already been downloaded
-#' ebirdst_download_status("yebsap-example", download_ppms = TRUE)
-#'
 #' # load area under the precision-recall curve PPM raster
+#' # data will be downloaded automatically if not already present
 #' load_ppm("yebsap-example", ppm = "binary_pr_auc")
 #' }
 load_ppm <- function(
@@ -1232,64 +996,57 @@ load_ppm <- function(
   stopifnot(is_flag(force), is_flag(show_progress))
   ppm <- match.arg(ppm)
 
-  # create the data directory if needed so data can be downloaded on demand
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
-  species_code <- get_species(species)
-  species_path <- get_species_path(
-    species,
-    path = path,
-    dataset = "status",
-    check_downloaded = FALSE
-  )
+  species_code <- resolve_species(species)
 
   # construct file name; load_config() downloads config on demand and provides
   # the data version year
   year <- load_config(
-    species = species,
+    species = species_code,
     path = path,
     force = force,
     show_progress = show_progress
   )[["srd_pred_year"]]
   p <- stringr::str_replace_all(ppm, "_", "-")
   tif <- stringr::str_glue("{species_code}_ppm_{p}_mean_27km_{year}.tif")
-  tif <- file.path(species_path, "ppms", tif)
 
   # download on demand if the file isn't already present
-  fetch_if_missing(
-    target = tif,
+  local_tif <- fetch_data(
+    status_key(species_code, "ppms", tif),
+    path = path,
     force = force,
-    downloader = function() {
-      ebirdst_download_status(
-        species_code,
-        path = path,
-        download_ppms = TRUE,
-        pattern = stringr::str_escape(basename(tif)),
-        force = force,
-        show_progress = show_progress
-      )
-    }
+    show_progress = show_progress,
+    hint = "GeoTIFF for this PPM could not be found for this species."
   )
-  if (!file.exists(tif)) {
-    stop("GeoTIFF for ", ppm, " PPM could not be found for this species.")
-  }
-  return(terra::rast(tif))
+  return(terra::rast(local_tif))
 }
 
 
 # internal ----
 
-# download a data product on demand when its file(s) are not already present,
-# so that load_*() functions fetch missing data transparently instead of
-# erroring. `target` is one or more file paths, `downloader` is a zero-argument
-# function that downloads the missing data. returns TRUE if a download was
-# attempted
-fetch_if_missing <- function(target, downloader, force = FALSE) {
-  if (!isTRUE(force) && all(file.exists(target))) {
-    return(invisible(FALSE))
+# identify which predictors have pi rasters available for a species. prefers
+# a single remote listing call, which requires no downloads, and falls back
+# to globbing any pi tifs already downloaded locally if the listing can't be
+# reached (e.g. offline). filtering on "_pi_(occurrence|count)_" excludes the
+# other tifs that live alongside the pi rasters in the pis/ directory, e.g.
+# n-folds-modeled, start_day_of_year, end_day_of_year
+available_pi_predictors <- function(species_code, path) {
+  pi_pattern <- "_pi_(occurrence|count)_"
+
+  tifs <- tryCatch(
+    {
+      keys <- list_object_keys(species_code, dataset = "status")
+      keys <- keys[stringr::str_detect(keys, "/pis/")]
+      basename(keys[stringr::str_detect(basename(keys), pi_pattern)])
+    },
+    error = function(e) NULL
+  )
+  if (is.null(tifs)) {
+    pis_path <- file.path(path, status_key(species_code, "pis"))
+    tifs <- list.files(pis_path, pattern = paste0(pi_pattern, ".*\\.tif$"))
   }
-  downloader()
-  return(invisible(TRUE))
+
+  preds <- stringr::str_remove(tifs, paste0("^[^_]+", pi_pattern))
+  preds <- stringr::str_extract(preds, "[-a-z0-9]+")
+  preds <- unique(stringr::str_replace_all(preds, "-", "_"))
+  return(preds)
 }

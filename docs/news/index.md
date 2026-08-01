@@ -1,5 +1,18 @@
 # Changelog
 
+## ebirdst 4.2023.1
+
+- Backend approach to file download has been refactored to an on-demand
+  first approach
+- [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
+  no longer downloads every predictor importance raster to determine
+  availability, only `pi_rangewide.csv`
+- The http fallback for VPNs that block https now also applies to file
+  downloads, not just file listings
+- Errors for data that can’t be found on-demand now include
+  function-specific guidance, e.g. pointing to
+  [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
+
 ## ebirdst 4.2023.0
 
 CRAN release: 2026-07-20

@@ -4,10 +4,9 @@ eBird Status models are evaluated against a test set of eBird data not
 used during model training and a suite of predictive performance metrics
 (PPMs) are calculated. The PPMs for each base model are summarized to a
 27 km resolution raster grid, where the cell values are the average
-across all models in the ensemble contributing to that cell. These data
-are available in raster format provided `download_ppms = TRUE` was used
-when calling
-[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md).
+across all models in the ensemble contributing to that cell. If the
+requested data have not already been downloaded, they will be downloaded
+automatically on first use.
 
 ## Usage
 
@@ -155,10 +154,8 @@ Nineteen predictive performance metrics are provided:
 
 ``` r
 if (FALSE) { # \dontrun{
-# download example data if hasn't already been downloaded
-ebirdst_download_status("yebsap-example", download_ppms = TRUE)
-
 # load area under the precision-recall curve PPM raster
+# data will be downloaded automatically if not already present
 load_ppm("yebsap-example", ppm = "binary_pr_auc")
 } # }
 ```

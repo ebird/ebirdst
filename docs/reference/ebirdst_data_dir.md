@@ -20,5 +20,5 @@ The path to the data download directory.
 
 ``` r
 ebirdst_data_dir()
-#> [1] "/Users/mes335/data/ebirdst"
+#> [1] "/Users/mes335/projects/workshops/2026-08-04_ebirdst-workshop_rao-2026/ebirdst-data/"
 ```

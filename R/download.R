@@ -118,11 +118,22 @@ ebirdst_download_status <- function(
   }
 
   # complete list of all available files for this species
-  files <- get_download_file_list(
-    species_code = species,
-    path = path,
-    dataset = "status"
+  keys <- list_object_keys(species_code = species, dataset = "status")
+
+  # decide which files to download
+  keys <- select_status_keys(
+    keys,
+    download_abundance = download_abundance,
+    download_occurrence = download_occurrence,
+    download_count = download_count,
+    download_ranges = download_ranges,
+    download_regional = download_regional,
+    download_pis = download_pis,
+    download_ppms = download_ppms,
+    download_all = download_all,
+    pattern = pattern
   )
+
   # path to data package
   run_path <- file.path(
     path,
@@ -130,69 +141,24 @@ ebirdst_download_status <- function(
     species
   )
 
-  # decide which files to download
-  # always download config file
-  dl <- stringr::str_detect(files$file, pattern = "config.json$")
-  if (download_abundance || download_all) {
-    # add abundance
-    dl <- stringr::str_detect(files$file, "\\_abundance\\_") | dl
-    # add proportion of population
-    dl <- stringr::str_detect(files$file, "\\_proportion-population\\_") | dl
-  }
-  if (download_occurrence || download_all) {
-    # add occurrence
-    dl <- stringr::str_detect(files$file, "\\_occurrence\\_") | dl
-  }
-  if (download_count || download_all) {
-    # add count
-    dl <- stringr::str_detect(files$file, "\\_count\\_") | dl
-  }
-  if (download_ranges || download_all) {
-    # add ranges
-    dl <- stringr::str_detect(files$file, "/ranges/") | dl
-  }
-  if (download_regional || download_all) {
-    # add regional summary stats
-    dl <- stringr::str_ends(files$file, "regional_stats.csv") | dl
-  }
-  if (download_pis || download_all) {
-    # add pis
-    dl <- stringr::str_detect(files$file, "/pis/") | dl
-  }
-  if (download_ppms || download_all) {
-    # add ppms
-    dl <- stringr::str_detect(files$file, "/ppms/") | dl
-  }
-  files <- files[dl, ]
-
-  # apply pattern
-  if (!is.null(pattern)) {
-    stopifnot(is.character(pattern), length(pattern) == 1, !is.na(pattern))
-    pat_match <- stringr::str_detect(basename(files$file), pattern = pattern)
-    if (!any(pat_match)) {
-      stop("No files matched pattern")
-    }
-
-    # always download config file
-    is_config <- stringr::str_detect(
-      basename(files$file),
-      pattern = "config.json$"
-    )
-    files <- files[pat_match | is_config, ]
-  }
-
   # print files to download for dry run
   if (dry_run) {
     message("Downloading Status Data Products for ", species, " to:\n  ", path)
-    message(paste(c("File list:", files$file), collapse = "\n  "))
-    return(invisible(files$file))
+    message(paste(c("File list:", keys), collapse = "\n  "))
+    return(invisible(keys))
   }
 
   if (show_progress) {
     message(stringr::str_glue("Downloading Status Data Products for {species}"))
   }
 
-  download_files(files, force = force, show_progress = show_progress)
+  fetch_data(
+    keys,
+    path = path,
+    force = force,
+    show_progress = show_progress,
+    report_existing = TRUE
+  )
 
   return(invisible(normalizePath(run_path)))
 }
@@ -267,22 +233,24 @@ ebirdst_download_trends <- function(
   run_paths <- character()
   for (s in species_code) {
     # complete list of all available files for this species
-    files <- get_download_file_list(
-      species_code = s,
-      path = path,
-      dataset = "trends"
-    )
+    keys <- list_object_keys(species_code = s, dataset = "trends")
+    # only trends files
+    keys <- keys[stringr::str_detect(keys, "/trends/")]
+
     # path to data package
     run_path <- file.path(path, ebirdst_version()[["trends_version_year"]], s)
-
-    # only trends files
-    files <- files[stringr::str_detect(files$file, "/trends/"), ]
 
     # download
     if (show_progress) {
       message(stringr::str_glue("Downloading Trends Data Products for {s}"))
     }
-    download_files(files, force = force, show_progress = show_progress)
+    fetch_data(
+      keys,
+      path = path,
+      force = force,
+      show_progress = show_progress,
+      report_existing = TRUE
+    )
     run_paths <- c(run_paths, run_path)
   }
 
@@ -329,7 +297,7 @@ ebirdst_download_data_coverage <- function(
   stopifnot(is_flag(show_progress))
 
   # complete list of all available files for this species
-  files <- get_download_file_list(species_code = "data_coverage", path = path)
+  keys <- list_object_keys(species_code = "data_coverage", dataset = "status")
   # path to data package
   run_path <- file.path(
     path,
@@ -340,25 +308,31 @@ ebirdst_download_data_coverage <- function(
   # apply pattern
   if (!is.null(pattern)) {
     stopifnot(is.character(pattern), length(pattern) == 1, !is.na(pattern))
-    pat_match <- stringr::str_detect(basename(files$file), pattern = pattern)
+    pat_match <- stringr::str_detect(basename(keys), pattern = pattern)
     if (!any(pat_match)) {
       stop("No files matched pattern")
     }
-    files <- files[pat_match, ]
+    keys <- keys[pat_match]
   }
 
   # print files to download for dry run
   if (dry_run) {
     message("Downloading Data Coverage Products to:\n  ", path)
-    message(paste(c("File list:", files$file), collapse = "\n  "))
-    return(invisible(files$file))
+    message(paste(c("File list:", keys), collapse = "\n  "))
+    return(invisible(keys))
   }
 
   if (show_progress) {
     message(stringr::str_glue("Downloading Data Coverage Products"))
   }
 
-  download_files(files, force = force, show_progress = show_progress)
+  fetch_data(
+    keys,
+    path = path,
+    force = force,
+    show_progress = show_progress,
+    report_existing = TRUE
+  )
 
   return(invisible(normalizePath(run_path)))
 }
@@ -458,162 +432,4 @@ ebirdst_version <- function() {
     trends_version_year = 2022,
     release_year = 2025
   )
-}
-
-
-# internal ----
-
-get_download_file_list <- function(
-  species_code,
-  path,
-  dataset = c("status", "trends")
-) {
-  stopifnot(
-    is.character(species_code),
-    length(species_code) == 1,
-    !is.na(species_code)
-  )
-  dataset <- match.arg(dataset)
-
-  # version of the data products that this package version corresponds to
-  version_year <- ebirdst_version()[[paste0(dataset, "_version_year")]]
-  # example data or a full data package
-  is_example <- (species_code == "yebsap-example")
-
-  # path to data package
-  run_path <- file.path(path, version_year, species_code)
-
-  if (is_example) {
-    api_url <- paste0(
-      "https://raw.githubusercontent.com/",
-      "ebird/ebirdst_example-data/main/",
-      "example-data/"
-    )
-    # file list
-    fl <- system.file(
-      "extdata",
-      paste0("example-data_file-list_", dataset, ".txt"),
-      package = "ebirdst"
-    )
-    files <- readLines(fl)
-  } else {
-    # api url and key
-    key <- get_ebirdst_access_key()
-    api_url <- "https://st-download.ebird.org/v1"
-
-    # get file list for this species
-    list_obj_url <- stringr::str_glue(
-      "{api_url}/list-obj/{version_year}/",
-      "{species_code}?key={key}"
-    )
-    files <- tryCatch(
-      suppressWarnings({
-        jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
-      }),
-      error = function(e) NULL
-    )
-    if (is.null(files)) {
-      # try http instead in case of ssl issues on vpn
-      api_url <- "http://st-download.ebird.org/v1"
-      # get file list for this species
-      list_obj_url <- stringr::str_glue(
-        "{api_url}/list-obj/{version_year}/",
-        "{species_code}?key={key}"
-      )
-      files <- tryCatch(
-        suppressWarnings({
-          jsonlite::read_json(list_obj_url, simplifyVector = TRUE)
-        }),
-        error = function(e) NULL
-      )
-      if (is.null(files)) {
-        stop(
-          "Cannot access Status and Trends data URL. Ensure that you have ",
-          "a working internet connection and a valid API key for the ",
-          "Status and Trends data. Note that the API keys expire after ",
-          "6 month, so may need to update your key. ",
-          "Visit https://ebird.org/st/request"
-        )
-      }
-    }
-
-    # remove web_download folder
-    web_down <- stringr::str_detect(dirname(files), pattern = "web_download")
-    files <- files[!web_down]
-
-    # remove additional species cause by bug in API
-    # e.g. leafly will also return leafly2
-    only_target <- stringr::str_detect(
-      files,
-      pattern = paste0("/", species_code, "/")
-    )
-    files <- files[only_target]
-  }
-
-  if (length(files) == 0) {
-    stop("No data found for species ", species_code)
-  }
-
-  # prepare download paths
-  files <- data.frame(file = files)
-  if (is_example) {
-    files$src_path <- paste0(api_url, files$file)
-  } else {
-    files$src_path <- stringr::str_glue(
-      "{api_url}/fetch?objKey={files$file}",
-      "&key={key}"
-    )
-  }
-  files$dest_path <- file.path(path, files$file)
-  files$exists <- file.exists(files$dest_path)
-
-  return(files)
-}
-
-download_files <- function(files, force, show_progress) {
-  # create necessary directories
-  dirs <- unique(dirname(files$dest_path))
-  for (d in dirs) {
-    dir.create(d, showWarnings = FALSE, recursive = TRUE)
-  }
-
-  # check if already exists
-  if (all(files$exists)) {
-    if (!isTRUE(force)) {
-      message("Data already exists, use force = TRUE to re-download.")
-      return(invisible(0L))
-    }
-  } else if (any(files$exists)) {
-    if (!isTRUE(force)) {
-      message(paste(
-        "Some files already exist, only downloading new files.",
-        " Use force = TRUE to re-download all files."
-      ))
-      files <- files[!files$exists, ]
-    }
-  }
-
-  # download
-  n_files <- nrow(files)
-  old_timeout <- getOption("timeout")
-  options(timeout = max(3000, old_timeout))
-  for (i in seq_len(n_files)) {
-    if (show_progress) {
-      message(stringr::str_glue(
-        "  Downloading file {i} of {n_files}: ",
-        "{basename(files$file[i])}"
-      ))
-    }
-    dl_response <- utils::download.file(
-      files$src_path[i],
-      files$dest_path[i],
-      quiet = TRUE,
-      mode = "wb"
-    )
-    if (dl_response != 0) {
-      stop("Error downloading file: ", files$file[i])
-    }
-  }
-  options(timeout = old_timeout)
-  return(invisible(n_files))
 }

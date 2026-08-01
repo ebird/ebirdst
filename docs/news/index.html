@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,16 @@
       <small>Source: <a href="https://github.com/ebird/ebirdst/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="4.2023.1" id="ebirdst-420231">ebirdst 4.2023.1<a class="anchor" aria-label="anchor" href="#ebirdst-420231"></a></h2>
+<ul><li>Backend approach to file download has been refactored to an on-demand first approach</li>
+<li>
+<code><a href="../reference/load_pi.html">list_available_pis()</a></code> no longer downloads every predictor importance raster to determine availability, only <code>pi_rangewide.csv</code>
+</li>
+<li>The http fallback for VPNs that block https now also applies to file downloads, not just file listings</li>
+<li>Errors for data that can’t be found on-demand now include function-specific guidance, e.g. pointing to <code><a href="../reference/load_pi.html">list_available_pis()</a></code>
+</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="4.2023.0" id="ebirdst-420230">ebirdst 4.2023.0<a class="anchor" aria-label="anchor" href="#ebirdst-420230"></a></h2><p class="text-muted">CRAN release: 2026-07-20</p>
 <ul><li>Transition to having all the <code>load_*()</code> functions download directly rather than having to call <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code>

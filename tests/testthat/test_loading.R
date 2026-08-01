@@ -108,6 +108,59 @@ test_that("load_ppm()", {
 })
 
 
+test_that("load_pi() downloads data on demand", {
+  tmp <- withr::local_tempdir()
+  pi <- suppressMessages(load_pi(
+    "yebsap-example",
+    predictor = "gsw_c2_pland",
+    response = "occurrence",
+    path = tmp
+  ))
+  expect_is(pi, "SpatRaster")
+  tifs <- list.files(tmp, pattern = "gsw-c2-pland.*\\.tif$", recursive = TRUE)
+  expect_length(tifs, 1)
+})
+
+
+test_that("load_ppm() downloads data on demand", {
+  tmp <- withr::local_tempdir()
+  ppm <- suppressMessages(load_ppm(
+    "yebsap-example",
+    ppm = "binary_f1",
+    path = tmp
+  ))
+  expect_is(ppm, "SpatRaster")
+  tifs <- list.files(tmp, pattern = "binary-f1.*\\.tif$", recursive = TRUE)
+  expect_length(tifs, 1)
+})
+
+
+test_that("load_regional_stats() downloads data on demand", {
+  tmp <- withr::local_tempdir()
+  stats <- suppressMessages(load_regional_stats("yebsap-example", path = tmp))
+  expect_is(stats, "data.frame")
+  csv <- file.path(
+    tmp,
+    ebirdst_version()[["status_version_year"]],
+    "yebsap-example",
+    "regional_stats.csv"
+  )
+  expect_true(file.exists(csv))
+})
+
+
+test_that("list_available_pis() only downloads the rangewide csv", {
+  tmp <- withr::local_tempdir()
+  pis <- suppressMessages(list_available_pis("yebsap-example", path = tmp))
+  expect_is(pis, "data.frame")
+  expect_equal(nrow(pis), 10)
+
+  files <- list.files(tmp, recursive = TRUE)
+  expect_true(any(grepl("pi_rangewide.csv$", files)))
+  expect_false(any(grepl("\\.tif$", files)))
+})
+
+
 test_that("ebirdst_regional_stats() loads an existing file", {
   tmp <- withr::local_tempdir()
   version_year <- ebirdst_version()[["status_version_year"]]
