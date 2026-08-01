@@ -17,7 +17,6 @@
 #'
 #' @return A [SpatRaster][terra::SpatRaster] object.
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' # download example trends data if it hasn't already been downloaded
@@ -152,9 +151,8 @@ rasterize_trends <- function(
 #'   equal area CRS you intend to use when mapping the data otherwise the
 #'   "circles" will appear skewed.
 #'
-#' @returns Vectorized trends data as an [sf][sf::sf] object.
+#' @return Vectorized trends data as an [sf][sf::sf] object.
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' # download example trends data if it hasn't already been downloaded
@@ -220,7 +218,7 @@ vectorize_trends <- function(
   trends_pts <- dplyr::bind_rows(trends_pts)
 
   # buffer based on radius
-  sf::st_buffer(trends_pts, dist = trends_pts$radii)
+  return(sf::st_buffer(trends_pts, dist = trends_pts$radii))
 }
 
 
@@ -234,14 +232,13 @@ vectorize_trends <- function(
 #'   cumulative trend resulting from `n_years` years of compounding annual
 #'   trend.
 #' @export
-#'
 #' @examples
 #' ppy_trend <- runif(100, min = -100, 100)
 #' cumulative_trend <- convert_ppy_to_cumulative(ppy_trend, n_years = 5)
 #' cbind(ppy_trend, cumulative_trend)
 convert_ppy_to_cumulative <- function(x, n_years) {
   stopifnot(is.numeric(x), is_count(n_years))
-  100 * ((1 + x / 100)^n_years - 1)
+  return(100 * ((1 + x / 100)^n_years - 1))
 }
 
 
@@ -258,7 +255,7 @@ trends_raster_template <- function() {
     "+proj=sinu +lon_0=0 +x_0=0 +y_0=0",
     "+R=6371007.181 +units=m +no_defs"
   ))
-  terra::rast(e, crs = crs, nrows = 626L, ncols = 1502L)
+  return(terra::rast(e, crs = crs, nrows = 626L, ncols = 1502L))
 }
 
 categorize <- function(x, breaks, labels) {
@@ -268,7 +265,7 @@ categorize <- function(x, breaks, labels) {
     is.numeric(labels) || is.character(labels),
     length(labels) == length(breaks) - 1
   )
-  y <- cut(x, breaks)
+  y <- cut(x, breaks, include.lowest = TRUE)
   lvl <- levels(y)
-  labels[match(y, lvl)]
+  return(labels[match(y, lvl)])
 }

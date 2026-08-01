@@ -5,11 +5,11 @@
 #' Trends results for each species.
 #'
 #' For the Status Data Products, the dates defining the boundaries of the
-#' seasons are provided in additional to a quality rating from 0-3 for each
+#' seasons are provided in addition to a quality rating from 0-3 for each
 #' season. These dates and quality ratings are assigned through a process of
 #' [expert review](https://science.ebird.org/status-and-trends/faq#seasons).
-#' expert review. Note that missing dates imply that a season failed expert
-#' review for that species within that season.
+#' Note that missing dates imply that a season failed expert review for that
+#' species within that season.
 #'
 #' Trends Data Products are only available for a subset of species, indicated by
 #' the `has_trends` variable, and for each species the trends is estimated for a
@@ -39,16 +39,16 @@
 #' - `is_resident`: classifies this species a resident or a migrant.
 #' - `breeding_quality`: breeding season quality.
 #' - `breeding_start`: breeding season start date.
-#' - `breeding_end`: breeding season start date.
+#' - `breeding_end`: breeding season end date.
 #' - `nonbreeding_quality`: non-breeding season quality.
 #' - `nonbreeding_start`: non-breeding season start date.
-#' - `nonbreeding_end`: non-breeding season start date.
+#' - `nonbreeding_end`: non-breeding season end date.
 #' - `postbreeding_migration_quality`: post-breeding season quality.
 #' - `postbreeding_migration_start`: post-breeding season start date.
-#' - `postbreeding_migration_end`: post-breeding season start date.
+#' - `postbreeding_migration_end`: post-breeding season end date.
 #' - `prebreeding_migration_quality`: pre-breeding season quality.
 #' - `prebreeding_migration_start`: pre-breeding season start date.
-#' - `prebreeding_migration_end`: pre-breeding season start date.
+#' - `prebreeding_migration_end`: pre-breeding season end date.
 #' - `resident_quality`: resident quality.
 #' - `resident_start`: for resident species, the year-round start date.
 #' - `resident_end`: for resident species, the year-round end date.

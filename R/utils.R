@@ -118,7 +118,9 @@ get_species <- function(x) {
 # internal ----
 
 is_integer <- function(x) {
-  return(isTRUE(is.integer(x) || (is.numeric(x) && all(x == as.integer(x)))))
+  return(isTRUE(
+    is.numeric(x) && !anyNA(x) && all(is.finite(x)) && all(x == as.integer(x))
+  ))
 }
 
 is_count <- function(x) {

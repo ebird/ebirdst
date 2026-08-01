@@ -62,7 +62,7 @@ load_ranges(
 
 ## Value
 
-An `sf` update containing the seasonal range boundaries, with each
+An `sf` object containing the seasonal range boundaries, with each
 season provided as a different feature.
 
 ## Examples

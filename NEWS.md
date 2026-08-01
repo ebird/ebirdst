@@ -11,6 +11,7 @@
 - `list_available_pis()` no longer downloads every predictor importance raster to determine availability, only `pi_rangewide.csv`
 - The http fallback for VPNs that block https now also applies to file downloads, not just file listings
 - Errors for data that can't be found on-demand now include function-specific guidance, e.g. pointing to `list_available_pis()`
+- Various small bug fixes and typos discovered by Claude Code
 
 # ebirdst 4.2023.0
 

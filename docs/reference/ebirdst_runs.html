@@ -64,16 +64,16 @@ species</p></li>
 <li><p><code>is_resident</code>: classifies this species a resident or a migrant.</p></li>
 <li><p><code>breeding_quality</code>: breeding season quality.</p></li>
 <li><p><code>breeding_start</code>: breeding season start date.</p></li>
-<li><p><code>breeding_end</code>: breeding season start date.</p></li>
+<li><p><code>breeding_end</code>: breeding season end date.</p></li>
 <li><p><code>nonbreeding_quality</code>: non-breeding season quality.</p></li>
 <li><p><code>nonbreeding_start</code>: non-breeding season start date.</p></li>
-<li><p><code>nonbreeding_end</code>: non-breeding season start date.</p></li>
+<li><p><code>nonbreeding_end</code>: non-breeding season end date.</p></li>
 <li><p><code>postbreeding_migration_quality</code>: post-breeding season quality.</p></li>
 <li><p><code>postbreeding_migration_start</code>: post-breeding season start date.</p></li>
-<li><p><code>postbreeding_migration_end</code>: post-breeding season start date.</p></li>
+<li><p><code>postbreeding_migration_end</code>: post-breeding season end date.</p></li>
 <li><p><code>prebreeding_migration_quality</code>: pre-breeding season quality.</p></li>
 <li><p><code>prebreeding_migration_start</code>: pre-breeding season start date.</p></li>
-<li><p><code>prebreeding_migration_end</code>: pre-breeding season start date.</p></li>
+<li><p><code>prebreeding_migration_end</code>: pre-breeding season end date.</p></li>
 <li><p><code>resident_quality</code>: resident quality.</p></li>
 <li><p><code>resident_start</code>: for resident species, the year-round start date.</p></li>
 <li><p><code>resident_end</code>: for resident species, the year-round end date.</p></li>
@@ -101,11 +101,11 @@ trend for this species.</p></li>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>For the Status Data Products, the dates defining the boundaries of the
-seasons are provided in additional to a quality rating from 0-3 for each
+seasons are provided in addition to a quality rating from 0-3 for each
 season. These dates and quality ratings are assigned through a process of
 <a href="https://science.ebird.org/status-and-trends/faq#seasons" class="external-link">expert review</a>.
-expert review. Note that missing dates imply that a season failed expert
-review for that species within that season.</p>
+Note that missing dates imply that a season failed expert review for that
+species within that season.</p>
 <p>Trends Data Products are only available for a subset of species, indicated by
 the <code>has_trends</code> variable, and for each species the trends is estimated for a
 single season. The two predictive performance metrics (<code>rsquared</code> and

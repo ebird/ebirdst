@@ -28,7 +28,7 @@ ebirdst_palettes <- function(
     "trends"
   )
 ) {
-  stopifnot(is.numeric(n), length(n) == 1, n >= 1)
+  stopifnot(is_count(n), n >= 1)
   type <- match.arg(type)
 
   # set base color by season
@@ -54,8 +54,6 @@ ebirdst_palettes <- function(
     base_col <- "#73af48"
   } else if (type == "year_round") {
     base_col <- "#6f4070"
-  } else {
-    stop("Invalid season.")
   }
 
   # seasonal palettes

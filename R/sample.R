@@ -356,7 +356,7 @@ grid_sample_stratified <- function(
 
   # project once now to avoid having to do it for every stratum
   if (is_lonlat) {
-    xy <- project_equal_area(locs, coords = coords[1:2])
+    xy <- project_equal_area(locs, coords = coords[seq_len(2)])
     # add time dimension
     if (length(coords) == 3) {
       xy[["t"]] <- locs[[coords[3]]]
@@ -434,8 +434,7 @@ grid_sample_stratified <- function(
   }
 
   # subsample to decrease sample size to maximum
-  # TODO consider adding && nrow(sampled) > maximum_ss here
-  if (!is.null(maximum_ss)) {
+  if (!is.null(maximum_ss) && nrow(sampled) > maximum_ss) {
     sample_prop <- maximum_ss / nrow(sampled)
     if (case_control) {
       # case control sampling on: sample preserving detection probability
@@ -754,7 +753,7 @@ safe_sample <- function(x, size, ...) {
   if (length(x) <= size || length(x) == 1) {
     return(x)
   }
-  sample(x, size = size, ...)
+  return(sample(x, size = size, ...))
 }
 
 sample_stratify <- function(x, prop, sample_by) {
@@ -773,7 +772,7 @@ sample_stratify <- function(x, prop, sample_by) {
     n = size,
     SIMPLIFY = FALSE
   )
-  dplyr::bind_rows(sampled)
+  return(dplyr::bind_rows(sampled))
 }
 
 # cap the number of observations contributed by each spatial grid cell at the

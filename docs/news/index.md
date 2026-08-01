@@ -19,6 +19,7 @@
 - Errors for data that can’t be found on-demand now include
   function-specific guidance, e.g. pointing to
   [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
+- Various small bug fixes and typos discovered by Claude Code
 
 ## ebirdst 4.2023.0
 

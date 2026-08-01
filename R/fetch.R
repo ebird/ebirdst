@@ -119,7 +119,7 @@ list_object_keys <- function(species_code, dataset = c("status", "trends")) {
           "Cannot access Status and Trends data URL. Ensure that you have ",
           "a working internet connection and a valid API key for the ",
           "Status and Trends data. Note that the API keys expire after ",
-          "6 month, so may need to update your key. ",
+          "6 months, so you may need to update your key. ",
           "Visit https://ebird.org/st/request"
         )
       }
@@ -330,7 +330,7 @@ download_files <- function(src, dest, keys, show_progress) {
       dl_response != 0 && stringr::str_starts(src[i], "https://st-download")
     ) {
       use_http_fallback()
-      src[i] <- sub("^https://", "http://", src[i])
+      src[i:n_files] <- sub("^https://", "http://", src[i:n_files])
       tryCatch(
         suppressWarnings(
           utils::download.file(src[i], dest[i], quiet = TRUE, mode = "wb")

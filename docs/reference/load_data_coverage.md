@@ -12,7 +12,7 @@ will be downloaded automatically on first use.
 ``` r
 load_data_coverage(
   product = c("spatial-coverage", "selection-probability"),
-  weeks,
+  weeks = NULL,
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()

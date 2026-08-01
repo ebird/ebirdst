@@ -71,7 +71,7 @@ A list containing elements:
 - `weekly_bins`/`weekly_labels`: weekly abundance bins and labels for
   the full annual cycle
 
-- `seasonal_bins`/\`seasonal_labels: seasonal abundance bins and labels
+- `seasonal_bins`/`seasonal_labels`: seasonal abundance bins and labels
   for the full annual cycle
 
 ## Examples

@@ -168,7 +168,7 @@ load_raster <- function(
       metric <- "mean"
     }
     if (!metric %in% c("mean", "max")) {
-      stop("Valid metrics for seasonal or full-year data are 'mean' or 'max.'")
+      stop("Valid metrics for seasonal or full-year data are 'mean' or 'max'.")
     }
 
     # construct filename
@@ -301,8 +301,7 @@ load_trends <- function(
   }
 
   # construct keys for trends parquet files
-  trends_paths <- character()
-  for (i in seq_along(species_code)) {
+  build_trends_path <- function(i) {
     if (fold_estimates) {
       f <- stringr::str_glue(
         "{species_code[i]}_{season[i]}_ebird-trends_",
@@ -314,11 +313,13 @@ load_trends <- function(
         "{v}.parquet"
       )
     }
-    trends_paths <- c(
-      trends_paths,
-      file.path(path, trends_key(species_code[i], "trends", f))
-    )
+    return(file.path(path, trends_key(species_code[i], "trends", f)))
   }
+  trends_paths <- vapply(
+    seq_along(species_code),
+    build_trends_path,
+    FUN.VALUE = character(1)
+  )
 
   # download trends data on demand for any species not already present
   ensure_data_dir(path)
@@ -337,11 +338,8 @@ load_trends <- function(
   }
 
   # load data
-  trends <- NULL
-  for (pq in trends_paths) {
-    trends <- dplyr::bind_rows(trends, arrow::read_parquet(pq))
-  }
-  return(trends)
+  trends <- lapply(trends_paths, arrow::read_parquet)
+  return(dplyr::bind_rows(trends))
 }
 
 
@@ -390,15 +388,15 @@ load_trends <- function(
 #' }
 load_data_coverage <- function(
   product = c("spatial-coverage", "selection-probability"),
-  weeks,
+  weeks = NULL,
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
 ) {
-  product <- match.arg(product)
-  stopifnot(!missing(weeks), is.character(weeks))
+  stopifnot(is.null(weeks) || is.character(weeks))
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
+  product <- match.arg(product)
 
   check_gtiff_support()
 
@@ -453,7 +451,7 @@ load_data_coverage <- function(
 #' @param smoothed logical; whether smoothed or unsmoothed ranges should be
 #'   loaded.
 #'
-#' @return An `sf` update containing the seasonal range boundaries, with each
+#' @return An `sf` object containing the seasonal range boundaries, with each
 #'   season provided as a different feature.
 #' @export
 #'
@@ -476,7 +474,7 @@ load_ranges <- function(
 ) {
   stopifnot(is.character(species), length(species) == 1)
   stopifnot(is.character(path), length(path) == 1)
-  stopifnot(is.logical(smoothed), length(smoothed) == 1)
+  stopifnot(is_flag(smoothed))
   stopifnot(is_flag(force), is_flag(show_progress))
   resolution <- match.arg(resolution)
 
@@ -714,7 +712,7 @@ load_config <- function(
 #' - `fa_extent_projected`: the extent in projected (Equal Earth) coordinates
 #' - `weekly_bins`/`weekly_labels`: weekly abundance bins and labels for the
 #' full annual cycle
-#' - `seasonal_bins`/`seasonal_labels: seasonal abundance bins and labels for
+#' - `seasonal_bins`/`seasonal_labels`: seasonal abundance bins and labels for
 #' the full annual cycle
 #'
 #' @export
@@ -738,7 +736,7 @@ load_fac_map_parameters <- function(
   stopifnot(is_flag(force), is_flag(show_progress))
 
   # load config file, downloading it on demand if necessary
-  species_code <- get_species(species)
+  species_code <- resolve_species(species)
   p <- load_config(
     species = species_code,
     path = path,
@@ -747,7 +745,7 @@ load_fac_map_parameters <- function(
   )
   ext_order <- unlist(p$bbox_native)[c("xmin", "xmax", "ymin", "ymax")]
 
-  list(
+  return(list(
     custom_projection = p$projection$crs,
     fa_extent = terra::ext(p$projection$extent),
     res = p$projection$res,
@@ -756,7 +754,7 @@ load_fac_map_parameters <- function(
     weekly_labels = p$bins[["3km"]]$labels,
     seasonal_bins = p$bins_seasonal[["3km"]]$breaks,
     seasonal_labels = p$bins_seasonal[["3km"]]$labels
-  )
+  ))
 }
 
 

@@ -44,7 +44,7 @@ raster in the custom projection
 \item \code{fa_extent_projected}: the extent in projected (Equal Earth) coordinates
 \item \code{weekly_bins}/\code{weekly_labels}: weekly abundance bins and labels for the
 full annual cycle
-\item \code{seasonal_bins}/`seasonal_labels: seasonal abundance bins and labels for
+\item \code{seasonal_bins}/\code{seasonal_labels}: seasonal abundance bins and labels for
 the full annual cycle
 }
 }
