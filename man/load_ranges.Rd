@@ -40,7 +40,7 @@ Defaults to \code{interactive()}, so downloads are silent in non-interactive
 sessions (e.g. scripts and R Markdown).}
 }
 \value{
-An \code{sf} update containing the seasonal range boundaries, with each
+An \code{sf} object containing the seasonal range boundaries, with each
 season provided as a different feature.
 }
 \description{

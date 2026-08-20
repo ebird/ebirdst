@@ -14,16 +14,16 @@ species
 \item \code{is_resident}: classifies this species a resident or a migrant.
 \item \code{breeding_quality}: breeding season quality.
 \item \code{breeding_start}: breeding season start date.
-\item \code{breeding_end}: breeding season start date.
+\item \code{breeding_end}: breeding season end date.
 \item \code{nonbreeding_quality}: non-breeding season quality.
 \item \code{nonbreeding_start}: non-breeding season start date.
-\item \code{nonbreeding_end}: non-breeding season start date.
+\item \code{nonbreeding_end}: non-breeding season end date.
 \item \code{postbreeding_migration_quality}: post-breeding season quality.
 \item \code{postbreeding_migration_start}: post-breeding season start date.
-\item \code{postbreeding_migration_end}: post-breeding season start date.
+\item \code{postbreeding_migration_end}: post-breeding season end date.
 \item \code{prebreeding_migration_quality}: pre-breeding season quality.
 \item \code{prebreeding_migration_start}: pre-breeding season start date.
-\item \code{prebreeding_migration_end}: pre-breeding season start date.
+\item \code{prebreeding_migration_end}: pre-breeding season end date.
 \item \code{resident_quality}: resident quality.
 \item \code{resident_start}: for resident species, the year-round start date.
 \item \code{resident_end}: for resident species, the year-round end date.
@@ -59,11 +59,11 @@ Trends results for each species.
 }
 \details{
 For the Status Data Products, the dates defining the boundaries of the
-seasons are provided in additional to a quality rating from 0-3 for each
+seasons are provided in addition to a quality rating from 0-3 for each
 season. These dates and quality ratings are assigned through a process of
 \href{https://science.ebird.org/status-and-trends/faq#seasons}{expert review}.
-expert review. Note that missing dates imply that a season failed expert
-review for that species within that season.
+Note that missing dates imply that a season failed expert review for that
+species within that season.
 
 Trends Data Products are only available for a subset of species, indicated by
 the \code{has_trends} variable, and for each species the trends is estimated for a

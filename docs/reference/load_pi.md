@@ -7,11 +7,10 @@ converted to ranks (with a rank of 1 being the most important) relative
 to the full suite of environmental predictors. The ranks are summarized
 to a 27 km resolution raster grid for each predictor, where the cell
 values are the average across all models in the ensemble contributing to
-that cell. These data are available in raster format provided
-`download_pis = TRUE` was used when calling
-[`ebirdst_download_status()`](https://ebird.github.io/ebirdst/reference/ebirdst_download_status.md).
-PI estimates are available separately for both the occurrence and count
-sub-model and only the 30 most important predictors are distributed. Use
+that cell. If the requested data have not already been downloaded, they
+will be downloaded automatically on first use. PI estimates are
+available separately for both the occurrence and count sub-model and
+only the 30 most important predictors are distributed. Use
 `list_available_pis()` to see which predictors have PI data.
 
 ## Usage
@@ -102,10 +101,8 @@ as the integer rank (`rank`) relative to the full suite of predictors
 
 ``` r
 if (FALSE) { # \dontrun{
-# download example data if hasn't already been downloaded
-ebirdst_download_status("yebsap-example", download_pis = TRUE)
-
 # identify the top predictor
+# data will be downloaded automatically if not already present
 top_preds <- list_available_pis("yebsap-example")
 print(top_preds[1, ])
 

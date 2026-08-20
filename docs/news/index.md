@@ -1,5 +1,51 @@
 # Changelog
 
+## ebirdst 4.2023.1
+
+- Removed all functions previously listed as deprecated or defunct
+  (`abundance_palette()`, `ebirdst_download()`, `ebirdst_extent()`,
+  `ebirdst_habitat()`, `ebirdst_ppms()`, `ebirdst_ppms_ts()`,
+  `ebirdst_subset()`, `load_pds()`, `load_pis()`, `load_predictions()`,
+  `load_stixels()`, `parse_raster_dates()`, `plot_pds()`, `plot_pis()`,
+  `project_extent()`, `stixelize()`); they have been unavailable or
+  erroring since at least v3.2022.1
+- Backend approach to file download has been refactored to an on-demand
+  first approach
+- [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
+  no longer downloads every predictor importance raster to determine
+  availability, only `pi_rangewide.csv`
+- The http fallback for VPNs that block https now also applies to file
+  downloads, not just file listings. The fallback is only attempted when
+  https fails to reach the server at all, never when the server
+  responds, so the access key isn’t sent over an unencrypted connection
+  unnecessarily
+- Errors for data that can’t be found on-demand now include
+  function-specific guidance, e.g. pointing to
+  [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
+- Files are now downloaded to a temporary file and only moved into place
+  once the transfer completes. Previously a transfer that was cut short
+  part way left a partial file behind, which was treated as a completed
+  download and never re-downloaded; a forced re-download that failed
+  also deleted the existing local copy of the file
+- Downloads that fail for a reason other than the data not being
+  available, e.g. a dropped connection, now raise an error saying so
+  rather than reporting the data as missing
+- The access key is no longer included in download error messages. The
+  key is passed to the API in the query string of the request URL, and
+  errors from failed downloads quoted that URL, so users reporting a
+  download problem were inadvertently sharing their private key.
+  Download errors now report the reason for the failure with the key
+  redacted
+- [`vectorize_trends()`](https://ebird.github.io/ebirdst/reference/vectorize_trends.md)
+  now assigns the smallest circle radius to locations with zero relative
+  abundance; previously these locations were given a missing radius
+- [`ebirdst_palettes()`](https://ebird.github.io/ebirdst/reference/ebirdst_palettes.md)
+  now requires `n` to be a whole number, rather than accepting a value
+  such as `n = 10.5`
+- [`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
+  no longer prints a message while downloading
+- Various small bug fixes and typos
+
 ## ebirdst 4.2023.0
 
 CRAN release: 2026-07-20
@@ -94,9 +140,8 @@ CRAN release: 2023-11-15
 CRAN release: 2023-05-09
 
 - fix bug causing stixels with missing bounds to raise an error in
-  [`ebirdst_habitat()`](https://ebird.github.io/ebirdst/reference/ebirdst-defunct.md)
-- add a function to estimate MCC-F1 for
-  [`ebirdst_ppms()`](https://ebird.github.io/ebirdst/reference/ebirdst-defunct.md)
+  `ebirdst_habitat()`
+- add a function to estimate MCC-F1 for `ebirdst_ppms()`
 
 ## ebirdst 2.2021.2
 

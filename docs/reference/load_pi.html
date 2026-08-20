@@ -5,23 +5,23 @@ variables). These predictor importance (PI) data are converted to ranks (with
 a rank of 1 being the most important) relative to the full suite of
 environmental predictors. The ranks are summarized to a 27 km resolution
 raster grid for each predictor, where the cell values are the average across
-all models in the ensemble contributing to that cell. These data are
-available in raster format provided download_pis = TRUE was used when
-calling ebirdst_download_status(). PI estimates are available separately
-for both the occurrence and count sub-model and only the 30 most important
-predictors are distributed. Use list_available_pis() to see which
-predictors have PI data."><meta property="og:description" content="The eBird Status models estimate the relative importance of each of the core
+all models in the ensemble contributing to that cell. If the requested data
+have not already been downloaded, they will be downloaded automatically on
+first use. PI estimates are available separately for both the occurrence
+and count sub-model and only the 30 most important predictors are
+distributed. Use list_available_pis() to see which predictors have PI
+data."><meta property="og:description" content="The eBird Status models estimate the relative importance of each of the core
 environmental predictor used in the model (i.e. the % land and water cover
 variables). These predictor importance (PI) data are converted to ranks (with
 a rank of 1 being the most important) relative to the full suite of
 environmental predictors. The ranks are summarized to a 27 km resolution
 raster grid for each predictor, where the cell values are the average across
-all models in the ensemble contributing to that cell. These data are
-available in raster format provided download_pis = TRUE was used when
-calling ebirdst_download_status(). PI estimates are available separately
-for both the occurrence and count sub-model and only the 30 most important
-predictors are distributed. Use list_available_pis() to see which
-predictors have PI data."></head><body>
+all models in the ensemble contributing to that cell. If the requested data
+have not already been downloaded, they will be downloaded automatically on
+first use. PI estimates are available separately for both the occurrence
+and count sub-model and only the 30 most important predictors are
+distributed. Use list_available_pis() to see which predictors have PI
+data."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -29,7 +29,7 @@ predictors have PI data."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,12 +69,12 @@ variables). These predictor importance (PI) data are converted to ranks (with
 a rank of 1 being the most important) relative to the full suite of
 environmental predictors. The ranks are summarized to a 27 km resolution
 raster grid for each predictor, where the cell values are the average across
-all models in the ensemble contributing to that cell. These data are
-available in raster format provided <code>download_pis = TRUE</code> was used when
-calling <code><a href="ebirdst_download_status.html">ebirdst_download_status()</a></code>. PI estimates are available separately
-for both the occurrence and count sub-model and only the 30 most important
-predictors are distributed. Use <code>list_available_pis()</code> to see which
-predictors have PI data.</p>
+all models in the ensemble contributing to that cell. If the requested data
+have not already been downloaded, they will be downloaded automatically on
+first use. PI estimates are available separately for both the occurrence
+and count sub-model and only the 30 most important predictors are
+distributed. Use <code>list_available_pis()</code> to see which predictors have PI
+data.</p>
     </div>
 
     <div class="section level2">
@@ -160,10 +160,8 @@ species.</p></li>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># download example data if hasn't already been downloaded</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="ebirdst_download_status.html">ebirdst_download_status</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, download_pis <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># identify the top predictor</span></span></span>
+<span class="r-in"><span><span class="co"># data will be downloaded automatically if not already present</span></span></span>
 <span class="r-in"><span><span class="va">top_preds</span> <span class="op">&lt;-</span> <span class="fu">list_available_pis</span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_preds</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

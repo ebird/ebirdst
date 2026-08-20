@@ -15,7 +15,7 @@ already been downloaded, they will be downloaded automatically on first use."></
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,11 +77,11 @@ coverage or site selection probability.</p></dd>
 
 
 <dt id="arg-weeks">weeks<a class="anchor" aria-label="anchor" href="#arg-weeks"></a></dt>
-<dd><p>character; one or more weeks (expressed in <code>"MM-DD"</code> format) to
-load the raster layers for. If this argument is not specified, all
-downloaded weeks will be loaded. <strong>Note that these rasters are quite large
-so it's recommended to only load a small number of weeks of data at the
-same time.</strong></p></dd>
+<dd><p>character; one or more of the 52 weeks (expressed in <code>"MM-DD"</code>
+format) to load the raster layers for. Layers are always returned in
+chronological order regardless of the order given here. <strong>Note that these
+rasters are quite large (roughly 50 MB per week) so it's recommended to
+only load a small number of weeks of data at the same time.</strong></p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
@@ -129,7 +129,7 @@ given location and habitat was sampled by eBird data in the given week.</p></li>
 <span class="r-in"><span><span class="co"># load a single week of site selection probability data</span></span></span>
 <span class="r-in"><span><span class="fu">load_data_coverage</span><span class="op">(</span><span class="st">"selection-probability"</span>, weeks <span class="op">=</span> <span class="st">"01-04"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># load all weeks of spatial coverage data</span></span></span>
+<span class="r-in"><span><span class="co"># load multiple weeks of spatial coverage data</span></span></span>
 <span class="r-in"><span><span class="fu">load_data_coverage</span><span class="op">(</span><span class="st">"spatial-coverage"</span>, weeks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"01-04"</span>, <span class="st">"01-11"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>

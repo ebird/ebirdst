@@ -58,9 +58,11 @@ set_ebirdst_access_key <- function(key, overwrite = FALSE) {
   Sys.setenv(EBIRDST_KEY = key)
 
   message("eBird Status and Trends access key stored in: ", renv_path)
-  invisible(renv_path)
+  return(invisible(renv_path))
 }
 
+
+# internal ----
 
 get_ebirdst_access_key <- function() {
   key <- Sys.getenv("EBIRDST_KEY")
@@ -73,8 +75,8 @@ get_ebirdst_access_key <- function() {
     )
     stop(
       "Valid eBird Status and Trends access key not found. ",
-      "Note that keys expire after 6 month, you may need a new key."
+      "Note that keys expire after 6 months, so you may need a new key."
     )
   }
-  invisible(key)
+  return(invisible(key))
 }

@@ -98,6 +98,34 @@ test_that("ebirdst_data_inventory() reports status and trends as separate rows",
   expect_true(all(inv$species_code == "woothr"))
 })
 
+test_that("ebirdst_data_inventory() ignores partial downloads", {
+  tmp <- withr::local_tempdir()
+  sp_dir <- file.path(tmp, "2023", "woothr")
+  dir.create(file.path(sp_dir, "trends"), recursive = TRUE)
+  writeLines("data", file.path(sp_dir, "config.json"))
+  writeLines("data", file.path(sp_dir, "trends", "woothr_trends.parquet"))
+  # partial downloads left behind by a session killed mid-transfer
+  writeLines("partial", file.path(sp_dir, "abundance.tif.part"))
+  writeLines(
+    "partial",
+    file.path(sp_dir, "trends", "woothr_trends.parquet.part")
+  )
+
+  inv <- ebirdst_data_inventory(tmp)
+  expect_equal(nrow(inv), 2)
+  expect_equal(inv$n_files, c(1L, 1L))
+})
+
+test_that("ebirdst_data_inventory() ignores a directory of only partial downloads", {
+  tmp <- withr::local_tempdir()
+  sp_dir <- file.path(tmp, "2023", "woothr")
+  dir.create(sp_dir, recursive = TRUE)
+  writeLines("partial", file.path(sp_dir, "abundance.tif.part"))
+
+  inv <- ebirdst_data_inventory(tmp)
+  expect_equal(nrow(inv), 0)
+})
+
 test_that("ebirdst_data_inventory() assigns Data Coverage common name", {
   tmp <- withr::local_tempdir()
   cov_dir <- file.path(tmp, "2023", "data_coverage")
@@ -278,6 +306,20 @@ test_that("ebirdst_delete() deletes with force = TRUE", {
 
   inv_after <- ebirdst_data_inventory(tmp)
   expect_equal(nrow(inv_after), 0)
+})
+
+test_that("ebirdst_delete() reports the size of what it deleted", {
+  tmp <- withr::local_tempdir()
+  sp_dir <- file.path(tmp, "2023", "yebsap")
+  dir.create(sp_dir, recursive = TRUE)
+  writeBin(raw(2000), file.path(sp_dir, "dummy.tif"))
+
+  # both the status and trends rows for a species share one directory, so the
+  # size is only counted for directories that were actually removed
+  expect_message(
+    ebirdst_delete(path = tmp, force = TRUE),
+    "Deleted 1 directory \\(2.0 KB\\)"
+  )
 })
 
 test_that("ebirdst_delete() deletes both status and trends from one directory", {

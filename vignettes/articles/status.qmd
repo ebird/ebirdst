@@ -61,6 +61,7 @@ By default, `ebirdst_download_status()` (and the `load_` functions) download dat
 Because a new version of the data products is released each year, data for multiple versions can accumulate on disk over time. Use `ebirdst_data_inventory()` to get a summary of all data currently downloaded, with separate rows for the Status and Trends data products for each species.
 
 ```{r access-inventory}
+#| eval: false
 ebirdst_data_inventory()
 ```
 

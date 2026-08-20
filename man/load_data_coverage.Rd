@@ -16,11 +16,11 @@ load_data_coverage(
 \item{product}{character; data coverage raster product to load: spatial
 coverage or site selection probability.}
 
-\item{weeks}{character; one or more weeks (expressed in \code{"MM-DD"} format) to
-load the raster layers for. If this argument is not specified, all
-downloaded weeks will be loaded. \strong{Note that these rasters are quite large
-so it's recommended to only load a small number of weeks of data at the
-same time.}}
+\item{weeks}{character; one or more of the 52 weeks (expressed in \code{"MM-DD"}
+format) to load the raster layers for. Layers are always returned in
+chronological order regardless of the order given here. \strong{Note that these
+rasters are quite large (roughly 50 MB per week) so it's recommended to
+only load a small number of weeks of data at the same time.}}
 
 \item{path}{character; directory to download the data to. All downloaded
 files will be placed in a sub-directory of this directory named for the
@@ -67,7 +67,7 @@ ebirdst_download_data_coverage()
 # load a single week of site selection probability data
 load_data_coverage("selection-probability", weeks = "01-04")
 
-# load all weeks of spatial coverage data
+# load multiple weeks of spatial coverage data
 load_data_coverage("spatial-coverage", weeks = c("01-04", "01-11"))
 }
 }
