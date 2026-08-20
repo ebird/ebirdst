@@ -70,6 +70,28 @@ test_that("convert_ppy_to_cumulative()", {
   expect_error(convert_ppy_to_cumulative(10, n_years = 1.5))
 })
 
+test_that("categorize()", {
+  expect_equal(
+    categorize(c(0.5, 1.5, 2.5), breaks = c(0, 1, 2, 3), labels = c(1, 2, 3)),
+    c(1, 2, 3)
+  )
+  # values on the lowest break are included in the first category rather than
+  # being dropped as missing
+  expect_equal(categorize(0, breaks = c(0, 1, 2), labels = c(10, 20)), 10)
+  # values outside the breaks have no category
+  expect_equal(
+    categorize(c(-1, 5), breaks = c(0, 1, 2), labels = c(10, 20)),
+    c(NA_real_, NA_real_)
+  )
+  expect_equal(
+    categorize(c(0.5, 1.5), breaks = c(0, 1, 2), labels = c("a", "b")),
+    c("a", "b")
+  )
+
+  expect_error(categorize("a", breaks = c(0, 1), labels = 1))
+  expect_error(categorize(1, breaks = c(0, 1), labels = c(1, 2)))
+})
+
 test_that("rasterize_trends()", {
   trends <- load_trends("yebsap-example")
 

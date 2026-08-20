@@ -118,8 +118,14 @@ get_species <- function(x) {
 # internal ----
 
 is_integer <- function(x) {
+  # the range check has to come before as.integer(), which warns when it
+  # introduces NAs for values outside the range of an integer
   return(isTRUE(
-    is.numeric(x) && !anyNA(x) && all(is.finite(x)) && all(x == as.integer(x))
+    is.numeric(x) &&
+      !anyNA(x) &&
+      all(is.finite(x)) &&
+      all(abs(x) <= .Machine$integer.max) &&
+      all(x == as.integer(x))
   ))
 }
 

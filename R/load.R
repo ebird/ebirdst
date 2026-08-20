@@ -353,11 +353,11 @@ load_trends <- function(
 #'
 #' @param product character; data coverage raster product to load: spatial
 #'   coverage or site selection probability.
-#' @param weeks character; one or more weeks (expressed in `"MM-DD"` format) to
-#'   load the raster layers for. If this argument is not specified, all
-#'   downloaded weeks will be loaded. **Note that these rasters are quite large
-#'   so it's recommended to only load a small number of weeks of data at the
-#'   same time.**
+#' @param weeks character; one or more of the 52 weeks (expressed in `"MM-DD"`
+#'   format) to load the raster layers for. Layers are always returned in
+#'   chronological order regardless of the order given here. **Note that these
+#'   rasters are quite large (roughly 50 MB per week) so it's recommended to
+#'   only load a small number of weeks of data at the same time.**
 #' @inheritParams ebirdst_download_status
 #'
 #' @details In addition to the species-specific data products, the eBird Status
@@ -383,17 +383,22 @@ load_trends <- function(
 #' # load a single week of site selection probability data
 #' load_data_coverage("selection-probability", weeks = "01-04")
 #'
-#' # load all weeks of spatial coverage data
+#' # load multiple weeks of spatial coverage data
 #' load_data_coverage("spatial-coverage", weeks = c("01-04", "01-11"))
 #' }
 load_data_coverage <- function(
   product = c("spatial-coverage", "selection-probability"),
-  weeks = NULL,
+  weeks,
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
 ) {
-  stopifnot(is.null(weeks) || is.character(weeks))
+  stopifnot(
+    !missing(weeks),
+    is.character(weeks),
+    length(weeks) >= 1,
+    !anyNA(weeks)
+  )
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
   product <- match.arg(product)
@@ -403,19 +408,18 @@ load_data_coverage <- function(
   # generate vector of valid weeks
   valid_weeks <- as.Date(paste(2018, seq(4, 366, 7)), format = "%Y %j")
   valid_weeks <- format(valid_weeks, format = "%m-%d")
-  if (!is.null(weeks) && !all(weeks %in% valid_weeks)) {
+  if (!all(weeks %in% valid_weeks)) {
     stop(
       "The following weeks are invalid: ",
-      paste(weeks[!weeks %in% valid_weeks], collapse = ", "),
+      paste(unique(weeks[!weeks %in% valid_weeks]), collapse = ", "),
       "\n",
       "Valid weeks include: ",
       paste(valid_weeks, collapse = ", ")
     )
   }
-  # subset to selected weeks
-  if (!is.null(weeks)) {
-    valid_weeks <- intersect(valid_weeks, weeks)
-  }
+
+  # subset to selected weeks, keeping them in chronological order
+  valid_weeks <- intersect(valid_weeks, weeks)
   valid_weeks <- paste(
     ebirdst_version()[["status_version_year"]],
     valid_weeks,
@@ -1021,26 +1025,61 @@ load_ppm <- function(
 
 # internal ----
 
-# identify which predictors have pi rasters available for a species. prefers
-# a single remote listing call, which requires no downloads, and falls back
-# to globbing any pi tifs already downloaded locally if the listing can't be
-# reached (e.g. offline). filtering on "_pi_(occurrence|count)_" excludes the
-# other tifs that live alongside the pi rasters in the pis/ directory, e.g.
-# n-folds-modeled, start_day_of_year, end_day_of_year
+# check that the geotiff driver is installed; required to load any of the
+# raster data products
+check_gtiff_support <- function() {
+  drv <- terra::gdal(drivers = TRUE)
+  drv <- drv$name[stringr::str_detect(drv$can, "read")]
+  if (!"GTiff" %in% drv) {
+    stop(
+      "GDAL does not have GeoTIFF support. GeoTIFF support is required to ",
+      "load Status and Trends raster data."
+    )
+  }
+  return(invisible(TRUE))
+}
+
+
+# identify which predictors have pi rasters available for a species. the remote
+# listing is the authoritative source because it covers every raster in the data
+# package rather than just the ones already downloaded, so it's only bypassed
+# when it can't be reached, e.g. offline or with an expired access key. in that
+# case the files already on disk are all there is to go on and the answer may be
+# incomplete, so the failure is reported rather than silently swallowed.
+# filtering on "_pi_(occurrence|count)_" excludes the other tifs that live
+# alongside the pi rasters in the pis/ directory, e.g. n-folds-modeled,
+# start_day_of_year, end_day_of_year
 available_pi_predictors <- function(species_code, path) {
   pi_pattern <- "_pi_(occurrence|count)_"
 
-  tifs <- tryCatch(
-    {
-      keys <- list_object_keys(species_code, dataset = "status")
-      keys <- keys[stringr::str_detect(keys, "/pis/")]
-      basename(keys[stringr::str_detect(basename(keys), pi_pattern)])
-    },
-    error = function(e) NULL
+  listing <- tryCatch(
+    list_object_keys(species_code, dataset = "status"),
+    error = function(e) e
   )
-  if (is.null(tifs)) {
+
+  if (inherits(listing, "error")) {
     pis_path <- file.path(path, status_key(species_code, "pis"))
     tifs <- list.files(pis_path, pattern = paste0(pi_pattern, ".*\\.tif$"))
+
+    # with no listing and nothing downloaded there's no basis for an answer, so
+    # report the underlying problem instead of an empty result
+    if (length(tifs) == 0) {
+      stop(
+        "The predictors with PI data could not be determined because the list ",
+        "of available data could not be accessed:\n  ",
+        conditionMessage(listing)
+      )
+    }
+    warning(
+      "The list of available data could not be accessed, so only PI data that ",
+      "has already been downloaded is reported and the list may be ",
+      "incomplete. The following error occurred:\n  ",
+      conditionMessage(listing),
+      call. = FALSE
+    )
+  } else {
+    keys <- listing[stringr::str_detect(listing, "/pis/")]
+    tifs <- basename(keys[stringr::str_detect(basename(keys), pi_pattern)])
   }
 
   preds <- stringr::str_remove(tifs, paste0("^[^_]+", pi_pattern))

@@ -55,7 +55,11 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
 
     for (sp_dir in sp_dirs) {
       sp_code <- basename(sp_dir)
+
+      # a partial download left behind by a session that was killed mid-transfer
+      # isn't data, so it shouldn't be counted or have its size reported
       all_files <- list.files(sp_dir, recursive = TRUE, full.names = TRUE)
+      all_files <- all_files[!is_partial_download(all_files)]
 
       # files in the trends/ subdirectory are trends data products; all others
       # are status data products
@@ -66,6 +70,7 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
           recursive = TRUE,
           full.names = TRUE
         )
+        trends_files <- trends_files[!is_partial_download(trends_files)]
       } else {
         trends_files <- character(0)
       }

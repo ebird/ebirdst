@@ -91,6 +91,15 @@ test_that("grid_sample_stratified()", {
     jitter_grid = FALSE
   )
   expect_lte(nrow(sampled_max), 500L)
+
+  # a maximum larger than the sample is a no-op rather than being subsampled
+  set.seed(1)
+  sampled_high_max <- grid_sample_stratified(
+    checklists,
+    maximum_ss = nrow(checklists) * 2L,
+    jitter_grid = FALSE
+  )
+  expect_equal(nrow(sampled_high_max), nrow(sampled))
 })
 
 test_that("grid_sample_stratified() validates cell_quantile_cap", {

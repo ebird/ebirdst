@@ -13,6 +13,29 @@ test_that("get_species()", {
   expect_equal(get_species("wood thrush"), "woothr")
 })
 
+test_that("is_integer(), is_count(), and is_flag()", {
+  expect_true(is_integer(1))
+  expect_true(is_integer(c(-2, 0, 3)))
+  expect_true(is_integer(.Machine$integer.max))
+  expect_false(is_integer(1.5))
+  expect_false(is_integer(NA_integer_))
+  expect_false(is_integer(Inf))
+  expect_false(is_integer("1"))
+  # values beyond integer range are rejected without warning about coercion
+  expect_silent(expect_false(is_integer(1e10)))
+  expect_silent(expect_false(is_integer(-1e10)))
+
+  expect_true(is_count(0))
+  expect_false(is_count(-1))
+  expect_false(is_count(c(1, 2)))
+  expect_silent(expect_false(is_count(1e10)))
+
+  expect_true(is_flag(TRUE))
+  expect_false(is_flag(NA))
+  expect_false(is_flag(c(TRUE, FALSE)))
+  expect_false(is_flag(1))
+})
+
 test_that("calculate_mcc_f1()", {
   skip_if_not_installed("PresenceAbsence")
 

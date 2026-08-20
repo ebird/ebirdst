@@ -161,6 +161,50 @@ test_that("list_available_pis() only downloads the rangewide csv", {
 })
 
 
+test_that("available_pi_predictors() uses the list of available data", {
+  preds <- available_pi_predictors("yebsap-example", path = ebirdst_data_dir())
+  expect_is(preds, "character")
+  expect_true("gsw_c2_pland" %in% preds)
+  # the other tifs stored alongside the pi rasters aren't predictors
+  expect_false(any(grepl("folds|day-of-year", preds)))
+})
+
+
+test_that("available_pi_predictors() warns when it falls back to local files", {
+  tmp <- withr::local_tempdir()
+  pis_dir <- file.path(tmp, status_key("yebsap-example", "pis"))
+  dir.create(pis_dir, recursive = TRUE)
+  file.create(file.path(
+    pis_dir,
+    "yebsap-example_pi_occurrence_gsw-c2-pland_27km_2023.tif"
+  ))
+
+  local_mocked_bindings(
+    list_object_keys = function(...) stop("no internet"),
+    .package = "ebirdst"
+  )
+  expect_warning(
+    preds <- available_pi_predictors("yebsap-example", path = tmp),
+    "may be incomplete"
+  )
+  expect_equal(preds, "gsw_c2_pland")
+})
+
+
+test_that("available_pi_predictors() errors when there is nothing to go on", {
+  tmp <- withr::local_tempdir()
+  local_mocked_bindings(
+    list_object_keys = function(...) stop("key has expired"),
+    .package = "ebirdst"
+  )
+  # the underlying problem is surfaced rather than reported as no PI data
+  expect_error(
+    available_pi_predictors("yebsap-example", path = tmp),
+    "key has expired"
+  )
+})
+
+
 test_that("ebirdst_regional_stats() loads an existing file", {
   tmp <- withr::local_tempdir()
   version_year <- ebirdst_version()[["status_version_year"]]
@@ -183,4 +227,18 @@ test_that("ebirdst_regional_stats() validates arguments", {
   tmp <- withr::local_tempdir()
   expect_error(ebirdst_regional_stats(path = 1))
   expect_error(ebirdst_regional_stats(path = c(tmp, tmp)))
+})
+
+
+test_that("load_data_coverage() requires at least one valid week", {
+  # weeks is required; these rasters are ~50 MB each so there is no sensible
+  # default and nothing should be downloaded without an explicit request
+  expect_error(load_data_coverage("spatial-coverage"))
+  expect_error(load_data_coverage("spatial-coverage", weeks = NULL))
+  expect_error(load_data_coverage("spatial-coverage", weeks = character(0)))
+  expect_error(load_data_coverage("spatial-coverage", weeks = NA_character_))
+  expect_error(
+    load_data_coverage("spatial-coverage", weeks = c("01-04", "01-05")),
+    "weeks are invalid"
+  )
 })

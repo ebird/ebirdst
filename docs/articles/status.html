@@ -107,42 +107,7 @@
 <p>Because a new version of the data products is released each year, data for multiple versions can accumulate on disk over time. Use <code><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory()</a></code> to get a summary of all data currently downloaded, with separate rows for the Status and Trends data products for each species.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; eBird Status and Trends data: 30 species, 30 packages (1.5 GB)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2022 Trends Data Products (9.3 MB)</span></span>
-<span><span class="co">#&gt;   Brewer's Sparrow (brespa): 3 files, 4.0 MB</span></span>
-<span><span class="co">#&gt;   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB</span></span>
-<span><span class="co">#&gt;   Sage Thrasher (sagthr): 3 files, 2.7 MB</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2023 Status Data Products (1.5 GB)</span></span>
-<span><span class="co">#&gt;   Ashy-headed Goose (ashgoo1): 1 files, 17.4 KB</span></span>
-<span><span class="co">#&gt;   Baird's Sparrow (baispa): 6 files, 61.5 MB</span></span>
-<span><span class="co">#&gt;   Black-headed Duck (blhduc1): 1 files, 17.5 KB</span></span>
-<span><span class="co">#&gt;   Bobolink (boboli): 6 files, 103.5 MB</span></span>
-<span><span class="co">#&gt;   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB</span></span>
-<span><span class="co">#&gt;   Chiloe Wigeon (chiwig1): 2 files, 23.8 MB</span></span>
-<span><span class="co">#&gt;   Coscoroba Swan (cosswa1): 2 files, 25.8 MB</span></span>
-<span><span class="co">#&gt;   Data Coverage (data_coverage): 2 files, 103.7 MB</span></span>
-<span><span class="co">#&gt;   Elegant Crested-Tinamou (elctin1): 58 files, 177.2 MB</span></span>
-<span><span class="co">#&gt;   Golden Eagle (goleag): 4 files, 49.4 MB</span></span>
-<span><span class="co">#&gt;   Horned Lark (horlar): 2 files, 4.0 MB</span></span>
-<span><span class="co">#&gt;   Lake Duck (lakduc1): 1 files, 17.4 KB</span></span>
-<span><span class="co">#&gt;   Red Shoveler (redsho1): 1 files, 17.4 KB</span></span>
-<span><span class="co">#&gt;   Rosy-billed Pochard (robpoc1): 2 files, 27.0 MB</span></span>
-<span><span class="co">#&gt;   Rufous-chested Dotterel (rucdot1): 2 files, 449.8 KB</span></span>
-<span><span class="co">#&gt;   Ruddy-headed Goose (ruhgoo1): 2 files, 17.5 MB</span></span>
-<span><span class="co">#&gt;   Silver Teal (siltea1): 1 files, 17.4 KB</span></span>
-<span><span class="co">#&gt;   Small-billed Elaenia (smbela1): 10 files, 158.6 MB</span></span>
-<span><span class="co">#&gt;   Sprague's Pipit (sprpip): 6 files, 73.7 MB</span></span>
-<span><span class="co">#&gt;   Surf Scoter (sursco): 2 files, 2.4 MB</span></span>
-<span><span class="co">#&gt;   Upland Sandpiper (uplsan): 6 files, 138.5 MB</span></span>
-<span><span class="co">#&gt;   Western Meadowlark (wesmea): 6 files, 224.1 MB</span></span>
-<span><span class="co">#&gt;   White-crested Elaenia (whcela1): 4 files, 104.7 MB</span></span>
-<span><span class="co">#&gt;   White-cheeked Pintail (whcpin): 1 files, 17.4 KB</span></span>
-<span><span class="co">#&gt;   Yellow-billed Pintail (yebpin1): 2 files, 31.5 MB</span></span>
-<span><span class="co">#&gt;   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB</span></span>
-<span><span class="co">#&gt;   Yellow-billed Teal (yebtea1): 2 files, 39.0 MB</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ebirdst_data_inventory.html">ebirdst_data_inventory</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>To remove data for specific species or version years, use <code><a href="../reference/ebirdst_delete.html">ebirdst_delete()</a></code>. When called interactively it will display a summary of the data to be removed and ask for confirmation before proceeding. To skip the prompt, use <code>force = TRUE</code>.</p>
 <div class="cell" data-layout-align="center">

@@ -114,41 +114,6 @@ for the Status and Trends data products for each species.
 ``` r
 
 ebirdst_data_inventory()
-#> eBird Status and Trends data: 30 species, 30 packages (1.5 GB)
-#> 
-#> 2022 Trends Data Products (9.3 MB)
-#>   Brewer's Sparrow (brespa): 3 files, 4.0 MB
-#>   Sagebrush Sparrow (sagspa1): 3 files, 2.5 MB
-#>   Sage Thrasher (sagthr): 3 files, 2.7 MB
-#> 
-#> 2023 Status Data Products (1.5 GB)
-#>   Ashy-headed Goose (ashgoo1): 1 files, 17.4 KB
-#>   Baird's Sparrow (baispa): 6 files, 61.5 MB
-#>   Black-headed Duck (blhduc1): 1 files, 17.5 KB
-#>   Bobolink (boboli): 6 files, 103.5 MB
-#>   Chestnut-collared Longspur (chclon): 6 files, 86.0 MB
-#>   Chiloe Wigeon (chiwig1): 2 files, 23.8 MB
-#>   Coscoroba Swan (cosswa1): 2 files, 25.8 MB
-#>   Data Coverage (data_coverage): 2 files, 103.7 MB
-#>   Elegant Crested-Tinamou (elctin1): 58 files, 177.2 MB
-#>   Golden Eagle (goleag): 4 files, 49.4 MB
-#>   Horned Lark (horlar): 2 files, 4.0 MB
-#>   Lake Duck (lakduc1): 1 files, 17.4 KB
-#>   Red Shoveler (redsho1): 1 files, 17.4 KB
-#>   Rosy-billed Pochard (robpoc1): 2 files, 27.0 MB
-#>   Rufous-chested Dotterel (rucdot1): 2 files, 449.8 KB
-#>   Ruddy-headed Goose (ruhgoo1): 2 files, 17.5 MB
-#>   Silver Teal (siltea1): 1 files, 17.4 KB
-#>   Small-billed Elaenia (smbela1): 10 files, 158.6 MB
-#>   Sprague's Pipit (sprpip): 6 files, 73.7 MB
-#>   Surf Scoter (sursco): 2 files, 2.4 MB
-#>   Upland Sandpiper (uplsan): 6 files, 138.5 MB
-#>   Western Meadowlark (wesmea): 6 files, 224.1 MB
-#>   White-crested Elaenia (whcela1): 4 files, 104.7 MB
-#>   White-cheeked Pintail (whcpin): 1 files, 17.4 KB
-#>   Yellow-billed Pintail (yebpin1): 2 files, 31.5 MB
-#>   Yellow-bellied Sapsucker (yebsap-example): 52 files, 9.9 MB
-#>   Yellow-billed Teal (yebtea1): 2 files, 39.0 MB
 ```
 
 To remove data for specific species or version years, use

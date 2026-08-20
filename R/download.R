@@ -236,6 +236,15 @@ ebirdst_download_trends <- function(
     keys <- list_object_keys(species_code = s, dataset = "trends")
     # only trends files
     keys <- keys[stringr::str_detect(keys, "/trends/")]
+    if (length(keys) == 0) {
+      stop(
+        "No Trends Data Products are available for ",
+        s,
+        ", despite it being identified as having trends estimates in ",
+        "ebirdst_runs. Please report this at ",
+        "https://github.com/ebird/ebirdst/issues"
+      )
+    }
 
     # path to data package
     run_path <- file.path(path, ebirdst_version()[["trends_version_year"]], s)
