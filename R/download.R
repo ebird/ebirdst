@@ -109,13 +109,7 @@ ebirdst_download_status <- function(
   stopifnot(is_flag(show_progress))
 
   # convert to species code
-  species <- get_species(species)
-  if (is.na(species)) {
-    stop(
-      "The requested species was not modeled by Status and Trends. ",
-      "Consult ebirdst_runs for a complete list of available species."
-    )
-  }
+  species <- resolve_species(species)
 
   # complete list of all available files for this species
   keys <- list_object_keys(species_code = species, dataset = "status")
@@ -209,14 +203,7 @@ ebirdst_download_trends <- function(
   stopifnot(is_flag(show_progress))
 
   # convert to species code
-  species_code <- get_species(species)
-  if (anyNA(species_code)) {
-    stop(
-      "The following species were not modeled by Status and Trends. ",
-      "Consult ebirdst_runs for a complete list of available species.\n  ",
-      paste0(species[is.na(species_code)], collapse = ", ")
-    )
-  }
+  species_code <- resolve_species(species)
 
   # check that trends are available
   trends_species <- ebirdst::ebirdst_runs[ebirdst::ebirdst_runs$has_trends, ]
@@ -386,10 +373,7 @@ get_species_path <- function(
   if (species == "data_coverage") {
     species_code <- "data_coverage"
   } else {
-    species_code <- get_species(species)
-  }
-  if (is.na(species_code)) {
-    stop(species, " does not correspond to a valid Status and Trends species.")
+    species_code <- resolve_species(species)
   }
   version_year <- ebirdst_version()[[paste0(dataset, "_version_year")]]
   species_path <- path.expand(file.path(path, version_year, species_code))

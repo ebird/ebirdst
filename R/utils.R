@@ -1,3 +1,99 @@
+#' Assign the weeks of the year to seasons
+#'
+#' The eBird Status Data Products provide estimates for each of the 52 weeks of
+#' the year. For migratory species, the full annual cycle is divided into four
+#' seasons: breeding, non-breeding, pre-breeding migration, and post-breeding
+#' migration; non-migratory species have a single resident season. The start and
+#' end dates of these seasons are species specific and, in addition, each season
+#' is assigned a quality score from 0 (failed) to 3 (high quality) reflecting
+#' how much extrapolation or omission occurs in that season's estimates. This
+#' function identifies which season each week of the year falls within,
+#' considering only those seasons meeting a minimum quality score. It's intended
+#' to be used to identify the subset of weeks with sufficiently reliable
+#' estimates for a given species, for example prior to summarizing the weekly
+#' data products across the full annual cycle.
+#'
+#' @inheritParams load_config
+#' @param min_quality integer; the minimum quality score (from 1 to 3) that a
+#'   season must have for its weeks to be assigned to it. Weeks falling within a
+#'   season with a lower quality score, or falling outside any season, are
+#'   assigned `NA`.
+#'
+#' @return A character vector with 52 elements giving the season that each week
+#'   of the year falls within. The elements are in the same order as the weekly
+#'   layers of the data products, so this vector can be used directly to subset
+#'   the layers of a weekly raster cube. Weeks that don't fall within a season
+#'   meeting the minimum quality score are assigned `NA`.
+#' @export
+#' @examples
+#' \dontrun{
+#' # download example data if hasn't already been downloaded
+#' ebirdst_download_status("yebsap-example")
+#'
+#' # only weeks in seasons with the highest quality score
+#' seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
+#'
+#' # use these weeks to subset a weekly raster cube
+#' abd <- load_raster("yebsap-example", "abundance", resolution = "27km")
+#' abd_high_quality <- abd[[!is.na(seasons)]]
+#' }
+assign_weeks_to_seasons <- function(
+  species,
+  min_quality = 1,
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
+) {
+  stopifnot(is.character(species), length(species) == 1)
+  stopifnot(is_count(min_quality), min_quality >= 1, min_quality <= 3)
+  stopifnot(is.character(path), length(path) == 1)
+  stopifnot(is_flag(force), is_flag(show_progress))
+
+  species_code <- resolve_species(species)
+
+  # dates of the weekly estimates come from the configuration file
+  p <- load_config(
+    species = species_code,
+    path = path,
+    force = force,
+    show_progress = show_progress
+  )
+  weeks <- paste(p[["srd_pred_year"]], p[["date_names"]], sep = "-")
+  weeks <- as.Date(weeks)
+
+  # season dates and quality scores for this species
+  runs <- ebirdst::ebirdst_runs
+  run <- runs[runs$species_code == species_code, ]
+  if (run[["is_resident"]]) {
+    seasons <- "resident"
+  } else {
+    seasons <- c(
+      "breeding",
+      "nonbreeding",
+      "prebreeding_migration",
+      "postbreeding_migration"
+    )
+  }
+
+  assignment <- rep(NA_character_, length(weeks))
+  for (season in seasons) {
+    start <- run[[paste0(season, "_start")]]
+    end <- run[[paste0(season, "_end")]]
+    quality <- suppressWarnings(as.integer(run[[paste0(season, "_quality")]]))
+
+    if (is.na(start) || is.na(end) || is.na(quality) || quality < min_quality) {
+      next
+    } else if (start <= end) {
+      assignment[weeks >= start & weeks <= end] <- season
+    } else {
+      # the non-breeding season can wrap around the end of the year
+      assignment[weeks >= start | weeks <= end] <- season
+    }
+  }
+  return(assignment)
+}
+
+
 #' Calculate MCC and F1 score
 #'
 #' Given binary observed and predicted response, estimate Matthews correlation

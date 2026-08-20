@@ -3,6 +3,7 @@
 S3method(print,ebirdst_inventory)
 export("%>%")
 export(assign_to_grid)
+export(assign_weeks_to_seasons)
 export(calculate_mcc_f1)
 export(convert_ppy_to_cumulative)
 export(date_to_st_week)

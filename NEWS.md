@@ -1,5 +1,6 @@
 # ebirdst 4.2023.1
 
+- New function `assign_weeks_to_seasons()` identifies which season each of the 52 weeks of the year falls within for a given species, only considering seasons meeting a minimum expert review quality score
 - Removed all functions previously listed as deprecated or defunct
   (`abundance_palette()`, `ebirdst_download()`, `ebirdst_extent()`,
   `ebirdst_habitat()`, `ebirdst_ppms()`, `ebirdst_ppms_ts()`,

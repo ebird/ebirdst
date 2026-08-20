@@ -287,7 +287,7 @@ load_trends <- function(
   v <- ebirdst_version()[["trends_version_year"]]
 
   # trends species and seaons
-  species_code <- get_species(species)
+  species_code <- resolve_species(species)
   trends_runs <- ebirdst::ebirdst_runs[ebirdst::ebirdst_runs$has_trends, ]
   season <- trends_runs$trends_season[match(
     species_code,

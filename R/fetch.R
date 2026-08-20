@@ -133,14 +133,16 @@ is_partial_download <- function(path) {
 }
 
 
-# resolve a species name/code to its eBird species code; mirrors the
-# validation in get_species_path() but doesn't require path to already exist
+# resolve a species name/code to its eBird species code, raising an error for
+# any species not modeled by status and trends; all internal callers that need
+# a valid code should use this so the error message is consistent
 resolve_species <- function(species) {
   species_code <- get_species(species)
   if (anyNA(species_code)) {
     stop(
-      paste(species[is.na(species_code)], collapse = ", "),
-      " does not correspond to a valid Status and Trends species."
+      "The following species were not modeled by eBird Status and Trends. ",
+      "Consult ebirdst_runs for a complete list of available species.\n  ",
+      paste(species[is.na(species_code)], collapse = ", ")
     )
   }
   return(species_code)

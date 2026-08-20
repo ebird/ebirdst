@@ -2,6 +2,31 @@ context("Utility functions")
 
 skip_on_cran()
 
+test_that("assign_weeks_to_seasons()", {
+  seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
+  expect_length(seasons, 52L)
+  expect_type(seasons, "character")
+  # all four seasons of the example species score a 3
+  expect_setequal(
+    unique(seasons),
+    c(
+      "breeding",
+      "nonbreeding",
+      "prebreeding_migration",
+      "postbreeding_migration"
+    )
+  )
+  # a lower quality threshold can only add weeks, never remove them
+  relaxed <- assign_weeks_to_seasons("yebsap-example", min_quality = 1)
+  expect_equal(relaxed, seasons)
+
+  # invalid arguments
+  expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 0))
+  expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 4))
+  expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 2.5))
+  expect_error(assign_weeks_to_seasons("Yellow-bellied Sapsuckr"))
+})
+
 test_that("get_species()", {
   expect_equal(get_species("Wood Thrush"), "woothr")
   expect_equal(get_species("Yellow-bellied Sapsucker"), "yebsap")
