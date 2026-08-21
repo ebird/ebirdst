@@ -42,12 +42,25 @@ test_that("assign_to_grid() - lonlat spatial-only", {
 })
 
 test_that("assign_to_grid() - grid_definition reuse", {
-  pts1 <- data.frame(x = runif(50), y = runif(50))
+  # pts1 spans the full [0, 1] range so pts2, also drawn from [0, 1], is
+  # guaranteed to fall inside pts1's bounding box
+  pts1 <- data.frame(x = c(0, 1, runif(48)), y = c(0, 1, runif(48)))
   pts2 <- data.frame(x = runif(50), y = runif(50))
   cells1 <- assign_to_grid(pts1, res = c(0.2, 0.2), jitter_grid = FALSE)
   gd <- attr(cells1, "grid_definition")
   cells2 <- assign_to_grid(pts2, grid_definition = gd)
   expect_equal(attr(cells2, "grid_definition"), gd)
+})
+
+test_that("assign_to_grid() errors when points fall below the grid origin", {
+  pts1 <- data.frame(x = runif(50, min = 1), y = runif(50, min = 1))
+  cells1 <- assign_to_grid(pts1, res = c(0.2, 0.2), jitter_grid = FALSE)
+  gd <- attr(cells1, "grid_definition")
+  pts2 <- data.frame(x = c(0.5, -1), y = c(0.5, 0.5))
+  expect_error(
+    assign_to_grid(pts2, grid_definition = gd),
+    "outside the provided spatial grid"
+  )
 })
 
 test_that("grid_sample()", {
@@ -74,6 +87,51 @@ test_that("grid_sample()", {
   expect_equal(names(out), names(checklists))
 })
 
+test_that("grid_sample() spatial-only grid", {
+  # a 2-element res drops the time dimension, so it thins far more than a
+  # spacetime grid at the same spatial resolution
+  set.seed(1)
+  sampled <- grid_sample(
+    checklists,
+    res = c(100000, 100000),
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  sampled_xyt <- grid_sample(
+    checklists,
+    res = c(100000, 100000, 30),
+    jitter_grid = FALSE
+  )
+  expect_s3_class(sampled, "data.frame")
+  expect_true(all(names(checklists) %in% names(sampled)))
+  expect_lt(nrow(sampled), nrow(sampled_xyt))
+
+  # naming only the spatial coordinates gives the same result
+  set.seed(1)
+  sampled_coords2 <- grid_sample(
+    checklists,
+    coords = c("longitude", "latitude"),
+    res = c(100000, 100000),
+    jitter_grid = FALSE
+  )
+  expect_equal(sampled_coords2, sampled)
+
+  # cell ids have no time component
+  sampled_id <- grid_sample(
+    checklists,
+    res = c(100000, 100000),
+    jitter_grid = FALSE,
+    keep_cell_id = TRUE
+  )
+  expect_true(all(lengths(strsplit(sampled_id$.cell_id, "-")) == 2L))
+
+  # a spacetime res needs a temporal coordinate
+  expect_error(
+    grid_sample(checklists, coords = c("longitude", "latitude")),
+    "spatial-only sampling"
+  )
+})
+
 test_that("grid_sample_stratified()", {
   set.seed(1)
   sampled <- grid_sample_stratified(checklists, jitter_grid = FALSE)
@@ -98,6 +156,138 @@ test_that("grid_sample_stratified()", {
     jitter_grid = FALSE
   )
   expect_equal(nrow(sampled_high_max), nrow(sampled))
+})
+
+test_that("grid_sample_stratified() spatial-only grid", {
+  res_xy <- c(100000, 100000)
+
+  set.seed(1)
+  sampled <- grid_sample_stratified(
+    checklists,
+    res = res_xy,
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  sampled_xyt <- grid_sample_stratified(
+    checklists,
+    res = c(res_xy, 30),
+    jitter_grid = FALSE
+  )
+  expect_true(all(names(checklists) %in% names(sampled)))
+  expect_lt(nrow(sampled), nrow(sampled_xyt))
+
+  # a unified spatial-only grid yields cell ids with no time component
+  sampled_id <- grid_sample_stratified(
+    checklists,
+    res = res_xy,
+    unified_grid = TRUE,
+    keep_cell_id = TRUE,
+    jitter_grid = FALSE
+  )
+  expect_true(all(lengths(strsplit(sampled_id$.cell_id, "-")) == 2L))
+
+  # detection oversampling also works on a spatial-only grid
+  set.seed(1)
+  sampled_cc <- grid_sample_stratified(
+    checklists,
+    res = res_xy,
+    min_detection_probability = 0.3,
+    jitter_grid = FALSE
+  )
+  expect_gte(mean(sampled_cc$obs > 0), 0.29)
+
+  # with no strata, coords are passed through to grid_sample()
+  set.seed(1)
+  no_strata <- grid_sample_stratified(
+    checklists,
+    coords = c("longitude", "latitude"),
+    res = res_xy,
+    by_year = FALSE,
+    case_control = FALSE,
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  expect_equal(
+    no_strata,
+    grid_sample(
+      checklists,
+      coords = c("longitude", "latitude"),
+      res = res_xy,
+      jitter_grid = FALSE
+    )
+  )
+})
+
+test_that("grid_sample_stratified() unified grid uses res passed via ...", {
+  set.seed(1)
+  coarse <- grid_sample_stratified(
+    checklists,
+    unified_grid = TRUE,
+    keep_cell_id = TRUE,
+    res = c(100000, 100000, 30)
+  )
+  set.seed(1)
+  fine <- grid_sample_stratified(
+    checklists,
+    unified_grid = TRUE,
+    keep_cell_id = TRUE,
+    res = c(3000, 3000, 7)
+  )
+  expect_lt(length(unique(coarse$.cell_id)), length(unique(fine$.cell_id)))
+})
+
+test_that("grid_sample_stratified() oversamples detections to reach min_detection_probability", {
+  set.seed(1)
+  x <- checklists
+  x$obs <- sample(c(0L, 1L), nrow(x), replace = TRUE, prob = c(0.98, 0.02))
+
+  # the grid assignment for the oversampling pool doesn't change across
+  # resampling iterations, only the random draw does, so it's computed once
+  # rather than on every one of up to 25 iterations; with by_year = FALSE the
+  # initial stratified sample splits by case control class only (2 calls),
+  # and the oversampling setup adds exactly 1 more call, regardless of how
+  # many iterations it takes to reach the target
+  original_grid_cell_id <- grid_cell_id
+  call_count <- 0L
+  local_mocked_bindings(
+    grid_cell_id = function(...) {
+      call_count <<- call_count + 1L
+      return(original_grid_cell_id(...))
+    }
+  )
+
+  sampled <- grid_sample_stratified(
+    x,
+    by_year = FALSE,
+    min_detection_probability = 0.3,
+    jitter_grid = FALSE
+  )
+
+  expect_equal(call_count, 3L)
+  expect_gte(mean(sampled$obs > 0), 0.29)
+})
+
+test_that("grid_sample_stratified() errors on missing values in stratifying columns", {
+  x <- checklists
+  x$year[1] <- NA
+  expect_error(grid_sample_stratified(x, jitter_grid = FALSE), "missing values")
+
+  x2 <- checklists
+  x2$island <- "a"
+  x2$island[1] <- NA
+  expect_error(
+    grid_sample_stratified(x2, sample_by = "island", jitter_grid = FALSE),
+    "missing values"
+  )
+})
+
+test_that("grid_sample_stratified() errors on missing values in obs_column", {
+  x <- checklists
+  x$obs[1] <- NA
+  expect_error(
+    grid_sample_stratified(x, case_control = TRUE, jitter_grid = FALSE),
+    "missing values"
+  )
 })
 
 test_that("grid_sample_stratified() validates cell_quantile_cap", {

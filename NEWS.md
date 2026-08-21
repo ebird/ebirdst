@@ -26,6 +26,13 @@
 - `get_species()` now documents that unmatched input returns `NA`, and identifies example datasets by the generic `-example` suffix rather than a hardcoded `"yebsap-example"` check
 - The package now formally opts in to the 3rd edition of testthat (`Config/testthat/edition: 3`); the test suite's remaining `context()` calls and `expect_is()` usages, both deprecated since testthat 3.0.0, have been removed and replaced with `expect_type()`/`expect_s3_class()`/`expect_s4_class()` as appropriate
 - `set_ebirdst_access_key()` now warns when a project-level `.Renviron` is found in the working directory, since R gives that file precedence over `~/.Renviron` and would otherwise silently prevent the key from being found in a fresh session
+- `grid_sample_stratified()` now raises an informative error when a stratifying column (`sample_by` or `year`) contains missing values, rather than silently dropping those rows
+- `grid_sample_stratified()` now raises an informative error when `obs_column` contains missing values and `case_control = TRUE`, rather than failing with a cryptic error
+- `assign_to_grid()` now correctly errors when a point falls below, not just above, the bounds of a reused `grid_definition`
+- `grid_sample_stratified()` no longer recomputes the spatiotemporal grid assignment for the detection-oversampling pool on every one of its up to 25 resampling iterations; the assignment is now computed once and reused
+- `grid_sample()` and `grid_sample_stratified()` now support the spatial-only sampling that the documentation described but that was impossible to actually request: passing a 2-element `res` drops the time dimension of the grid, and the temporal element of `coords` becomes optional. Previously any attempt to do so failed with a validation error
+- `grid_sample_stratified()` now passes `coords` and `is_lonlat` through to `grid_sample()` in the case where no strata are defined (`by_year = FALSE`, `case_control = FALSE`, and no `sample_by`); previously both were silently dropped and the defaults were used instead
+- `grid_sample_stratified(unified_grid = TRUE)` now defines the unified grid using the `res` and `jitter_grid` values passed via `...`; previously it always used a jittered 3 km by 7 day grid and silently ignored those arguments
 - Various small bug fixes and typos
 
 # ebirdst 4.2023.0
