@@ -1,13 +1,11 @@
 # ebirdst 4.2023.1
 
-- Removed all functions previously listed as deprecated or defunct; they have been unavailable or erroring since at least v3.2022.1
-- Backend approach to file download has been refactored to an on-demand first approach
-- `list_available_pis()` no longer downloads every predictor importance raster to determine availability, only `pi_rangewide.csv`
-- Files are now downloaded to a temporary file and only moved into place once the transfer completes, so an interrupted download can no longer leave a partial file behind
-- The http fallback for VPNs that block https now also applies to file downloads, not just file listings, and is only attempted when https fails to reach the server at all
-- The access key, which is passed to the API in the query string of the request URL, is now redacted from download error messages so users reporting a problem don't inadvertently share it
-- Errors for data that can't be found on-demand now include function-specific guidance, e.g. pointing to `list_available_pis()`
-- `vectorize_trends()` now assigns the smallest circle radius to locations with zero relative abundance, which previously got a missing radius
+- New function `assign_weeks_to_seasons()` identifies which season each of the 52 weeks of the year falls within for a given species; set `return_df = TRUE` to get a data frame with one row per week instead of a character vector
+- Removed all functions previously listed as deprecated or defunct (they have been unavailable or erroring since at least v3.2022.1)
+- `load_data_coverage()`'s arguments have been reordered so that the required `weeks` argument comes before `product`, which now has a default; calls relying on positional matching of `product` first must be updated
+- Downloads are more robust and secure: an on-demand-first backend approach, better handling of interrupted/failed transfers and flaky connections, and the access key is no longer exposed in download error messages
+- `grid_sample()` and `grid_sample_stratified()` now support space-only sampling (no time dimension), which the documentation described but was previously impossible to request, plus several other sampling bug fixes
+- Miscellaneous bug fixes and efficiency improvements
 
 ## Test environments
 

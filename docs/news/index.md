@@ -5,96 +5,25 @@
 - New function
   [`assign_weeks_to_seasons()`](https://ebird.github.io/ebirdst/reference/assign_weeks_to_seasons.md)
   identifies which season each of the 52 weeks of the year falls within
-  for a given species, only considering seasons meeting a minimum expert
-  review quality score; set `return_df = TRUE` to get a data frame with
+  for a given species; set `return_df = TRUE` to get a data frame with
   one row per week instead of a character vector
-- Removed all functions previously listed as deprecated or defunct
-  (`abundance_palette()`, `ebirdst_download()`, `ebirdst_extent()`,
-  `ebirdst_habitat()`, `ebirdst_ppms()`, `ebirdst_ppms_ts()`,
-  `ebirdst_subset()`, `load_pds()`, `load_pis()`, `load_predictions()`,
-  `load_stixels()`, `parse_raster_dates()`, `plot_pds()`, `plot_pis()`,
-  `project_extent()`, `stixelize()`); they have been unavailable or
-  erroring since at least v3.2022.1
-- Backend approach to file download has been refactored to an on-demand
-  first approach
-- [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
-  no longer downloads every predictor importance raster to determine
-  availability, only `pi_rangewide.csv`
-- The http fallback for VPNs that block https now also applies to file
-  downloads, not just file listings. The fallback is only attempted when
-  https fails to reach the server at all, never when the server
-  responds, so the access key isn’t sent over an unencrypted connection
-  unnecessarily
-- Errors for data that can’t be found on-demand now include
-  function-specific guidance, e.g. pointing to
-  [`list_available_pis()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
-- Files are now downloaded to a temporary file and only moved into place
-  once the transfer completes. Previously a transfer that was cut short
-  part way left a partial file behind, which was treated as a completed
-  download and never re-downloaded; a forced re-download that failed
-  also deleted the existing local copy of the file
-- Downloads that fail for a reason other than the data not being
-  available, e.g. a dropped connection, now raise an error saying so
-  rather than reporting the data as missing
-- The access key is no longer included in download error messages. The
-  key is passed to the API in the query string of the request URL, and
-  errors from failed downloads quoted that URL, so users reporting a
-  download problem were inadvertently sharing their private key.
-  Download errors now report the reason for the failure with the key
-  redacted
-- [`vectorize_trends()`](https://ebird.github.io/ebirdst/reference/vectorize_trends.md)
-  now drops locations with zero relative abundance from the circles
-  output entirely, rather than giving them a missing radius; when all
-  remaining locations share a single abundance quantile bin they now all
-  receive the maximum circle radius
-- [`ebirdst_palettes()`](https://ebird.github.io/ebirdst/reference/ebirdst_palettes.md)
-  now requires `n` to be a whole number, rather than accepting a value
-  such as `n = 10.5`
-- [`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
-  no longer prints a message while downloading
-- [`get_species_path()`](https://ebird.github.io/ebirdst/reference/get_species_path.md)
-  now raises its documented “No data package found” error when the data
-  directory itself hasn’t been created yet, e.g. on a fresh install,
-  rather than a cryptic assertion failure
-- Minimum required `terra` version bumped to 1.7-3;
-  [`rasterize_trends()`](https://ebird.github.io/ebirdst/reference/rasterize_trends.md)
-  no longer carries a compatibility branch for older versions that
-  couldn’t rasterize multiple fields in a single call
-- A connection-level download failure that persists after the http
-  fallback is now retried a couple more times with a short backoff
-  before the file is given up on, rather than failing immediately on a
-  single transient blip
+- Removed all functions previously listed as deprecated or defunct (they
+  have been unavailable or erroring since at least v3.2022.1)
 - [`load_data_coverage()`](https://ebird.github.io/ebirdst/reference/load_data_coverage.md)’s
   arguments have been reordered so that the required `weeks` argument
   comes before `product`, which now has a default; calls relying on
-  positional matching of `product` first must be updated,
-  e.g. `load_data_coverage("05-10", product = "selection-probability")`
-  rather than
-  `load_data_coverage("selection-probability", weeks = "05-10")`
-- [`load_pi()`](https://ebird.github.io/ebirdst/reference/load_pi.md)
+  positional matching of `product` first must be updated
+- Downloads are more robust and secure: an on-demand-first backend
+  approach, better handling of interrupted/failed transfers and flaky
+  connections, and the access key is no longer exposed in download error
+  messages
+- [`grid_sample()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
   and
-  [`load_ppm()`](https://ebird.github.io/ebirdst/reference/load_ppm.md)
-  now check for GeoTIFF read support before downloading, consistent with
-  [`load_raster()`](https://ebird.github.io/ebirdst/reference/load_raster.md)
-  and
-  [`load_data_coverage()`](https://ebird.github.io/ebirdst/reference/load_data_coverage.md),
-  rather than only discovering the missing GDAL driver after the
-  download completes
-- [`get_species()`](https://ebird.github.io/ebirdst/reference/get_species.md)
-  now documents that unmatched input returns `NA`, and identifies
-  example datasets by the generic `-example` suffix rather than a
-  hardcoded `"yebsap-example"` check
-- The package now formally opts in to the 3rd edition of testthat
-  (`Config/testthat/edition: 3`); the test suite’s remaining `context()`
-  calls and `expect_is()` usages, both deprecated since testthat 3.0.0,
-  have been removed and replaced with
-  `expect_type()`/`expect_s3_class()`/`expect_s4_class()` as appropriate
-- [`set_ebirdst_access_key()`](https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.md)
-  now warns when a project-level `.Renviron` is found in the working
-  directory, since R gives that file precedence over `~/.Renviron` and
-  would otherwise silently prevent the key from being found in a fresh
-  session
-- Various small bug fixes and typos
+  [`grid_sample_stratified()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
+  now support space-only sampling (no time dimension), which the
+  documentation described but was previously impossible to request, plus
+  several other sampling bug fixes
+- Miscellaneous bug fixes and efficiency improvements
 
 ## ebirdst 4.2023.0
 

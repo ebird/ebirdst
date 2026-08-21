@@ -41,40 +41,14 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="4.2023.1" id="ebirdst-420231">ebirdst 4.2023.1<a class="anchor" aria-label="anchor" href="#ebirdst-420231"></a></h2>
-<ul><li>New function <code><a href="../reference/assign_weeks_to_seasons.html">assign_weeks_to_seasons()</a></code> identifies which season each of the 52 weeks of the year falls within for a given species, only considering seasons meeting a minimum expert review quality score; set <code>return_df = TRUE</code> to get a data frame with one row per week instead of a character vector</li>
-<li>Removed all functions previously listed as deprecated or defunct (<code>abundance_palette()</code>, <code>ebirdst_download()</code>, <code>ebirdst_extent()</code>, <code>ebirdst_habitat()</code>, <code>ebirdst_ppms()</code>, <code>ebirdst_ppms_ts()</code>, <code>ebirdst_subset()</code>, <code>load_pds()</code>, <code>load_pis()</code>, <code>load_predictions()</code>, <code>load_stixels()</code>, <code>parse_raster_dates()</code>, <code>plot_pds()</code>, <code>plot_pis()</code>, <code>project_extent()</code>, <code>stixelize()</code>); they have been unavailable or erroring since at least v3.2022.1</li>
-<li>Backend approach to file download has been refactored to an on-demand first approach</li>
+<ul><li>New function <code><a href="../reference/assign_weeks_to_seasons.html">assign_weeks_to_seasons()</a></code> identifies which season each of the 52 weeks of the year falls within for a given species; set <code>return_df = TRUE</code> to get a data frame with one row per week instead of a character vector</li>
+<li>Removed all functions previously listed as deprecated or defunct (they have been unavailable or erroring since at least v3.2022.1)</li>
 <li>
-<code><a href="../reference/load_pi.html">list_available_pis()</a></code> no longer downloads every predictor importance raster to determine availability, only <code>pi_rangewide.csv</code>
-</li>
-<li>The http fallback for VPNs that block https now also applies to file downloads, not just file listings. The fallback is only attempted when https fails to reach the server at all, never when the server responds, so the access key isn’t sent over an unencrypted connection unnecessarily</li>
-<li>Errors for data that can’t be found on-demand now include function-specific guidance, e.g. pointing to <code><a href="../reference/load_pi.html">list_available_pis()</a></code>
-</li>
-<li>Files are now downloaded to a temporary file and only moved into place once the transfer completes. Previously a transfer that was cut short part way left a partial file behind, which was treated as a completed download and never re-downloaded; a forced re-download that failed also deleted the existing local copy of the file</li>
-<li>Downloads that fail for a reason other than the data not being available, e.g. a dropped connection, now raise an error saying so rather than reporting the data as missing</li>
-<li>The access key is no longer included in download error messages. The key is passed to the API in the query string of the request URL, and errors from failed downloads quoted that URL, so users reporting a download problem were inadvertently sharing their private key. Download errors now report the reason for the failure with the key redacted</li>
+<code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>’s arguments have been reordered so that the required <code>weeks</code> argument comes before <code>product</code>, which now has a default; calls relying on positional matching of <code>product</code> first must be updated</li>
+<li>Downloads are more robust and secure: an on-demand-first backend approach, better handling of interrupted/failed transfers and flaky connections, and the access key is no longer exposed in download error messages</li>
 <li>
-<code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> now drops locations with zero relative abundance from the circles output entirely, rather than giving them a missing radius; when all remaining locations share a single abundance quantile bin they now all receive the maximum circle radius</li>
-<li>
-<code><a href="../reference/ebirdst_palettes.html">ebirdst_palettes()</a></code> now requires <code>n</code> to be a whole number, rather than accepting a value such as <code>n = 10.5</code>
-</li>
-<li>
-<code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code> no longer prints a message while downloading</li>
-<li>
-<code><a href="../reference/get_species_path.html">get_species_path()</a></code> now raises its documented “No data package found” error when the data directory itself hasn’t been created yet, e.g. on a fresh install, rather than a cryptic assertion failure</li>
-<li>Minimum required <code>terra</code> version bumped to 1.7-3; <code><a href="../reference/rasterize_trends.html">rasterize_trends()</a></code> no longer carries a compatibility branch for older versions that couldn’t rasterize multiple fields in a single call</li>
-<li>A connection-level download failure that persists after the http fallback is now retried a couple more times with a short backoff before the file is given up on, rather than failing immediately on a single transient blip</li>
-<li>
-<code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>’s arguments have been reordered so that the required <code>weeks</code> argument comes before <code>product</code>, which now has a default; calls relying on positional matching of <code>product</code> first must be updated, e.g. <code>load_data_coverage("05-10", product = "selection-probability")</code> rather than <code>load_data_coverage("selection-probability", weeks = "05-10")</code>
-</li>
-<li>
-<code><a href="../reference/load_pi.html">load_pi()</a></code> and <code><a href="../reference/load_ppm.html">load_ppm()</a></code> now check for GeoTIFF read support before downloading, consistent with <code><a href="../reference/load_raster.html">load_raster()</a></code> and <code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>, rather than only discovering the missing GDAL driver after the download completes</li>
-<li>
-<code><a href="../reference/get_species.html">get_species()</a></code> now documents that unmatched input returns <code>NA</code>, and identifies example datasets by the generic <code>-example</code> suffix rather than a hardcoded <code>"yebsap-example"</code> check</li>
-<li>The package now formally opts in to the 3rd edition of testthat (<code>Config/testthat/edition: 3</code>); the test suite’s remaining <code>context()</code> calls and <code>expect_is()</code> usages, both deprecated since testthat 3.0.0, have been removed and replaced with <code>expect_type()</code>/<code>expect_s3_class()</code>/<code>expect_s4_class()</code> as appropriate</li>
-<li>
-<code><a href="../reference/set_ebirdst_access_key.html">set_ebirdst_access_key()</a></code> now warns when a project-level <code>.Renviron</code> is found in the working directory, since R gives that file precedence over <code>~/.Renviron</code> and would otherwise silently prevent the key from being found in a fresh session</li>
-<li>Various small bug fixes and typos</li>
+<code><a href="../reference/grid_sample.html">grid_sample()</a></code> and <code><a href="../reference/grid_sample.html">grid_sample_stratified()</a></code> now support space-only sampling (no time dimension), which the documentation described but was previously impossible to request, plus several other sampling bug fixes</li>
+<li>Miscellaneous bug fixes and efficiency improvements</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="4.2023.0" id="ebirdst-420230">ebirdst 4.2023.0<a class="anchor" aria-label="anchor" href="#ebirdst-420230"></a></h2><p class="text-muted">CRAN release: 2026-07-20</p>

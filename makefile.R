@@ -1,5 +1,5 @@
 # rebuild docs and install
-devtools::document()
+devtools::document(); devtools::document()
 pak::local_install(ask = FALSE, dependencies = TRUE)
 
 # local tests
