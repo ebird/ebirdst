@@ -6,8 +6,9 @@
 #'   defining the location in space and time. Additional columns can be included
 #'   such as features that will later be used in model training.
 #' @param coords character; names of the spatial and temporal coordinates. By
-#'   default the spatial spatial coordinates should be `longitude` and
-#'   `latitude`, and temporal coordinate should be `day_of_year`.
+#'   default the spatial coordinates should be `longitude` and `latitude`, and
+#'   the temporal coordinate should be `day_of_year`. Provide only the two
+#'   spatial coordinates to perform spatial-only sampling.
 #' @param is_lonlat logical; if the points are in unprojected, lon-lat
 #'   coordinates. In this case, the points will be projected to an equal area
 #'   Eckert IV CRS prior to grid assignment.
@@ -16,7 +17,8 @@
 #'   coordinate system prior to sampling, and resolution should therefore be
 #'   provided in units of meters. The temporal resolution should be in the
 #'   native units of the time coordinate in the input data frame, typically it
-#'   will be a number of days.
+#'   will be a number of days. Provide only the two spatial resolutions to
+#'   perform spatial-only sampling.
 #' @param jitter_grid logical; whether to jitter the location of the origin of
 #'   the grid to introduce some randomness.
 #' @param sample_size_per_cell integer; number of observations to sample from
@@ -39,9 +41,10 @@
 #'
 #' The sampling grid is defined, and assignment of locations to cells occurs, in
 #' [assign_to_grid()]. Consult the help for that function for further details on
-#' how the grid is generated and locations are assigned. Note that by providing
-#' 2-element vectors to both `coords` and `res` the time component of the grid
-#' can be ignored and spatial-only subsampling is performed.
+#' how the grid is generated and locations are assigned. Note that providing a
+#' 2-element vector to `res` drops the time component of the grid and
+#' spatial-only subsampling is performed; in that case any temporal coordinate
+#' named in `coords` is ignored.
 #'
 #' @return A data frame of the spatiotemporally sampled data.
 #' @export
@@ -106,7 +109,7 @@ grid_sample <- function(
   stopifnot(is.data.frame(x))
   stopifnot(
     is.character(coords),
-    length(coords) == 3,
+    length(coords) %in% c(2, 3),
     !anyNA(coords),
     all(coords %in% names(x))
   )
@@ -121,6 +124,7 @@ grid_sample <- function(
     cell_sample_prop <= 1
   )
   stopifnot(is_flag(keep_cell_id))
+  coords <- resolve_coords(coords, res)
 
   # handle edge case of no observations
   if (nrow(x) == 0) {
@@ -226,6 +230,12 @@ grid_sample_stratified <- function(
 ) {
   # input checks
   stopifnot(is.data.frame(x))
+  stopifnot(
+    is.character(coords),
+    length(coords) %in% c(2, 3),
+    !anyNA(coords),
+    all(coords %in% names(x))
+  )
   stopifnot(is_flag(is_lonlat), is_flag(unified_grid), is_flag(keep_cell_id))
   stopifnot(is_flag(case_control))
   if (case_control) {
@@ -280,14 +290,20 @@ grid_sample_stratified <- function(
     )
   }
 
-  # spatial resolution for the cap grid, taken from res passed via ... to
-  # grid_sample(); default matches grid_sample()'s 3km spatial default
+  # grid parameters passed via ... to grid_sample(), resolved once here so the
+  # same grid is used for the unified grid, the per-cell cap, and the
+  # detection-oversampling pool; defaults match those of grid_sample()
   dots <- list(...)
-  if (!is.null(dots[["res"]])) {
-    cap_res_xy <- dots[["res"]][seq_len(2)]
-  } else {
-    cap_res_xy <- c(3000, 3000)
+  grid_res <- dots[["res"]]
+  if (is.null(grid_res)) {
+    grid_res <- eval(formals(grid_sample)[["res"]])
   }
+  grid_jitter <- dots[["jitter_grid"]]
+  if (is.null(grid_jitter)) {
+    grid_jitter <- eval(formals(grid_sample)[["jitter_grid"]])
+  }
+  cap_res_xy <- grid_res[seq_len(2)]
+  coords <- resolve_coords(coords, grid_res)
 
   if (keep_cell_id && !unified_grid) {
     warning(
@@ -323,7 +339,13 @@ grid_sample_stratified <- function(
   if (
     !by_year && !case_control && (is.null(sample_by) || length(sample_by) == 0)
   ) {
-    return(grid_sample(x, keep_cell_id = keep_cell_id, ...))
+    return(grid_sample(
+      x,
+      coords = coords,
+      is_lonlat = is_lonlat,
+      keep_cell_id = keep_cell_id,
+      ...
+    ))
   }
 
   # subset to just the location and strata columns
@@ -337,7 +359,7 @@ grid_sample_stratified <- function(
       xy[["t"]] <- locs[[coords[3]]]
     }
     locs <- xy
-    coords <- c("x", "y", "t")
+    coords <- c("x", "y", "t")[seq_along(coords)]
     is_lonlat <- FALSE
     rm(xy)
   }
@@ -373,8 +395,8 @@ grid_sample_stratified <- function(
       points = locs,
       coords = coords,
       is_lonlat = is_lonlat,
-      res = c(3000, 3000, 7),
-      jitter_grid = TRUE
+      res = grid_res,
+      jitter_grid = grid_jitter
     )
     grid_definition <- attr(cells, "grid_definition")
     rm(cells)
@@ -478,14 +500,6 @@ grid_sample_stratified <- function(
     # resampling iterations below, only the random draw from each cell does,
     # so it's computed once here rather than redone on every one of up to 25
     # passes
-    grid_res <- dots[["res"]]
-    if (is.null(grid_res)) {
-      grid_res <- c(3000, 3000, 7)
-    }
-    grid_jitter <- dots[["jitter_grid"]]
-    if (is.null(grid_jitter)) {
-      grid_jitter <- TRUE
-    }
     cell_ids <- lapply(
       locs_split,
       FUN = grid_cell_id,
@@ -498,11 +512,11 @@ grid_sample_stratified <- function(
 
     cell_n <- dots[["sample_size_per_cell"]]
     if (is.null(cell_n)) {
-      cell_n <- 1
+      cell_n <- eval(formals(grid_sample)[["sample_size_per_cell"]])
     }
     cell_prop <- dots[["cell_sample_prop"]]
     if (is.null(cell_prop)) {
-      cell_prop <- 0.75
+      cell_prop <- eval(formals(grid_sample)[["cell_sample_prop"]])
     }
 
     # target probability
@@ -746,6 +760,23 @@ assign_to_grid <- function(
 
 
 # internal ----
+
+# reconcile the coordinate names with the grid resolution: a 2-element res
+# defines a space-only grid, so any temporal coordinate is dropped and only
+# the spatial coordinates are used
+resolve_coords <- function(coords, res) {
+  if (length(res) > length(coords)) {
+    stop(
+      "res has ",
+      length(res),
+      " elements but coords has only ",
+      length(coords),
+      ". Either name a temporal coordinate in coords, or provide a 2-element ",
+      "res to perform spatial-only sampling."
+    )
+  }
+  return(coords[seq_along(res)])
+}
 
 # assign each row of x to a spatiotemporal grid cell, returning the cell id
 # as a character vector; factored out of grid_sample() so that a grid

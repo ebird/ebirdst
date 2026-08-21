@@ -87,6 +87,51 @@ test_that("grid_sample()", {
   expect_equal(names(out), names(checklists))
 })
 
+test_that("grid_sample() spatial-only grid", {
+  # a 2-element res drops the time dimension, so it thins far more than a
+  # spacetime grid at the same spatial resolution
+  set.seed(1)
+  sampled <- grid_sample(
+    checklists,
+    res = c(100000, 100000),
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  sampled_xyt <- grid_sample(
+    checklists,
+    res = c(100000, 100000, 30),
+    jitter_grid = FALSE
+  )
+  expect_s3_class(sampled, "data.frame")
+  expect_true(all(names(checklists) %in% names(sampled)))
+  expect_lt(nrow(sampled), nrow(sampled_xyt))
+
+  # naming only the spatial coordinates gives the same result
+  set.seed(1)
+  sampled_coords2 <- grid_sample(
+    checklists,
+    coords = c("longitude", "latitude"),
+    res = c(100000, 100000),
+    jitter_grid = FALSE
+  )
+  expect_equal(sampled_coords2, sampled)
+
+  # cell ids have no time component
+  sampled_id <- grid_sample(
+    checklists,
+    res = c(100000, 100000),
+    jitter_grid = FALSE,
+    keep_cell_id = TRUE
+  )
+  expect_true(all(lengths(strsplit(sampled_id$.cell_id, "-")) == 2L))
+
+  # a spacetime res needs a temporal coordinate
+  expect_error(
+    grid_sample(checklists, coords = c("longitude", "latitude")),
+    "spatial-only sampling"
+  )
+})
+
 test_that("grid_sample_stratified()", {
   set.seed(1)
   sampled <- grid_sample_stratified(checklists, jitter_grid = FALSE)
@@ -111,6 +156,84 @@ test_that("grid_sample_stratified()", {
     jitter_grid = FALSE
   )
   expect_equal(nrow(sampled_high_max), nrow(sampled))
+})
+
+test_that("grid_sample_stratified() spatial-only grid", {
+  res_xy <- c(100000, 100000)
+
+  set.seed(1)
+  sampled <- grid_sample_stratified(
+    checklists,
+    res = res_xy,
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  sampled_xyt <- grid_sample_stratified(
+    checklists,
+    res = c(res_xy, 30),
+    jitter_grid = FALSE
+  )
+  expect_true(all(names(checklists) %in% names(sampled)))
+  expect_lt(nrow(sampled), nrow(sampled_xyt))
+
+  # a unified spatial-only grid yields cell ids with no time component
+  sampled_id <- grid_sample_stratified(
+    checklists,
+    res = res_xy,
+    unified_grid = TRUE,
+    keep_cell_id = TRUE,
+    jitter_grid = FALSE
+  )
+  expect_true(all(lengths(strsplit(sampled_id$.cell_id, "-")) == 2L))
+
+  # detection oversampling also works on a spatial-only grid
+  set.seed(1)
+  sampled_cc <- grid_sample_stratified(
+    checklists,
+    res = res_xy,
+    min_detection_probability = 0.3,
+    jitter_grid = FALSE
+  )
+  expect_gte(mean(sampled_cc$obs > 0), 0.29)
+
+  # with no strata, coords are passed through to grid_sample()
+  set.seed(1)
+  no_strata <- grid_sample_stratified(
+    checklists,
+    coords = c("longitude", "latitude"),
+    res = res_xy,
+    by_year = FALSE,
+    case_control = FALSE,
+    jitter_grid = FALSE
+  )
+  set.seed(1)
+  expect_equal(
+    no_strata,
+    grid_sample(
+      checklists,
+      coords = c("longitude", "latitude"),
+      res = res_xy,
+      jitter_grid = FALSE
+    )
+  )
+})
+
+test_that("grid_sample_stratified() unified grid uses res passed via ...", {
+  set.seed(1)
+  coarse <- grid_sample_stratified(
+    checklists,
+    unified_grid = TRUE,
+    keep_cell_id = TRUE,
+    res = c(100000, 100000, 30)
+  )
+  set.seed(1)
+  fine <- grid_sample_stratified(
+    checklists,
+    unified_grid = TRUE,
+    keep_cell_id = TRUE,
+    res = c(3000, 3000, 7)
+  )
+  expect_lt(length(unique(coarse$.cell_id)), length(unique(fine$.cell_id)))
 })
 
 test_that("grid_sample_stratified() oversamples detections to reach min_detection_probability", {

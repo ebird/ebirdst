@@ -41,8 +41,9 @@ defining the location in space and time. Additional columns can be included
 such as features that will later be used in model training.}
 
 \item{coords}{character; names of the spatial and temporal coordinates. By
-default the spatial spatial coordinates should be \code{longitude} and
-\code{latitude}, and temporal coordinate should be \code{day_of_year}.}
+default the spatial coordinates should be \code{longitude} and \code{latitude}, and
+the temporal coordinate should be \code{day_of_year}. Provide only the two
+spatial coordinates to perform spatial-only sampling.}
 
 \item{is_lonlat}{logical; if the points are in unprojected, lon-lat
 coordinates. In this case, the points will be projected to an equal area
@@ -53,7 +54,8 @@ time dimensions. Unprojected locations are projected to an equal area
 coordinate system prior to sampling, and resolution should therefore be
 provided in units of meters. The temporal resolution should be in the
 native units of the time coordinate in the input data frame, typically it
-will be a number of days.}
+will be a number of days. Provide only the two spatial resolutions to
+perform spatial-only sampling.}
 
 \item{jitter_grid}{logical; whether to jitter the location of the origin of
 the grid to introduce some randomness.}
@@ -153,9 +155,10 @@ frequency of detections in the dataset.
 
 The sampling grid is defined, and assignment of locations to cells occurs, in
 \code{\link[=assign_to_grid]{assign_to_grid()}}. Consult the help for that function for further details on
-how the grid is generated and locations are assigned. Note that by providing
-2-element vectors to both \code{coords} and \code{res} the time component of the grid
-can be ignored and spatial-only subsampling is performed.
+how the grid is generated and locations are assigned. Note that providing a
+2-element vector to \code{res} drops the time component of the grid and
+spatial-only subsampling is performed; in that case any temporal coordinate
+named in \code{coords} is ignored.
 }
 \examples{
 set.seed(1)
