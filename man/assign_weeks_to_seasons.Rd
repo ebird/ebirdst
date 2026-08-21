@@ -7,6 +7,7 @@
 assign_weeks_to_seasons(
   species,
   min_quality = 1,
+  return_df = FALSE,
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
@@ -23,6 +24,12 @@ season must have for its weeks to be assigned to it. Weeks falling within a
 season with a lower quality score, or falling outside any season, are
 assigned \code{NA}.}
 
+\item{return_df}{logical; if \code{TRUE}, return a data frame with one row per
+week and columns \code{week} (date), \code{season} (character), \code{quality}
+(integer, \code{0} for weeks falling outside any season), and \code{include}
+(logical, \code{TRUE} if the week's season quality is at least \code{min_quality}),
+rather than the default character vector.}
+
 \item{path}{character; directory to download the data to. All downloaded
 files will be placed in a sub-directory of this directory named for the
 data version year, e.g. "2020" for the 2020 Status Data Products. Each
@@ -38,11 +45,13 @@ Defaults to \code{interactive()}, so downloads are silent in non-interactive
 sessions (e.g. scripts and R Markdown).}
 }
 \value{
-A character vector with 52 elements giving the season that each week
-of the year falls within. The elements are in the same order as the weekly
-layers of the data products, so this vector can be used directly to subset
-the layers of a weekly raster cube. Weeks that don't fall within a season
-meeting the minimum quality score are assigned \code{NA}.
+By default, a character vector with 52 elements giving the season
+that each week of the year falls within. The elements are in the same
+order as the weekly layers of the data products, so this vector can be
+used directly to subset the layers of a weekly raster cube. Weeks that
+don't fall within a season meeting the minimum quality score are assigned
+\code{NA}. If \code{return_df = TRUE}, a data frame with one row per week and
+columns \code{week}, \code{season}, \code{quality}, and \code{include} is returned instead.
 }
 \description{
 The eBird Status Data Products provide estimates for each of the 52 weeks of
@@ -69,5 +78,12 @@ seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
 # use these weeks to subset a weekly raster cube
 abd <- load_raster("yebsap-example", "abundance", resolution = "27km")
 abd_high_quality <- abd[[!is.na(seasons)]]
+
+# return a data frame instead
+seasons_df <- assign_weeks_to_seasons(
+  "yebsap-example",
+  min_quality = 3,
+  return_df = TRUE
+)
 }
 }

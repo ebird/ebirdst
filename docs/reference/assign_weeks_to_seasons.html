@@ -82,6 +82,7 @@ data products across the full annual cycle.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign_weeks_to_seasons</span><span class="op">(</span></span>
 <span>  <span class="va">species</span>,</span>
 <span>  min_quality <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  return_df <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  path <span class="op">=</span> <span class="fu"><a href="ebirdst_data_dir.html">ebirdst_data_dir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_progress <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -106,6 +107,14 @@ season with a lower quality score, or falling outside any season, are
 assigned <code>NA</code>.</p></dd>
 
 
+<dt id="arg-return-df">return_df<a class="anchor" aria-label="anchor" href="#arg-return-df"></a></dt>
+<dd><p>logical; if <code>TRUE</code>, return a data frame with one row per
+week and columns <code>week</code> (date), <code>season</code> (character), <code>quality</code>
+(integer, <code>0</code> for weeks falling outside any season), and <code>include</code>
+(logical, <code>TRUE</code> if the week's season quality is at least <code>min_quality</code>),
+rather than the default character vector.</p></dd>
+
+
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>character; directory to download the data to. All downloaded
 files will be placed in a sub-directory of this directory named for the
@@ -128,11 +137,13 @@ sessions (e.g. scripts and R Markdown).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A character vector with 52 elements giving the season that each week
-of the year falls within. The elements are in the same order as the weekly
-layers of the data products, so this vector can be used directly to subset
-the layers of a weekly raster cube. Weeks that don't fall within a season
-meeting the minimum quality score are assigned <code>NA</code>.</p>
+    <p>By default, a character vector with 52 elements giving the season
+that each week of the year falls within. The elements are in the same
+order as the weekly layers of the data products, so this vector can be
+used directly to subset the layers of a weekly raster cube. Weeks that
+don't fall within a season meeting the minimum quality score are assigned
+<code>NA</code>. If <code>return_df = TRUE</code>, a data frame with one row per week and
+columns <code>week</code>, <code>season</code>, <code>quality</code>, and <code>include</code> is returned instead.</p>
     </div>
 
     <div class="section level2">
@@ -147,6 +158,13 @@ meeting the minimum quality score are assigned <code>NA</code>.</p>
 <span class="r-in"><span><span class="co"># use these weeks to subset a weekly raster cube</span></span></span>
 <span class="r-in"><span><span class="va">abd</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"yebsap-example"</span>, <span class="st">"abundance"</span>, resolution <span class="op">=</span> <span class="st">"27km"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abd_high_quality</span> <span class="op">&lt;-</span> <span class="va">abd</span><span class="op">[[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">seasons</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return a data frame instead</span></span></span>
+<span class="r-in"><span><span class="va">seasons_df</span> <span class="op">&lt;-</span> <span class="fu">assign_weeks_to_seasons</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"yebsap-example"</span>,</span></span>
+<span class="r-in"><span>  min_quality <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  return_df <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

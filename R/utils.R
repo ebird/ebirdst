@@ -18,12 +18,19 @@
 #'   season must have for its weeks to be assigned to it. Weeks falling within a
 #'   season with a lower quality score, or falling outside any season, are
 #'   assigned `NA`.
+#' @param return_df logical; if `TRUE`, return a data frame with one row per
+#'   week and columns `week` (date), `season` (character), `quality`
+#'   (integer, `0` for weeks falling outside any season), and `include`
+#'   (logical, `TRUE` if the week's season quality is at least `min_quality`),
+#'   rather than the default character vector.
 #'
-#' @return A character vector with 52 elements giving the season that each week
-#'   of the year falls within. The elements are in the same order as the weekly
-#'   layers of the data products, so this vector can be used directly to subset
-#'   the layers of a weekly raster cube. Weeks that don't fall within a season
-#'   meeting the minimum quality score are assigned `NA`.
+#' @return By default, a character vector with 52 elements giving the season
+#'   that each week of the year falls within. The elements are in the same
+#'   order as the weekly layers of the data products, so this vector can be
+#'   used directly to subset the layers of a weekly raster cube. Weeks that
+#'   don't fall within a season meeting the minimum quality score are assigned
+#'   `NA`. If `return_df = TRUE`, a data frame with one row per week and
+#'   columns `week`, `season`, `quality`, and `include` is returned instead.
 #' @export
 #' @examples
 #' \dontrun{
@@ -36,16 +43,25 @@
 #' # use these weeks to subset a weekly raster cube
 #' abd <- load_raster("yebsap-example", "abundance", resolution = "27km")
 #' abd_high_quality <- abd[[!is.na(seasons)]]
+#'
+#' # return a data frame instead
+#' seasons_df <- assign_weeks_to_seasons(
+#'   "yebsap-example",
+#'   min_quality = 3,
+#'   return_df = TRUE
+#' )
 #' }
 assign_weeks_to_seasons <- function(
   species,
   min_quality = 1,
+  return_df = FALSE,
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
 ) {
   stopifnot(is.character(species), length(species) == 1)
   stopifnot(is_count(min_quality), min_quality >= 1, min_quality <= 3)
+  stopifnot(is_flag(return_df))
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
@@ -75,21 +91,39 @@ assign_weeks_to_seasons <- function(
     )
   }
 
-  assignment <- rep(NA_character_, length(weeks))
+  season_assignment <- rep(NA_character_, length(weeks))
+  quality_assignment <- rep(NA_integer_, length(weeks))
   for (season in seasons) {
     start <- run[[paste0(season, "_start")]]
     end <- run[[paste0(season, "_end")]]
     quality <- suppressWarnings(as.integer(run[[paste0(season, "_quality")]]))
 
-    if (is.na(start) || is.na(end) || is.na(quality) || quality < min_quality) {
+    if (is.na(start) || is.na(end) || is.na(quality)) {
       next
     } else if (start <= end) {
-      assignment[weeks >= start & weeks <= end] <- season
+      in_season <- weeks >= start & weeks <= end
     } else {
       # the non-breeding season can wrap around the end of the year
-      assignment[weeks >= start | weeks <= end] <- season
+      in_season <- weeks >= start | weeks <= end
     }
+    season_assignment[in_season] <- season
+    quality_assignment[in_season] <- quality
   }
+  include <- !is.na(quality_assignment) & quality_assignment >= min_quality
+
+  if (return_df) {
+    quality_df <- quality_assignment
+    quality_df[is.na(quality_df)] <- 0L
+    return(data.frame(
+      week = weeks,
+      season = season_assignment,
+      quality = quality_df,
+      include = include
+    ))
+  }
+
+  assignment <- season_assignment
+  assignment[!include] <- NA_character_
   return(assignment)
 }
 

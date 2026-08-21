@@ -23,6 +23,34 @@ test_that("assign_weeks_to_seasons()", {
   expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 4))
   expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 2.5))
   expect_error(assign_weeks_to_seasons("Yellow-bellied Sapsuckr"))
+  expect_error(
+    assign_weeks_to_seasons("yebsap-example", return_df = "yes")
+  )
+})
+
+test_that("assign_weeks_to_seasons() return_df = TRUE", {
+  seasons_df <- assign_weeks_to_seasons(
+    "yebsap-example",
+    min_quality = 3,
+    return_df = TRUE
+  )
+  expect_s3_class(seasons_df, "data.frame")
+  expect_named(seasons_df, c("week", "season", "quality", "include"))
+  expect_equal(nrow(seasons_df), 52L)
+  expect_type(seasons_df[["week"]], "double")
+  expect_s3_class(seasons_df[["week"]], "Date")
+  expect_type(seasons_df[["season"]], "character")
+  expect_type(seasons_df[["quality"]], "integer")
+  expect_type(seasons_df[["include"]], "logical")
+
+  # included weeks match the character vector output
+  seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
+  expect_equal(seasons_df[["season"]][seasons_df[["include"]]], seasons[!is.na(seasons)])
+  expect_true(all(seasons_df[["quality"]][seasons_df[["include"]]] >= 3))
+
+  # quality is never missing; weeks outside any season score 0
+  expect_false(anyNA(seasons_df[["quality"]]))
+  expect_true(all(seasons_df[["quality"]][is.na(seasons_df[["season"]])] == 0L))
 })
 
 test_that("get_species()", {

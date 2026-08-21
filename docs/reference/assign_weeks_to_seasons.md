@@ -20,6 +20,7 @@ the weekly data products across the full annual cycle.
 assign_weeks_to_seasons(
   species,
   min_quality = 1,
+  return_df = FALSE,
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
@@ -43,6 +44,14 @@ assign_weeks_to_seasons(
   have for its weeks to be assigned to it. Weeks falling within a season
   with a lower quality score, or falling outside any season, are
   assigned `NA`.
+
+- return_df:
+
+  logical; if `TRUE`, return a data frame with one row per week and
+  columns `week` (date), `season` (character), `quality` (integer, `0`
+  for weeks falling outside any season), and `include` (logical, `TRUE`
+  if the week's season quality is at least `min_quality`), rather than
+  the default character vector.
 
 - path:
 
@@ -68,11 +77,13 @@ assign_weeks_to_seasons(
 
 ## Value
 
-A character vector with 52 elements giving the season that each week of
-the year falls within. The elements are in the same order as the weekly
-layers of the data products, so this vector can be used directly to
-subset the layers of a weekly raster cube. Weeks that don't fall within
-a season meeting the minimum quality score are assigned `NA`.
+By default, a character vector with 52 elements giving the season that
+each week of the year falls within. The elements are in the same order
+as the weekly layers of the data products, so this vector can be used
+directly to subset the layers of a weekly raster cube. Weeks that don't
+fall within a season meeting the minimum quality score are assigned
+`NA`. If `return_df = TRUE`, a data frame with one row per week and
+columns `week`, `season`, `quality`, and `include` is returned instead.
 
 ## Examples
 
@@ -87,5 +98,12 @@ seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
 # use these weeks to subset a weekly raster cube
 abd <- load_raster("yebsap-example", "abundance", resolution = "27km")
 abd_high_quality <- abd[[!is.na(seasons)]]
+
+# return a data frame instead
+seasons_df <- assign_weeks_to_seasons(
+  "yebsap-example",
+  min_quality = 3,
+  return_df = TRUE
+)
 } # }
 ```

@@ -41,7 +41,7 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="4.2023.1" id="ebirdst-420231">ebirdst 4.2023.1<a class="anchor" aria-label="anchor" href="#ebirdst-420231"></a></h2>
-<ul><li>New function <code><a href="../reference/assign_weeks_to_seasons.html">assign_weeks_to_seasons()</a></code> identifies which season each of the 52 weeks of the year falls within for a given species, only considering seasons meeting a minimum expert review quality score</li>
+<ul><li>New function <code><a href="../reference/assign_weeks_to_seasons.html">assign_weeks_to_seasons()</a></code> identifies which season each of the 52 weeks of the year falls within for a given species, only considering seasons meeting a minimum expert review quality score; set <code>return_df = TRUE</code> to get a data frame with one row per week instead of a character vector</li>
 <li>Removed all functions previously listed as deprecated or defunct (<code>abundance_palette()</code>, <code>ebirdst_download()</code>, <code>ebirdst_extent()</code>, <code>ebirdst_habitat()</code>, <code>ebirdst_ppms()</code>, <code>ebirdst_ppms_ts()</code>, <code>ebirdst_subset()</code>, <code>load_pds()</code>, <code>load_pis()</code>, <code>load_predictions()</code>, <code>load_stixels()</code>, <code>parse_raster_dates()</code>, <code>plot_pds()</code>, <code>plot_pis()</code>, <code>project_extent()</code>, <code>stixelize()</code>); they have been unavailable or erroring since at least v3.2022.1</li>
 <li>Backend approach to file download has been refactored to an on-demand first approach</li>
 <li>
