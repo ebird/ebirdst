@@ -1,5 +1,3 @@
-context("Data management")
-
 skip_on_cran()
 
 

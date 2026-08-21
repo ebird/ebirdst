@@ -1,5 +1,3 @@
-context("Loading raster data")
-
 skip_on_cran()
 
 test_that("load_raster()", {
@@ -9,12 +7,12 @@ test_that("load_raster()", {
     product = "abundance",
     resolution = "27km"
   )
-  expect_is(abd, "SpatRaster")
+  expect_s4_class(abd, "SpatRaster")
   expect_equal(terra::nlyr(abd), 52)
 
   # check labellling
   expect_match(names(abd), "^[0-9]{4}-[0-9]{2}-[0-9]{2}")
-  expect_is(as.Date(names(abd)), "Date")
+  expect_s3_class(as.Date(names(abd)), "Date")
 
   # seasonal
   abd <- load_raster(
@@ -23,7 +21,7 @@ test_that("load_raster()", {
     period = "seasonal",
     resolution = "27km"
   )
-  expect_is(abd, "SpatRaster")
+  expect_s4_class(abd, "SpatRaster")
   expect_equal(terra::nlyr(abd), 4)
   expect_named(
     abd,
@@ -54,6 +52,6 @@ test_that("load_raster() downloads data on demand", {
       path = tmp
     )
   )
-  expect_is(abd, "SpatRaster")
+  expect_s4_class(abd, "SpatRaster")
   expect_equal(terra::nlyr(abd), 52)
 })

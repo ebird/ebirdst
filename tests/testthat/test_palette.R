@@ -1,5 +1,3 @@
-context("Color palettes")
-
 test_that("ebirdst_palettes", {
   expect_type(ebirdst_palettes(n = 10), "character")
   expect_length(ebirdst_palettes(n = 10), 10)

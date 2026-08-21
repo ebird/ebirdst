@@ -301,7 +301,7 @@ load_trends <- function(
   }
 
   # construct keys for trends parquet files
-  build_trends_path <- function(i) {
+  build_trends_key <- function(i) {
     if (fold_estimates) {
       f <- stringr::str_glue(
         "{species_code[i]}_{season[i]}_ebird-trends_",
@@ -313,29 +313,21 @@ load_trends <- function(
         "{v}.parquet"
       )
     }
-    return(file.path(path, trends_key(species_code[i], "trends", f)))
+    return(trends_key(species_code[i], "trends", f))
   }
-  trends_paths <- vapply(
+  trends_keys <- vapply(
     seq_along(species_code),
-    build_trends_path,
+    build_trends_key,
     FUN.VALUE = character(1)
   )
 
-  # download trends data on demand for any species not already present
-  ensure_data_dir(path)
-  if (isTRUE(force)) {
-    missing <- species_code
-  } else {
-    missing <- species_code[!file.exists(trends_paths)]
-  }
-  if (length(missing) > 0) {
-    ebirdst_download_trends(
-      missing,
-      path = path,
-      force = force,
-      show_progress = show_progress
-    )
-  }
+  # download the requested trends estimates on demand if not already present
+  trends_paths <- fetch_data(
+    trends_keys,
+    path = path,
+    force = force,
+    show_progress = show_progress
+  )
 
   # load data
   trends <- lapply(trends_paths, arrow::read_parquet)
@@ -351,13 +343,13 @@ load_trends <- function(
 #' [SpatRaster][terra::SpatRaster] object. If the requested data have not
 #' already been downloaded, they will be downloaded automatically on first use.
 #'
-#' @param product character; data coverage raster product to load: spatial
-#'   coverage or site selection probability.
 #' @param weeks character; one or more of the 52 weeks (expressed in `"MM-DD"`
 #'   format) to load the raster layers for. Layers are always returned in
 #'   chronological order regardless of the order given here. **Note that these
 #'   rasters are quite large (roughly 50 MB per week) so it's recommended to
 #'   only load a small number of weeks of data at the same time.**
+#' @param product character; data coverage raster product to load: spatial
+#'   coverage or site selection probability.
 #' @inheritParams ebirdst_download_status
 #'
 #' @details In addition to the species-specific data products, the eBird Status
@@ -381,14 +373,14 @@ load_trends <- function(
 #' ebirdst_download_data_coverage()
 #'
 #' # load a single week of site selection probability data
-#' load_data_coverage("selection-probability", weeks = "01-04")
+#' load_data_coverage("01-04", product = "selection-probability")
 #'
 #' # load multiple weeks of spatial coverage data
-#' load_data_coverage("spatial-coverage", weeks = c("01-04", "01-11"))
+#' load_data_coverage(c("01-04", "01-11"), product = "spatial-coverage")
 #' }
 load_data_coverage <- function(
-  product = c("spatial-coverage", "selection-probability"),
   weeks,
+  product = c("spatial-coverage", "selection-probability"),
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
@@ -727,7 +719,7 @@ load_config <- function(
 #' ebirdst_download_status("yebsap-example")
 #'
 #' # load configuration parameters
-#' load_fac_map_parameters(path)
+#' load_fac_map_parameters("yebsap-example")
 #' }
 load_fac_map_parameters <- function(
   species,
@@ -747,6 +739,8 @@ load_fac_map_parameters <- function(
     force = force,
     show_progress = show_progress
   )
+  # nested config.json keys are always lowercase already, unlike the
+  # top-level keys load_config() lowercases, so no lowercasing needed here
   ext_order <- unlist(p$bbox_native)[c("xmin", "xmax", "ymin", "ymax")]
 
   return(list(
@@ -819,6 +813,8 @@ load_pi <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
   response <- match.arg(response)
+
+  check_gtiff_support()
 
   species_code <- resolve_species(species)
 
@@ -997,6 +993,8 @@ load_ppm <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
   ppm <- match.arg(ppm)
+
+  check_gtiff_support()
 
   species_code <- resolve_species(species)
 

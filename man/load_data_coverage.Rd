@@ -5,22 +5,22 @@
 \title{Load eBird Status and Trends Data Coverage Products}
 \usage{
 load_data_coverage(
-  product = c("spatial-coverage", "selection-probability"),
   weeks,
+  product = c("spatial-coverage", "selection-probability"),
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
 )
 }
 \arguments{
-\item{product}{character; data coverage raster product to load: spatial
-coverage or site selection probability.}
-
 \item{weeks}{character; one or more of the 52 weeks (expressed in \code{"MM-DD"}
 format) to load the raster layers for. Layers are always returned in
 chronological order regardless of the order given here. \strong{Note that these
 rasters are quite large (roughly 50 MB per week) so it's recommended to
 only load a small number of weeks of data at the same time.}}
+
+\item{product}{character; data coverage raster product to load: spatial
+coverage or site selection probability.}
 
 \item{path}{character; directory to download the data to. All downloaded
 files will be placed in a sub-directory of this directory named for the
@@ -65,9 +65,9 @@ given location and habitat was sampled by eBird data in the given week.
 ebirdst_download_data_coverage()
 
 # load a single week of site selection probability data
-load_data_coverage("selection-probability", weeks = "01-04")
+load_data_coverage("01-04", product = "selection-probability")
 
 # load multiple weeks of spatial coverage data
-load_data_coverage("spatial-coverage", weeks = c("01-04", "01-11"))
+load_data_coverage(c("01-04", "01-11"), product = "spatial-coverage")
 }
 }

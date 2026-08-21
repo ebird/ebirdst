@@ -33,8 +33,28 @@ set_ebirdst_access_key <- function(key, overwrite = FALSE) {
   if (!file.exists(renv_path)) {
     file.create(renv_path)
   }
+
+  # R gives a project-level .Renviron precedence over ~/.Renviron, so a key
+  # saved here can be silently shadowed in a fresh session started in a
+  # project with its own .Renviron
+  project_renv_path <- file.path(getwd(), ".Renviron")
+  if (
+    file.exists(project_renv_path) &&
+      !identical(normalizePath(project_renv_path), normalizePath(renv_path))
+  ) {
+    warning(
+      "A project-level .Renviron file was found at ",
+      project_renv_path,
+      ". R gives this file precedence over ~/.Renviron, so EBIRDST_KEY may ",
+      "not be found in new R sessions started in this project unless it is ",
+      "also set there."
+    )
+  }
+
   renv_lines <- readLines(renv_path)
 
+  # no escaping needed: keys are alphanumeric tokens issued by the api, they
+  # never contain a quote or newline that could corrupt .Renviron
   key_line <- paste0("EBIRDST_KEY='", key, "'")
 
   # look for existing entry, remove if overwrite = TRUE

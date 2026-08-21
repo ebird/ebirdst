@@ -15,9 +15,17 @@
 - Files are now downloaded to a temporary file and only moved into place once the transfer completes. Previously a transfer that was cut short part way left a partial file behind, which was treated as a completed download and never re-downloaded; a forced re-download that failed also deleted the existing local copy of the file
 - Downloads that fail for a reason other than the data not being available, e.g. a dropped connection, now raise an error saying so rather than reporting the data as missing
 - The access key is no longer included in download error messages. The key is passed to the API in the query string of the request URL, and errors from failed downloads quoted that URL, so users reporting a download problem were inadvertently sharing their private key. Download errors now report the reason for the failure with the key redacted
-- `vectorize_trends()` now assigns the smallest circle radius to locations with zero relative abundance; previously these locations were given a missing radius
+- `vectorize_trends()` now drops locations with zero relative abundance from the circles output entirely, rather than giving them a missing radius; when all remaining locations share a single abundance quantile bin they now all receive the maximum circle radius
 - `ebirdst_palettes()` now requires `n` to be a whole number, rather than accepting a value such as `n = 10.5`
 - `ebirdst_regional_stats()` no longer prints a message while downloading
+- `get_species_path()` now raises its documented "No data package found" error when the data directory itself hasn't been created yet, e.g. on a fresh install, rather than a cryptic assertion failure
+- Minimum required `terra` version bumped to 1.7-3; `rasterize_trends()` no longer carries a compatibility branch for older versions that couldn't rasterize multiple fields in a single call
+- A connection-level download failure that persists after the http fallback is now retried a couple more times with a short backoff before the file is given up on, rather than failing immediately on a single transient blip
+- `load_data_coverage()`'s arguments have been reordered so that the required `weeks` argument comes before `product`, which now has a default; calls relying on positional matching of `product` first must be updated, e.g. `load_data_coverage("05-10", product = "selection-probability")` rather than `load_data_coverage("selection-probability", weeks = "05-10")`
+- `load_pi()` and `load_ppm()` now check for GeoTIFF read support before downloading, consistent with `load_raster()` and `load_data_coverage()`, rather than only discovering the missing GDAL driver after the download completes
+- `get_species()` now documents that unmatched input returns `NA`, and identifies example datasets by the generic `-example` suffix rather than a hardcoded `"yebsap-example"` check
+- The package now formally opts in to the 3rd edition of testthat (`Config/testthat/edition: 3`); the test suite's remaining `context()` calls and `expect_is()` usages, both deprecated since testthat 3.0.0, have been removed and replaced with `expect_type()`/`expect_s3_class()`/`expect_s4_class()` as appropriate
+- `set_ebirdst_access_key()` now warns when a project-level `.Renviron` is found in the working directory, since R gives that file precedence over `~/.Renviron` and would otherwise silently prevent the key from being found in a fresh session
 - Various small bug fixes and typos
 
 # ebirdst 4.2023.0

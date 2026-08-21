@@ -1,5 +1,3 @@
-context("Utility functions")
-
 skip_on_cran()
 
 test_that("assign_weeks_to_seasons()", {

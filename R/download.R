@@ -19,8 +19,8 @@
 #'   species' data package will then appear in a directory named with the eBird
 #'   species code. Defaults to a persistent data directory, which can be found
 #'   by calling `ebirdst_data_dir()`.
-#' @param download_abundance whether to download estimates of abundance and
-#'   proportion of population.
+#' @param download_abundance logical; whether to download estimates of
+#'   abundance and proportion of population.
 #' @param download_occurrence logical; whether to download estimates of
 #'   occurrence.
 #' @param download_count logical; whether to download estimates of count.
@@ -366,7 +366,10 @@ get_species_path <- function(
   check_downloaded = TRUE
 ) {
   stopifnot(is.character(species), length(species) == 1)
-  stopifnot(is.character(path), length(path) == 1, dir.exists(path))
+  # path itself may not exist yet on a fresh install with nothing downloaded;
+  # that case is reported below via the friendly "No data package found" error
+  # rather than a bare assertion failure here
+  stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(check_downloaded))
   dataset <- match.arg(dataset)
 

@@ -1,10 +1,8 @@
-context("Loading functions")
-
 skip_on_cran()
 
 test_that("load_config()", {
   p <- load_config("yebsap-example")
-  expect_is(p, "list")
+  expect_type(p, "list")
   expect_true(all(c("bins", "bins_seasonal", "srd_pred_year") %in% names(p)))
 
   expect_error(load_config("XXXX"))
@@ -14,7 +12,7 @@ test_that("load_config()", {
 test_that("load_config() downloads data on demand", {
   tmp <- withr::local_tempdir()
   p <- suppressMessages(load_config("yebsap-example", path = tmp))
-  expect_is(p, "list")
+  expect_type(p, "list")
   expect_true("srd_pred_year" %in% names(p))
   cfg <- file.path(
     tmp,
@@ -28,7 +26,7 @@ test_that("load_config() downloads data on demand", {
 
 test_that("load_fac_map_parameters()", {
   p <- load_fac_map_parameters("yebsap-example")
-  expect_is(p, "list")
+  expect_type(p, "list")
   expect_named(
     p,
     c(
@@ -45,16 +43,16 @@ test_that("load_fac_map_parameters()", {
 
   # check components
   # projection
-  expect_is(terra::crs(p$custom_projection), "character")
+  expect_type(terra::crs(p$custom_projection), "character")
   # extent
-  expect_is(p$fa_extent, "SpatExtent")
+  expect_s4_class(p$fa_extent, "SpatExtent")
   # resolution
-  expect_is(p$res, c("numeric", "integer"))
+  expect_true(is.numeric(p$res))
   # projected extent
-  expect_is(p$fa_extent_projected, "SpatExtent")
+  expect_s4_class(p$fa_extent_projected, "SpatExtent")
   # bins
-  expect_is(p$weekly_bins, "numeric")
-  expect_is(p$seasonal_bins, "numeric")
+  expect_type(p$weekly_bins, "double")
+  expect_type(p$seasonal_bins, "double")
 
   expect_error(load_fac_map_parameters("XXXX"))
 })
@@ -62,7 +60,7 @@ test_that("load_fac_map_parameters()", {
 
 test_that("list_available_pis()", {
   pis <- list_available_pis("yebsap-example")
-  expect_is(pis, "data.frame")
+  expect_s3_class(pis, "data.frame")
   expect_true(all(c("predictor", "rank_mean", "rank") %in% names(pis)))
   expect_equal(nrow(pis), 10)
 
@@ -76,7 +74,7 @@ test_that("load_pi()", {
     predictor = "gsw_c2_pland",
     response = "occurrence"
   )
-  expect_is(pi_occ, "SpatRaster")
+  expect_s4_class(pi_occ, "SpatRaster")
   expect_equal(terra::nlyr(pi_occ), 52)
 
   pi_count <- load_pi(
@@ -84,7 +82,7 @@ test_that("load_pi()", {
     predictor = "mcd12q1_lccs1_c21_pland",
     response = "count"
   )
-  expect_is(pi_count, "SpatRaster")
+  expect_s4_class(pi_count, "SpatRaster")
   expect_equal(terra::nlyr(pi_count), 52)
 
   expect_error(load_pi("XXXX", predictor = "gsw_c2_pland"))
@@ -95,11 +93,11 @@ test_that("load_pi()", {
 
 test_that("load_ppm()", {
   ppm_pois <- load_ppm("yebsap-example", ppm = "abd_poisson_dev")
-  expect_is(ppm_pois, "SpatRaster")
+  expect_s4_class(ppm_pois, "SpatRaster")
   expect_equal(terra::nlyr(ppm_pois), 52)
 
   ppm_fs <- load_ppm("yebsap-example", ppm = "binary_f1")
-  expect_is(ppm_fs, "SpatRaster")
+  expect_s4_class(ppm_fs, "SpatRaster")
   expect_equal(terra::nlyr(ppm_fs), 52)
 
   expect_error(load_ppm("XXXX"))
@@ -116,7 +114,7 @@ test_that("load_pi() downloads data on demand", {
     response = "occurrence",
     path = tmp
   ))
-  expect_is(pi, "SpatRaster")
+  expect_s4_class(pi, "SpatRaster")
   tifs <- list.files(tmp, pattern = "gsw-c2-pland.*\\.tif$", recursive = TRUE)
   expect_length(tifs, 1)
 })
@@ -129,7 +127,7 @@ test_that("load_ppm() downloads data on demand", {
     ppm = "binary_f1",
     path = tmp
   ))
-  expect_is(ppm, "SpatRaster")
+  expect_s4_class(ppm, "SpatRaster")
   tifs <- list.files(tmp, pattern = "binary-f1.*\\.tif$", recursive = TRUE)
   expect_length(tifs, 1)
 })
@@ -138,7 +136,7 @@ test_that("load_ppm() downloads data on demand", {
 test_that("load_regional_stats() downloads data on demand", {
   tmp <- withr::local_tempdir()
   stats <- suppressMessages(load_regional_stats("yebsap-example", path = tmp))
-  expect_is(stats, "data.frame")
+  expect_s3_class(stats, "data.frame")
   csv <- file.path(
     tmp,
     ebirdst_version()[["status_version_year"]],
@@ -152,7 +150,7 @@ test_that("load_regional_stats() downloads data on demand", {
 test_that("list_available_pis() only downloads the rangewide csv", {
   tmp <- withr::local_tempdir()
   pis <- suppressMessages(list_available_pis("yebsap-example", path = tmp))
-  expect_is(pis, "data.frame")
+  expect_s3_class(pis, "data.frame")
   expect_equal(nrow(pis), 10)
 
   files <- list.files(tmp, recursive = TRUE)
@@ -163,7 +161,7 @@ test_that("list_available_pis() only downloads the rangewide csv", {
 
 test_that("available_pi_predictors() uses the list of available data", {
   preds <- available_pi_predictors("yebsap-example", path = ebirdst_data_dir())
-  expect_is(preds, "character")
+  expect_type(preds, "character")
   expect_true("gsw_c2_pland" %in% preds)
   # the other tifs stored alongside the pi rasters aren't predictors
   expect_false(any(grepl("folds|day-of-year", preds)))
@@ -218,7 +216,7 @@ test_that("ebirdst_regional_stats() loads an existing file", {
   arrow::write_parquet(stats, file)
 
   loaded <- ebirdst_regional_stats(path = tmp)
-  expect_is(loaded, "tbl_df")
+  expect_s3_class(loaded, "tbl_df")
   expect_equal(loaded, stats)
 })
 
@@ -233,12 +231,12 @@ test_that("ebirdst_regional_stats() validates arguments", {
 test_that("load_data_coverage() requires at least one valid week", {
   # weeks is required; these rasters are ~50 MB each so there is no sensible
   # default and nothing should be downloaded without an explicit request
-  expect_error(load_data_coverage("spatial-coverage"))
-  expect_error(load_data_coverage("spatial-coverage", weeks = NULL))
-  expect_error(load_data_coverage("spatial-coverage", weeks = character(0)))
-  expect_error(load_data_coverage("spatial-coverage", weeks = NA_character_))
+  expect_error(load_data_coverage())
+  expect_error(load_data_coverage(NULL))
+  expect_error(load_data_coverage(character(0)))
+  expect_error(load_data_coverage(NA_character_))
   expect_error(
-    load_data_coverage("spatial-coverage", weeks = c("01-04", "01-05")),
+    load_data_coverage(c("01-04", "01-05")),
     "weeks are invalid"
   )
 })

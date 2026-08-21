@@ -1,5 +1,3 @@
-context("Loading trends data")
-
 skip_on_cran()
 
 test_that("load_trends()", {
@@ -47,6 +45,29 @@ test_that("load_trends() downloads data on demand", {
   trends <- suppressMessages(load_trends("yebsap-example", path = tmp))
   expect_s3_class(trends, "data.frame")
   expect_gt(nrow(trends), 0)
+})
+
+test_that("load_trends() only downloads the requested parquet file", {
+  # a fresh load of the non-fold estimates should not also fetch the fold
+  # estimates or the model summary csv
+  tmp <- withr::local_tempdir()
+  suppressMessages(load_trends("yebsap-example", path = tmp))
+  trends_dir <- file.path(
+    tmp,
+    ebirdst_version()[["trends_version_year"]],
+    "yebsap-example",
+    "trends"
+  )
+  expect_equal(list.files(trends_dir), c(
+    "yebsap-example_breeding_ebird-trends_2022.parquet"
+  ))
+
+  # requesting the fold estimates next should only add that one file
+  suppressMessages(load_trends("yebsap-example", path = tmp, fold_estimates = TRUE))
+  expect_equal(sort(list.files(trends_dir)), sort(c(
+    "yebsap-example_breeding_ebird-trends_2022.parquet",
+    "yebsap-example_breeding_ebird-trends_folds_2022.parquet"
+  )))
 })
 
 test_that("convert_ppy_to_cumulative()", {
@@ -133,4 +154,26 @@ test_that("vectorize_trends()", {
   circles <- vectorize_trends(trends, output = "circles", crs = "+proj=eqearth")
   expect_s3_class(circles, "sf")
   expect_equal(nrow(circles), nrow(trends))
+})
+
+test_that("vectorize_trends() drops zero-abundance cells from circles output", {
+  # spec1 mixes zero and nonzero abundance, spec2 has a single distinct
+  # nonzero abundance value (one quantile bin), spec3 is entirely zero
+  trends <- data.frame(
+    species_code = c(rep("spec1", 4), rep("spec2", 3), rep("spec3", 2)),
+    latitude = c(10, 11, 12, 13, 20, 21, 22, 30, 31),
+    longitude = c(-80, -81, -82, -83, -90, -91, -92, -100, -101),
+    abd = c(0, 1, 2, 0, 5, 5, 5, 0, 0)
+  )
+
+  circles <- vectorize_trends(trends, output = "circles", crs = "+proj=eqearth")
+  expect_equal(nrow(circles), 5L)
+  expect_true(all(circles$abd > 0))
+  expect_false("spec3" %in% circles$species_code)
+
+  # every remaining spec2 cell shares one abundance value, so all get the
+  # maximum circle radius
+  max_radius <- 0.99 * min(terra::res(trends_raster_template())) / 2
+  spec2_radii <- circles$radii[circles$species_code == "spec2"]
+  expect_equal(spec2_radii, rep(max_radius, 3))
 })

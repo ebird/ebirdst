@@ -350,7 +350,7 @@ These data products identify areas where the coverage of eBird data is relativel
 
 ```{r coverage_load, echo=-1}
 par(mar = c(0, 0, 0, 0))
-site_sel <- load_data_coverage("selection-probability", weeks = "05-10")
+site_sel <- load_data_coverage("05-10", product = "selection-probability")
 plot(site_sel, axes = FALSE)
 ```
 

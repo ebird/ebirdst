@@ -1,5 +1,3 @@
-context("Fetch")
-
 skip_on_cran()
 
 # version years are taken from ebirdst_version() rather than hardcoded so these
@@ -48,7 +46,7 @@ test_that("status_key() and trends_key()", {
 
 test_that("list_object_keys() reads the bundled list for the example data", {
   status_keys <- list_object_keys("yebsap-example", dataset = "status")
-  expect_is(status_keys, "character")
+  expect_type(status_keys, "character")
   expect_true(length(status_keys) > 0)
   expect_true(all(grepl("yebsap-example", status_keys)))
   expect_true(any(grepl("config.json$", status_keys)))
@@ -317,7 +315,7 @@ test_that("partial_download_path() and is_partial_download()", {
 })
 
 
-test_that("download_files() renames a completed download into place", {
+test_that("download_files() copies a completed download into place", {
   tmp_dir <- withr::local_tempdir()
   key <- status_key("yebsap-example", "config.json")
   dest <- file.path(tmp_dir, "config.json")
@@ -333,6 +331,24 @@ test_that("download_files() renames a completed download into place", {
   expect_true(file.exists(dest))
   # the temporary file used during the download isn't left behind
   expect_false(file.exists(paste0(dest, ".part")))
+})
+
+test_that("download_files() overwrites an existing destination file", {
+  # a forced re-download targets a destination that already exists; renaming
+  # onto an existing file fails on windows, so this must succeed via a copy
+  tmp_dir <- withr::local_tempdir()
+  key <- status_key("yebsap-example", "config.json")
+  dest <- file.path(tmp_dir, "config.json")
+  writeLines("stale content", dest)
+
+  result <- download_files(
+    object_key_url(key),
+    dest,
+    key,
+    show_progress = FALSE
+  )
+  expect_true(result$success)
+  expect_false(identical(readLines(dest), "stale content"))
 })
 
 
@@ -401,6 +417,56 @@ test_that("download_files() doesn't fall back to http after a partial transfer",
   expect_equal(api_base_url(), original)
   # the partial file is discarded rather than passed off as a complete download
   expect_length(list.files(tmp_dir, all.files = TRUE, no.. = TRUE), 0)
+})
+
+test_that("download_files() retries a transient connection failure", {
+  tmp_dir <- withr::local_tempdir()
+  dest <- file.path(tmp_dir, "retry.tif")
+
+  # the first attempt fails with nothing at all coming back, which is treated
+  # as a transient blip and retried rather than given up on immediately
+  n_attempts <- 0L
+  local_mocked_bindings(
+    try_url = function(expr) {
+      n_attempts <<- n_attempts + 1L
+      if (n_attempts < 2L) {
+        return(list(value = NULL, http_status = FALSE, reason = "connection reset"))
+      }
+      writeBin(raw(10), paste0(dest, ".part"))
+      return(list(value = 0L, http_status = FALSE, reason = ""))
+    }
+  )
+  result <- download_files(
+    "http://127.0.0.1:1/retry.tif",
+    dest,
+    "retry.tif",
+    show_progress = FALSE
+  )
+  expect_equal(n_attempts, 2L)
+  expect_true(result$success)
+  expect_true(file.exists(dest))
+})
+
+test_that("download_files() gives up after repeated transient failures", {
+  tmp_dir <- withr::local_tempdir()
+  dest <- file.path(tmp_dir, "retry.tif")
+
+  n_attempts <- 0L
+  local_mocked_bindings(
+    try_url = function(expr) {
+      n_attempts <<- n_attempts + 1L
+      return(list(value = NULL, http_status = FALSE, reason = "connection reset"))
+    }
+  )
+  result <- download_files(
+    "http://127.0.0.1:1/retry.tif",
+    dest,
+    "retry.tif",
+    show_progress = FALSE
+  )
+  # the initial attempt plus 2 retries, then no more
+  expect_equal(n_attempts, 3L)
+  expect_false(result$success)
 })
 
 

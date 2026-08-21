@@ -1,5 +1,3 @@
-context("Grid sampling")
-
 # synthetic observation data used across tests
 set.seed(1)
 n_obs <- 5000L

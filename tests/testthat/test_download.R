@@ -1,5 +1,3 @@
-context("Data download")
-
 skip_on_cran()
 skip_if_offline()
 
@@ -122,4 +120,24 @@ test_that("get_species_path()", {
     "Yellow Warbler",
     check_downloaded = FALSE
   )))
+})
+
+
+test_that("get_species_path() gives a friendly error on a fresh data dir", {
+  # a data dir that has never had anything downloaded to it doesn't exist yet;
+  # this must raise the documented "no data package" error, not a bare
+  # assertion failure from checking that path exists
+  tmp <- file.path(withr::local_tempdir(), "fresh")
+  expect_error(
+    get_species_path("yebsap-example", path = tmp),
+    "No data package found"
+  )
+  expect_equal(
+    get_species_path("yebsap-example", path = tmp, check_downloaded = FALSE),
+    path.expand(file.path(
+      tmp,
+      ebirdst_version()[["status_version_year"]],
+      "yebsap-example"
+    ))
+  )
 })

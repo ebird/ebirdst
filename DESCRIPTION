@@ -36,7 +36,7 @@ Imports:
     sf (>= 1.0-0),
     stats,
     stringr,
-    terra (>= 1.6-3),
+    terra (>= 1.7-3),
     tools,
     utils,
     viridisLite
@@ -47,10 +47,11 @@ Suggests:
     PresenceAbsence,
     rnaturalearth,
     scico,
-    testthat,
+    testthat (>= 3.0.0),
     tidyr,
     withr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3

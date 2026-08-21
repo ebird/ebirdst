@@ -451,16 +451,19 @@ fetch_data <- function(
 # these to report a useful error. `keys` is used only to report progress
 #
 # each file is downloaded to a temporary file alongside its destination and only
-# moved into place once the transfer has completed, because download.file()
-# leaves a partial file behind when a transfer is cut short part way, and
-# deletes any existing destination file when it fails. the temporary file is a
-# sibling of the destination rather than in tempdir() so the rename stays within
-# one filesystem, and every temporary file is removed on any exit from this
-# function, including an error or interrupt
+# copied into place, overwriting any existing destination, once the transfer
+# has completed, because download.file() leaves a partial file behind when a
+# transfer is cut short part way, and deletes any existing destination file
+# when it fails. file.copy(overwrite = TRUE) is used rather than file.rename()
+# because rename() fails when the destination already exists on windows,
+# which is exactly the case for a forced re-download. every temporary file is
+# removed on any exit from this function, including an error or interrupt
 #
 # if https can't be reached at all, retry once over http in case it's being
 # blocked (e.g. by a VPN), caching the fallback for the rest of the session only
-# once it's known to work
+# once it's known to work. a connection-level failure that persists after that
+# is often just a transient blip (e.g. on a large batch download), so it gets a
+# couple more retries with a short backoff before the file is given up on
 download_files <- function(src, dest, keys, show_progress) {
   n_files <- length(src)
   old_timeout <- getOption("timeout")
@@ -512,8 +515,24 @@ download_files <- function(src, dest, keys, show_progress) {
       }
     }
 
+    # a connection-level failure (nothing at all came back) is often transient,
+    # so retry the same url a couple more times with a short backoff rather
+    # than giving up on the file immediately
+    retries <- 0L
+    while (
+      !ok && !attempt$http_status && !file.exists(tmp[i]) && retries < 2L
+    ) {
+      retries <- retries + 1L
+      Sys.sleep(retries)
+      attempt <- try_url(
+        utils::download.file(src[i], tmp[i], quiet = TRUE, mode = "wb")
+      )
+      ok <- identical(attempt$value, 0L)
+    }
+
     if (ok) {
-      success[i] <- file.rename(tmp[i], dest[i])
+      success[i] <- file.copy(tmp[i], dest[i], overwrite = TRUE)
+      unlink(tmp[i])
     } else {
       not_found[i] <- attempt$http_status
       reason[i] <- attempt$reason

@@ -1,5 +1,3 @@
-context("Loading ranges")
-
 skip_on_cran()
 
 test_that("load_ranges", {
