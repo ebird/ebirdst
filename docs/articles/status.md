@@ -740,7 +740,7 @@ products in advance, use
 
 ``` r
 
-site_sel <- load_data_coverage("selection-probability", weeks = "05-10")
+site_sel <- load_data_coverage("05-10", product = "selection-probability")
 plot(site_sel, axes = FALSE)
 ```
 

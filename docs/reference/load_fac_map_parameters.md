@@ -82,6 +82,6 @@ if (FALSE) { # \dontrun{
 ebirdst_download_status("yebsap-example")
 
 # load configuration parameters
-load_fac_map_parameters(path)
+load_fac_map_parameters("yebsap-example")
 } # }
 ```

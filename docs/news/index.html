@@ -54,12 +54,26 @@
 <li>Downloads that fail for a reason other than the data not being available, e.g. a dropped connection, now raise an error saying so rather than reporting the data as missing</li>
 <li>The access key is no longer included in download error messages. The key is passed to the API in the query string of the request URL, and errors from failed downloads quoted that URL, so users reporting a download problem were inadvertently sharing their private key. Download errors now report the reason for the failure with the key redacted</li>
 <li>
-<code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> now assigns the smallest circle radius to locations with zero relative abundance; previously these locations were given a missing radius</li>
+<code><a href="../reference/vectorize_trends.html">vectorize_trends()</a></code> now drops locations with zero relative abundance from the circles output entirely, rather than giving them a missing radius; when all remaining locations share a single abundance quantile bin they now all receive the maximum circle radius</li>
 <li>
 <code><a href="../reference/ebirdst_palettes.html">ebirdst_palettes()</a></code> now requires <code>n</code> to be a whole number, rather than accepting a value such as <code>n = 10.5</code>
 </li>
 <li>
 <code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code> no longer prints a message while downloading</li>
+<li>
+<code><a href="../reference/get_species_path.html">get_species_path()</a></code> now raises its documented “No data package found” error when the data directory itself hasn’t been created yet, e.g. on a fresh install, rather than a cryptic assertion failure</li>
+<li>Minimum required <code>terra</code> version bumped to 1.7-3; <code><a href="../reference/rasterize_trends.html">rasterize_trends()</a></code> no longer carries a compatibility branch for older versions that couldn’t rasterize multiple fields in a single call</li>
+<li>A connection-level download failure that persists after the http fallback is now retried a couple more times with a short backoff before the file is given up on, rather than failing immediately on a single transient blip</li>
+<li>
+<code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>’s arguments have been reordered so that the required <code>weeks</code> argument comes before <code>product</code>, which now has a default; calls relying on positional matching of <code>product</code> first must be updated, e.g. <code>load_data_coverage("05-10", product = "selection-probability")</code> rather than <code>load_data_coverage("selection-probability", weeks = "05-10")</code>
+</li>
+<li>
+<code><a href="../reference/load_pi.html">load_pi()</a></code> and <code><a href="../reference/load_ppm.html">load_ppm()</a></code> now check for GeoTIFF read support before downloading, consistent with <code><a href="../reference/load_raster.html">load_raster()</a></code> and <code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>, rather than only discovering the missing GDAL driver after the download completes</li>
+<li>
+<code><a href="../reference/get_species.html">get_species()</a></code> now documents that unmatched input returns <code>NA</code>, and identifies example datasets by the generic <code>-example</code> suffix rather than a hardcoded <code>"yebsap-example"</code> check</li>
+<li>The package now formally opts in to the 3rd edition of testthat (<code>Config/testthat/edition: 3</code>); the test suite’s remaining <code>context()</code> calls and <code>expect_is()</code> usages, both deprecated since testthat 3.0.0, have been removed and replaced with <code>expect_type()</code>/<code>expect_s3_class()</code>/<code>expect_s4_class()</code> as appropriate</li>
+<li>
+<code><a href="../reference/set_ebirdst_access_key.html">set_ebirdst_access_key()</a></code> now warns when a project-level <code>.Renviron</code> is found in the working directory, since R gives that file precedence over <code>~/.Renviron</code> and would otherwise silently prevent the key from being found in a fresh session</li>
 <li>Various small bug fixes and typos</li>
 </ul></div>
     <div class="section level2">

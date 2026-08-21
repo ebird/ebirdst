@@ -55,7 +55,7 @@ ebirdst_download_status(
 
 - download_abundance:
 
-  whether to download estimates of abundance and proportion of
+  logical; whether to download estimates of abundance and proportion of
   population.
 
 - download_occurrence:

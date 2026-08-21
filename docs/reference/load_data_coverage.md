@@ -11,8 +11,8 @@ will be downloaded automatically on first use.
 
 ``` r
 load_data_coverage(
-  product = c("spatial-coverage", "selection-probability"),
   weeks,
+  product = c("spatial-coverage", "selection-probability"),
   path = ebirdst_data_dir(),
   force = FALSE,
   show_progress = interactive()
@@ -20,11 +20,6 @@ load_data_coverage(
 ```
 
 ## Arguments
-
-- product:
-
-  character; data coverage raster product to load: spatial coverage or
-  site selection probability.
 
 - weeks:
 
@@ -34,6 +29,11 @@ load_data_coverage(
   these rasters are quite large (roughly 50 MB per week) so it's
   recommended to only load a small number of weeks of data at the same
   time.**
+
+- product:
+
+  character; data coverage raster product to load: spatial coverage or
+  site selection probability.
 
 - path:
 
@@ -86,9 +86,9 @@ if (FALSE) { # \dontrun{
 ebirdst_download_data_coverage()
 
 # load a single week of site selection probability data
-load_data_coverage("selection-probability", weeks = "01-04")
+load_data_coverage("01-04", product = "selection-probability")
 
 # load multiple weeks of spatial coverage data
-load_data_coverage("spatial-coverage", weeks = c("01-04", "01-11"))
+load_data_coverage(c("01-04", "01-11"), product = "spatial-coverage")
 } # }
 ```
