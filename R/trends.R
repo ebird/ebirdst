@@ -17,7 +17,6 @@
 #'
 #' @return A [SpatRaster][terra::SpatRaster] object.
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' # download example trends data if it hasn't already been downloaded
@@ -89,7 +88,7 @@ rasterize_trends <- function(
   }
 
   # check for duplicate srd cell estimates
-  if (nrow(trends) != dplyr::n_distinct(trends$srd_id)) {
+  if (anyDuplicated(trends$srd_id) > 0) {
     stop(
       "There are multiple rows for some cell estimates. Check that there ",
       "are not multiple rows for the same srd_id value."
@@ -111,16 +110,7 @@ rasterize_trends <- function(
   rm(trends, trends_ss)
 
   # rasterize
-  # check terra version
-  if (utils::packageVersion("terra") >= "1.7-3") {
-    trends_raster <- terra::rasterize(v, r, field = layers)
-  } else {
-    trends_raster <- list()
-    for (l in layers) {
-      trends_raster[[l]] <- terra::rasterize(v, r, field = l)
-    }
-    trends_raster <- terra::rast(trends_raster)
-  }
+  trends_raster <- terra::rasterize(v, r, field = layers)
   names(trends_raster) <- layers
 
   if (isTRUE(trim)) {
@@ -152,9 +142,8 @@ rasterize_trends <- function(
 #'   equal area CRS you intend to use when mapping the data otherwise the
 #'   "circles" will appear skewed.
 #'
-#' @returns Vectorized trends data as an [sf][sf::sf] object.
+#' @return Vectorized trends data as an [sf][sf::sf] object.
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' # download example trends data if it hasn't already been downloaded
@@ -202,11 +191,24 @@ vectorize_trends <- function(
   # assign radii based on abundance
   trends_pts <- split(trends_pts, trends_pts$species_code)
   for (i in seq_along(trends_pts)) {
-    abd <- trends_pts[[i]][["abd"]]
-    abd_bins <- unique(stats::quantile(abd[abd > 0], seq(0, 1, by = 0.05)))
+    pts_i <- trends_pts[[i]]
+    abd <- pts_i[["abd"]]
 
+    # a circle scaled to zero abundance conveys no information about relative
+    # abundance, so drop these locations rather than drawing a minimal circle
+    pts_i <- pts_i[abd > 0, ]
+    abd <- abd[abd > 0]
+
+    if (length(abd) == 0) {
+      trends_pts[[i]] <- pts_i
+      next
+    }
+
+    abd_bins <- unique(stats::quantile(abd, seq(0, 1, by = 0.05)))
     if (length(abd_bins) == 1) {
-      radii <- rep(radius_range[2], length.out = length(abd))
+      # a single distinct abundance value: every remaining cell gets the
+      # maximum circle size
+      pts_i[["radii"]] <- radius_range[2]
     } else {
       if (length(abd_bins) == 2) {
         abd_bins <- c(abd_bins[1], mean(abd_bins), abd_bins[2])
@@ -214,13 +216,14 @@ vectorize_trends <- function(
       midpoint_radius <- sqrt(abd_bins[-length(abd_bins)] + diff(abd_bins) / 2)
       abd_bins[1] <- 0
       circle_rad <- scales::rescale(midpoint_radius, to = radius_range)
-      trends_pts[[i]][["radii"]] <- categorize(abd, abd_bins, circle_rad)
+      pts_i[["radii"]] <- categorize(abd, abd_bins, circle_rad)
     }
+    trends_pts[[i]] <- pts_i
   }
   trends_pts <- dplyr::bind_rows(trends_pts)
 
   # buffer based on radius
-  sf::st_buffer(trends_pts, dist = trends_pts$radii)
+  return(sf::st_buffer(trends_pts, dist = trends_pts$radii))
 }
 
 
@@ -234,14 +237,13 @@ vectorize_trends <- function(
 #'   cumulative trend resulting from `n_years` years of compounding annual
 #'   trend.
 #' @export
-#'
 #' @examples
 #' ppy_trend <- runif(100, min = -100, 100)
 #' cumulative_trend <- convert_ppy_to_cumulative(ppy_trend, n_years = 5)
 #' cbind(ppy_trend, cumulative_trend)
 convert_ppy_to_cumulative <- function(x, n_years) {
   stopifnot(is.numeric(x), is_count(n_years))
-  100 * ((1 + x / 100)^n_years - 1)
+  return(100 * ((1 + x / 100)^n_years - 1))
 }
 
 
@@ -258,7 +260,7 @@ trends_raster_template <- function() {
     "+proj=sinu +lon_0=0 +x_0=0 +y_0=0",
     "+R=6371007.181 +units=m +no_defs"
   ))
-  terra::rast(e, crs = crs, nrows = 626L, ncols = 1502L)
+  return(terra::rast(e, crs = crs, nrows = 626L, ncols = 1502L))
 }
 
 categorize <- function(x, breaks, labels) {
@@ -268,7 +270,7 @@ categorize <- function(x, breaks, labels) {
     is.numeric(labels) || is.character(labels),
     length(labels) == length(breaks) - 1
   )
-  y <- cut(x, breaks)
+  y <- cut(x, breaks, include.lowest = TRUE)
   lvl <- levels(y)
-  labels[match(y, lvl)]
+  return(labels[match(y, lvl)])
 }

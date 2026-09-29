@@ -1,7 +1,141 @@
+#' Assign the weeks of the year to seasons
+#'
+#' The eBird Status Data Products provide estimates for each of the 52 weeks of
+#' the year. For migratory species, the full annual cycle is divided into four
+#' seasons: breeding, non-breeding, pre-breeding migration, and post-breeding
+#' migration; non-migratory species have a single resident season. The start and
+#' end dates of these seasons are species specific and, in addition, each season
+#' is assigned a quality score from 0 (failed) to 3 (high quality) reflecting
+#' how much extrapolation or omission occurs in that season's estimates. This
+#' function identifies which season each week of the year falls within,
+#' considering only those seasons meeting a minimum quality score. It's intended
+#' to be used to identify the subset of weeks with sufficiently reliable
+#' estimates for a given species, for example prior to summarizing the weekly
+#' data products across the full annual cycle.
+#'
+#' @inheritParams load_config
+#' @param min_quality integer; the minimum quality score (from 1 to 3) that a
+#'   season must have for its weeks to be assigned to it. Weeks falling within a
+#'   season with a lower quality score, or falling outside any season, are
+#'   assigned `NA`.
+#' @param return_df logical; if `TRUE`, return a data frame with one row per
+#'   week and columns `week` (date), `season` (character), `quality`
+#'   (integer, `0` for weeks falling outside any season), and `include`
+#'   (logical, `TRUE` if the week's season quality is at least `min_quality`),
+#'   rather than the default character vector.
+#'
+#' @return By default, a character vector with 52 elements giving the season
+#'   that each week of the year falls within. The elements are in the same
+#'   order as the weekly layers of the data products, so this vector can be
+#'   used directly to subset the layers of a weekly raster cube. Weeks that
+#'   don't fall within a season meeting the minimum quality score are assigned
+#'   `NA`. If `return_df = TRUE`, a data frame with one row per week and
+#'   columns `week`, `season`, `quality`, and `include` is returned instead.
+#' @export
+#' @examples
+#' \dontrun{
+#' # download example data if hasn't already been downloaded
+#' ebirdst_download_status("yebsap-example")
+#'
+#' # only weeks in seasons with the highest quality score
+#' seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
+#'
+#' # use these weeks to subset a weekly raster cube
+#' abd <- load_raster("yebsap-example", "abundance", resolution = "27km")
+#' abd_high_quality <- abd[[!is.na(seasons)]]
+#'
+#' # return a data frame instead
+#' seasons_df <- assign_weeks_to_seasons(
+#'   "yebsap-example",
+#'   min_quality = 3,
+#'   return_df = TRUE
+#' )
+#' }
+assign_weeks_to_seasons <- function(
+  species,
+  min_quality = 1,
+  return_df = FALSE,
+  path = ebirdst_data_dir(),
+  force = FALSE,
+  show_progress = interactive()
+) {
+  stopifnot(is.character(species), length(species) == 1)
+  stopifnot(is_count(min_quality), min_quality >= 1, min_quality <= 3)
+  stopifnot(is_flag(return_df))
+  stopifnot(is.character(path), length(path) == 1)
+  stopifnot(is_flag(force), is_flag(show_progress))
+
+  species_code <- resolve_species(species)
+
+  # dates of the weekly estimates come from the configuration file
+  p <- load_config(
+    species = species_code,
+    path = path,
+    force = force,
+    show_progress = show_progress
+  )
+  weeks <- paste(p[["srd_pred_year"]], p[["date_names"]], sep = "-")
+  weeks <- as.Date(weeks)
+
+  # season dates and quality scores for this species
+  runs <- ebirdst::ebirdst_runs
+  run <- runs[runs$species_code == species_code, ]
+  if (run[["is_resident"]]) {
+    seasons <- "resident"
+  } else {
+    seasons <- c(
+      "breeding",
+      "nonbreeding",
+      "prebreeding_migration",
+      "postbreeding_migration"
+    )
+  }
+
+  season_assignment <- rep(NA_character_, length(weeks))
+  quality_assignment <- rep(NA_integer_, length(weeks))
+  for (season in seasons) {
+    start <- run[[paste0(season, "_start")]]
+    end <- run[[paste0(season, "_end")]]
+    quality <- suppressWarnings(as.integer(run[[paste0(season, "_quality")]]))
+
+    if (is.na(start) || is.na(end) || is.na(quality)) {
+      next
+    } else if (start <= end) {
+      in_season <- weeks >= start & weeks <= end
+    } else {
+      # the non-breeding season can wrap around the end of the year
+      in_season <- weeks >= start | weeks <= end
+    }
+    season_assignment[in_season] <- season
+    quality_assignment[in_season] <- quality
+  }
+  include <- !is.na(quality_assignment) & quality_assignment >= min_quality
+
+  if (return_df) {
+    quality_df <- quality_assignment
+    quality_df[is.na(quality_df)] <- 0L
+    return(data.frame(
+      week = weeks,
+      season = season_assignment,
+      quality = quality_df,
+      include = include
+    ))
+  }
+
+  assignment <- season_assignment
+  assignment[!include] <- NA_character_
+  return(assignment)
+}
+
+
 #' Calculate MCC and F1 score
 #'
 #' Given binary observed and predicted response, estimate Matthews correlation
 #' coefficient (MCC) and the F1 score.
+#'
+#' This function was added as a helper for evaluating encounter rate models in
+#' the [eBird Best Practices guide](https://ebird.github.io/ebird-best-practices/);
+#' it isn't otherwise used elsewhere in this package.
 #'
 #' @param observed logical or 0/1; the observed binary response.
 #' @param predicted logical or 0/1; the predicted binary response. This will typically
@@ -90,7 +224,9 @@ date_to_st_week <- function(dates, version = 2022) {
 #' @param x character; vector of species codes, common names, and/or scientific
 #'   names.
 #'
-#' @return A character vector of eBird species codes.
+#' @return A character vector of eBird species codes, the same length as `x`.
+#'   Elements of `x` that don't match any modeled species are returned as
+#'   `NA`.
 #' @export
 #'
 #' @examples
@@ -109,8 +245,10 @@ get_species <- function(x) {
   com <- match(x, tolower(r$common_name))
   # combine
   codes <- r$species_code[dplyr::coalesce(code, sci, com)]
-  # adjust for example dataset
-  codes[x == "yebsap-example"] <- "yebsap-example"
+  # example datasets are identified by a "-example" suffix rather than being
+  # looked up in ebirdst_runs, which only lists real species
+  is_example <- stringr::str_detect(x, "-example$")
+  codes[is_example] <- x[is_example]
   return(codes)
 }
 
@@ -118,7 +256,15 @@ get_species <- function(x) {
 # internal ----
 
 is_integer <- function(x) {
-  return(isTRUE(is.integer(x) || (is.numeric(x) && all(x == as.integer(x)))))
+  # the range check has to come before as.integer(), which warns when it
+  # introduces NAs for values outside the range of an integer
+  return(isTRUE(
+    is.numeric(x) &&
+      !anyNA(x) &&
+      all(is.finite(x)) &&
+      all(abs(x) <= .Machine$integer.max) &&
+      all(x == as.integer(x))
+  ))
 }
 
 is_count <- function(x) {

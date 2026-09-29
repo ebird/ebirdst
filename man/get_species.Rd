@@ -11,7 +11,9 @@ get_species(x)
 names.}
 }
 \value{
-A character vector of eBird species codes.
+A character vector of eBird species codes, the same length as \code{x}.
+Elements of \code{x} that don't match any modeled species are returned as
+\code{NA}.
 }
 \description{
 Give a vector of species codes, common names, and/or scientific names, return

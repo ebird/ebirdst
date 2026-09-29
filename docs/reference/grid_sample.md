@@ -48,8 +48,9 @@ grid_sample_stratified(
 - coords:
 
   character; names of the spatial and temporal coordinates. By default
-  the spatial spatial coordinates should be `longitude` and `latitude`,
-  and temporal coordinate should be `day_of_year`.
+  the spatial coordinates should be `longitude` and `latitude`, and the
+  temporal coordinate should be `day_of_year`. Provide only the two
+  spatial coordinates to perform spatial-only sampling.
 
 - is_lonlat:
 
@@ -64,7 +65,8 @@ grid_sample_stratified(
   coordinate system prior to sampling, and resolution should therefore
   be provided in units of meters. The temporal resolution should be in
   the native units of the time coordinate in the input data frame,
-  typically it will be a number of days.
+  typically it will be a number of days. Provide only the two spatial
+  resolutions to perform spatial-only sampling.
 
 - jitter_grid:
 
@@ -168,7 +170,12 @@ grid_sample_stratified(
   it, while cells at or below it are left unchanged. Because the
   threshold is taken from the data itself, it adapts to each dataset.
   Detections and non-detections are capped independently by the same
-  rule. `NULL` (the default) or a value of `1` applies no cap.
+  rule. At least one observation of every level of every column in
+  `sample_by` is always retained, even if this means a cell exceeds the
+  cap, so rare strata (e.g. a remote island) are never lost; `year`
+  (when `by_year = TRUE`) is not protected, so years can be thinned out
+  of chronically over-sampled cells like any other observation. `NULL`
+  (the default) or a value of `1` applies no cap.
 
 - ...:
 
@@ -192,9 +199,10 @@ The sampling grid is defined, and assignment of locations to cells
 occurs, in
 [`assign_to_grid()`](https://ebird.github.io/ebirdst/reference/assign_to_grid.md).
 Consult the help for that function for further details on how the grid
-is generated and locations are assigned. Note that by providing
-2-element vectors to both `coords` and `res` the time component of the
-grid can be ignored and spatial-only subsampling is performed.
+is generated and locations are assigned. Note that providing a 2-element
+vector to `res` drops the time component of the grid and spatial-only
+subsampling is performed; in that case any temporal coordinate named in
+`coords` is ignored.
 
 ## Examples
 

@@ -25,6 +25,13 @@ calculate_mcc_f1(observed, predicted)
 
 A list with two elements: `mcc` and `f1`.
 
+## Details
+
+This function was added as a helper for evaluating encounter rate models
+in the [eBird Best Practices
+guide](https://ebird.github.io/ebird-best-practices/); it isn't
+otherwise used elsewhere in this package.
+
 ## Examples
 
 ``` r

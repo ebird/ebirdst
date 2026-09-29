@@ -1,7 +1,7 @@
 Type: Package
 Package: ebirdst
 Title: Access and Analyze eBird Status and Trends Data Products
-Version: 4.2023.0
+Version: 4.2023.1
 Authors@R: c(
     person("Matthew", "Strimas-Mackey", , "mes335@cornell.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8929-7776")),
@@ -36,7 +36,7 @@ Imports:
     sf (>= 1.0-0),
     stats,
     stringr,
-    terra (>= 1.6-3),
+    terra (>= 1.7-3),
     tools,
     utils,
     viridisLite
@@ -47,10 +47,11 @@ Suggests:
     PresenceAbsence,
     rnaturalearth,
     scico,
-    testthat,
+    testthat (>= 3.0.0),
     tidyr,
     withr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3

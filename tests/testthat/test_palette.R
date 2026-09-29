@@ -1,5 +1,3 @@
-context("Color palettes")
-
 test_that("ebirdst_palettes", {
   expect_type(ebirdst_palettes(n = 10), "character")
   expect_length(ebirdst_palettes(n = 10), 10)
@@ -19,9 +17,4 @@ test_that("ebirdst_palettes", {
   expect_error(ebirdst_palettes(n = 10, type = "invalid"))
   # n must be >= 1
   expect_error(ebirdst_palettes(n = 0))
-})
-
-test_that("abundance_palette throws warning and matches ebirdst_palettes", {
-  expect_warning(p <- abundance_palette(10, "weekly"), regexp = "is deprecated")
-  expect_equal(p, ebirdst_palettes(10, "weekly"))
 })

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,18 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="4.2023.0" id="ebirdst-420230">ebirdst 4.2023.0<a class="anchor" aria-label="anchor" href="#ebirdst-420230"></a></h2>
+<h2 class="pkg-version" data-toc-text="4.2023.1" id="ebirdst-420231">ebirdst 4.2023.1<a class="anchor" aria-label="anchor" href="#ebirdst-420231"></a></h2>
+<ul><li>New function <code><a href="../reference/assign_weeks_to_seasons.html">assign_weeks_to_seasons()</a></code> identifies which season each of the 52 weeks of the year falls within for a given species; set <code>return_df = TRUE</code> to get a data frame with one row per week instead of a character vector</li>
+<li>Removed all functions previously listed as deprecated or defunct (they have been unavailable or erroring since at least v3.2022.1)</li>
+<li>
+<code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>’s arguments have been reordered so that the required <code>weeks</code> argument comes before <code>product</code>, which now has a default; calls relying on positional matching of <code>product</code> first must be updated</li>
+<li>Downloads are more robust and secure: an on-demand-first backend approach, better handling of interrupted/failed transfers and flaky connections, and the access key is no longer exposed in download error messages</li>
+<li>
+<code><a href="../reference/grid_sample.html">grid_sample()</a></code> and <code><a href="../reference/grid_sample.html">grid_sample_stratified()</a></code> now support space-only sampling (no time dimension), which the documentation described but was previously impossible to request, plus several other sampling bug fixes</li>
+<li>Miscellaneous bug fixes and efficiency improvements</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="4.2023.0" id="ebirdst-420230">ebirdst 4.2023.0<a class="anchor" aria-label="anchor" href="#ebirdst-420230"></a></h2><p class="text-muted">CRAN release: 2026-07-20</p>
 <ul><li>Transition to having all the <code>load_*()</code> functions download directly rather than having to call <code><a href="../reference/ebirdst_download_status.html">ebirdst_download_status()</a></code>
 </li>
 <li>Converted vignettes to Quarto and moved them to website-only pkgdown articles; the package no longer ships built-in vignettes to CRAN (documentation lives at <a href="https://ebird.github.io/ebirdst/" class="uri">https://ebird.github.io/ebirdst/</a>)</li>
@@ -92,9 +103,9 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2021.3" id="ebirdst-220213">ebirdst 2.2021.3<a class="anchor" aria-label="anchor" href="#ebirdst-220213"></a></h2><p class="text-muted">CRAN release: 2023-05-09</p>
-<ul><li>fix bug causing stixels with missing bounds to raise an error in <code><a href="../reference/ebirdst-defunct.html">ebirdst_habitat()</a></code>
+<ul><li>fix bug causing stixels with missing bounds to raise an error in <code>ebirdst_habitat()</code>
 </li>
-<li>add a function to estimate MCC-F1 for <code><a href="../reference/ebirdst-defunct.html">ebirdst_ppms()</a></code>
+<li>add a function to estimate MCC-F1 for <code>ebirdst_ppms()</code>
 </li>
 </ul></div>
     <div class="section level2">

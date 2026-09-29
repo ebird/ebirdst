@@ -20,6 +20,11 @@ A list with two elements: \code{mcc} and \code{f1}.
 Given binary observed and predicted response, estimate Matthews correlation
 coefficient (MCC) and the F1 score.
 }
+\details{
+This function was added as a helper for evaluating encounter rate models in
+the \href{https://ebird.github.io/ebird-best-practices/}{eBird Best Practices guide};
+it isn't otherwise used elsewhere in this package.
+}
 \examples{
 obs <- c(rep(1L, 1000L), rep(0L, 10000L))
 pred <- c(rbeta(300L, 12, 2), rbeta(700L, 3, 4), rbeta(10000L, 2, 3))

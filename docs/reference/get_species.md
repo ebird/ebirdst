@@ -20,7 +20,9 @@ get_species(x)
 
 ## Value
 
-A character vector of eBird species codes.
+A character vector of eBird species codes, the same length as `x`.
+Elements of `x` that don't match any modeled species are returned as
+`NA`.
 
 ## Examples
 

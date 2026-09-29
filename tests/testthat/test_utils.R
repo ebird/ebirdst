@@ -1,6 +1,57 @@
-context("Utility functions")
-
 skip_on_cran()
+
+test_that("assign_weeks_to_seasons()", {
+  seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
+  expect_length(seasons, 52L)
+  expect_type(seasons, "character")
+  # all four seasons of the example species score a 3
+  expect_setequal(
+    unique(seasons),
+    c(
+      "breeding",
+      "nonbreeding",
+      "prebreeding_migration",
+      "postbreeding_migration"
+    )
+  )
+  # a lower quality threshold can only add weeks, never remove them
+  relaxed <- assign_weeks_to_seasons("yebsap-example", min_quality = 1)
+  expect_equal(relaxed, seasons)
+
+  # invalid arguments
+  expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 0))
+  expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 4))
+  expect_error(assign_weeks_to_seasons("yebsap-example", min_quality = 2.5))
+  expect_error(assign_weeks_to_seasons("Yellow-bellied Sapsuckr"))
+  expect_error(
+    assign_weeks_to_seasons("yebsap-example", return_df = "yes")
+  )
+})
+
+test_that("assign_weeks_to_seasons() return_df = TRUE", {
+  seasons_df <- assign_weeks_to_seasons(
+    "yebsap-example",
+    min_quality = 3,
+    return_df = TRUE
+  )
+  expect_s3_class(seasons_df, "data.frame")
+  expect_named(seasons_df, c("week", "season", "quality", "include"))
+  expect_equal(nrow(seasons_df), 52L)
+  expect_type(seasons_df[["week"]], "double")
+  expect_s3_class(seasons_df[["week"]], "Date")
+  expect_type(seasons_df[["season"]], "character")
+  expect_type(seasons_df[["quality"]], "integer")
+  expect_type(seasons_df[["include"]], "logical")
+
+  # included weeks match the character vector output
+  seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
+  expect_equal(seasons_df[["season"]][seasons_df[["include"]]], seasons[!is.na(seasons)])
+  expect_true(all(seasons_df[["quality"]][seasons_df[["include"]]] >= 3))
+
+  # quality is never missing; weeks outside any season score 0
+  expect_false(anyNA(seasons_df[["quality"]]))
+  expect_true(all(seasons_df[["quality"]][is.na(seasons_df[["season"]])] == 0L))
+})
 
 test_that("get_species()", {
   expect_equal(get_species("Wood Thrush"), "woothr")
@@ -11,6 +62,29 @@ test_that("get_species()", {
   expect_equal(get_species("aakspa1"), NA_character_)
   # case-insensitive lookup
   expect_equal(get_species("wood thrush"), "woothr")
+})
+
+test_that("is_integer(), is_count(), and is_flag()", {
+  expect_true(is_integer(1))
+  expect_true(is_integer(c(-2, 0, 3)))
+  expect_true(is_integer(.Machine$integer.max))
+  expect_false(is_integer(1.5))
+  expect_false(is_integer(NA_integer_))
+  expect_false(is_integer(Inf))
+  expect_false(is_integer("1"))
+  # values beyond integer range are rejected without warning about coercion
+  expect_silent(expect_false(is_integer(1e10)))
+  expect_silent(expect_false(is_integer(-1e10)))
+
+  expect_true(is_count(0))
+  expect_false(is_count(-1))
+  expect_false(is_count(c(1, 2)))
+  expect_silent(expect_false(is_count(1e10)))
+
+  expect_true(is_flag(TRUE))
+  expect_false(is_flag(NA))
+  expect_false(is_flag(c(TRUE, FALSE)))
+  expect_false(is_flag(1))
 })
 
 test_that("calculate_mcc_f1()", {

@@ -55,7 +55,11 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
 
     for (sp_dir in sp_dirs) {
       sp_code <- basename(sp_dir)
+
+      # a partial download left behind by a session that was killed mid-transfer
+      # isn't data, so it shouldn't be counted or have its size reported
       all_files <- list.files(sp_dir, recursive = TRUE, full.names = TRUE)
+      all_files <- all_files[!is_partial_download(all_files)]
 
       # files in the trends/ subdirectory are trends data products; all others
       # are status data products
@@ -66,6 +70,7 @@ ebirdst_data_inventory <- function(path = ebirdst_data_dir()) {
           recursive = TRUE,
           full.names = TRUE
         )
+        trends_files <- trends_files[!is_partial_download(trends_files)]
       } else {
         trends_files <- character(0)
       }
@@ -171,7 +176,7 @@ ebirdst_delete <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force))
   if (!is.null(species)) {
-    stopifnot(is.character(species), length(species) >= 1)
+    stopifnot(is.character(species), length(species) >= 1, !anyNA(species))
   }
   if (!is.null(year)) {
     stopifnot(is_integer(year), length(year) >= 1, all(year > 0))
@@ -217,8 +222,9 @@ ebirdst_delete <- function(
     return(invisible(character(0)))
   }
 
-  # build unique target directories (one per species-year regardless of dataset,
-  # since both status and trends data reside in the same directory)
+  # build unique target directories (one per species-year regardless of
+  # dataset, since status and trends data for the same species/year would
+  # both reside in the same directory if their version years ever coincide)
   target_dirs <- unique(file.path(path, inv$version_year, inv$species_code))
 
   # safety check: all targets must be within the base path
@@ -267,6 +273,11 @@ ebirdst_delete <- function(
     }
   }
 
+  # only report the size of directories that were actually deleted, in case
+  # unlink() failed for some targets
+  inv_dirs <- file.path(path, inv$version_year, inv$species_code)
+  deleted_size_mb <- sum(inv$size_mb[inv_dirs %in% deleted_paths])
+
   # remove any year directories that are now empty
   affected_years <- unique(file.path(path, inv$version_year))
   for (yr_dir in affected_years) {
@@ -287,7 +298,7 @@ ebirdst_delete <- function(
     " director",
     if (length(deleted_paths) == 1) "y" else "ies",
     " (",
-    format_size(sum(inv$size_mb) * 1e6),
+    format_size(deleted_size_mb * 1e6),
     ")."
   )
   return(invisible(deleted_paths))
@@ -348,12 +359,12 @@ print.ebirdst_inventory <- function(x, ...) {
 
 format_size <- function(bytes) {
   if (bytes >= 1e9) {
-    sprintf("%.1f GB", bytes / 1e9)
+    return(sprintf("%.1f GB", bytes / 1e9))
   } else if (bytes >= 1e6) {
-    sprintf("%.1f MB", bytes / 1e6)
+    return(sprintf("%.1f MB", bytes / 1e6))
   } else if (bytes >= 1e3) {
-    sprintf("%.1f KB", bytes / 1e3)
+    return(sprintf("%.1f KB", bytes / 1e3))
   } else {
-    sprintf("%.0f B", bytes)
+    return(sprintf("%.0f B", bytes))
   }
 }

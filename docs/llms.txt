@@ -256,6 +256,8 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
 
 - [`assign_to_grid()`](https://ebird.github.io/ebirdst/reference/assign_to_grid.md)
   : Assign points to a spacetime grid
+- [`assign_weeks_to_seasons()`](https://ebird.github.io/ebirdst/reference/assign_weeks_to_seasons.md)
+  : Assign the weeks of the year to seasons
 - [`calculate_mcc_f1()`](https://ebird.github.io/ebirdst/reference/calculate_mcc_f1.md)
   : Calculate MCC and F1 score
 - [`convert_ppy_to_cumulative()`](https://ebird.github.io/ebirdst/reference/convert_ppy_to_cumulative.md)

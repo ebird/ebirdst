@@ -34,8 +34,8 @@ species' data package will then appear in a directory named with the eBird
 species code. Defaults to a persistent data directory, which can be found
 by calling \code{ebirdst_data_dir()}.}
 
-\item{download_abundance}{whether to download estimates of abundance and
-proportion of population.}
+\item{download_abundance}{logical; whether to download estimates of
+abundance and proportion of population.}
 
 \item{download_occurrence}{logical; whether to download estimates of
 occurrence.}

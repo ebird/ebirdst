@@ -1,6 +1,33 @@
 # Changelog
 
+## ebirdst 4.2023.1
+
+- New function
+  [`assign_weeks_to_seasons()`](https://ebird.github.io/ebirdst/reference/assign_weeks_to_seasons.md)
+  identifies which season each of the 52 weeks of the year falls within
+  for a given species; set `return_df = TRUE` to get a data frame with
+  one row per week instead of a character vector
+- Removed all functions previously listed as deprecated or defunct (they
+  have been unavailable or erroring since at least v3.2022.1)
+- [`load_data_coverage()`](https://ebird.github.io/ebirdst/reference/load_data_coverage.md)’s
+  arguments have been reordered so that the required `weeks` argument
+  comes before `product`, which now has a default; calls relying on
+  positional matching of `product` first must be updated
+- Downloads are more robust and secure: an on-demand-first backend
+  approach, better handling of interrupted/failed transfers and flaky
+  connections, and the access key is no longer exposed in download error
+  messages
+- [`grid_sample()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
+  and
+  [`grid_sample_stratified()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
+  now support space-only sampling (no time dimension), which the
+  documentation described but was previously impossible to request, plus
+  several other sampling bug fixes
+- Miscellaneous bug fixes and efficiency improvements
+
 ## ebirdst 4.2023.0
+
+CRAN release: 2026-07-20
 
 - Transition to having all the `load_*()` functions download directly
   rather than having to call
@@ -92,9 +119,8 @@ CRAN release: 2023-11-15
 CRAN release: 2023-05-09
 
 - fix bug causing stixels with missing bounds to raise an error in
-  [`ebirdst_habitat()`](https://ebird.github.io/ebirdst/reference/ebirdst-defunct.md)
-- add a function to estimate MCC-F1 for
-  [`ebirdst_ppms()`](https://ebird.github.io/ebirdst/reference/ebirdst-defunct.md)
+  `ebirdst_habitat()`
+- add a function to estimate MCC-F1 for `ebirdst_ppms()`
 
 ## ebirdst 2.2021.2
 
