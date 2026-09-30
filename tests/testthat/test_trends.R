@@ -58,16 +58,26 @@ test_that("load_trends() only downloads the requested parquet file", {
     "yebsap-example",
     "trends"
   )
-  expect_equal(list.files(trends_dir), c(
-    "yebsap-example_breeding_ebird-trends_2022.parquet"
-  ))
+  expect_equal(
+    list.files(trends_dir),
+    c(
+      "yebsap-example_breeding_ebird-trends_2022.parquet"
+    )
+  )
 
   # requesting the fold estimates next should only add that one file
-  suppressMessages(load_trends("yebsap-example", path = tmp, fold_estimates = TRUE))
-  expect_equal(sort(list.files(trends_dir)), sort(c(
-    "yebsap-example_breeding_ebird-trends_2022.parquet",
-    "yebsap-example_breeding_ebird-trends_folds_2022.parquet"
-  )))
+  suppressMessages(load_trends(
+    "yebsap-example",
+    path = tmp,
+    fold_estimates = TRUE
+  ))
+  expect_equal(
+    sort(list.files(trends_dir)),
+    sort(c(
+      "yebsap-example_breeding_ebird-trends_2022.parquet",
+      "yebsap-example_breeding_ebird-trends_folds_2022.parquet"
+    ))
+  )
 })
 
 test_that("convert_ppy_to_cumulative()", {

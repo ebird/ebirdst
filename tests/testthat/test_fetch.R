@@ -63,7 +63,10 @@ test_that("list_object_keys() reads the bundled list for the example data", {
 
 test_that("object_key_url() builds example and API urls", {
   example_key <- status_key("yebsap-example", "config.json")
-  expect_match(object_key_url(example_key), "^https://raw.githubusercontent.com/")
+  expect_match(
+    object_key_url(example_key),
+    "^https://raw.githubusercontent.com/"
+  )
   expect_match(object_key_url(example_key), paste0(example_key, "$"))
 
   # building an api url requires an access key, which the example data doesn't
@@ -91,18 +94,39 @@ test_that("resolve_species()", {
 
 test_that("select_status_keys() default and flag-based selection", {
   default <- select_status_keys(keys)
-  expect_true(all(grepl("config.json$|_abundance_|_proportion-population_", default)))
-  expect_false(any(grepl("_occurrence_|_count_|ranges|regional_stats|pis|ppms", default)))
+  expect_true(all(grepl(
+    "config.json$|_abundance_|_proportion-population_",
+    default
+  )))
+  expect_false(any(grepl(
+    "_occurrence_|_count_|ranges|regional_stats|pis|ppms",
+    default
+  )))
 
-  expect_true(any(grepl("_occurrence_", select_status_keys(keys, download_occurrence = TRUE))))
-  expect_true(any(grepl("_count_", select_status_keys(keys, download_count = TRUE))))
-  expect_true(any(grepl("/ranges/", select_status_keys(keys, download_ranges = TRUE))))
+  expect_true(any(grepl(
+    "_occurrence_",
+    select_status_keys(keys, download_occurrence = TRUE)
+  )))
+  expect_true(any(grepl(
+    "_count_",
+    select_status_keys(keys, download_count = TRUE)
+  )))
+  expect_true(any(grepl(
+    "/ranges/",
+    select_status_keys(keys, download_ranges = TRUE)
+  )))
   expect_true(any(grepl(
     "regional_stats.csv",
     select_status_keys(keys, download_regional = TRUE)
   )))
-  expect_true(any(grepl("/pis/", select_status_keys(keys, download_pis = TRUE))))
-  expect_true(any(grepl("/ppms/", select_status_keys(keys, download_ppms = TRUE))))
+  expect_true(any(grepl(
+    "/pis/",
+    select_status_keys(keys, download_pis = TRUE)
+  )))
+  expect_true(any(grepl(
+    "/ppms/",
+    select_status_keys(keys, download_ppms = TRUE)
+  )))
 
   # config is always retained, even when no flags are set
   none <- select_status_keys(keys, download_abundance = FALSE)
@@ -144,7 +168,11 @@ test_that("ensure_data_dir()", {
 test_that("fetch_data() downloads example data and returns normalized paths", {
   tmp <- withr::local_tempdir()
   key <- status_key("yebsap-example", "config.json")
-  local_path <- suppressMessages(fetch_data(key, path = tmp, show_progress = FALSE))
+  local_path <- suppressMessages(fetch_data(
+    key,
+    path = tmp,
+    show_progress = FALSE
+  ))
   expect_equal(local_path, normalizePath(file.path(tmp, key)))
   expect_true(file.exists(local_path))
 })
@@ -211,7 +239,9 @@ test_that("redact_access_key() removes the key from messages", {
   )
   # the listing url takes the key as the first query parameter
   expect_equal(
-    redact_access_key("URL 'https://x/list-obj/2023/categr1?key=abc123' failed"),
+    redact_access_key(
+      "URL 'https://x/list-obj/2023/categr1?key=abc123' failed"
+    ),
     "URL 'https://x/list-obj/2023/categr1?key=<redacted>' failed"
   )
   # objKey isn't mistaken for the key itself, and is left intact
@@ -235,7 +265,9 @@ test_that("try_url() reports a redacted reason for the failure", {
   withr::local_envvar(EBIRDST_KEY = "")
 
   attempt <- try_url(
-    stop("cannot open URL 'https://x/fetch?objKey=y&key=secret123': HTTP status was '500 Internal Server Error'")
+    stop(
+      "cannot open URL 'https://x/fetch?objKey=y&key=secret123': HTTP status was '500 Internal Server Error'"
+    )
   )
   expect_false(grepl("secret123", attempt$reason, fixed = TRUE))
   expect_match(attempt$reason, "key=<redacted>", fixed = TRUE)
@@ -259,7 +291,9 @@ test_that("try_url() distinguishes http status errors from failed connections", 
   expect_true(not_found$http_status)
 
   # a connection level failure also reports "status was", but without "HTTP "
-  unreachable <- try_url(stop("URL 'x': status was 'Couldn't resolve host name'"))
+  unreachable <- try_url(stop(
+    "URL 'x': status was 'Couldn't resolve host name'"
+  ))
   expect_null(unreachable$value)
   expect_false(unreachable$http_status)
 
@@ -308,7 +342,10 @@ test_that("fetch_data() rejects keys that escape the data directory", {
 
 
 test_that("partial_download_path() and is_partial_download()", {
-  expect_equal(partial_download_path("2023/woothr/a.tif"), "2023/woothr/a.tif.part")
+  expect_equal(
+    partial_download_path("2023/woothr/a.tif"),
+    "2023/woothr/a.tif.part"
+  )
   expect_true(is_partial_download("2023/woothr/a.tif.part"))
   expect_false(is_partial_download("2023/woothr/a.tif"))
   expect_equal(is_partial_download(c("a.tif", "a.tif.part")), c(FALSE, TRUE))
@@ -430,7 +467,11 @@ test_that("download_files() retries a transient connection failure", {
     try_url = function(expr) {
       n_attempts <<- n_attempts + 1L
       if (n_attempts < 2L) {
-        return(list(value = NULL, http_status = FALSE, reason = "connection reset"))
+        return(list(
+          value = NULL,
+          http_status = FALSE,
+          reason = "connection reset"
+        ))
       }
       writeBin(raw(10), paste0(dest, ".part"))
       return(list(value = 0L, http_status = FALSE, reason = ""))
@@ -455,7 +496,11 @@ test_that("download_files() gives up after repeated transient failures", {
   local_mocked_bindings(
     try_url = function(expr) {
       n_attempts <<- n_attempts + 1L
-      return(list(value = NULL, http_status = FALSE, reason = "connection reset"))
+      return(list(
+        value = NULL,
+        http_status = FALSE,
+        reason = "connection reset"
+      ))
     }
   )
   result <- download_files(
