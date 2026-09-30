@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2025.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
 <section class="section level2"><h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
 <p>The study and conservation of the natural world relies on detailed information about the distributions, abundances, and population trends of species over time. For many taxa, this information is challenging to obtain at relevant geographic scales. The goal of the eBird Status and Trends project is to use data from <a href="https://ebird.org/home" class="external-link">eBird</a>, the global participatory science bird monitoring program administered by the Cornell Lab of Ornithology, to generate a reliable, standardized source of biodiversity information for the world’s bird populations. To translate the eBird observations into robust data products, we use machine learning to fill spatiotemporal gaps, using local land cover descriptions derived from remote sensing data, while controlling for biases inherent in species observations collected by community scientists. See Fink et al. (2019) for more information about the analysis used to generate these data.</p>
-<p>This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for 2,980 species for the year 2023. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.</p>
+<p>This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for 2,635 species for the year 2025. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.</p>
 </section><section class="section level2"><h2 id="access">Data access<a class="anchor" aria-label="anchor" href="#access"></a>
 </h2>
 <p>Data access is granted through an Access Request Form at: https://ebird.org/st/request. Filling out this form generates a key to be used with this R package. Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.</p>
@@ -124,38 +124,40 @@
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">ebirdst_runs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 2,981</span></span>
-<span><span class="co">#&gt; Columns: 30</span></span>
-<span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example", "abetow", "absfin1", …</span></span>
-<span><span class="co">#&gt; $ scientific_name                &lt;chr&gt; "Sphyrapicus varius", "Melozone aberti"…</span></span>
-<span><span class="co">#&gt; $ common_name                    &lt;chr&gt; "Yellow-bellied Sapsucker", "Abert's To…</span></span>
-<span><span class="co">#&gt; $ is_resident                    &lt;lgl&gt; FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, F…</span></span>
-<span><span class="co">#&gt; $ breeding_quality               &lt;chr&gt; "3", NA, NA, "3", NA, NA, "1", NA, NA, …</span></span>
-<span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2023-05-17, NA, NA, 2023-05-31, NA, NA…</span></span>
-<span><span class="co">#&gt; $ breeding_end                   &lt;date&gt; 2023-08-16, NA, NA, 2023-08-02, NA, NA…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_quality            &lt;chr&gt; "3", NA, NA, "3", NA, NA, "1", NA, NA, …</span></span>
-<span><span class="co">#&gt; $ nonbreeding_start              &lt;date&gt; 2023-11-22, NA, NA, 2023-11-22, NA, NA…</span></span>
-<span><span class="co">#&gt; $ nonbreeding_end                &lt;date&gt; 2023-03-08, NA, NA, 2023-02-22, NA, NA…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_quality &lt;chr&gt; "3", NA, NA, "3", NA, NA, "0", NA, NA, …</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_start   &lt;date&gt; 2023-08-23, NA, NA, 2023-08-09, NA, NA…</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_end     &lt;date&gt; 2023-11-15, NA, NA, 2023-11-15, NA, NA…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_quality  &lt;chr&gt; "3", NA, NA, "3", NA, NA, "0", NA, NA, …</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2023-03-15, NA, NA, 2023-03-01, NA, NA…</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2023-05-10, NA, NA, 2023-05-24, NA, NA…</span></span>
-<span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA, "3", "3", NA, "3", "3", NA, "2", "3…</span></span>
-<span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA, 2023-01-04, 2023-01-04, NA, 2023-0…</span></span>
-<span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA, 2023-12-27, 2023-12-27, NA, 2023-1…</span></span>
-<span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2023, 2023, 2023, 2023, 2023, 2023, 202…</span></span>
-<span><span class="co">#&gt; $ has_trends                     &lt;lgl&gt; TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, F…</span></span>
-<span><span class="co">#&gt; $ trends_season                  &lt;chr&gt; "breeding", "resident", NA, "breeding",…</span></span>
-<span><span class="co">#&gt; $ trends_region                  &lt;chr&gt; "north_america", "north_america", NA, "…</span></span>
-<span><span class="co">#&gt; $ trends_start_year              &lt;dbl&gt; 2012, 2012, NA, 2012, 2011, NA, NA, NA,…</span></span>
-<span><span class="co">#&gt; $ trends_end_year                &lt;dbl&gt; 2022, 2022, NA, 2022, 2021, NA, NA, NA,…</span></span>
-<span><span class="co">#&gt; $ trends_start_date              &lt;chr&gt; "05-24", "01-25", NA, "05-24", "11-01",…</span></span>
-<span><span class="co">#&gt; $ trends_end_date                &lt;chr&gt; "08-16", "05-10", NA, "08-02", "05-03",…</span></span>
-<span><span class="co">#&gt; $ rsquared                       &lt;dbl&gt; 0.8572896, 0.9231821, NA, 0.8570363, 0.…</span></span>
-<span><span class="co">#&gt; $ beta0                          &lt;dbl&gt; 0.227000849, -0.013923012, NA, 0.689424…</span></span>
-<span><span class="co">#&gt; $ trends_version_year            &lt;dbl&gt; 2022, 2022, NA, 2022, 2022, NA, NA, NA,…</span></span></code></pre></div>
+<span><span class="co">#&gt; Rows: 2,636</span></span>
+<span><span class="co">#&gt; Columns: 32</span></span>
+<span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example", "ostric2", "emu1", "l…</span></span>
+<span><span class="co">#&gt; $ taxon_concept_id               &lt;chr&gt; "avibase-9BE68BD3", "avibase-2247CB05",…</span></span>
+<span><span class="co">#&gt; $ scientific_name                &lt;chr&gt; "Sphyrapicus varius", "Struthio camelus…</span></span>
+<span><span class="co">#&gt; $ common_name                    &lt;chr&gt; "Yellow-bellied Sapsucker", "Common Ost…</span></span>
+<span><span class="co">#&gt; $ taxonomic_order                &lt;dbl&gt; 11126, 2, 15, 38, 44, 45, 49, 89, 92, 1…</span></span>
+<span><span class="co">#&gt; $ is_resident                    &lt;lgl&gt; FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TR…</span></span>
+<span><span class="co">#&gt; $ breeding_quality               &lt;chr&gt; "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2025-05-24, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ breeding_end                   &lt;date&gt; 2025-08-16, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_quality            &lt;chr&gt; "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_start              &lt;date&gt; 2025-11-15, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ nonbreeding_end                &lt;date&gt; 2025-02-22, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_quality &lt;chr&gt; "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_start   &lt;date&gt; 2025-08-23, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_end     &lt;date&gt; 2025-11-08, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_quality  &lt;chr&gt; "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2025-03-01, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2025-05-17, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA, "2", "2", "3", "2", "3", "3", "3", …</span></span>
+<span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA, 2025-01-04, 2025-01-04, 2025-04-26…</span></span>
+<span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA, 2025-12-27, 2025-12-27, 2025-08-30…</span></span>
+<span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2025, 2025, 2025, 2025, 2025, 2025, 202…</span></span>
+<span><span class="co">#&gt; $ has_trends                     &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, FALSE, FALSE…</span></span>
+<span><span class="co">#&gt; $ trends_season                  &lt;chr&gt; "breeding", NA, NA, NA, NA, NA, NA, NA,…</span></span>
+<span><span class="co">#&gt; $ trends_region                  &lt;chr&gt; "north_america", NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ trends_start_year              &lt;dbl&gt; 2012, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
+<span><span class="co">#&gt; $ trends_end_year                &lt;dbl&gt; 2022, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
+<span><span class="co">#&gt; $ trends_start_date              &lt;chr&gt; "05-24", NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ trends_end_date                &lt;chr&gt; "08-16", NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span><span class="co">#&gt; $ rsquared                       &lt;dbl&gt; 0.8572896, NA, NA, NA, NA, NA, NA, NA, …</span></span>
+<span><span class="co">#&gt; $ beta0                          &lt;dbl&gt; 0.2270008, NA, NA, NA, NA, NA, NA, NA, …</span></span>
+<span><span class="co">#&gt; $ trends_version_year            &lt;dbl&gt; 2022, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span></code></pre></div>
 </div>
 <p>If you’re working in RStudio, you can use <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> to interactively explore this data frame.</p>
 <p>All species go through a process of review by an expert on that species prior to being released. The <code>ebirdst_runs</code> data frame contains information from this review process. For migrants, reviewers assess the model estimates for each of the four seasons: breeding, non-breeding, pre-breeding migration, and post-breeding migration. Resident (i.e., non-migratory) species are identified by having <code>TRUE</code> in the <code>is_resident</code> column of <code>ebirdst_runs</code>, and these species are assessed across the whole year rather than seasonally. <code>ebirdst_runs</code> contains two important pieces of information for each season: a <strong>quality</strong> rating and <strong>seasonal dates</strong>.</p>
@@ -177,27 +179,29 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species_code</span> <span class="op">==</span> <span class="st">"yebsap-example"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 1</span></span>
-<span><span class="co">#&gt; Columns: 30</span></span>
+<span><span class="co">#&gt; Columns: 32</span></span>
 <span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example"</span></span>
+<span><span class="co">#&gt; $ taxon_concept_id               &lt;chr&gt; "avibase-9BE68BD3"</span></span>
 <span><span class="co">#&gt; $ scientific_name                &lt;chr&gt; "Sphyrapicus varius"</span></span>
 <span><span class="co">#&gt; $ common_name                    &lt;chr&gt; "Yellow-bellied Sapsucker"</span></span>
+<span><span class="co">#&gt; $ taxonomic_order                &lt;dbl&gt; 11126</span></span>
 <span><span class="co">#&gt; $ is_resident                    &lt;lgl&gt; FALSE</span></span>
 <span><span class="co">#&gt; $ breeding_quality               &lt;chr&gt; "3"</span></span>
-<span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2023-05-17</span></span>
-<span><span class="co">#&gt; $ breeding_end                   &lt;date&gt; 2023-08-16</span></span>
+<span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2025-05-24</span></span>
+<span><span class="co">#&gt; $ breeding_end                   &lt;date&gt; 2025-08-16</span></span>
 <span><span class="co">#&gt; $ nonbreeding_quality            &lt;chr&gt; "3"</span></span>
-<span><span class="co">#&gt; $ nonbreeding_start              &lt;date&gt; 2023-11-22</span></span>
-<span><span class="co">#&gt; $ nonbreeding_end                &lt;date&gt; 2023-03-08</span></span>
+<span><span class="co">#&gt; $ nonbreeding_start              &lt;date&gt; 2025-11-15</span></span>
+<span><span class="co">#&gt; $ nonbreeding_end                &lt;date&gt; 2025-02-22</span></span>
 <span><span class="co">#&gt; $ postbreeding_migration_quality &lt;chr&gt; "3"</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_start   &lt;date&gt; 2023-08-23</span></span>
-<span><span class="co">#&gt; $ postbreeding_migration_end     &lt;date&gt; 2023-11-15</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_start   &lt;date&gt; 2025-08-23</span></span>
+<span><span class="co">#&gt; $ postbreeding_migration_end     &lt;date&gt; 2025-11-08</span></span>
 <span><span class="co">#&gt; $ prebreeding_migration_quality  &lt;chr&gt; "3"</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2023-03-15</span></span>
-<span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2023-05-10</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2025-03-01</span></span>
+<span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2025-05-17</span></span>
 <span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA</span></span>
 <span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA</span></span>
 <span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA</span></span>
-<span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2023</span></span>
+<span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2025</span></span>
 <span><span class="co">#&gt; $ has_trends                     &lt;lgl&gt; TRUE</span></span>
 <span><span class="co">#&gt; $ trends_season                  &lt;chr&gt; "breeding"</span></span>
 <span><span class="co">#&gt; $ trends_region                  &lt;chr&gt; "north_america"</span></span>
@@ -280,17 +284,17 @@
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">abd_lr</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"</span></span>
-<span><span class="co">#&gt;  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"</span></span>
-<span><span class="co">#&gt; [11] "2023-03-15" "2023-03-22" "2023-03-29" "2023-04-05" "2023-04-12"</span></span>
-<span><span class="co">#&gt; [16] "2023-04-19" "2023-04-26" "2023-05-03" "2023-05-10" "2023-05-17"</span></span>
-<span><span class="co">#&gt; [21] "2023-05-24" "2023-05-31" "2023-06-07" "2023-06-14" "2023-06-21"</span></span>
-<span><span class="co">#&gt; [26] "2023-06-28" "2023-07-05" "2023-07-12" "2023-07-19" "2023-07-26"</span></span>
-<span><span class="co">#&gt; [31] "2023-08-02" "2023-08-09" "2023-08-16" "2023-08-23" "2023-08-30"</span></span>
-<span><span class="co">#&gt; [36] "2023-09-06" "2023-09-13" "2023-09-20" "2023-09-27" "2023-10-04"</span></span>
-<span><span class="co">#&gt; [41] "2023-10-11" "2023-10-18" "2023-10-25" "2023-11-01" "2023-11-08"</span></span>
-<span><span class="co">#&gt; [46] "2023-11-15" "2023-11-22" "2023-11-29" "2023-12-06" "2023-12-13"</span></span>
-<span><span class="co">#&gt; [51] "2023-12-20" "2023-12-27"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "2025-01-04" "2025-01-11" "2025-01-18" "2025-01-25" "2025-02-01"</span></span>
+<span><span class="co">#&gt;  [6] "2025-02-08" "2025-02-15" "2025-02-22" "2025-03-01" "2025-03-08"</span></span>
+<span><span class="co">#&gt; [11] "2025-03-15" "2025-03-22" "2025-03-29" "2025-04-05" "2025-04-12"</span></span>
+<span><span class="co">#&gt; [16] "2025-04-19" "2025-04-26" "2025-05-03" "2025-05-10" "2025-05-17"</span></span>
+<span><span class="co">#&gt; [21] "2025-05-24" "2025-05-31" "2025-06-07" "2025-06-14" "2025-06-21"</span></span>
+<span><span class="co">#&gt; [26] "2025-06-28" "2025-07-05" "2025-07-12" "2025-07-19" "2025-07-26"</span></span>
+<span><span class="co">#&gt; [31] "2025-08-02" "2025-08-09" "2025-08-16" "2025-08-23" "2025-08-30"</span></span>
+<span><span class="co">#&gt; [36] "2025-09-06" "2025-09-13" "2025-09-20" "2025-09-27" "2025-10-04"</span></span>
+<span><span class="co">#&gt; [41] "2025-10-11" "2025-10-18" "2025-10-25" "2025-11-01" "2025-11-08"</span></span>
+<span><span class="co">#&gt; [46] "2025-11-15" "2025-11-22" "2025-11-29" "2025-12-06" "2025-12-13"</span></span>
+<span><span class="co">#&gt; [51] "2025-12-20" "2025-12-27"</span></span></code></pre></div>
 </div>
 <p>The GeoTIFFs use the <a href="https://en.wikipedia.org/wiki/Equal_Earth_projection" class="external-link">Equal Earth</a> coordinate reference system, an equal area projection suitable for global mapping and analysis.</p>
 </section><section class="level2"><h3 id="seasonal-raster-estimates">Seasonal raster estimates<a class="anchor" aria-label="anchor" href="#seasonal-raster-estimates"></a>
@@ -317,10 +321,10 @@
 <span><span class="co">#&gt; resolution  : 27000, 27000  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -1.7226e+07, 1.7226e+07, -8343000, 8343000  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857)</span></span>
-<span><span class="co">#&gt; source      : yebsap-example_abundance_seasonal_mean_27km_2023.tif</span></span>
+<span><span class="co">#&gt; source      : yebsap-example_abundance_seasonal_mean_27km_2025.tif</span></span>
 <span><span class="co">#&gt; name        : breeding</span></span>
 <span><span class="co">#&gt; min value   :        0</span></span>
-<span><span class="co">#&gt; max value   : 1.021968</span></span>
+<span><span class="co">#&gt; max value   : 1.133582</span></span>
 <span></span>
 <span><span class="co"># seasonal, 27km res, max occurrence</span></span>
 <span><span class="va">occ_seasonal_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
@@ -357,10 +361,10 @@
 <span><span class="co">#&gt; # A tibble: 4 × 9</span></span>
 <span><span class="co">#&gt;   species_code scientific_name    common_name       prediction_year type  season</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt; &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range breed…</span></span>
-<span><span class="co">#&gt; 2 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range nonbr…</span></span>
-<span><span class="co">#&gt; 3 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range postb…</span></span>
-<span><span class="co">#&gt; 4 yebsap       Sphyrapicus varius Yellow-bellied S…            2023 range prebr…</span></span>
+<span><span class="co">#&gt; 1 yebsap       Sphyrapicus varius Yellow-bellied S…            2025 range breed…</span></span>
+<span><span class="co">#&gt; 2 yebsap       Sphyrapicus varius Yellow-bellied S…            2025 range nonbr…</span></span>
+<span><span class="co">#&gt; 3 yebsap       Sphyrapicus varius Yellow-bellied S…            2025 range postb…</span></span>
+<span><span class="co">#&gt; 4 yebsap       Sphyrapicus varius Yellow-bellied S…            2025 range prebr…</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: start_date &lt;date&gt;, end_date &lt;date&gt;,</span></span>
 <span><span class="co">#&gt; #   geom &lt;MULTIPOLYGON [°]&gt;</span></span>
 <span></span>
@@ -375,7 +379,7 @@
 <code class="sourceCode R"><span><span class="va">regional</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_regional_stats.html">load_regional_stats</a></span><span class="op">(</span><span class="st">"yebsap-example"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">regional</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 8</span></span>
-<span><span class="co">#&gt; Columns: 15</span></span>
+<span><span class="co">#&gt; Columns: 17</span></span>
 <span><span class="co">#&gt; $ species_code           &lt;chr&gt; "yebsap-example", "yebsap-example", "yebsap-exa…</span></span>
 <span><span class="co">#&gt; $ region_type            &lt;chr&gt; "country", "country", "country", "country", "st…</span></span>
 <span><span class="co">#&gt; $ region_code            &lt;chr&gt; "USA", "USA", "USA", "USA", "USA-MI", "USA-MI",…</span></span>
@@ -383,14 +387,16 @@
 <span><span class="co">#&gt; $ continent_code         &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"</span></span>
 <span><span class="co">#&gt; $ continent_name         &lt;chr&gt; "North America", "North America", "North Americ…</span></span>
 <span><span class="co">#&gt; $ season                 &lt;chr&gt; "breeding", "nonbreeding", "postbreeding_migrat…</span></span>
-<span><span class="co">#&gt; $ abundance_mean         &lt;dbl&gt; 0.114652605, 0.123534772, 0.073477334, 0.084178…</span></span>
-<span><span class="co">#&gt; $ total_pop_percent      &lt;dbl&gt; 0.3034155366, 0.9497140025, 0.7885750146, 0.435…</span></span>
-<span><span class="co">#&gt; $ continent_pop_percent  &lt;dbl&gt; 0.3034155366, 0.9497140025, 0.7885750146, 0.435…</span></span>
-<span><span class="co">#&gt; $ range_occupied_percent &lt;dbl&gt; 0.25990556, 0.40518814, 0.54434548, 0.49810429,…</span></span>
-<span><span class="co">#&gt; $ range_total_percent    &lt;dbl&gt; 0.231714761, 0.801986186, 0.720437099, 0.573623…</span></span>
-<span><span class="co">#&gt; $ range_days_occupation  &lt;int&gt; 98, 112, 91, 63, 98, 112, 91, 49</span></span>
-<span><span class="co">#&gt; $ max_week               &lt;chr&gt; "2023-08-16", "2023-11-22", "2023-10-18", "2023…</span></span>
-<span><span class="co">#&gt; $ max_week_percent_pop   &lt;dbl&gt; 0.4100934563, 0.9638256049, 0.9979910064, 0.985…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ prop_region_modeled    &lt;dbl&gt; 0.9043737, 0.8332991, 0.8537653, 0.8826434, 0.9…</span></span>
+<span><span class="co">#&gt; $ cells_in_region        &lt;dbl&gt; 1047617.35, 1047617.35, 1047617.35, 1047617.35,…</span></span>
+<span><span class="co">#&gt; $ abundance_mean         &lt;dbl&gt; 0.034049213, 0.088903433, 0.049646639, 0.054485…</span></span>
+<span><span class="co">#&gt; $ total_pop_percent      &lt;dbl&gt; 0.301754971, 0.955798248, 0.753031119, 0.431783…</span></span>
+<span><span class="co">#&gt; $ continent_pop_percent  &lt;dbl&gt; 0.301754971, 0.955798248, 0.753031119, 0.431783…</span></span>
+<span><span class="co">#&gt; $ range_occupied_percent &lt;dbl&gt; 0.06609039, 0.22689830, 0.31560414, 0.27087128,…</span></span>
+<span><span class="co">#&gt; $ range_total_percent    &lt;dbl&gt; 0.21943009, 0.79151355, 0.66831007, 0.49725926,…</span></span>
+<span><span class="co">#&gt; $ range_days_occupation  &lt;int&gt; 91, 105, 84, 84, 91, 105, 84, 84</span></span>
+<span><span class="co">#&gt; $ max_week               &lt;chr&gt; "2025-08-16", "2025-11-15", "2025-10-18", "2025…</span></span>
+<span><span class="co">#&gt; $ max_week_percent_pop   &lt;dbl&gt; 0.392207223, 0.964687425, 0.996517450, 0.970039…</span></span></code></pre></div>
 </div>
 <p>The eight summary statistics are defined as:</p>
 <ul>
@@ -498,10 +504,10 @@
 <span><span class="co">#&gt; resolution  : 27000, 27000  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -1.7226e+07, 1.7226e+07, -8343000, 8343000  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857)</span></span>
-<span><span class="co">#&gt; source      : yebsap-example_ppm_occ-pr-auc-normalized_mean_27km_2023.tif</span></span>
+<span><span class="co">#&gt; source      : yebsap-example_ppm_occ-pr-auc-normalized_mean_27km_2025.tif</span></span>
 <span><span class="co">#&gt; names       :    01-04,    01-11,    01-18,    01-25,    02-01,    02-08, ...</span></span>
-<span><span class="co">#&gt; min values  : 0.111343, 0.098129, 0.018913, 0.018913, 0.018913, 0.014034, ...</span></span>
-<span><span class="co">#&gt; max values  : 0.734387, 0.734387, 0.796934, 0.796934,        1,        1, ...</span></span></code></pre></div>
+<span><span class="co">#&gt; min values  : 0.110878, 0.098665, 0.096251, 0.099073, 0.086127, 0.032413, ...</span></span>
+<span><span class="co">#&gt; max values  :  0.42879, 0.510858, 0.510858, 0.510858, 0.580231, 0.580231, ...</span></span></code></pre></div>
 </div>
 <p>Since Yellow-bellied Sapsucker is a migrant, there are 52 layers, one for each week of the year, giving the mean PR-AUC for each 27 km by 27 km grid cell. We can produce a simple plot of PR-AUC for a week in the middle of the year. Note that <code><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim()</a></code> is used to trim the global raster down to just show the area with data (the state of Michigan in this example dataset).</p>
 <div class="cell" data-layout-align="center">
@@ -630,7 +636,7 @@ Fink, D., T. Auer, A. Johnston, V. Ruiz‐Gutierrez, W.M. Hochachka, S. Kelling.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Tom Auer, Daniel Fink.</p>
+  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown-footer-right">

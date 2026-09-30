@@ -1,5 +1,9 @@
 # Changelog
 
+## ebirdst 4.2025.0
+
+- eBird Status Data Products update for 2025
+
 ## ebirdst 4.2023.1
 
 - New function

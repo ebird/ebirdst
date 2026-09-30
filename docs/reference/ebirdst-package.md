@@ -25,6 +25,8 @@ Authors:
 
 - Shawn Ligocki <sligocki@cornell.edu>
 
+- Myles Stokowski <mas892@cornell.edu>
+
 - Tom Auer <mta45@cornell.edu>
   ([ORCID](https://orcid.org/0000-0001-8619-7147))
 

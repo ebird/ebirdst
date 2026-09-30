@@ -62,7 +62,7 @@ test_that("list_available_pis()", {
   pis <- list_available_pis("yebsap-example")
   expect_s3_class(pis, "data.frame")
   expect_true(all(c("predictor", "rank_mean", "rank") %in% names(pis)))
-  expect_equal(nrow(pis), 10)
+  expect_equal(nrow(pis), 8)
 
   expect_error(list_available_pis("XXXX"))
 })
@@ -71,7 +71,7 @@ test_that("list_available_pis()", {
 test_that("load_pi()", {
   pi_occ <- load_pi(
     "yebsap-example",
-    predictor = "gsw_c2_pland",
+    predictor = "mcd12q1_lccs1_c14_pland",
     response = "occurrence"
   )
   expect_s4_class(pi_occ, "SpatRaster")
@@ -88,7 +88,7 @@ test_that("load_pi()", {
   expect_error(load_pi("XXXX", predictor = "gsw_c2_pland"))
   expect_error(load_pi(
     "yebsap-example",
-    predictor = "gsw_c2_pland",
+    predictor = "mcd12q1_lccs1_c14_pland",
     response = "abundance"
   ))
   expect_error(load_pi("yebsap-example", predictor = "elevation_250m_sd"))
@@ -114,12 +114,12 @@ test_that("load_pi() downloads data on demand", {
   tmp <- withr::local_tempdir()
   pi <- suppressMessages(load_pi(
     "yebsap-example",
-    predictor = "gsw_c2_pland",
+    predictor = "mcd12q1_lccs1_c14_pland",
     response = "occurrence",
     path = tmp
   ))
   expect_s4_class(pi, "SpatRaster")
-  tifs <- list.files(tmp, pattern = "gsw-c2-pland.*\\.tif$", recursive = TRUE)
+  tifs <- list.files(tmp, pattern = "mcd12q1-lccs1.*\\.tif$", recursive = TRUE)
   expect_length(tifs, 1)
 })
 
@@ -155,7 +155,7 @@ test_that("list_available_pis() only downloads the rangewide csv", {
   tmp <- withr::local_tempdir()
   pis <- suppressMessages(list_available_pis("yebsap-example", path = tmp))
   expect_s3_class(pis, "data.frame")
-  expect_equal(nrow(pis), 10)
+  expect_equal(nrow(pis), 8)
 
   files <- list.files(tmp, recursive = TRUE)
   expect_true(any(grepl("pi_rangewide.csv$", files)))
@@ -166,7 +166,7 @@ test_that("list_available_pis() only downloads the rangewide csv", {
 test_that("available_pi_predictors() uses the list of available data", {
   preds <- available_pi_predictors("yebsap-example", path = ebirdst_data_dir())
   expect_type(preds, "character")
-  expect_true("gsw_c2_pland" %in% preds)
+  expect_true("mcd12q1_lccs1_c14_pland" %in% preds)
   # the other tifs stored alongside the pi rasters aren't predictors
   expect_false(any(grepl("folds|day-of-year", preds)))
 })
@@ -178,7 +178,7 @@ test_that("available_pi_predictors() warns when it falls back to local files", {
   dir.create(pis_dir, recursive = TRUE)
   file.create(file.path(
     pis_dir,
-    "yebsap-example_pi_occurrence_gsw-c2-pland_27km_2023.tif"
+    "yebsap-example_pi_occurrence_mcd12q1-lccs1-c14-pland_27km_2023.tif"
   ))
 
   local_mocked_bindings(
@@ -189,7 +189,7 @@ test_that("available_pi_predictors() warns when it falls back to local files", {
     preds <- available_pi_predictors("yebsap-example", path = tmp),
     "may be incomplete"
   )
-  expect_equal(preds, "gsw_c2_pland")
+  expect_equal(preds, "mcd12q1_lccs1_c14_pland")
 })
 
 

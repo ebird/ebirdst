@@ -27,6 +27,7 @@
 2025/yebsap-example/ppms/yebsap-example_ppm_occ-pr-auc-gt-prev_mean_27km_2025.tif
 2025/yebsap-example/ppms/yebsap-example_ppm_occ-pr-auc-normalized_mean_27km_2025.tif
 2025/yebsap-example/ppms/yebsap-example_ppm_occ-pr-auc_mean_27km_2025.tif
+2025/yebsap-example/ranges/yebsap-example_range_raw_27km_2025.gpkg
 2025/yebsap-example/ranges/yebsap-example_range_smooth_27km_2025.gpkg
 2025/yebsap-example/regional_stats.csv
 2025/yebsap-example/seasonal/yebsap-example_abundance_full-year_max_27km_2025.tif

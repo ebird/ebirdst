@@ -7,7 +7,7 @@ project](https://science.ebird.org/en/status-and-trends) at the [Cornell
 Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to estimate distributions, relative abundances,
 and population trends at high spatial and temporal resolution across the
-full annual cycle of 2,980 bird species globally. These models learn the
+full annual cycle of 2,635 bird species globally. These models learn the
 relationships between bird observations collected through
 [eBird](https://ebird.org/home) and a suite of remotely sensed habitat
 variables, while accounting for the noise and bias inherent in community
@@ -27,13 +27,11 @@ Install `ebirdst` from GitHub with:
 
 ``` r
 
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_github("ebird/ebirdst")
+if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
+pak::pak("ebird/ebirdst")
 ```
 
-This version of `ebirdst` is designed to work with the 2023 version of
+This version of `ebirdst` is designed to work with the 2025 version of
 Status Data Products and the 2022 version of Trends Data Products.
 **Users are strongly discouraged from comparing Status and Trends
 results between years due to methodological differences between
@@ -190,17 +188,17 @@ labels <- pars$weekly_labels
 # the date that each raster layer corresponds to is stored within the labels
 weeks <- as.Date(names(abd))
 print(weeks)
-#>  [1] "2023-01-04" "2023-01-11" "2023-01-18" "2023-01-25" "2023-02-01"
-#>  [6] "2023-02-08" "2023-02-15" "2023-02-22" "2023-03-01" "2023-03-08"
-#> [11] "2023-03-15" "2023-03-22" "2023-03-29" "2023-04-05" "2023-04-12"
-#> [16] "2023-04-19" "2023-04-26" "2023-05-03" "2023-05-10" "2023-05-17"
-#> [21] "2023-05-24" "2023-05-31" "2023-06-07" "2023-06-14" "2023-06-21"
-#> [26] "2023-06-28" "2023-07-05" "2023-07-12" "2023-07-19" "2023-07-26"
-#> [31] "2023-08-02" "2023-08-09" "2023-08-16" "2023-08-23" "2023-08-30"
-#> [36] "2023-09-06" "2023-09-13" "2023-09-20" "2023-09-27" "2023-10-04"
-#> [41] "2023-10-11" "2023-10-18" "2023-10-25" "2023-11-01" "2023-11-08"
-#> [46] "2023-11-15" "2023-11-22" "2023-11-29" "2023-12-06" "2023-12-13"
-#> [51] "2023-12-20" "2023-12-27"
+#>  [1] "2025-01-04" "2025-01-11" "2025-01-18" "2025-01-25" "2025-02-01"
+#>  [6] "2025-02-08" "2025-02-15" "2025-02-22" "2025-03-01" "2025-03-08"
+#> [11] "2025-03-15" "2025-03-22" "2025-03-29" "2025-04-05" "2025-04-12"
+#> [16] "2025-04-19" "2025-04-26" "2025-05-03" "2025-05-10" "2025-05-17"
+#> [21] "2025-05-24" "2025-05-31" "2025-06-07" "2025-06-14" "2025-06-21"
+#> [26] "2025-06-28" "2025-07-05" "2025-07-12" "2025-07-19" "2025-07-26"
+#> [31] "2025-08-02" "2025-08-09" "2025-08-16" "2025-08-23" "2025-08-30"
+#> [36] "2025-09-06" "2025-09-13" "2025-09-20" "2025-09-27" "2025-10-04"
+#> [41] "2025-10-11" "2025-10-18" "2025-10-25" "2025-11-01" "2025-11-08"
+#> [46] "2025-11-15" "2025-11-22" "2025-11-29" "2025-12-06" "2025-12-13"
+#> [51] "2025-12-20" "2025-12-27"
 
 # select a week in the middle of the year
 abd <- abd[[26]]

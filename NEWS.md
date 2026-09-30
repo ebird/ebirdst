@@ -1,3 +1,7 @@
+# ebirdst 4.2025.0
+
+- eBird Status Data Products update for 2025
+
 # ebirdst 4.2023.1
 
 - New function `assign_weeks_to_seasons()` identifies which season each of the 52 weeks of the year falls within for a given species; set `return_df = TRUE` to get a data frame with one row per week instead of a character vector

@@ -12,22 +12,20 @@ ebirdst_version()
 
 ## Value
 
-A list with three components: `status_version_year` is the version year
-for the eBird Status Data Products, `trends_version_year` is the version
-year for the eBird Trends Data Products, `release_year` is the year this
-version of the data were released.
+A list with two components: for the eBird Status Data Products
+
+- `status_version_year`: version year for the eBird Status Data Products
+
+- `trends_version_year` version year for the eBird Trends Data Products
 
 ## Examples
 
 ``` r
 ebirdst_version()
 #> $status_version_year
-#> [1] 2023
+#> [1] 2025
 #> 
 #> $trends_version_year
 #> [1] 2022
-#> 
-#> $release_year
-#> [1] 2025
 #> 
 ```

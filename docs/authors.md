@@ -7,6 +7,8 @@
 
 - **Shawn Ligocki**. Author.
 
+- **Myles Stokowski**. Author.
+
 - **Tom Auer**. Author. [](https://orcid.org/0000-0001-8619-7147)
 
 - **Daniel Fink**. Author. [](https://orcid.org/0000-0002-8368-1248)
@@ -18,14 +20,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/ebird/ebirdst/blob/HEAD/DESCRIPTION)
 
-Strimas-Mackey M, Ligocki S, Auer T, Fink D (2026). *ebirdst: Access and
-Analyze eBird Status and Trends Data Products*. R package version
-4.2023.1, <https://ebird.github.io/ebirdst/>.
+Strimas-Mackey M, Ligocki S, Stokowski M, Auer T, Fink D (2026).
+*ebirdst: Access and Analyze eBird Status and Trends Data Products*. R
+package version 4.2025.0, <https://ebird.github.io/ebirdst/>.
 
     @Manual{,
       title = {ebirdst: Access and Analyze eBird Status and Trends Data Products},
-      author = {Matthew Strimas-Mackey and Shawn Ligocki and Tom Auer and Daniel Fink},
+      author = {Matthew Strimas-Mackey and Shawn Ligocki and Myles Stokowski and Tom Auer and Daniel Fink},
       year = {2026},
-      note = {R package version 4.2023.1},
+      note = {R package version 4.2025.0},
       url = {https://ebird.github.io/ebirdst/},
     }

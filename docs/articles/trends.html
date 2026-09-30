@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebirdst</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2023.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.2025.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,18 +102,18 @@ Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki,
 <span>    <span class="va">rsquared</span>, <span class="va">beta0</span>, <span class="va">trends_version_year</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">trends_runs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 842</span></span>
+<span><span class="co">#&gt; Rows: 639</span></span>
 <span><span class="co">#&gt; Columns: 11</span></span>
-<span><span class="co">#&gt; $ species_code        &lt;chr&gt; "yebsap-example", "abetow", "acafly", "acowoo", "a…</span></span>
-<span><span class="co">#&gt; $ common_name         &lt;chr&gt; "Yellow-bellied Sapsucker", "Abert's Towhee", "Aca…</span></span>
-<span><span class="co">#&gt; $ trends_season       &lt;chr&gt; "breeding", "resident", "breeding", "resident", "b…</span></span>
+<span><span class="co">#&gt; $ species_code        &lt;chr&gt; "yebsap-example", "bbwduc", "fuwduc", "snogoo", "g…</span></span>
+<span><span class="co">#&gt; $ common_name         &lt;chr&gt; "Yellow-bellied Sapsucker", "Black-bellied Whistli…</span></span>
+<span><span class="co">#&gt; $ trends_season       &lt;chr&gt; "breeding", "breeding", "breeding", "nonbreeding",…</span></span>
 <span><span class="co">#&gt; $ trends_region       &lt;chr&gt; "north_america", "north_america", "north_america",…</span></span>
-<span><span class="co">#&gt; $ trends_start_year   &lt;dbl&gt; 2012, 2012, 2012, 2011, 2012, 2015, 2012, 2011, 20…</span></span>
-<span><span class="co">#&gt; $ trends_end_year     &lt;dbl&gt; 2022, 2022, 2022, 2021, 2022, 2022, 2022, 2021, 20…</span></span>
-<span><span class="co">#&gt; $ trends_start_date   &lt;chr&gt; "05-24", "01-25", "05-24", "11-01", "06-21", "07-2…</span></span>
-<span><span class="co">#&gt; $ trends_end_date     &lt;chr&gt; "08-16", "05-10", "08-02", "05-03", "07-12", "12-0…</span></span>
-<span><span class="co">#&gt; $ rsquared            &lt;dbl&gt; 0.8572896, 0.9231821, 0.8570363, 0.8805367, 0.7868…</span></span>
-<span><span class="co">#&gt; $ beta0               &lt;dbl&gt; 0.227000849, -0.013923012, 0.689424792, -0.0926707…</span></span>
+<span><span class="co">#&gt; $ trends_start_year   &lt;dbl&gt; 2012, 2012, 2012, 2011, 2011, 2011, 2012, 2012, 20…</span></span>
+<span><span class="co">#&gt; $ trends_end_year     &lt;dbl&gt; 2022, 2022, 2022, 2021, 2021, 2021, 2022, 2022, 20…</span></span>
+<span><span class="co">#&gt; $ trends_start_date   &lt;chr&gt; "05-24", "05-24", "05-10", "12-27", "12-13", "12-0…</span></span>
+<span><span class="co">#&gt; $ trends_end_date     &lt;chr&gt; "08-16", "08-02", "08-16", "01-18", "01-18", "02-0…</span></span>
+<span><span class="co">#&gt; $ rsquared            &lt;dbl&gt; 0.8572896, 0.8074033, 0.6280615, 0.7749317, 0.7271…</span></span>
+<span><span class="co">#&gt; $ beta0               &lt;dbl&gt; 0.227000849, 0.328531130, 0.711002968, 0.606760074…</span></span>
 <span><span class="co">#&gt; $ trends_version_year &lt;dbl&gt; 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 20…</span></span></code></pre></div>
 </div>
 <p>Information is provided on the trends model for each species, including two predictive performance metrics (<code>rsquared</code> and <code>beta0</code>) that are based on a comparison of actual and estimated trends for a suite of simulations (see Fink et al. 2023 for further details). The columns in the <code>trends_runs</code> data frame are as follows:</p>
@@ -458,9 +458,9 @@ Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki,
 <span><span class="co">#&gt; # A tibble: 3 × 11</span></span>
 <span><span class="co">#&gt;   species_code common_name       trends_season trends_region trends_start_year</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;             &lt;chr&gt;         &lt;chr&gt;                     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 brespa       Brewer's Sparrow  breeding      north_america              2012</span></span>
-<span><span class="co">#&gt; 2 sagspa1      Sagebrush Sparrow breeding      north_america              2012</span></span>
-<span><span class="co">#&gt; 3 sagthr       Sage Thrasher     breeding      north_america              2012</span></span>
+<span><span class="co">#&gt; 1 sagthr       Sage Thrasher     breeding      north_america              2012</span></span>
+<span><span class="co">#&gt; 2 brespa       Brewer's Sparrow  breeding      north_america              2012</span></span>
+<span><span class="co">#&gt; 3 sagspa1      Sagebrush Sparrow breeding      north_america              2012</span></span>
 <span><span class="co">#&gt; # ℹ 6 more variables: trends_end_year &lt;dbl&gt;, trends_start_date &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   trends_end_date &lt;chr&gt;, rsquared &lt;dbl&gt;, beta0 &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   trends_version_year &lt;dbl&gt;</span></span></code></pre></div>
@@ -616,7 +616,7 @@ Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki,
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Tom Auer, Daniel Fink.</p>
+  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown-footer-right">

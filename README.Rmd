@@ -34,10 +34,8 @@ The [eBird Status and Trends project](https://science.ebird.org/en/status-and-tr
 Install `ebirdst` from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_github("ebird/ebirdst")
+if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
+pak::pak("ebird/ebirdst")
 ```
 
 This version of `ebirdst` is designed to work with the `r ebirdst::ebirdst_version()[["status_version_year"]]` version of Status Data Products and the `r ebirdst::ebirdst_version()[["trends_version_year"]]` version of Trends Data Products. **Users are strongly discouraged from comparing Status and Trends results between years due to methodological differences between versions.** If you have accessed and used previous versions and/or may need access to previous versions for reasons related to reproducibility, please contact ebird@cornell.edu and your request will be considered.

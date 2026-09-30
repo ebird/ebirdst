@@ -538,19 +538,19 @@ state_prop_pop <- extract(
                                           
 head(state_prop_pop)
 #>        state   breeding  nonbreeding prebreeding_migration
-#> 1     Alaska 0.07868446 9.979945e-05           0.198995523
-#> 2    Wyoming 0.02749171 4.757064e-02           0.026007670
-#> 3    Montana 0.02354169 5.629944e-02           0.026315816
-#> 4       Utah 0.01155014 3.725202e-02           0.016403725
-#> 5     Nevada 0.01102989 3.515999e-02           0.015289441
-#> 6 California 0.01018862 2.247653e-02           0.009888532
+#> 1     Alaska 0.08017244 1.776397e-05            0.12050538
+#> 2    Wyoming 0.03425632 6.467947e-02            0.03832269
+#> 3    Montana 0.03226821 6.575323e-02            0.03618576
+#> 4       Utah 0.01436672 4.063359e-02            0.01981492
+#> 5 California 0.01433902 2.693670e-02            0.01438695
+#> 6     Nevada 0.01326650 4.083702e-02            0.01926590
 #>   postbreeding_migration
-#> 1             0.07670290
-#> 2             0.02503700
-#> 3             0.03123912
-#> 4             0.01270763
-#> 5             0.01244097
-#> 6             0.00955948
+#> 1             0.09240105
+#> 2             0.03261320
+#> 3             0.04181083
+#> 4             0.01683804
+#> 5             0.01384141
+#> 6             0.01859832
 ```
 
 ### Proportion of North American population
@@ -613,19 +613,19 @@ state_prop_noram_pop <- extract(
                                           
 head(state_prop_noram_pop)
 #>        state   breeding  nonbreeding prebreeding_migration
-#> 1     Alaska 0.28015381 0.0002490995            0.37901331
-#> 2    Wyoming 0.09848225 0.1236457195            0.04958722
-#> 3    Montana 0.08433231 0.1463336443            0.05017475
-#> 4       Utah 0.04137551 0.0968255492            0.03127597
-#> 5     Nevada 0.03951184 0.0913879306            0.02915144
-#> 6 California 0.03645739 0.0583876463            0.01884387
+#> 1     Alaska 0.25336642 2.044192e-05            0.26388650
+#> 2    Wyoming 0.10848680 1.483160e-01            0.08402396
+#> 3    Montana 0.10219063 1.507783e-01            0.07933866
+#> 4       Utah 0.04549815 9.317661e-02            0.04344496
+#> 5 California 0.04540452 6.176530e-02            0.03154142
+#> 6     Nevada 0.04201385 9.364310e-02            0.04224123
 #>   postbreeding_migration
-#> 1             0.19813731
-#> 2             0.06488325
-#> 3             0.08095603
-#> 4             0.03293174
-#> 5             0.03224071
-#> 6             0.02475229
+#> 1             0.20473428
+#> 2             0.07238714
+#> 3             0.09280186
+#> 4             0.03737312
+#> 5             0.03071972
+#> 6             0.04128019
 ```
 
 Notice that the proportions are higher than those in the previous
@@ -679,12 +679,12 @@ prop_pop_weekly_noram <- data.frame(
 )
 head(prop_pop_weekly_noram)
 #>         week   prop_pop
-#> 1 2023-01-04 0.06017463
-#> 2 2023-01-11 0.05451982
-#> 3 2023-01-18 0.05542206
-#> 4 2023-01-25 0.05536107
-#> 5 2023-02-01 0.05683880
-#> 6 2023-02-08 0.06034179
+#> 1 2025-01-04 0.06281901
+#> 2 2025-01-11 0.06161482
+#> 3 2025-01-18 0.06194253
+#> 4 2025-01-25 0.06037058
+#> 5 2025-02-01 0.05985709
+#> 6 2025-02-08 0.06166529
 ```
 
 This data frame gives the weekly proportion of the North American
@@ -698,8 +698,8 @@ population across the weeks in the month of January.
 prop_pop_weekly_noram |>
   filter(month(week) == 1) |>
   summarize(prop_pop = mean(prop_pop))
-#>    prop_pop
-#> 1 0.0563694
+#>     prop_pop
+#> 1 0.06168673
 ```
 
 ### Coastal species
@@ -730,7 +730,7 @@ mexico <- ne_countries(country = "Mexico") |>
 # proportion in mexico
 extract(abd_nonbreeding, mexico, fun = "sum", na.rm = TRUE, ID = FALSE)
 #>   nonbreeding
-#> 1  0.06253108
+#> 1  0.07209617
 ```
 
 According to this method, about 6% of the non-breeding population of
@@ -756,7 +756,7 @@ extract(
   touches = TRUE, ID = FALSE
 )
 #>   nonbreeding
-#> 1  0.07994288
+#> 1   0.0874595
 ```
 
 With these adjustments the estimated proportion of the population
@@ -983,7 +983,7 @@ print(horlar_review)
 #> # A tibble: 1 × 3
 #>   breeding_quality breeding_start breeding_end
 #>   <chr>            <date>         <date>      
-#> 1 2                2023-06-07     2023-08-09
+#> 1 2                2025-06-07     2025-08-09
 ```
 
 This score (2) corresponds to “medium quality”, indicating there is some
@@ -1020,10 +1020,10 @@ print(bernoulli_dev)
 #> resolution  : 27000, 27000  (x, y)
 #> extent      : -1.7226e+07, 1.7226e+07, -8343000, 8343000  (xmin, xmax, ymin, ymax)
 #> coord. ref. : WGS 84 / Equal Earth Greenwich (EPSG:8857)
-#> source      : horlar_ppm_occ-bernoulli-dev_mean_27km_2023.tif
-#> names       :    01-04,     01-11,     01-18,     01-25,     02-01,     02-08, ...
-#> min values  : -1.20164, -0.340517, -0.220324, -0.184706, -0.167553, -0.217626, ...
-#> max values  : 0.516208,  0.516208,  0.500421,  0.419996,  0.419996,  0.360411, ...
+#> source      : horlar_ppm_occ-bernoulli-dev_mean_27km_2025.tif
+#> names       :     01-04,     01-11,     01-18,     01-25,     02-01,    02-08, ...
+#> min values  : -0.226243, -0.363358, -0.363358, -0.363358, -0.850662, -0.53568, ...
+#> max values  :  0.691482,  0.691482,  0.691482,  0.641783,  0.566716, 0.621569, ...
 ```
 
 The data are in the form of a 27 km raster with 52 layers, one for each

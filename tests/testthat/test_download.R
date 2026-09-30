@@ -85,7 +85,7 @@ test_that("ebirdst_download_status() missing species", {
 test_that("ebirdst_download_trends()", {
   # download one species
   path1 <- ebirdst_download_trends(
-    "Pomatorhinus musicus",
+    "Melanerpes formicivorus",
     show_progress = FALSE
   )
   # download multiple species
@@ -117,7 +117,7 @@ test_that("get_species_path()", {
   expect_error(get_species_path("XXXXX"))
   expect_error(get_species_path("XXXXX", check_downloaded = FALSE))
   expect_false(dir.exists(get_species_path(
-    "Yellow Warbler",
+    "Northern Yellow Warbler",
     check_downloaded = FALSE
   )))
 })
