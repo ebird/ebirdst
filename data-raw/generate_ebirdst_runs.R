@@ -9,7 +9,7 @@ library(readr)
 library(stringr)
 
 # release/prediction year
-prediction_year <- 2025
+prediction_year <- ebirdst_version()[["status_version_year"]]
 # S3 bucket for data products
 s3_bucket <- Sys.getenv("EBIRDST_S3_BUCKET")
 
@@ -115,10 +115,10 @@ trends_review <- read_csv(
   show_col_types = FALSE
 ) |>
   mutate(
-    species_code = case_match(
+    species_code = recode_values(
       species_code,
       "norgos2" ~ "norgos",
-      .default = species_code
+      default = species_code
     )
   ) |>
   mutate(
@@ -144,18 +144,18 @@ trends_review <- read_csv(
 setdiff(trends_review$species_code, status_review$species_code)
 
 # combine
-ebirdst_reviews <- left_join(
-  ebirdst_reviews,
+ebirdst_runs <- left_join(
+  status_review,
   trends_review,
   by = "species_code"
 ) |>
   mutate(has_trends = coalesce(has_trends, FALSE)) |>
-  arrange(species_code)
+  arrange(taxonomic_order)
 
 # add a row for yebsap example
-ebirdst_reviews <- ebirdst_reviews |>
+ebirdst_runs <- ebirdst_runs |>
   filter(species_code == "yebsap") |>
   mutate(species_code = "yebsap-example") |>
-  bind_rows(ebirdst_reviews)
+  bind_rows(ebirdst_runs)
 
-usethis::use_data(ebirdst_reviews, overwrite = TRUE)
+usethis::use_data(ebirdst_runs, overwrite = TRUE)

@@ -1,11 +1,25 @@
+library(dplyr)
+library(ebirdst)
+library(glue)
 library(jsonlite)
+library(purrr)
+library(readr)
 library(stringi)
-library(tidyverse)
+library(stringr)
+library(tidyr)
 
-# feature set - status + trends
-pred_list <- file.path("data-raw", "config_status.json") |>
-  read_json(simplifyVector = TRUE) |>
-  pluck("PREDICTOR_LIST")
+# release/prediction year
+prediction_year <- ebirdst_version()[["status_version_year"]]
+# S3 bucket for data products
+s3_bucket <- Sys.getenv("EBIRDST_S3_BUCKET")
+
+# grab an example config.json file
+example_species <- "yebsap"
+src_uri <- glue("{s3_bucket}/{prediction_year}/{example_species}/config.json")
+dst_uri <- file.path(tempdir(), "config.json")
+glue("aws s3 cp {src_uri} {dst_uri}") |>
+  system()
+pred_list <- read_json(dst_uri, simplifyVector = TRUE)[["PREDICTOR_LIST"]]
 # add in trends predictors
 pred_list <- c(
   "longitude",
@@ -16,7 +30,12 @@ pred_list <- c(
 )
 
 # categories
-p <- read_csv("data-raw/ebirdst_features_2023 - predictors.csv") |>
+gs_key <- Sys.getenv("EBIRDST_FEATURES_GS_KEY")
+p <- glue(
+  "https://docs.google.com/spreadsheets/d/{gs_key}/",
+  "export?format=csv&sheet=predictors"
+) |>
+  read_csv(show_col_types = FALSE) |>
   mutate(row = row_number())
 
 # don't need to split
@@ -58,10 +77,11 @@ ebirdst_predictors <- bind_rows(p_nosplit, p_split) |>
 usethis::use_data(ebirdst_predictors, overwrite = TRUE)
 
 # predictor datasets
-ebirdst_predictor_descriptions <- read_csv(
-  "data-raw/ebirdst_features_2023 - predictor_datasets.csv"
+ebirdst_predictor_descriptions <- glue(
+  "https://docs.google.com/spreadsheets/d/{gs_key}/",
+  "export?format=csv&sheet=predictor_datasets"
 ) |>
-  select(!index) |>
+  read_csv(show_col_types = FALSE) |>
   filter(str_detect(predictor, "\\{") | predictor %in% pred_list) |>
   as_tibble()
 

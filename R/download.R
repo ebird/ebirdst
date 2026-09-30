@@ -414,17 +414,18 @@ ebirdst_data_dir <- function() {
 #' version of the R package works with. Versions are defined by the year that
 #' all model estimates are made for.
 #'
-#' @return A list with three components: `status_version_year` is the version year for
-#'   the eBird Status Data Products, `trends_version_year` is the version year for the
-#'   eBird Trends Data Products, `release_year` is the year this version of the
-#'   data were released.
+#' @return A list with two components:
+#'   for the eBird Status Data Products
+#'   - `status_version_year`: version year for the eBird Status Data Products
+#'   - `trends_version_year` version year for the eBird Trends Data Products
+#'
 #' @export
 #'
 #' @examples
 #' ebirdst_version()
 ebirdst_version <- function() {
   list(
-    status_version_year = 2023,
+    status_version_year = 2025,
     trends_version_year = 2022
   )
 }

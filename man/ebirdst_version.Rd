@@ -7,10 +7,12 @@
 ebirdst_version()
 }
 \value{
-A list with three components: \code{status_version_year} is the version year for
-the eBird Status Data Products, \code{trends_version_year} is the version year for the
-eBird Trends Data Products, \code{release_year} is the year this version of the
-data were released.
+A list with two components:
+for the eBird Status Data Products
+\itemize{
+\item \code{status_version_year}: version year for the eBird Status Data Products
+\item \code{trends_version_year} version year for the eBird Trends Data Products
+}
 }
 \description{
 Identify the version of the eBird Status and Trends Data Products that this

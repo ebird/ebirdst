@@ -25,6 +25,7 @@ Authors:
 \itemize{
   \item Matthew Strimas-Mackey \email{mes335@cornell.edu} (\href{https://orcid.org/0000-0001-8929-7776}{ORCID})
   \item Shawn Ligocki \email{sligocki@cornell.edu}
+  \item Myles Stokowski \email{mas892@cornell.edu}
   \item Tom Auer \email{mta45@cornell.edu} (\href{https://orcid.org/0000-0001-8619-7147}{ORCID})
   \item Daniel Fink \email{df36@cornell.edu} (\href{https://orcid.org/0000-0002-8368-1248}{ORCID})
 }
