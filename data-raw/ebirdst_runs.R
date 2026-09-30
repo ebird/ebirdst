@@ -1,24 +1,27 @@
-library(tidyverse)
 library(auk)
+library(dplyr)
 library(ebirdst)
 library(glue)
+library(googlesheets4)
 library(jsonlite)
 library(lubridate)
+library(readr)
+library(stringr)
 
-pred_year <- file.path("data-raw", "config_status.json") |>
-  read_json(simplifyVector = TRUE) |>
-  pluck("SRD_PRED_YEAR")
-
-# s3 species
+# release/prediction year
+prediction_year <- 2025
+# S3 bucket for data products
 s3_bucket <- Sys.getenv("EBIRDST_S3_BUCKET")
-species_codes <- glue("aws s3 ls {s3_bucket}/{pred_year}/") |>
+
+# species with results uploaded to the S3 bucket
+species_codes <- glue("aws s3 ls {s3_bucket}/{prediction_year}/") |>
   paste("awk '{print $2}'", sep = " | ") |>
   system(intern = TRUE) |>
   str_remove_all("/")
 
 # reviews
 gs_key <- Sys.getenv("EBIRDST_STATUS_GS_KEY")
-runs <- glue(
+status_review <- glue(
   "https://docs.google.com/spreadsheets/d/{gs_key}/",
   "export?format=csv"
 ) |>
@@ -28,10 +31,10 @@ runs <- glue(
   rename(resident_quality = full_year_quality) |>
   filter(!is.na(species_code))
 
-# species passing review but missing from s3
-filter(runs, !species_code %in% species_codes)
-# species on s3 but not passing review
-setdiff(species_codes, runs$species_code)
+# species passing review but missing from S3
+filter(status_review, !species_code %in% species_codes)
+# species on S3 but not passing review
+setdiff(species_codes, status_review$species_code)
 
 # correctly na season dates
 seasons <- c(
@@ -41,41 +44,41 @@ seasons <- c(
   "postbreeding_migration",
   "resident"
 )
-is_resident <- runs$summarize_as_resident
+is_resident <- status_review$summarize_as_resident
 for (s in seasons) {
-  s_fail <- runs[[paste0(s, "_quality")]] == 0 |
-    is.na(runs[[paste0(s, "_quality")]])
-  runs[[paste0(s, "_start")]][s_fail] <- NA_character_
-  runs[[paste0(s, "_end")]][s_fail] <- NA_character_
+  s_fail <- status_review[[paste0(s, "_quality")]] == 0 |
+    is.na(status_review[[paste0(s, "_quality")]])
+  status_review[[paste0(s, "_start")]][s_fail] <- NA_character_
+  status_review[[paste0(s, "_end")]][s_fail] <- NA_character_
   if (s == "resident") {
-    runs[[paste0(s, "_start")]][!is_resident] <- NA_character_
-    runs[[paste0(s, "_end")]][!is_resident] <- NA_character_
-    runs[[paste0(s, "_quality")]][!is_resident] <- NA_character_
+    status_review[[paste0(s, "_start")]][!is_resident] <- NA_character_
+    status_review[[paste0(s, "_end")]][!is_resident] <- NA_character_
+    status_review[[paste0(s, "_quality")]][!is_resident] <- NA_character_
   } else {
     # remove any seasonal information for residents
-    runs[[paste0(s, "_start")]][is_resident] <- NA_character_
-    runs[[paste0(s, "_end")]][is_resident] <- NA_character_
-    runs[[paste0(s, "_quality")]][is_resident] <- NA_character_
-    runs[[paste0(s, "_range_modeled")]][is_resident] <- NA_character_
+    status_review[[paste0(s, "_start")]][is_resident] <- NA_character_
+    status_review[[paste0(s, "_end")]][is_resident] <- NA_character_
+    status_review[[paste0(s, "_quality")]][is_resident] <- NA_character_
+    status_review[[paste0(s, "_range_modeled")]][is_resident] <- NA_character_
   }
 }
 
 # default residents to full year
 fy_resident <- is_resident &
-  runs$resident_quality > 0 &
-  is.na(runs$resident_start) &
-  is.na(runs$resident_end)
-runs$resident_start[fy_resident] <- "01-04"
-runs$resident_end[fy_resident] <- "12-28"
+  status_review$resident_quality > 0 &
+  is.na(status_review$resident_start) &
+  is.na(status_review$resident_end)
+status_review$resident_start[fy_resident] <- "01-04"
+status_review$resident_end[fy_resident] <- "12-28"
 
 # clean up
 convert_to_date <- function(x) {
-  ymd(ifelse(is.na(x), NA_character_, paste0(pred_year, "-", x)))
+  ymd(ifelse(is.na(x), NA_character_, paste0(prediction_year, "-", x)))
 }
-ebirdst_runs <- runs |>
+status_review <- status_review |>
   select(!c(common_name, taxon_order)) |>
   inner_join(ebird_taxonomy, by = "species_code") |>
-  arrange(taxon_order) |>
+  arrange(taxonomic_order) |>
   mutate(
     across(ends_with("start"), convert_to_date),
     across(ends_with("end"), convert_to_date),
@@ -83,8 +86,10 @@ ebirdst_runs <- runs |>
   ) |>
   select(
     species_code,
+    taxon_concept_id,
     scientific_name,
     common_name,
+    taxonomic_order,
     is_resident = summarize_as_resident,
     breeding_quality,
     breeding_start,
@@ -104,8 +109,8 @@ ebirdst_runs <- runs |>
     status_version_year
   )
 
-# trends runs
-trends <- read_csv(
+# trends reviews
+trends_review <- read_csv(
   "data-raw/ebird-trends_runs_2022.csv",
   show_col_types = FALSE
 ) |>
@@ -116,8 +121,12 @@ trends <- read_csv(
       .default = species_code
     )
   ) |>
-  transmute(
+  mutate(
     has_trends = TRUE,
+    trends_version_year = ebirdst_version()[["trends_version_year"]]
+  ) |>
+  select(
+    has_trends,
     species_code,
     trends_season = season,
     trends_region = modeled_region,
@@ -127,18 +136,26 @@ trends <- read_csv(
     trends_end_date = end_date,
     rsquared,
     beta0,
-    trends_version_year = ebirdst_version()[["trends_version_year"]]
+    trends_version_year
   )
 
+# species codes in trends but not status
+# these are likely taxonomy changes since trends is quite outdated
+setdiff(trends_review$species_code, status_review$species_code)
+
 # combine
-ebirdst_runs <- left_join(ebirdst_runs, trends, by = "species_code") |>
+ebirdst_reviews <- left_join(
+  ebirdst_reviews,
+  trends_review,
+  by = "species_code"
+) |>
   mutate(has_trends = coalesce(has_trends, FALSE)) |>
   arrange(species_code)
 
 # add a row for yebsap example
-ebirdst_runs <- ebirdst_runs |>
+ebirdst_reviews <- ebirdst_reviews |>
   filter(species_code == "yebsap") |>
   mutate(species_code = "yebsap-example") |>
-  bind_rows(ebirdst_runs)
+  bind_rows(ebirdst_reviews)
 
-usethis::use_data(ebirdst_runs, overwrite = TRUE)
+usethis::use_data(ebirdst_reviews, overwrite = TRUE)

@@ -425,7 +425,6 @@ ebirdst_data_dir <- function() {
 ebirdst_version <- function() {
   list(
     status_version_year = 2023,
-    trends_version_year = 2022,
-    release_year = 2025
+    trends_version_year = 2022
   )
 }

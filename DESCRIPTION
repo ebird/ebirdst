@@ -6,6 +6,7 @@ Authors@R: c(
     person("Matthew", "Strimas-Mackey", , "mes335@cornell.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8929-7776")),
     person("Shawn", "Ligocki", , "sligocki@cornell.edu", role = "aut"),
+    person("Myles", "Stokowski", , "mas892@cornell.edu", role = "aut"),
     person("Tom", "Auer", , "mta45@cornell.edu", role = "aut",
            comment = c(ORCID = "0000-0001-8619-7147")),
     person("Daniel", "Fink", , "df36@cornell.edu", role = "aut",

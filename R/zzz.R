@@ -1,7 +1,6 @@
 .onAttach <- function(libname, pkgname) {
-  v <- ebirdst_version()
-  svy <- v[["status_version_year"]]
-  tvy <- v[["trends_version_year"]]
+  svy <- ebirdst_version()[["status_version_year"]]
+  tvy <- ebirdst_version()[["trends_version_year"]]
 
   status_citation <- paste(
     "Cite the eBird Status Data Products using: ",
