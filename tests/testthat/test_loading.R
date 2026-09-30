@@ -86,7 +86,11 @@ test_that("load_pi()", {
   expect_equal(terra::nlyr(pi_count), 52)
 
   expect_error(load_pi("XXXX", predictor = "gsw_c2_pland"))
-  expect_error(load_pi("yebsap-example", predictor = "gsw_c2_pland", response = "abundance"))
+  expect_error(load_pi(
+    "yebsap-example",
+    predictor = "gsw_c2_pland",
+    response = "abundance"
+  ))
   expect_error(load_pi("yebsap-example", predictor = "elevation_250m_sd"))
 })
 

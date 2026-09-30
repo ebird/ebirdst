@@ -294,7 +294,10 @@ test_that("grid_sample_stratified() validates cell_quantile_cap", {
   expect_error(grid_sample_stratified(checklists, cell_quantile_cap = 0))
   expect_error(grid_sample_stratified(checklists, cell_quantile_cap = -0.1))
   expect_error(grid_sample_stratified(checklists, cell_quantile_cap = 1.5))
-  expect_error(grid_sample_stratified(checklists, cell_quantile_cap = c(0.5, 0.6)))
+  expect_error(grid_sample_stratified(
+    checklists,
+    cell_quantile_cap = c(0.5, 0.6)
+  ))
   # a value of 1 is a valid no-op, not an error
   expect_no_error(grid_sample_stratified(checklists, cell_quantile_cap = 1))
 })

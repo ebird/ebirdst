@@ -1,0 +1,16 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+name: lint
+
+permissions: read-all
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: etiennebacher/setup-jarl@v0.1.0

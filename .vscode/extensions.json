@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "Posit.air-vscode"
+        "Posit.air-vscode",
+        "EtienneBacher.jarl-vscode"
     ]
 }

@@ -45,7 +45,10 @@ test_that("assign_weeks_to_seasons() return_df = TRUE", {
 
   # included weeks match the character vector output
   seasons <- assign_weeks_to_seasons("yebsap-example", min_quality = 3)
-  expect_equal(seasons_df[["season"]][seasons_df[["include"]]], seasons[!is.na(seasons)])
+  expect_equal(
+    seasons_df[["season"]][seasons_df[["include"]]],
+    seasons[!is.na(seasons)]
+  )
   expect_true(all(seasons_df[["quality"]][seasons_df[["include"]]] >= 3))
 
   # quality is never missing; weeks outside any season score 0
