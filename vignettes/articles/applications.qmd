@@ -262,7 +262,7 @@ ggplot(chronology) +
 
 ## Multi-species {#chron-multi}
 
-Migration chronologies can also be overlaid for multiple species, allowing for comparison of migration timing between species. However, comparing eBird Status Data Products across species requires extra caution because the models give *relative* rather than absolute abundance. For example, species differ in their detectability, and this may cause differences in relative abundance. To address this, rather than use the relative abundance within Montana, we'll calculate the proportion of the global modeled population falling within Montana. Since proportion of population is a ratio of relative abundance values, it helps to control for difference in detectability, allowing us to compare multiple species.
+Migration chronologies can also be overlaid for multiple species, allowing for comparison of migration timing between species. However, comparing eBird Status Data Products across species requires extra caution because the models give *relative* rather than absolute abundance. For example, species differ in their detectability in the field, and this may cause differences in modeled relative abundance. To address this, rather than use the relative abundance within Montana, we'll calculate the proportion of the global modeled population falling within Montana. Since proportion of population is a ratio of relative abundance values, it helps to control for difference in detectability, allowing us to compare multiple species.
 
 Following a similar approach to that used for the single species chronology above, we'll estimate migration chronologies for a suite of grassland species in Montana. However, in this example we'll estimate the proportion of population falling within Montana rather than the mean abundance.
 
@@ -340,6 +340,8 @@ ggplot(chronologies) +
 A variety of patterns are revealed in this migration chronology. Several of the grassland species (e.g., Baird's Sparrow) have more than 30% of their breeding populations entirely within the state of Montana. Timing of arrival and departure varies between species, with Western Meadowlark spending the longest amount of time in the state and Bobolink spending the least amount of time.
 
 Finally, Sprague's Pipit deserves special attention: there's a huge spike in proportion of population during post-breeding migration. Is this a true reflection of the ecology of this species or an issue with the model estimates? It's important to bring a critical eye to outliers in the data and ask these questions. In this particular case, looking at the weekly maps on the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/species/sprpip/abundance-map-weekly?week=34) for the end of August reveals that the species appears to almost completely disappear for a couple weeks. Sprague's Pipit is quite challenging to detect during migration and it appears the models are struggling to pick up a signal, resulting in estimates that are missing large parts of the population. We've included this species as a reminder to investigate any irregularities in the estimates you discover and consult an expert on the species if needed.
+
+<!-- MAS: this Sprague's Pipit irregularity may change with the new year of data -->
 
 # Regional proportion of population {#stats}
 
@@ -612,7 +614,7 @@ This map does a better job of highlighting the most important areas for grasslan
 importance_proj <- trim(project(importance, crs_laea))
 region_boundary_proj <- project(region_boundary, crs_laea)
 # basemap
-par(mar = c(0, 0, 0, 0))
+par(mar = c(4, 0, 2, 0))
 plot(region_boundary_proj,
   col = "grey", axes = FALSE,
   main = "Areas of importance for grassland birds in Montana"
@@ -624,7 +626,7 @@ fields::image.plot(
   zlim = c(0, 1), legend.only = TRUE,
   col = viridisLite::viridis(100),
   breaks = seq(0, 1, length.out = 101),
-  smallplot = c(0.15, 0.85, 0.12, 0.15),
+  smallplot = c(0.15, 0.85, 0.06, 0.09),
   horizontal = TRUE,
   axis.args = list(
     at = c(0, 0.5, 1),
