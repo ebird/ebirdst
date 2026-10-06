@@ -90,7 +90,7 @@ All species go through a process of review by an expert on that species prior to
 
 The **seasonal dates** define the weeks that fall within each season. Breeding and non-breeding season dates are defined for each species as the weeks during those seasons when the species' population does not move. For this reason, these seasons are also described as stationary periods. Migration periods are defined as the periods of movement between the stationary non-breeding and breeding seasons. Note that for many species these migratory periods include not only movement from breeding grounds to non-breeding grounds, but also post-breeding dispersal, molt migration, and other movements. 
 
-Reviewers also examine the model estimates for each season to assess the amount of extrapolation or omission present in the model, and assign an associated quality rating ranging from 0 (lowest quality) to 3 (highest quality). Extrapolation refers to cases where the model predicts occurrence where the species is known to be absent, while omission refers to the model failing to predict occurrence where a species is known to be present.
+Reviewers also examine the model estimates for each season to assess the amount of extrapolation or omission present in the model, and assign an associated **quality** rating ranging from 0 (lowest quality) to 3 (highest quality). Extrapolation refers to cases where the model predicts occurrence where the species is known to be absent, while omission refers to the model failing to predict occurrence where a species is known to be present.
 
 A rating of 0 implies this season failed review and model results should not be used at all for this period. Ratings of 1-3 correspond to a gradient of more to less extrapolation and/or omission, and we often use a traffic light analogy when referring to them:
 
@@ -344,7 +344,7 @@ See the [applications vignette](https://ebird.github.io/ebirdst/articles/applica
 In addition to the species-specific data products discussed above, `ebirdst` provides access to two species-agnostic data products from our data coverage workflow. The data products in GeoTIFF format provide weekly estimates on a regular 3 km by 3 km grid of
 
 1. **Site selection probability:** the modeled probability (0-1) that a grid cell of a certain habitat configuration received an eBird checklist within that region and season.
-2. **Spatial coverage:** the fraction (0-1) of grid cells within that region and season that checklists for the given week.
+2. **Spatial coverage:** the fraction (0-1) of grid cells within that region and season that have checklists for the given week.
 
 These data products identify areas where the coverage of eBird data is relatively high or low, which can be used to prioritize areas for increased data collection. For example, to load and map the site selection probability for the week of May 10, use `load_data_coverage()`, which will download the requested weeks automatically if they haven't already been downloaded. If you prefer to download the data coverage products in advance, use `ebirdst_download_data_coverage()`.
 
