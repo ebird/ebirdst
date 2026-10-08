@@ -345,13 +345,13 @@ Migration chronologies can also be overlaid for multiple species,
 allowing for comparison of migration timing between species. However,
 comparing eBird Status Data Products across species requires extra
 caution because the models give *relative* rather than absolute
-abundance. For example, species differ in their detectability, and this
-may cause differences in relative abundance. To address this, rather
-than use the relative abundance within Montana, we’ll calculate the
-proportion of the global modeled population falling within Montana.
-Since proportion of population is a ratio of relative abundance values,
-it helps to control for difference in detectability, allowing us to
-compare multiple species.
+abundance. For example, species differ in their detectability in the
+field, and this may cause differences in modeled relative abundance. To
+address this, rather than use the relative abundance within Montana,
+we’ll calculate the proportion of the global modeled population falling
+within Montana. Since proportion of population is a ratio of relative
+abundance values, it helps to control for difference in detectability,
+allowing us to compare multiple species.
 
 Following a similar approach to that used for the single species
 chronology above, we’ll estimate migration chronologies for a suite of
@@ -916,7 +916,7 @@ vignette](#map-projection).
 importance_proj <- trim(project(importance, crs_laea))
 region_boundary_proj <- project(region_boundary, crs_laea)
 # basemap
-par(mar = c(0, 0, 0, 0))
+par(mar = c(4, 0, 2, 0))
 plot(region_boundary_proj,
   col = "grey", axes = FALSE,
   main = "Areas of importance for grassland birds in Montana"
@@ -928,7 +928,7 @@ fields::image.plot(
   zlim = c(0, 1), legend.only = TRUE,
   col = viridisLite::viridis(100),
   breaks = seq(0, 1, length.out = 101),
-  smallplot = c(0.15, 0.85, 0.12, 0.15),
+  smallplot = c(0.15, 0.85, 0.06, 0.09),
   horizontal = TRUE,
   axis.args = list(
     at = c(0, 0.5, 1),

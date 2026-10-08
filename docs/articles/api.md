@@ -7,7 +7,7 @@ users; however, data users can interact with this API directly. For
 example, some data users may wish to use the API to access data using
 bash or Python scripts. This vignette outlines how the API is used. All
 API requests require an access key, which can be obtained by visiting
-https://ebird.org/st/request.
+<https://ebird.org/st/request>.
 
 ## API Endpoints
 
@@ -23,12 +23,12 @@ To list available files for a given species use:
 
 where `species_code` is the 6-letter eBird species code, `access_key` is
 the user specific access key, and `{version_year}` is the version
-(`2023` for Status data products and `2022` for Trends data products).
+(`2025` for Status data products and `2022` for Trends data products).
 The result will be a list of file objects in JSON format. For example,
 assuming your access key is `XXXXXXXX`, to list available Status data
 products for Wood Thrush (species code `woothr`) use:
 
-    https://st-download.ebird.org/v1/list-obj/2023/woothr?key=XXXXXXXX
+    https://st-download.ebird.org/v1/list-obj/2025/woothr?key=XXXXXXXX
 
 which will return:
 

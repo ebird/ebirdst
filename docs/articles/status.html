@@ -78,7 +78,7 @@
 <section class="section level2"><h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
 <p>The study and conservation of the natural world relies on detailed information about the distributions, abundances, and population trends of species over time. For many taxa, this information is challenging to obtain at relevant geographic scales. The goal of the eBird Status and Trends project is to use data from <a href="https://ebird.org/home" class="external-link">eBird</a>, the global participatory science bird monitoring program administered by the Cornell Lab of Ornithology, to generate a reliable, standardized source of biodiversity information for the world’s bird populations. To translate the eBird observations into robust data products, we use machine learning to fill spatiotemporal gaps, using local land cover descriptions derived from remote sensing data, while controlling for biases inherent in species observations collected by community scientists. See Fink et al. (2019) for more information about the analysis used to generate these data.</p>
-<p>This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for 2,635 species for the year 2025. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.</p>
+<p>This vignette gives an overview of the eBird Status Data Products, which estimate the full annual cycle distributions, relative abundances, and habitat associations for 3,499 species for the year 2025. For each species, distribution and abundance estimates are available for all 52 weeks of the year across a regular 3 km by 3 km square grid of cells covering the globe. Variation in detectability associated with the search effort is controlled by standardizing the estimates as the expected occurrence rate and count of the species on a 1 hour, 2 km checklist by an expert eBird observer at the optimal time of day and with optimal weather conditions for detecting the species.</p>
 </section><section class="section level2"><h2 id="access">Data access<a class="anchor" aria-label="anchor" href="#access"></a>
 </h2>
 <p>Data access is granted through an Access Request Form at: https://ebird.org/st/request. Filling out this form generates a key to be used with this R package. Our terms of use have been designed to be quite permissive in many cases, particularly academic and research use. When requesting data access, please be sure to carefully read the terms of use and ensure that your intended use is not restricted.</p>
@@ -124,13 +124,13 @@
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">ebirdst_runs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 2,636</span></span>
+<span><span class="co">#&gt; Rows: 3,500</span></span>
 <span><span class="co">#&gt; Columns: 32</span></span>
-<span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example", "ostric2", "emu1", "l…</span></span>
+<span><span class="co">#&gt; $ species_code                   &lt;chr&gt; "yebsap-example", "ostric2", "emu1", "s…</span></span>
 <span><span class="co">#&gt; $ taxon_concept_id               &lt;chr&gt; "avibase-9BE68BD3", "avibase-2247CB05",…</span></span>
 <span><span class="co">#&gt; $ scientific_name                &lt;chr&gt; "Sphyrapicus varius", "Struthio camelus…</span></span>
 <span><span class="co">#&gt; $ common_name                    &lt;chr&gt; "Yellow-bellied Sapsucker", "Common Ost…</span></span>
-<span><span class="co">#&gt; $ taxonomic_order                &lt;dbl&gt; 11126, 2, 15, 38, 44, 45, 49, 89, 92, 1…</span></span>
+<span><span class="co">#&gt; $ taxonomic_order                &lt;dbl&gt; 11126, 2, 15, 21, 24, 25, 27, 29, 32, 3…</span></span>
 <span><span class="co">#&gt; $ is_resident                    &lt;lgl&gt; FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TR…</span></span>
 <span><span class="co">#&gt; $ breeding_quality               &lt;chr&gt; "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
 <span><span class="co">#&gt; $ breeding_start                 &lt;date&gt; 2025-05-24, NA, NA, NA, NA, NA, NA, NA…</span></span>
@@ -144,9 +144,9 @@
 <span><span class="co">#&gt; $ prebreeding_migration_quality  &lt;chr&gt; "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
 <span><span class="co">#&gt; $ prebreeding_migration_start    &lt;date&gt; 2025-03-01, NA, NA, NA, NA, NA, NA, NA…</span></span>
 <span><span class="co">#&gt; $ prebreeding_migration_end      &lt;date&gt; 2025-05-17, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA, "2", "2", "3", "2", "3", "3", "3", …</span></span>
-<span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA, 2025-01-04, 2025-01-04, 2025-04-26…</span></span>
-<span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA, 2025-12-27, 2025-12-27, 2025-08-30…</span></span>
+<span><span class="co">#&gt; $ resident_quality               &lt;chr&gt; NA, "2", "2", "3", "2", "1", "1", "3", …</span></span>
+<span><span class="co">#&gt; $ resident_start                 &lt;date&gt; NA, 2025-01-04, 2025-01-04, 2025-01-04…</span></span>
+<span><span class="co">#&gt; $ resident_end                   &lt;date&gt; NA, 2025-12-27, 2025-12-27, 2025-12-27…</span></span>
 <span><span class="co">#&gt; $ status_version_year            &lt;dbl&gt; 2025, 2025, 2025, 2025, 2025, 2025, 202…</span></span>
 <span><span class="co">#&gt; $ has_trends                     &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, FALSE, FALSE…</span></span>
 <span><span class="co">#&gt; $ trends_season                  &lt;chr&gt; "breeding", NA, NA, NA, NA, NA, NA, NA,…</span></span>
@@ -162,7 +162,7 @@
 <p>If you’re working in RStudio, you can use <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> to interactively explore this data frame.</p>
 <p>All species go through a process of review by an expert on that species prior to being released. The <code>ebirdst_runs</code> data frame contains information from this review process. For migrants, reviewers assess the model estimates for each of the four seasons: breeding, non-breeding, pre-breeding migration, and post-breeding migration. Resident (i.e., non-migratory) species are identified by having <code>TRUE</code> in the <code>is_resident</code> column of <code>ebirdst_runs</code>, and these species are assessed across the whole year rather than seasonally. <code>ebirdst_runs</code> contains two important pieces of information for each season: a <strong>quality</strong> rating and <strong>seasonal dates</strong>.</p>
 <p>The <strong>seasonal dates</strong> define the weeks that fall within each season. Breeding and non-breeding season dates are defined for each species as the weeks during those seasons when the species’ population does not move. For this reason, these seasons are also described as stationary periods. Migration periods are defined as the periods of movement between the stationary non-breeding and breeding seasons. Note that for many species these migratory periods include not only movement from breeding grounds to non-breeding grounds, but also post-breeding dispersal, molt migration, and other movements.</p>
-<p>Reviewers also examine the model estimates for each season to assess the amount of extrapolation or omission present in the model, and assign an associated quality rating ranging from 0 (lowest quality) to 3 (highest quality). Extrapolation refers to cases where the model predicts occurrence where the species is known to be absent, while omission refers to the model failing to predict occurrence where a species is known to be present.</p>
+<p>Reviewers also examine the model estimates for each season to assess the amount of extrapolation or omission present in the model, and assign an associated <strong>quality</strong> rating ranging from 0 (lowest quality) to 3 (highest quality). Extrapolation refers to cases where the model predicts occurrence where the species is known to be absent, while omission refers to the model failing to predict occurrence where a species is known to be present.</p>
 <p>A rating of 0 implies this season failed review and model results should not be used at all for this period. Ratings of 1-3 correspond to a gradient of more to less extrapolation and/or omission, and we often use a traffic light analogy when referring to them:</p>
 <ol type="1">
 <li>
@@ -528,7 +528,7 @@
 <li>
 <strong>Site selection probability:</strong> the modeled probability (0-1) that a grid cell of a certain habitat configuration received an eBird checklist within that region and season.</li>
 <li>
-<strong>Spatial coverage:</strong> the fraction (0-1) of grid cells within that region and season that checklists for the given week.</li>
+<strong>Spatial coverage:</strong> the fraction (0-1) of grid cells within that region and season that have checklists for the given week.</li>
 </ol>
 <p>These data products identify areas where the coverage of eBird data is relatively high or low, which can be used to prioritize areas for increased data collection. For example, to load and map the site selection probability for the week of May 10, use <code><a href="../reference/load_data_coverage.html">load_data_coverage()</a></code>, which will download the requested weeks automatically if they haven’t already been downloaded. If you prefer to download the data coverage products in advance, use <code><a href="../reference/ebirdst_download_data_coverage.html">ebirdst_download_data_coverage()</a></code>.</p>
 <div class="cell" data-layout-align="center">

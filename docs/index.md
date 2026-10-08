@@ -7,7 +7,7 @@ project](https://science.ebird.org/en/status-and-trends) at the [Cornell
 Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to estimate distributions, relative abundances,
 and population trends at high spatial and temporal resolution across the
-full annual cycle of 2,635 bird species globally. These models learn the
+full annual cycle of 3,499 bird species globally. These models learn the
 relationships between bird observations collected through
 [eBird](https://ebird.org/home) and a suite of remotely sensed habitat
 variables, while accounting for the noise and bias inherent in community
