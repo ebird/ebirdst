@@ -8,9 +8,10 @@
 #' already been downloaded, they will be downloaded automatically on first use.
 #'
 #' @param species character; the species to load data for, given as a scientific
-#'   name, common name or six-letter species code (e.g. "woothr"). The full list
-#'   of valid species is in the [ebirdst_runs] data frame included in this
-#'   package. To download the example dataset, use `"yebsap-example"`.
+#'   name, common name or species code (typically 6 letters, e.g. "woothr").
+#'   The full list of valid species is in the [ebirdst_runs] data frame
+#'   included in this package. For the example dataset, use
+#'   `"yebsap-example"`.
 #' @param product character; eBird Status raster product to load: occurrence,
 #'   count, relative abundance, or proportion of population. See Details for a
 #'   detailed explanation of each of these products.
