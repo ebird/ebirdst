@@ -36,6 +36,9 @@ filter(status_review, !species_code %in% species_codes)
 # species on S3 but not passing review
 setdiff(species_codes, status_review$species_code)
 
+# filter to species on s3
+status_review <- filter(status_review, species_code %in% species_codes)
+
 # correctly na season dates
 seasons <- c(
   "breeding",
