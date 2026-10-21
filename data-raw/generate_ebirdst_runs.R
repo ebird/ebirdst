@@ -15,7 +15,7 @@ s3_bucket <- Sys.getenv("EBIRDST_S3_BUCKET")
 
 # species with results uploaded to the S3 bucket
 species_codes <- glue("aws s3 ls {s3_bucket}/{prediction_year}/") |>
-  paste("awk '{print $2}'", sep = " | ") |>
+  paste("grep PRE", "awk '{print $2}'", sep = " | ") |>
   system(intern = TRUE) |>
   str_remove_all("/")
 
