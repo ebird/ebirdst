@@ -45,7 +45,7 @@ trends_runs <- ebirdst_runs |>
     rsquared, beta0, trends_version_year
   )
 glimpse(trends_runs)
-#> Rows: 696
+#> Rows: 695
 #> Columns: 11
 #> $ species_code        <chr> "yebsap-example", "bbwduc", "fuwduc", "snogoo", "g…
 #> $ common_name         <chr> "Yellow-bellied Sapsucker", "Black-bellied Whistli…

@@ -40,6 +40,7 @@ library(rnaturalearth)
 library(scico)
 library(sf)
 library(terra)
+library(tidyr)
 extract <- terra::extract
 ```
 
@@ -963,6 +964,403 @@ Prioritization. Tools such as the R package
 [`prioritizr`](https://prioritizr.net/) can be used in conjunction with
 the eBird Status Data Products to solve spatial conservation planning
 problems with a broad range of objectives and constraints.
+
+## Migratory bird stewardship connections
+
+> **Goal:** for a suite of species that breed in a focal region,
+> identify where those species concentrate during the non-breeding
+> season, weighted by how much of each species’ breeding population the
+> focal region holds. This information can be used to highlight
+> “migratory connections” between geographies, helping conservation
+> organizations in one region identify and engage partners in the other.
+
+Migratory species link the geographies they pass through over the course
+of the year, and conservation investments in one location can have
+consequences for species far away during other seasons. For example,
+conservation of migratory birds that breed in the forests of the eastern
+United states relies both on protecting those forests and on protecting
+the non-breeding habitat of these species in Central and South America.
+Partners in Flight ([Stewart et
+al. 2023](https://partnersinflight.org/resources/pif-technical-series-10-making-connections-appendices-and-maps/making-connections-for-bird-conservation-2nd-edition_26_7_2023english/))
+developed a framework for identifying these connected geographies using
+eBird Status Data Products referred to as “migratory bird connections”
+or “stewardship connections”: for a suite of species that breed in a
+focal region, the areas where those species concentrate during the
+non-breeding season, weighted by how much of each species’ breeding
+population the region holds.
+
+As an example, we’ll identify the important non-breeding areas for
+species that breed in West Virginia. We’ll use the pre-calculated
+regional statistics accessed with
+[`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md),
+which give us both the list of species that breed in West Virginia and
+the weights needed to combine them, without having to work with boundary
+polygons and raw abundance rasters directly. We’ll also use 27 km
+resolution data throughout to keep downloads small; as with the
+[regional statistics example above](#stats-custom), 3 km data could be
+used instead for higher resolution maps at the cost of larger downloads
+and slower processing.
+
+``` r
+
+regional_stats <- ebirdst_regional_stats()
+```
+
+We’ll start by identifying the species that breed in West Virginia, then
+use the non-breeding proportion of population rasters for those species,
+weighted by how much of each species’ breeding population occurs in West
+Virginia, to build a map of important non-breeding areas. We include
+species that have at least 1% of their breeding population in West
+Virginia and for which at least 85% of the non-breeding population
+migrates out of West Virginia. This ensures that the species are
+migratory and that West Virginia has a meaningful stewardship
+responsibility for them. These thresholds can be adjusted as can the
+specie list, for example, by including only species of conservation
+concern or species associated with a specific habitat.
+
+``` r
+
+wv_breeding <- regional_stats |>
+  filter(
+    region_name == "West Virginia",
+    season %in% c("breeding", "nonbreeding")
+  ) |>
+  select(species_code, season, total_pop_percent) |>
+  pivot_wider(
+    names_from = season,
+    values_from = total_pop_percent,
+    values_fill = 0
+  ) |>
+  filter(
+    # at least 1% of the breeding population occurs in the region
+    breeding >= 0.01,
+    # at least 85% of non-breeding population migrates out of the region
+    (1 - nonbreeding / breeding) >= 0.85
+  ) |>
+  # restrict to species that passed the expert review process for both seasons
+  inner_join(
+    filter(
+      ebirdst_runs,
+      !is_resident,
+      breeding_quality > 0,
+      nonbreeding_quality > 0
+    ),
+    by = "species_code"
+  ) |>
+  # rasters are combined using the % of breeding population as the weight
+  select(species_code, weight = breeding) |>
+  arrange(desc(weight))
+nrow(wv_breeding)
+#> [1] 29
+head(wv_breeding)
+#> # A tibble: 6 × 2
+#>   species_code weight
+#>   <chr>         <dbl>
+#> 1 cerwar       0.272 
+#> 2 woewar1      0.109 
+#> 3 scatan       0.0953
+#> 4 louwat       0.0947
+#> 5 buwwar       0.0930
+#> 6 woothr       0.0735
+```
+
+The `weight` column gives the proportion of each species’ global
+breeding population occurring in West Virginia; this is the same
+statistic used in the [regional proportion of population](#stats)
+section above, just read directly from the pre-calculated file rather
+than calculated from the raster data. We’ll use it to weight each
+species’ contribution to the stewardship connections map: species for
+which West Virginia holds a larger share of the breeding population
+contribute more to the map of non-breeding areas.
+
+``` r
+
+# for each species, weight the non-breeding proportion of population raster
+# by the proportion of its breeding population in west virginia, then sum
+# across species
+nonbreeding_layers <- list()
+for (i in seq_len(nrow(wv_breeding))) {
+  species_code <- wv_breeding$species_code[i]
+  weight <- wv_breeding$weight[i]
+  prop_pop <- load_raster(
+    species = species_code,
+    product = "proportion-population",
+    period = "seasonal",
+    resolution = "27km"
+  )
+  nonbreeding_layers[[species_code]] <- prop_pop[["nonbreeding"]] * weight
+}
+connections_wv <- sum(rast(nonbreeding_layers), na.rm = TRUE)
+```
+
+Now let’s map the result. We’ll keep the raster in its native Equal
+Earth projection and simply crop to a bounding box covering Mexico,
+Central America, the Caribbean, and South America, where we expect the
+non-breeding hotspots to fall. Because the summed raster has non-zero
+values spread across a very large area, including the broad, low-density
+edges of many species’ ranges, a simple quantile scale over the full
+range of values ends up dominated by this diffuse background and washes
+out the strongest concentrations. Instead, we zero out cells below the
+median of the non-zero values (labeled “Low” in the legend), then split
+the remaining upper half of values into deciles for the color ramp
+(“Moderate” to “High”).
+
+``` r
+
+# crop to a bounding box covering the neotropics, defined in geographic
+# coordinates then transformed to match the raster's native projection
+neotropics_ext <- st_bbox(
+  c(xmin = -118, xmax = -34, ymin = -30, ymax = 33),
+  crs = 4326
+) |>
+  st_as_sfc() |>
+  st_transform(crs(connections_wv)) |>
+  vect() |>
+  ext()
+
+# cells below the median of the non-zero values are treated as "low" and
+# zeroed out; the remaining upper-half values are split into deciles for
+# the color ramp, so the ramp's resolution is concentrated where the
+# strongest stewardship connections are
+v <- values(connections_wv, na.rm = TRUE, mat = FALSE)
+v_nonzero <- v[v > 0]
+cutoff <- quantile(v_nonzero, 0.5)
+connections_wv_binned <- ifel(connections_wv < cutoff, 0, connections_wv)
+v_upper <- v_nonzero[v_nonzero >= cutoff]
+breaks <- c(0, quantile(v_upper, seq(0, 1, by = 0.1)))
+pal <- c("#e6e6e6", ebirdst_palettes(length(breaks) - 2))
+
+# basemap transformed to match the raster's native projection
+countries <- ne_countries(returnclass = "sf") |>
+  st_geometry() |>
+  st_transform(crs(connections_wv_binned))
+
+plot(neotropics_ext, col = NA, border = NA, axes = FALSE, mar = c(0, 0, 1, 2))
+plot(countries, col = "#cfcfcf", border = "#ffffff", add = TRUE)
+plot(connections_wv_binned,
+  breaks = breaks, col = pal,
+  maxcell = ncell(connections_wv_binned),
+  legend = FALSE, add = TRUE
+)
+plot(vect(countries), border = "#ffffff", lwd = 1, add = TRUE)
+
+# legend
+bin_width <- 1 / (length(breaks) - 1)
+image.plot(
+  zlim = c(0, 1),
+  breaks = seq(0, 1, length.out = length(breaks)),
+  col = pal,
+  smallplot = c(0.87, 0.9, 0.2, 0.8),
+  legend.only = TRUE,
+  axis.args = list(
+    at = c(bin_width / 2, 3 * bin_width / 2, 1 - bin_width / 2),
+    labels = c("Low", "Moderate", "High"),
+    col.axis = "black", fg = NA, lwd.ticks = 0, line = -0.5, cex.axis = 0.75
+  ),
+  legend.args = list(
+    text = "Strength of connection",
+    side = 2,
+    line = 0.25,
+    font = 2
+  )
+)
+```
+
+![](applications_files/figure-html/connections-wv-map-1.png)
+
+The resulting map highlights a corridor running from Mexico down through
+Central America and along the Andes, consistent with the non-breeding
+ranges of many eastern deciduous forest species (e.g., Cerulean Warbler,
+Worm-eating Warbler, Louisiana Waterthrush) that breed in West
+Virginia’s Appalachian forests.
+
+### Reversing the direction: non-breeding to breeding
+
+[Lello-Smith et
+al. (2026)](https://doi.org/10.1016/j.biocon.2025.111551) demonstrated
+how this approach can be used in reverse: for a suite of species that
+spend the non-breeding season in a focal region, we can identify where
+those species concentrate during the breeding season, weighted by how
+much of each species’ non-breeding population the focal region holds. As
+an example, we’ll use the Petén department of Guatemala, home to the
+Maya Biosphere Reserve and part of the Selva Maya, one of the [Five
+Great Forests of
+Mesoamerica](https://programs.wcs.org/gcf-the5greatforests/en-us)
+discussed by Lello-Smith et al. (2026), similar to the sister landscape
+maps in Figure 4 of that paper. The approach is identical to the West
+Virginia example above with the seasons swapped: species and weights
+come from the non-breeding season, and we sum the breeding proportion of
+population rasters.
+
+``` r
+
+pe_nonbreeding <- regional_stats |>
+  filter(
+    region_name == "Petén",
+    season %in% c("breeding", "nonbreeding")
+  ) |>
+  select(species_code, season, total_pop_percent) |>
+  pivot_wider(
+    names_from = season,
+    values_from = total_pop_percent,
+    values_fill = 0
+  ) |>
+  filter(
+    # at least 1% of the non-breeding population occurs in the region
+    nonbreeding >= 0.01,
+    # at least 85% of breeding population migrates out of the region
+    (1 - breeding / nonbreeding) >= 0.85
+  ) |>
+  # restrict to species that passed the expert review process for both seasons
+  inner_join(
+    filter(
+      ebirdst_runs,
+      !is_resident,
+      breeding_quality > 0,
+      nonbreeding_quality > 0
+    ),
+    by = "species_code"
+  ) |>
+  # rasters are combined using the % of non-breeding population as the weight
+  select(species_code, weight = nonbreeding) |>
+  arrange(desc(weight))
+nrow(pe_nonbreeding)
+#> [1] 33
+head(pe_nonbreeding)
+#> # A tibble: 6 × 2
+#>   species_code weight
+#>   <chr>         <dbl>
+#> 1 whtfly1       0.239
+#> 2 kenwar        0.173
+#> 3 yebcha        0.165
+#> 4 woothr        0.139
+#> 5 magwar        0.109
+#> 6 woewar1       0.105
+```
+
+The `weight` column gives the proportion of each species’ global
+non-breeding population occurring in Petén. As in the West Virginia
+example above, we’ll use it to weight each species’ contribution to the
+map: species for which Petén holds a larger share of the non-breeding
+population contribute more to the map of breeding areas.
+
+``` r
+
+# weight the breeding proportion of population raster for each species by
+# the proportion of its non-breeding population in peten, then sum
+breeding_layers <- list()
+for (i in seq_len(nrow(pe_nonbreeding))) {
+  species_code <- pe_nonbreeding$species_code[i]
+  weight <- pe_nonbreeding$weight[i]
+  prop_pop <- load_raster(
+    species = species_code,
+    product = "proportion-population",
+    period = "seasonal",
+    resolution = "27km"
+  )
+  breeding_layers[[species_code]] <- prop_pop[["breeding"]] * weight
+}
+connections_pe <- sum(rast(breeding_layers), na.rm = TRUE)
+```
+
+Now let’s map the result, following the same approach as above but
+cropped to a bounding box covering the United States and Canada, where
+we expect the breeding hotspots to fall. As before, we zero out cells
+below the median of the non-zero values (labeled “Low” in the legend),
+then split the remaining upper half of values into deciles for the color
+ramp (“Moderate” to “High”).
+
+``` r
+
+# crop to a bounding box covering the united states and canada
+na_ext <- st_bbox(
+  c(xmin = -170, xmax = -50, ymin = 0, ymax = 65),
+  crs = 4326
+) |>
+  st_as_sfc() |>
+  st_transform(crs(connections_pe)) |>
+  vect() |>
+  ext()
+
+# cells below the median of the non-zero values are treated as "low" and
+# zeroed out; the remaining upper-half values are split into deciles for
+# the color ramp, as in the West Virginia example above
+v <- values(connections_pe, na.rm = TRUE, mat = FALSE)
+v_nonzero <- v[v > 0]
+cutoff <- quantile(v_nonzero, 0.5)
+connections_pe_binned <- ifel(connections_pe < cutoff, 0, connections_pe)
+v_upper <- v_nonzero[v_nonzero >= cutoff]
+breaks <- c(0, quantile(v_upper, seq(0, 1, by = 0.1)))
+pal <- c("#e6e6e6", ebirdst_palettes(length(breaks) - 2))
+
+# basemap transformed to match the raster's native projection
+countries <- ne_countries(returnclass = "sf") |>
+  st_geometry() |>
+  st_transform(crs(connections_pe))
+
+plot(na_ext, col = NA, border = NA, axes = FALSE, mar = c(0, 0, 0, 7))
+plot(countries, col = "#cfcfcf", border = "#ffffff", add = TRUE)
+plot(connections_pe_binned,
+  breaks = breaks, col = pal,
+  maxcell = ncell(connections_pe_binned),
+  legend = FALSE, add = TRUE
+)
+plot(vect(countries), border = "#ffffff", lwd = 1, add = TRUE)
+
+# legend
+bin_width <- 1 / (length(breaks) - 1)
+image.plot(
+  zlim = c(0, 1),
+  breaks = seq(0, 1, length.out = length(breaks)),
+  col = pal,
+  smallplot = c(0.87, 0.9, 0.2, 0.8),
+  legend.only = TRUE,
+  axis.args = list(
+    at = c(bin_width / 2, 3 * bin_width / 2, 1 - bin_width / 2),
+    labels = c("Low", "Moderate", "High"),
+    col.axis = "black", fg = NA, lwd.ticks = 0, line = -0.5, cex.axis = 0.75
+  ),
+  legend.args = list(
+    text = "Strength of connection",
+    side = 2,
+    line = 0.25,
+    font = 2
+  )
+)
+```
+
+![](applications_files/figure-html/connections-peten-map-1.png)
+
+This reverse map highlights the breeding grounds tied to Petén,
+concentrated across the eastern and southeastern United States and
+extending into southern Canada, matching the general pattern found by
+Lello-Smith et al. (2026) for the Selva Maya (Fig. 4): forests in the
+northernmost part of Mesoamerica tend to be most strongly connected to
+breeding areas in the eastern and southeastern U.S.
+
+### Notes on weights and interpretation
+
+Both examples above use `total_pop_percent`, the proportion of a
+species’ **global** seasonal population within the focal region, as the
+stewardship weight. For broadly distributed species, you may instead
+want to weight by the proportion of the population relative to a smaller
+reference area, such as a continent, using the `continent_pop_percent`
+column. If your focal region isn’t included in the regional statistics
+file, or you need a different reference boundary altogether, you can
+calculate these proportions directly from the raster data yourself
+following the approach in the [regional proportion of
+population](#stats) section above.
+
+Finally, it’s important to keep in mind what these maps do and don’t
+represent. They highlight **multispecies abundance concentrations**, not
+tracked **migratory connectivity**: the individual birds occurring in
+the highlighted areas during the displayed season are not necessarily
+the same individuals that occur in the focal region during the other
+season. For conclusions about the movements of specific individuals or
+populations, tracking data (e.g., from banding, radio telemetry, or
+satellite tags) is required. Nevertheless, this multispecies approach
+based on eBird Status Data Products is well suited to prioritizing
+partnerships and investments that benefit many species simultaneously.
 
 ## Assessing model performance
 
