@@ -200,11 +200,11 @@ dispersal, molt migration, and other movements.
 
 Reviewers also examine the model estimates for each season to assess the
 amount of extrapolation or omission present in the model, and assign an
-associated quality rating ranging from 0 (lowest quality) to 3 (highest
-quality). Extrapolation refers to cases where the model predicts
-occurrence where the species is known to be absent, while omission
-refers to the model failing to predict occurrence where a species is
-known to be present.
+associated **quality** rating ranging from 0 (lowest quality) to 3
+(highest quality). Extrapolation refers to cases where the model
+predicts occurrence where the species is known to be absent, while
+omission refers to the model failing to predict occurrence where a
+species is known to be present.
 
 A rating of 0 implies this season failed review and model results should
 not be used at all for this period. Ratings of 1-3 correspond to a
@@ -726,7 +726,7 @@ weekly estimates on a regular 3 km by 3 km grid of
     grid cell of a certain habitat configuration received an eBird
     checklist within that region and season.
 2.  **Spatial coverage:** the fraction (0-1) of grid cells within that
-    region and season that checklists for the given week.
+    region and season that have checklists for the given week.
 
 These data products identify areas where the coverage of eBird data is
 relatively high or low, which can be used to prioritize areas for

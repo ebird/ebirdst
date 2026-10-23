@@ -32,11 +32,11 @@ assign_weeks_to_seasons(
 - species:
 
   character; the species to load data for, given as a scientific name,
-  common name or six-letter species code (e.g. "woothr"). The full list
-  of valid species is in the
+  common name or species code (typically 6 letters, e.g. "woothr"). The
+  full list of valid species is in the
   [ebirdst_runs](https://ebird.github.io/ebirdst/reference/ebirdst_runs.md)
-  data frame included in this package. To download the example dataset,
-  use `"yebsap-example"`.
+  data frame included in this package. For the example dataset, use
+  `"yebsap-example"`.
 
 - min_quality:
 

@@ -18,9 +18,10 @@ load_ppm(
 }
 \arguments{
 \item{species}{character; the species to load data for, given as a scientific
-name, common name or six-letter species code (e.g. "woothr"). The full list
-of valid species is in the \link{ebirdst_runs} data frame included in this
-package. To download the example dataset, use \code{"yebsap-example"}.}
+name, common name or species code (typically 6 letters, e.g. "woothr").
+The full list of valid species is in the \link{ebirdst_runs} data frame
+included in this package. For the example dataset, use
+\code{"yebsap-example"}.}
 
 \item{ppm}{character; the name of a single metric to load data for. See
 Details for definitions of each metric.}
