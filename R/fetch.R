@@ -73,11 +73,13 @@ try_url <- function(expr) {
     tryCatch(
       expr,
       error = function(e) {
+        # jarl-ignore undesirable_operator: mutates messages in try_url()'s frame, not the global env
         messages <<- c(messages, conditionMessage(e))
         return(NULL)
       }
     ),
     warning = function(w) {
+      # jarl-ignore undesirable_operator: mutates messages in try_url()'s frame, not the global env
       messages <<- c(messages, conditionMessage(w))
       invokeRestart("muffleWarning")
     }
