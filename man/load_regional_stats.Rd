@@ -51,16 +51,20 @@ falling within the region.
 \item \code{continent_pop_percent}: proportion of the seasonal modeled population
 for the continent (identified by \code{continent_name}) falling within the
 region.
-\item \code{max_week}: the week of the year with the highest proportion of the
-modeled population falling within the region.
-\item \code{max_week_percent_pop}: the proportion of the modeled population falling
-within the region in \code{max_week}, i.e. the maximum weekly value.
 \item \code{range_occupied_percent}: the proportion of the region occupied by the
 species during the given season.
 \item \code{range_total_percent}: the proportion of the species seasonal range
 falling within the region.
 \item \code{range_days_occupation}: number of days of the season that the region was
 occupied by this species.
+\item \code{max_week}: the week of the year with the highest proportion of the
+modeled population falling within the region.
+\item \code{max_week_percent_pop}: the proportion of the modeled population falling
+within the region in \code{max_week}, i.e. the maximum weekly value.
+\item \code{prop_region_modeled}: the proportion of \code{cells_in_region} for which the
+model produced a prediction for the given season.
+\item \code{cells_in_region}: size of the region given as the number of 3x3 km grid
+cells.
 }
 }
 \description{

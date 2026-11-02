@@ -12,6 +12,7 @@ species
 \item \code{scientific_name}: scientific name.
 \item \code{common_name}: English common name.
 \item \code{is_resident}: classifies this species a resident or a migrant.
+\item \code{ocean_modeled}: were ocean cells modeled for this species.
 \item \code{breeding_quality}: breeding season quality.
 \item \code{breeding_start}: breeding season start date.
 \item \code{breeding_end}: breeding season end date.

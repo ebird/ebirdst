@@ -77,13 +77,6 @@ A data frame containing regional summary statistics with columns:
   for the continent (identified by `continent_name`) falling within the
   region.
 
-- `max_week`: the week of the year with the highest proportion of the
-  modeled population falling within the region.
-
-- `max_week_percent_pop`: the proportion of the modeled population
-  falling within the region in `max_week`, i.e. the maximum weekly
-  value.
-
 - `range_occupied_percent`: the proportion of the region occupied by the
   species during the given season.
 
@@ -92,6 +85,19 @@ A data frame containing regional summary statistics with columns:
 
 - `range_days_occupation`: number of days of the season that the region
   was occupied by this species.
+
+- `max_week`: the week of the year with the highest proportion of the
+  modeled population falling within the region.
+
+- `max_week_percent_pop`: the proportion of the modeled population
+  falling within the region in `max_week`, i.e. the maximum weekly
+  value.
+
+- `prop_region_modeled`: the proportion of `cells_in_region` for which
+  the model produced a prediction for the given season.
+
+- `cells_in_region`: size of the region given as the number of 3x3 km
+  grid cells.
 
 ## Examples
 

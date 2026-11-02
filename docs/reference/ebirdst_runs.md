@@ -23,6 +23,8 @@ A data frame with 29 variables:
 
 - `is_resident`: classifies this species a resident or a migrant.
 
+- `ocean_modeled`: were ocean cells modeled for this species.
+
 - `breeding_quality`: breeding season quality.
 
 - `breeding_start`: breeding season start date.

@@ -548,8 +548,10 @@ load_ranges <- function(
 #'   modeled population falling within the region.
 #'   - `max_week_percent_pop`: the proportion of the modeled population falling
 #'   within the region in `max_week`, i.e. the maximum weekly value.
-#'   - `prop_region_modeled`: proportion of the region grid cells that have a model output for the species during the given season
-#'   - `cells_in_region`: size of the region given as the number of 3x3 km grid cells
+#'   - `prop_region_modeled`: the proportion of `cells_in_region` for which the
+#'   model produced a prediction for the given season.
+#'   - `cells_in_region`: size of the region given as the number of 3x3 km grid
+#'   cells.
 #' @export
 #'
 #' @examples

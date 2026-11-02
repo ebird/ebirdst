@@ -28,8 +28,9 @@ status_review <- glue(
   read_csv(show_col_types = FALSE) |>
   rename_with(tolower) |>
   filter(status == "REVIEWED", full_year_quality > 0) |>
+  filter(!is.na(species_code)) |>
   rename(resident_quality = full_year_quality) |>
-  filter(!is.na(species_code))
+  mutate(ocean_modeled = (land == "OCEAN"))
 
 # species passing review but missing from S3
 filter(status_review, !species_code %in% species_codes)
@@ -94,6 +95,7 @@ status_review <- status_review |>
     common_name,
     taxonomic_order,
     is_resident = summarize_as_resident,
+    ocean_modeled,
     breeding_quality,
     breeding_start,
     breeding_end,
