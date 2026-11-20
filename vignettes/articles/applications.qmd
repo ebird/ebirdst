@@ -342,7 +342,34 @@ A variety of patterns are revealed in this migration chronology. Several of the 
 
 Finally, Sprague's Pipit deserves special attention: there's a huge spike in proportion of population during post-breeding migration. Is this a true reflection of the ecology of this species or an issue with the model estimates? It's important to bring a critical eye to outliers in the data and ask these questions. In this particular case, looking at the weekly maps on the [eBird Status and Trends website](https://science.ebird.org/en/status-and-trends/species/sprpip/abundance-map-weekly?week=34) for the end of August reveals that the species appears to almost completely disappear for a couple weeks. Sprague's Pipit is quite challenging to detect during migration and it appears the models are struggling to pick up a signal, resulting in estimates that are missing large parts of the population. We've included this species as a reminder to investigate any irregularities in the estimates you discover and consult an expert on the species if needed.
 
-<!-- MAS: this Sprague's Pipit irregularity may change with the new year of data -->
+## Migration chronologies function {#chron-helper}
+
+The multi-species loop above can be condensed to a single call using the helper function `migration_chronology()`. It loads the pre-computed proportion-of-population raster and applies `extract()` with `weights = TRUE` internally. Note that `migration_chronology()` only provides median estimates (no confidence intervals), so the approach above remains preferable when uncertainty bands are needed.
+
+```{r chron-helper}
+chronologies_helper <- migration_chronology(grassland_species, region_boundary)
+
+# join common names for plotting
+chronologies_helper <- left_join(
+  chronologies_helper,
+  select(ebirdst_runs, species_code, common_name),
+  by = "species_code"
+)
+
+ggplot(chronologies_helper) +
+  aes(x = week, y = proportion_population, color = common_name) +
+  geom_line(linewidth = 1) +
+  scale_x_date(date_labels = "%b", date_breaks = "1 month") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_brewer(palette = "Set1") +
+  labs(
+    x = NULL,
+    y = "Percent of population in Montana",
+    title = "Migration chronologies for grassland birds in Montana",
+    color = NULL
+  ) +
+  theme(legend.position = "bottom")
+```
 
 # Regional proportion of population {#stats}
 
@@ -384,6 +411,23 @@ state_prop_pop <- extract(
   # sort in descending order of breeding proportion of population
   arrange(desc(breeding))
 head(state_prop_pop)
+```
+
+## Proportion of population function {#stats-seasonal-helper}
+
+The helper function `seasonal_proportion_population()` wraps the same extraction in a single call. It reprojects the region internally, so the states do not need to be pre-projected. The result is returned in long format (one row per state × season) rather than the wide format above, which makes it easier to work with in a tidy workflow.
+
+```{r stats-seasonal-helper}
+# states_raw has not been projected; the function handles that internally
+states_raw <- ne_states(iso_a2 = "US") |>
+  filter(name != "Hawaii") |>
+  select(state = name)
+
+state_prop_pop_helper <- seasonal_proportion_population(
+  "goleag", states_raw,
+  bind_regions = TRUE
+)
+head(state_prop_pop_helper)
 ```
 
 ## Proportion of North American population {#stats-relative}

@@ -458,6 +458,46 @@ large parts of the population. We’ve included this species as a reminder
 to investigate any irregularities in the estimates you discover and
 consult an expert on the species if needed.
 
+### Migration chronologies function
+
+The multi-species loop above can be condensed to a single call using the
+helper function
+[`migration_chronology()`](https://ebird.github.io/ebirdst/reference/migration_chronology.md).
+It loads the pre-computed proportion-of-population raster and applies
+[`extract()`](https://rspatial.github.io/terra/reference/extract.html)
+with `weights = TRUE` internally. Note that
+[`migration_chronology()`](https://ebird.github.io/ebirdst/reference/migration_chronology.md)
+only provides median estimates (no confidence intervals), so the
+approach above remains preferable when uncertainty bands are needed.
+
+``` r
+
+chronologies_helper <- migration_chronology(grassland_species, region_boundary)
+
+# join common names for plotting
+chronologies_helper <- left_join(
+  chronologies_helper,
+  select(ebirdst_runs, species_code, common_name),
+  by = "species_code"
+)
+
+ggplot(chronologies_helper) +
+  aes(x = week, y = proportion_population, color = common_name) +
+  geom_line(linewidth = 1) +
+  scale_x_date(date_labels = "%b", date_breaks = "1 month") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_brewer(palette = "Set1") +
+  labs(
+    x = NULL,
+    y = "Percent of population in Montana",
+    title = "Migration chronologies for grassland birds in Montana",
+    color = NULL
+  ) +
+  theme(legend.position = "bottom")
+```
+
+![](applications_files/figure-html/chron-helper-1.png)
+
 ## Regional proportion of population
 
 > **Goal:** identify the proportion of a species’ population falling
@@ -552,6 +592,44 @@ head(state_prop_pop)
 #> 4             0.01683804
 #> 5             0.01384141
 #> 6             0.01859832
+```
+
+### Proportion of population function
+
+The helper function
+[`seasonal_proportion_population()`](https://ebird.github.io/ebirdst/reference/seasonal_proportion_population.md)
+wraps the same extraction in a single call. It reprojects the region
+internally, so the states do not need to be pre-projected. The result is
+returned in long format (one row per state × season) rather than the
+wide format above, which makes it easier to work with in a tidy
+workflow.
+
+``` r
+
+# states_raw has not been projected; the function handles that internally
+states_raw <- ne_states(iso_a2 = "US") |>
+  filter(name != "Hawaii") |>
+  select(state = name)
+
+state_prop_pop_helper <- seasonal_proportion_population(
+  "goleag", states_raw,
+  bind_regions = TRUE
+)
+head(state_prop_pop_helper)
+#>   species_code                 season proportion_population .region_number
+#> 1       goleag               breeding           0.002969625              1
+#> 2       goleag            nonbreeding           0.005524005              1
+#> 3       goleag  prebreeding_migration           0.003468614              1
+#> 4       goleag postbreeding_migration           0.004078468              1
+#> 5       goleag               breeding           0.010320596              2
+#> 6       goleag            nonbreeding           0.028473138              2
+#>        state
+#> 1 Washington
+#> 2 Washington
+#> 3 Washington
+#> 4 Washington
+#> 5      Idaho
+#> 6      Idaho
 ```
 
 ### Proportion of North American population
@@ -1051,7 +1129,7 @@ wv_breeding <- regional_stats |>
   select(species_code, weight = breeding) |>
   arrange(desc(weight))
 nrow(wv_breeding)
-#> [1] 29
+#> [1] 30
 head(wv_breeding)
 #> # A tibble: 6 × 2
 #>   species_code weight

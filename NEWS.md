@@ -1,6 +1,7 @@
 # ebirdst 4.2025.0
 
 - eBird Status Data Products update for 2025
+- New functions `migration_chronology()` and `seasonal_proportion_population()` compute the weekly or seasonal proportion of a species' population within user-supplied region polygons (sf or SpatVector), vectorised over multiple species and regions
 
 # ebirdst 4.2023.1
 

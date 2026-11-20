@@ -19,7 +19,7 @@ analysis used to generate these data.
 
 This vignette gives an overview of the eBird Status Data Products, which
 estimate the full annual cycle distributions, relative abundances, and
-habitat associations for 5,070 species for the year 2025. For each
+habitat associations for 5,192 species for the year 2025. For each
 species, distribution and abundance estimates are available for all 52
 weeks of the year across a regular 3 km by 3 km square grid of cells
 covering the globe. Variation in detectability associated with the
@@ -139,7 +139,7 @@ Products available for download.
 ``` r
 
 glimpse(ebirdst_runs)
-#> Rows: 5,071
+#> Rows: 5,193
 #> Columns: 33
 #> $ species_code                   <chr> "yebsap-example", "ostric2", "emu1", "s…
 #> $ taxon_concept_id               <chr> "avibase-9BE68BD3", "avibase-2247CB05",…

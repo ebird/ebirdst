@@ -411,7 +411,40 @@
 </div>
 <p>A variety of patterns are revealed in this migration chronology. Several of the grassland species (e.g., Baird’s Sparrow) have more than 30% of their breeding populations entirely within the state of Montana. Timing of arrival and departure varies between species, with Western Meadowlark spending the longest amount of time in the state and Bobolink spending the least amount of time.</p>
 <p>Finally, Sprague’s Pipit deserves special attention: there’s a huge spike in proportion of population during post-breeding migration. Is this a true reflection of the ecology of this species or an issue with the model estimates? It’s important to bring a critical eye to outliers in the data and ask these questions. In this particular case, looking at the weekly maps on the <a href="https://science.ebird.org/en/status-and-trends/species/sprpip/abundance-map-weekly?week=34" class="external-link">eBird Status and Trends website</a> for the end of August reveals that the species appears to almost completely disappear for a couple weeks. Sprague’s Pipit is quite challenging to detect during migration and it appears the models are struggling to pick up a signal, resulting in estimates that are missing large parts of the population. We’ve included this species as a reminder to investigate any irregularities in the estimates you discover and consult an expert on the species if needed.</p>
-<!-- MAS: this Sprague's Pipit irregularity may change with the new year of data -->
+</section><section class="level2"><h3 id="chron-helper">Migration chronologies function<a class="anchor" aria-label="anchor" href="#chron-helper"></a>
+</h3>
+<p>The multi-species loop above can be condensed to a single call using the helper function <code><a href="../reference/migration_chronology.html">migration_chronology()</a></code>. It loads the pre-computed proportion-of-population raster and applies <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> with <code>weights = TRUE</code> internally. Note that <code><a href="../reference/migration_chronology.html">migration_chronology()</a></code> only provides median estimates (no confidence intervals), so the approach above remains preferable when uncertainty bands are needed.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chronologies_helper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/migration_chronology.html">migration_chronology</a></span><span class="op">(</span><span class="va">grassland_species</span>, <span class="va">region_boundary</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># join common names for plotting</span></span>
+<span><span class="va">chronologies_helper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
+<span>  <span class="va">chronologies_helper</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">ebirdst_runs</span>, <span class="va">species_code</span>, <span class="va">common_name</span><span class="op">)</span>,</span>
+<span>  by <span class="op">=</span> <span class="st">"species_code"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">chronologies_helper</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">week</span>, y <span class="op">=</span> <span class="va">proportion_population</span>, color <span class="op">=</span> <span class="va">common_name</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b"</span>, date_breaks <span class="op">=</span> <span class="st">"1 month"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Percent of population in Montana"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Migration chronologies for grassland birds in Montana"</span>,</span>
+<span>    color <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="applications_files/figure-html/chron-helper-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </section></section><section class="section level2"><h2 id="stats">Regional proportion of population<a class="anchor" aria-label="anchor" href="#stats"></a>
 </h2>
 <blockquote>
@@ -423,7 +456,7 @@
 <p>For this example, we’ll estimate the seasonal proportion of the population of Golden Eagle within each state in the United States. Note that Golden Eagles are distributed throughout the Northern Hemisphere, in North America, Asia, and Europe. In this example, we’ll be estimating the proportion of the global population, in the <a href="#stats-regional">next example</a> we’ll estimate the proportion of the North American population.</p>
 <p>To start, we’ll load the seasonal proportion of population raster layers and polygons defining each state. If you have a Shapefile or GeoPackage defining your region of interest (e.g., for a protected area or Bird Conservation Region), you could load it here using the <code><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf()</a></code> function.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal proportion of population</span></span>
 <span><span class="va">prop_pop_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
 <span>  species <span class="op">=</span> <span class="st">"goleag"</span>,</span>
@@ -440,39 +473,69 @@
 </div>
 <p>Now we can use the <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> function from <code>terra</code> to calculate the proportion of the population within each state for each season. Setting <code>weights = TRUE</code> triggers <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> to calculate a weighted sum to account for partial coverage of raster cells by the region polygons. In this example, the <code>weights</code> argument has little impact, but it can play a more important role for smaller regions.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>state_prop_pop <span class="ot">&lt;-</span> <span class="fu">extract</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  prop_pop_seasonal, states,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun =</span> <span class="st">"sum"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">bind =</span> <span class="cn">TRUE</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sort in descending order of breeding proportion of population</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(breeding))</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="sc">|---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="er">=========================================</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                                          </span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_prop_pop)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state   breeding  nonbreeding prebreeding_migration</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     Alaska 0.08017244 1.776397e-05            0.12050538</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    Wyoming 0.03425632 6.467947e-02            0.03832269</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Montana 0.03226821 6.575323e-02            0.03618576</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       Utah 0.01436672 4.063359e-02            0.01981492</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California 0.01433902 2.693670e-02            0.01438695</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     Nevada 0.01326650 4.083702e-02            0.01926590</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   postbreeding_migration</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1             0.09240105</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2             0.03261320</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3             0.04181083</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             0.01683804</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5             0.01384141</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6             0.01859832</span></span></code></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>state_prop_pop <span class="ot">&lt;-</span> <span class="fu">extract</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  prop_pop_seasonal, states,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun =</span> <span class="st">"sum"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">bind =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sort in descending order of breeding proportion of population</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(breeding))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="sc">|---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="er">=========================================</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                                          </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_prop_pop)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state   breeding  nonbreeding prebreeding_migration</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     Alaska 0.08017244 1.776397e-05            0.12050538</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    Wyoming 0.03425632 6.467947e-02            0.03832269</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Montana 0.03226821 6.575323e-02            0.03618576</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       Utah 0.01436672 4.063359e-02            0.01981492</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California 0.01433902 2.693670e-02            0.01438695</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     Nevada 0.01326650 4.083702e-02            0.01926590</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   postbreeding_migration</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1             0.09240105</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2             0.03261320</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3             0.04181083</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             0.01683804</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5             0.01384141</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6             0.01859832</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h3 id="stats-seasonal-helper">Proportion of population function<a class="anchor" aria-label="anchor" href="#stats-seasonal-helper"></a>
+</h3>
+<p>The helper function <code><a href="../reference/seasonal_proportion_population.html">seasonal_proportion_population()</a></code> wraps the same extraction in a single call. It reprojects the region internally, so the states do not need to be pre-projected. The result is returned in long format (one row per state × season) rather than the wide format above, which makes it easier to work with in a tidy workflow.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># states_raw has not been projected; the function handles that internally</span></span>
+<span><span class="va">states_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_states.html" class="external-link">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"US"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">!=</span> <span class="st">"Hawaii"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>state <span class="op">=</span> <span class="va">name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">state_prop_pop_helper</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seasonal_proportion_population.html">seasonal_proportion_population</a></span><span class="op">(</span></span>
+<span>  <span class="st">"goleag"</span>, <span class="va">states_raw</span>,</span>
+<span>  bind_regions <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">state_prop_pop_helper</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   species_code                 season proportion_population .region_number</span></span>
+<span><span class="co">#&gt; 1       goleag               breeding           0.002969625              1</span></span>
+<span><span class="co">#&gt; 2       goleag            nonbreeding           0.005524005              1</span></span>
+<span><span class="co">#&gt; 3       goleag  prebreeding_migration           0.003468614              1</span></span>
+<span><span class="co">#&gt; 4       goleag postbreeding_migration           0.004078468              1</span></span>
+<span><span class="co">#&gt; 5       goleag               breeding           0.010320596              2</span></span>
+<span><span class="co">#&gt; 6       goleag            nonbreeding           0.028473138              2</span></span>
+<span><span class="co">#&gt;        state</span></span>
+<span><span class="co">#&gt; 1 Washington</span></span>
+<span><span class="co">#&gt; 2 Washington</span></span>
+<span><span class="co">#&gt; 3 Washington</span></span>
+<span><span class="co">#&gt; 4 Washington</span></span>
+<span><span class="co">#&gt; 5      Idaho</span></span>
+<span><span class="co">#&gt; 6      Idaho</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h3 id="stats-relative">Proportion of North American population<a class="anchor" aria-label="anchor" href="#stats-relative"></a>
 </h3>
 <p>For broadly distributed species, such as Golden Eagle, it may be desirable to estimate the proportion of the population relative to a subset of the full range. For example, let’s calculate the proportion of the North American population within each state, where we define North America to include the United States, Canada, and Mexico. We’ll start by creating a polygon for the boundary of North America, using this to mask the seasonal relative abundance raster, then dividing the masked relative abundance raster by the total relative abundance across all of North America to generate layers showing the proportion of North American population.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># seasonal relative abundance</span></span>
 <span><span class="va">abd_seasonal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
 <span>  species <span class="op">=</span> <span class="st">"goleag"</span>,</span>
@@ -501,33 +564,33 @@
 </div>
 <p>Now we can calculate the proportion of population using exactly the same method as in the previous section.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>state_prop_noram_pop <span class="ot">&lt;-</span> <span class="fu">extract</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  prop_pop_noram, states,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun =</span> <span class="st">"sum"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">bind =</span> <span class="cn">TRUE</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sort in descending order of breeding proportion of population</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(breeding))</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="sc">|---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="er">=========================================</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                                          </span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_prop_noram_pop)</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state   breeding  nonbreeding prebreeding_migration</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     Alaska 0.25336642 2.044192e-05            0.26388650</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    Wyoming 0.10848680 1.483160e-01            0.08402396</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Montana 0.10219063 1.507783e-01            0.07933866</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       Utah 0.04549815 9.317661e-02            0.04344496</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California 0.04540452 6.176530e-02            0.03154142</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     Nevada 0.04201385 9.364310e-02            0.04224123</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   postbreeding_migration</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1             0.20473428</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2             0.07238714</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3             0.09280186</span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             0.03737312</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5             0.03071972</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6             0.04128019</span></span></code></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>state_prop_noram_pop <span class="ot">&lt;-</span> <span class="fu">extract</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  prop_pop_noram, states,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun =</span> <span class="st">"sum"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">bind =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sort in descending order of breeding proportion of population</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(breeding))</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="sc">|---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span><span class="sc">---------</span><span class="er">|</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="er">=========================================</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                                          </span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_prop_noram_pop)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state   breeding  nonbreeding prebreeding_migration</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     Alaska 0.25336642 2.044192e-05            0.26388650</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    Wyoming 0.10848680 1.483160e-01            0.08402396</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Montana 0.10219063 1.507783e-01            0.07933866</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       Utah 0.04549815 9.317661e-02            0.04344496</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California 0.04540452 6.176530e-02            0.03154142</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     Nevada 0.04201385 9.364310e-02            0.04224123</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   postbreeding_migration</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1             0.20473428</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2             0.07238714</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3             0.09280186</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             0.03737312</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5             0.03071972</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6             0.04128019</span></span></code></pre></div>
 </div>
 <p>Notice that the proportions are higher than those in the previous section since we’re now estimating the proportion of the North American population rather than the proportion of the global population. For example, 8% of the global breeding season population occurs in Alaska, but this corresponds to 28% of the North American breeding season population.</p>
 </section><section class="level2"><h3 id="stats-custom">Regional stats for weeks and custom time periods<a class="anchor" aria-label="anchor" href="#stats-custom"></a>
@@ -535,7 +598,7 @@
 <p>The eBird Status Data Products include seasonal raster layers that are derived from the weekly rasters based on expert defined seasons. These seasonal layers are convenient to work with, however, in some cases you may want to estimate the proportion of the population within a region at the weekly level or for a custom time period. For example, let’s estimate the proportion of the North American population within California by week and for the month of January.</p>
 <p>For this example, we’ll use the lower, 27 km resolution data in the interest of speed, since the 3 km weekly data can be quite slow to process. We’ll start by estimating the weekly proportion of the North American population following an approach similar to that in the previous section.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># weekly relative abundance, masked to north america</span></span>
 <span><span class="va">abd_weekly_noram</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span></span>
 <span>  <span class="st">"goleag"</span>,</span>
@@ -571,7 +634,7 @@
 </div>
 <p>This data frame gives the weekly proportion of the North American population of Golden Eagle in California; the structure is very similar to the data we generated in the <a href="#chron">migration chronology</a> section. We can take this one step further and average the proportion of population across the weeks in the month of January.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prop_pop_weekly_noram</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">week</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>prop_pop <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">prop_pop</span><span class="op">)</span><span class="op">)</span></span>
@@ -582,7 +645,7 @@
 </h3>
 <p>There is one particular case where the methods we have presented so far for regional statistics can cause issues: species with a significant proportion of their population in offshore or tidal areas. Many regional polygons, including those from Natural Earth used so far, only capture the land area, resulting in a large proportion of non-zero relative abundance cells falling outside the polygons. For example, let’s estimate the proportion of the global non-breeding season population of <a href="https://ebird.org/species/sursco" class="external-link">Surf Scoter</a> in Mexico using the naive approach used in the previous examples.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># non-breeding season proportion of population</span></span>
 <span><span class="va">abd_nonbreeding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_raster.html">load_raster</a></span><span class="op">(</span><span class="st">"Surf Scoter"</span>,</span>
 <span>  product <span class="op">=</span> <span class="st">"proportion-population"</span>,</span>
@@ -601,7 +664,7 @@
 </div>
 <p>According to this method, about 6% of the non-breeding population of Surf Scoter occurs in Mexico. However, Surf Scoter is an exclusively coastal species and this naive estimate is missing a large part of the population because the coarse boundary for Mexico we’re using doesn’t capture many of the 3 km raster cells that are falling offshore. We can correct for this by buffering the Mexico polygon by 5 km to try to capture these coastal cells. We’ll also use <code>touches = TRUE</code> to include raster cells that are touched by the Mexico polygon; without that argument, only cells whose centers fall within the Mexico polygon will be included.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># buffer by 5000m = 5km</span></span>
 <span><span class="va">mexico_buffer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_buffer</a></span><span class="op">(</span><span class="va">mexico</span>, dist <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
 <span></span>
@@ -622,7 +685,7 @@
 </blockquote>
 <p>eBird Status Data Products can be used to identify areas of importance for a species or group of species, which can help prioritize areas for protection or other conservation interventions. In this context, “areas of importance” refer to those areas within the landscape that have a higher concentration of the given species. For this application, we’ll use the same set of grassland species in Montana during the breeding season as we used for the migration chronology example.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># species list</span></span>
 <span><span class="va">grassland_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Baird's Sparrow"</span>,</span>
@@ -643,7 +706,7 @@
 </h3>
 <p>The simplest approach to identifying important areas is to generate a richness map showing the number of species falling within each 3 km grid cell. We’ll start by converting the relative abundance rasters to binary presence-absence rasters for each species within the region of interest by converting any non-zero abundance values to one. Then we calculate a cell-wise sum across the binary rasters for each species to generate a richness raster.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">range_rasters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">grassland_species</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># load breeding season relative abundance</span></span>
@@ -660,7 +723,7 @@
 </div>
 <p>Then we can make a simple map that shows the number of species (out of six total) that occur within each 3 km grid cell.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make a simple map</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">richness</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
@@ -675,7 +738,7 @@
 <p>The richness map generated in the previous section is intuitive and gives a general sense of where grassland species are occurring within Montana. However, presence-absence is a coarse metric: species may occur at dramatically different densities from location to location and, in general, it’s most strategic to invest conservation resources in areas with higher concentrations of the target species. We can take full advantage of the relative abundance estimates to generate an importance metric that is much more granular than richness.</p>
 <p>Recall that when combining estimates across species it’s important to use proportion of population rather than relative abundance to account for differences in the detection process. So, we’ll load the pre-generated proportion of population rasters for each species, then average them across species to produce a metric of importance.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prop_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">species</span> <span class="kw">in</span> <span class="va">grassland_species</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># load breeding season proportion of population</span></span>
@@ -694,7 +757,7 @@
 </div>
 <p>Now let’s make a simple map of this importance metric.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">importance</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -705,7 +768,7 @@
 </div>
 <p>This metric ranges from 0-1 and expresses the mean proportion of the population across the six grassland species within each cell. The raw numeric values are hard to interpret and not particularly meaningful, what’s most important is the relative ranking of cells. We can make the map more useful by removing the zeros as well as small values. We’ll drop all cell values below the median, but depending on your application you may want to chose a different value.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># drop zeros</span></span>
 <span><span class="va">importance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/ifelse.html" class="external-link">ifel</a></span><span class="op">(</span><span class="va">importance</span> <span class="op">==</span> <span class="fl">0</span>, <span class="cn">NA</span>, <span class="va">importance</span><span class="op">)</span></span>
 <span><span class="co"># drop anything below the median</span></span>
@@ -725,7 +788,7 @@
 </div>
 <p>This map does a better job of highlighting the most important areas for grassland birds within Montana. Let’s go one step further and add a better legend and re-project the data using the same region-specific coordinate reference system as we used in the <a href="#map-projection">mapping example in this vignette</a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># reproject</span></span>
 <span><span class="va">importance_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/trim.html" class="external-link">trim</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">importance</span>, <span class="va">crs_laea</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">region_boundary_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">region_boundary</span>, <span class="va">crs_laea</span><span class="op">)</span></span>
@@ -774,12 +837,12 @@
 <p>Migratory species link the geographies they pass through over the course of the year, and conservation investments in one location can have consequences for species far away during other seasons. For example, conservation of migratory birds that breed in the forests of the eastern United states relies both on protecting those forests and on protecting the non-breeding habitat of these species in Central and South America. Partners in Flight (<a href="https://partnersinflight.org/resources/pif-technical-series-10-making-connections-appendices-and-maps/making-connections-for-bird-conservation-2nd-edition_26_7_2023english/" class="external-link">Stewart et al. 2023</a>) developed a framework for identifying these connected geographies using eBird Status Data Products referred to as “migratory bird connections” or “stewardship connections”: for a suite of species that breed in a focal region, the areas where those species concentrate during the non-breeding season, weighted by how much of each species’ breeding population the region holds.</p>
 <p>As an example, we’ll identify the important non-breeding areas for species that breed in West Virginia. We’ll use the pre-calculated regional statistics accessed with <code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code>, which give us both the list of species that breed in West Virginia and the weights needed to combine them, without having to work with boundary polygons and raw abundance rasters directly. We’ll also use 27 km resolution data throughout to keep downloads small; as with the <a href="#stats-custom">regional statistics example above</a>, 3 km data could be used instead for higher resolution maps at the cost of larger downloads and slower processing.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">regional_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>We’ll start by identifying the species that breed in West Virginia, then use the non-breeding proportion of population rasters for those species, weighted by how much of each species’ breeding population occurs in West Virginia, to build a map of important non-breeding areas. We include species that have at least 1% of their breeding population in West Virginia and for which at least 85% of the non-breeding population migrates out of West Virginia. This ensures that the species are migratory and that West Virginia has a meaningful stewardship responsibility for them. These thresholds can be adjusted as can the specie list, for example, by including only species of conservation concern or species associated with a specific habitat.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wv_breeding</span> <span class="op">&lt;-</span> <span class="va">regional_stats</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">region_name</span> <span class="op">==</span> <span class="st">"West Virginia"</span>,</span>
@@ -811,7 +874,7 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">species_code</span>, weight <span class="op">=</span> <span class="va">breeding</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">weight</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">wv_breeding</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 29</span></span>
+<span><span class="co">#&gt; [1] 30</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wv_breeding</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span><span class="co">#&gt;   species_code weight</span></span>
@@ -825,7 +888,7 @@
 </div>
 <p>The <code>weight</code> column gives the proportion of each species’ global breeding population occurring in West Virginia; this is the same statistic used in the <a href="#stats">regional proportion of population</a> section above, just read directly from the pre-calculated file rather than calculated from the raster data. We’ll use it to weight each species’ contribution to the stewardship connections map: species for which West Virginia holds a larger share of the breeding population contribute more to the map of non-breeding areas.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># for each species, weight the non-breeding proportion of population raster</span></span>
 <span><span class="co"># by the proportion of its breeding population in west virginia, then sum</span></span>
 <span><span class="co"># across species</span></span>
@@ -845,7 +908,7 @@
 </div>
 <p>Now let’s map the result. We’ll keep the raster in its native Equal Earth projection and simply crop to a bounding box covering Mexico, Central America, the Caribbean, and South America, where we expect the non-breeding hotspots to fall. Because the summed raster has non-zero values spread across a very large area, including the broad, low-density edges of many species’ ranges, a simple quantile scale over the full range of values ends up dominated by this diffuse background and washes out the strongest concentrations. Instead, we zero out cells below the median of the non-zero values (labeled “Low” in the legend), then split the remaining upper half of values into deciles for the color ramp (“Moderate” to “High”).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># crop to a bounding box covering the neotropics, defined in geographic</span></span>
 <span><span class="co"># coordinates then transformed to match the raster's native projection</span></span>
 <span><span class="va">neotropics_ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span></span>
@@ -915,7 +978,7 @@
 </h3>
 <p><a href="https://doi.org/10.1016/j.biocon.2025.111551" class="external-link">Lello-Smith et al. (2026)</a> demonstrated how this approach can be used in reverse: for a suite of species that spend the non-breeding season in a focal region, we can identify where those species concentrate during the breeding season, weighted by how much of each species’ non-breeding population the focal region holds. As an example, we’ll use the Petén department of Guatemala, home to the Maya Biosphere Reserve and part of the Selva Maya, one of the <a href="https://programs.wcs.org/gcf-the5greatforests/en-us" class="external-link">Five Great Forests of Mesoamerica</a> discussed by Lello-Smith et al. (2026), similar to the sister landscape maps in Figure 4 of that paper. The approach is identical to the West Virginia example above with the seasons swapped: species and weights come from the non-breeding season, and we sum the breeding proportion of population rasters.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pe_nonbreeding</span> <span class="op">&lt;-</span> <span class="va">regional_stats</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">region_name</span> <span class="op">==</span> <span class="st">"Petén"</span>,</span>
@@ -961,7 +1024,7 @@
 </div>
 <p>The <code>weight</code> column gives the proportion of each species’ global non-breeding population occurring in Petén. As in the West Virginia example above, we’ll use it to weight each species’ contribution to the map: species for which Petén holds a larger share of the non-breeding population contribute more to the map of breeding areas.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># weight the breeding proportion of population raster for each species by</span></span>
 <span><span class="co"># the proportion of its non-breeding population in peten, then sum</span></span>
 <span><span class="va">breeding_layers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -980,7 +1043,7 @@
 </div>
 <p>Now let’s map the result, following the same approach as above but cropped to a bounding box covering the United States and Canada, where we expect the breeding hotspots to fall. As before, we zero out cells below the median of the non-zero values (labeled “Low” in the legend), then split the remaining upper half of values into deciles for the color ramp (“Moderate” to “High”).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># crop to a bounding box covering the united states and canada</span></span>
 <span><span class="va">na_ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="op">-</span><span class="fl">170</span>, xmax <span class="op">=</span> <span class="op">-</span><span class="fl">50</span>, ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">65</span><span class="op">)</span>,</span>
@@ -1055,7 +1118,7 @@
 </blockquote>
 <p>eBird Status and Trends species are assigned <a href="https://ebird.github.io/ebirdst/articles/status.html#species">quality scores (0-3)</a> for each season describing the quality of the model predictions across the full range of the species. For example, let’s look at the breeding season quality for Horned Lark.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">horlar_review</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ebirdst_runs</span>, <span class="va">species_code</span> <span class="op">==</span> <span class="st">"horlar"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">breeding_quality</span>, <span class="va">breeding_start</span>, <span class="va">breeding_end</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">horlar_review</span><span class="op">)</span></span>
@@ -1067,7 +1130,7 @@
 <p>This score (2) corresponds to “medium quality”, indicating there is some extrapolation or omission in the breeding season predictions. However, Horned Lark is a <a href="https://science.ebird.org/en/status-and-trends/species/horlar/abundance-map?season=breeding" class="external-link">broadly distributed species</a>, occurring throughout the <a href="https://en.wikipedia.org/wiki/Holarctic_realm" class="external-link">holarctic realm</a>. Data users are typically interested in model predictions within a particular region, but the quality score gives no indication of where the extrapolation or omission is occurring, only that it occurs somewhere within the range. Someone working with predictions from the Mongolian portion of the range may be dealing with very different prediction quality than someone working with predictions from the part of the range in the Western United States.</p>
 <p>While the model quality scores are quite coarse, the spatial predictive performance metrics (PPMs) available for each species provide much finer scale information on model quality. For migratory species like Horned Lark, these data products provide a suite of performance metrics at weekly 27 km resolution. Let’s load the proportion of the Bernoulli deviance explained metric, which is typically one of the most useful for assessing model quality. The PPM is downloaded automatically the first time it’s loaded. (If you’d rather download all PPMs for a species up front, use <code>ebirdst_download_status(download_ppms = TRUE)</code>.)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the ppm; it's downloaded automatically if not already present</span></span>
 <span><span class="va">bernoulli_dev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_ppm.html">load_ppm</a></span><span class="op">(</span><span class="st">"horlar"</span>, ppm <span class="op">=</span> <span class="st">"occ_bernoulli_dev"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/spam/man/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bernoulli_dev</span><span class="op">)</span></span>
@@ -1083,7 +1146,7 @@
 </div>
 <p>The data are in the form of a 27 km raster with 52 layers, one for each week of the year. Let’s average these PPMs across the weeks in the breeding season, subset to just the portion of the range within the United States and Canada, and make a map.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset to weeks in breeding season and average</span></span>
 <span><span class="va">breeding_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">horlar_review</span><span class="op">$</span><span class="va">breeding_start</span>, <span class="va">horlar_review</span><span class="op">$</span><span class="va">breeding_end</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="st">"%m-%d"</span><span class="op">)</span></span>

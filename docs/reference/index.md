@@ -63,8 +63,12 @@
   : Load regional summary statistics
 - [`load_trends()`](https://ebird.github.io/ebirdst/reference/load_trends.md)
   : Load eBird Trends estimates for a set of species
+- [`migration_chronology()`](https://ebird.github.io/ebirdst/reference/migration_chronology.md)
+  : Compute weekly proportion of population within regions
 - [`rasterize_trends()`](https://ebird.github.io/ebirdst/reference/rasterize_trends.md)
   : Convert eBird Trends Data Products to raster format
+- [`seasonal_proportion_population()`](https://ebird.github.io/ebirdst/reference/seasonal_proportion_population.md)
+  : Compute seasonal proportion of population within regions
 - [`set_ebirdst_access_key()`](https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.md)
   : Store the eBird Status and Trends access key
 - [`vectorize_trends()`](https://ebird.github.io/ebirdst/reference/vectorize_trends.md)
