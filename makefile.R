@@ -9,7 +9,7 @@ tools:::.check_package_datasets(".")
 # vignettes, readme, site
 pkgdown::clean_site()
 devtools::build_readme()
-pkgdown::build_site()
+pkgdown::build_site(quiet = FALSE)
 # pkgdown turns every root *.md file into a page, ignoring .Rbuildignore;
 # remove the local-only CLAUDE.md page it generates
 unlink(c("docs/CLAUDE.html", "docs/CLAUDE.md"))

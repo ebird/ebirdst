@@ -8,8 +8,26 @@
   and
   [`seasonal_proportion_population()`](https://ebird.github.io/ebirdst/reference/seasonal_proportion_population.md)
   compute the weekly or seasonal proportion of a species’ population
-  within user-supplied region polygons (sf or SpatVector), vectorised
-  over multiple species and regions
+  within user-supplied region polygons (sf, sfc, or SpatVector),
+  vectorised over multiple species and regions, with an optional
+  `reference_region` argument to compute proportions relative to a
+  reference area (e.g., a continent) rather than the global population
+- New function
+  [`stewardship_connections()`](https://ebird.github.io/ebirdst/reference/stewardship_connections.md)
+  computes a stewardship connections raster mapping where species from a
+  focal origin region concentrate in the opposite stationary season.
+  Three input modes are supported: a polygon (`origin_region`) with
+  raster-based weight computation, a region code (`region_code`) that
+  derives the species list and weights from
+  [`ebirdst_regional_stats()`](https://ebird.github.io/ebirdst/reference/ebirdst_regional_stats.md)
+  without loading origin-side rasters for filtered-out species, and a
+  precomputed weights table (`species_weights`). The method follows
+  Partners in Flight (2023) and Lello-Smith et al. (2026).
+- New vignette “Shared stewardship connections for migratory birds”
+  covering both directions, all three input modes, `tidyterra`+ggplot2
+  mapping, and methodology for practitioners; the stewardship section
+  has been removed from the applications vignette with a cross-reference
+  to the new article.
 
 ## ebirdst 4.2023.1
 

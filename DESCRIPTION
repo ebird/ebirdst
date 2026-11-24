@@ -7,6 +7,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-8929-7776")),
     person("Shawn", "Ligocki", , "sligocki@cornell.edu", role = "aut"),
     person("Myles", "Stokowski", , "mas892@cornell.edu", role = "aut"),
+    person("Valentine", "Herrmann", , "vmh44@cornell.edu", role = "aut"),
     person("Tom", "Auer", , "mta45@cornell.edu", role = "aut",
            comment = c(ORCID = "0000-0001-8619-7147")),
     person("Daniel", "Fink", , "df36@cornell.edu", role = "aut",
@@ -50,6 +51,7 @@ Suggests:
     scico,
     testthat (>= 3.0.0),
     tidyr,
+    tidyterra,
     withr
 Encoding: UTF-8
 LazyData: true

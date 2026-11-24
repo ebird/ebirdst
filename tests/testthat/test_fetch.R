@@ -83,12 +83,15 @@ test_that("object_key_url() builds example and API urls", {
 })
 
 
-test_that("resolve_species()", {
-  expect_equal(resolve_species("woothr"), "woothr")
-  expect_equal(resolve_species("Wood Thrush"), "woothr")
-  expect_error(resolve_species("XXXX"), "were not modeled")
+test_that("get_species() strict = TRUE", {
+  expect_equal(get_species("woothr", strict = TRUE), "woothr")
+  expect_equal(get_species("Wood Thrush", strict = TRUE), "woothr")
+  expect_error(get_species("XXXX", strict = TRUE), "were not modeled")
   # all unrecognized species are listed, not just the first
-  expect_error(resolve_species(c("woothr", "XXXX", "YYYY")), "XXXX, YYYY")
+  expect_error(
+    get_species(c("woothr", "XXXX", "YYYY"), strict = TRUE),
+    "XXXX, YYYY"
+  )
 })
 
 

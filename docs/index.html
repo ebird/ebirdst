@@ -37,6 +37,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
 <li><a class="dropdown-item" href="articles/status.html">Introduction to eBird Status Data Products</a></li>
     <li><a class="dropdown-item" href="articles/applications.html">eBird Status Data Products Applications</a></li>
+    <li><a class="dropdown-item" href="articles/stewardship.html">Migratory Bird Stewardship Connections</a></li>
     <li><a class="dropdown-item" href="articles/trends.html">eBird Trends Data Products</a></li>
     <li><a class="dropdown-item" href="articles/api.html">eBird Status and Trends Data Products API</a></li>
   </ul>
@@ -62,7 +63,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <a href="https://science.ebird.org/en/status-and-trends" class="external-link">eBird Status and Trends project</a> at the <a href="https://www.birds.cornell.edu/home" class="external-link">Cornell Lab of Ornithology</a> uses machine-learning models to estimate distributions, relative abundances, and population trends at high spatial and temporal resolution across the full annual cycle of 5,192 bird species globally. These models learn the relationships between bird observations collected through <a href="https://ebird.org/home" class="external-link">eBird</a> and a suite of remotely sensed habitat variables, while accounting for the noise and bias inherent in community science datasets, including variation in observer behavior and effort. Interactive maps and visualizations of these model estimates can be explored <a href="https://science.ebird.org/en/status-and-trends" class="external-link">online</a>, and the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">Status and Trends Data Products</a> provide access to the data behind these maps and visualizations. The <code>ebirdst</code> R package provides a set of tools for downloading these data products, loading them into R, and using them for visualization and analysis.</p>
+<p>The <a href="https://science.ebird.org/en/status-and-trends" class="external-link">eBird Status and Trends project</a> at the <a href="https://www.birds.cornell.edu/home" class="external-link">Cornell Lab of Ornithology</a> uses machine-learning models to estimate distributions, relative abundances, and population trends at high spatial and temporal resolution across the full annual cycle of 5,188 bird species globally. These models learn the relationships between bird observations collected through <a href="https://ebird.org/home" class="external-link">eBird</a> and a suite of remotely sensed habitat variables, while accounting for the noise and bias inherent in community science datasets, including variation in observer behavior and effort. Interactive maps and visualizations of these model estimates can be explored <a href="https://science.ebird.org/en/status-and-trends" class="external-link">online</a>, and the <a href="https://science.ebird.org/en/status-and-trends/download-data" class="external-link">Status and Trends Data Products</a> provide access to the data behind these maps and visualizations. The <code>ebirdst</code> R package provides a set of tools for downloading these data products, loading them into R, and using them for visualization and analysis.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -262,6 +263,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8929-7776" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Shawn Ligocki <br><small class="roles"> Author </small>   </li>
 <li>Myles Stokowski <br><small class="roles"> Author </small>   </li>
+<li>Valentine Herrmann <br><small class="roles"> Author </small>   </li>
 <li>Tom Auer <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8619-7147" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Daniel Fink <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8368-1248" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li><a href="authors.html">More about authors...</a></li>
@@ -282,7 +284,7 @@ Fink, D., T. Auer, A. Johnston, M. Strimas-Mackey, S. Ligocki, O. Robinson, W. H
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Tom Auer, Daniel Fink.</p>
+  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Valentine Herrmann, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown-footer-right">

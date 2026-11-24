@@ -10,5 +10,7 @@
   Changelog](https://ebird.github.io/ebirdst/articles/product-changelog.md):
 - [Introduction to eBird Status Data
   Products](https://ebird.github.io/ebirdst/articles/status.md):
+- [Shared stewardship connections for migratory
+  birds](https://ebird.github.io/ebirdst/articles/stewardship.md):
 - [eBird Trends Data
   Products](https://ebird.github.io/ebirdst/articles/trends.md):

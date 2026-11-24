@@ -109,7 +109,7 @@ ebirdst_download_status <- function(
   stopifnot(is_flag(show_progress))
 
   # convert to species code
-  species <- resolve_species(species)
+  species <- get_species(species, strict = TRUE)
 
   # complete list of all available files for this species
   keys <- list_object_keys(species_code = species, dataset = "status")
@@ -203,7 +203,7 @@ ebirdst_download_trends <- function(
   stopifnot(is_flag(show_progress))
 
   # convert to species code
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # check that trends are available
   trends_species <- ebirdst::ebirdst_runs[ebirdst::ebirdst_runs$has_trends, ]
@@ -376,7 +376,7 @@ get_species_path <- function(
   if (species == "data_coverage") {
     species_code <- "data_coverage"
   } else {
-    species_code <- resolve_species(species)
+    species_code <- get_species(species, strict = TRUE)
   }
   version_year <- ebirdst_version()[[paste0(dataset, "_version_year")]]
   species_path <- path.expand(file.path(path, version_year, species_code))

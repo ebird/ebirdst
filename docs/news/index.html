@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="../articles/status.html">Introduction to eBird Status Data Products</a></li>
     <li><a class="dropdown-item" href="../articles/applications.html">eBird Status Data Products Applications</a></li>
+    <li><a class="dropdown-item" href="../articles/stewardship.html">Migratory Bird Stewardship Connections</a></li>
     <li><a class="dropdown-item" href="../articles/trends.html">eBird Trends Data Products</a></li>
     <li><a class="dropdown-item" href="../articles/api.html">eBird Status and Trends Data Products API</a></li>
   </ul></li>
@@ -42,7 +43,9 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="4.2025.0" id="ebirdst-420250">ebirdst 4.2025.0<a class="anchor" aria-label="anchor" href="#ebirdst-420250"></a></h2>
 <ul><li>eBird Status Data Products update for 2025</li>
-<li>New functions <code><a href="../reference/migration_chronology.html">migration_chronology()</a></code> and <code><a href="../reference/seasonal_proportion_population.html">seasonal_proportion_population()</a></code> compute the weekly or seasonal proportion of a species’ population within user-supplied region polygons (sf or SpatVector), vectorised over multiple species and regions</li>
+<li>New functions <code><a href="../reference/migration_chronology.html">migration_chronology()</a></code> and <code><a href="../reference/seasonal_proportion_population.html">seasonal_proportion_population()</a></code> compute the weekly or seasonal proportion of a species’ population within user-supplied region polygons (sf, sfc, or SpatVector), vectorised over multiple species and regions, with an optional <code>reference_region</code> argument to compute proportions relative to a reference area (e.g., a continent) rather than the global population</li>
+<li>New function <code><a href="../reference/stewardship_connections.html">stewardship_connections()</a></code> computes a stewardship connections raster mapping where species from a focal origin region concentrate in the opposite stationary season. Three input modes are supported: a polygon (<code>origin_region</code>) with raster-based weight computation, a region code (<code>region_code</code>) that derives the species list and weights from <code><a href="../reference/ebirdst_regional_stats.html">ebirdst_regional_stats()</a></code> without loading origin-side rasters for filtered-out species, and a precomputed weights table (<code>species_weights</code>). The method follows Partners in Flight (2023) and Lello-Smith et al. (2026).</li>
+<li>New vignette “Shared stewardship connections for migratory birds” covering both directions, all three input modes, <code>tidyterra</code>+ggplot2 mapping, and methodology for practitioners; the stewardship section has been removed from the applications vignette with a cross-reference to the new article.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="4.2023.1" id="ebirdst-420231">ebirdst 4.2023.1<a class="anchor" aria-label="anchor" href="#ebirdst-420231"></a></h2>
@@ -222,7 +225,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Tom Auer, Daniel Fink.</p>
+  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Valentine Herrmann, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown-footer-right">

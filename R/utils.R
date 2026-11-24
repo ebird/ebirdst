@@ -65,7 +65,7 @@ assign_weeks_to_seasons <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # dates of the weekly estimates come from the configuration file
   p <- load_config(
@@ -223,18 +223,23 @@ date_to_st_week <- function(dates, version = 2022) {
 #'
 #' @param x character; vector of species codes, common names, and/or scientific
 #'   names.
+#' @param strict logical; if `TRUE`, raise an error for any element of `x` that
+#'   does not match a modeled species. If `FALSE` (the default), unmatched
+#'   elements are returned as `NA`.
 #'
 #' @return A character vector of eBird species codes, the same length as `x`.
-#'   Elements of `x` that don't match any modeled species are returned as
-#'   `NA`.
+#'   Elements of `x` that don't match any modeled species are returned as `NA`
+#'   when `strict = FALSE`, or cause an error when `strict = TRUE`.
 #' @export
 #'
 #' @examples
 #' get_species(c("Black-capped Chickadee", "Poecile gambeli", "carchi"))
-get_species <- function(x) {
+get_species <- function(x, strict = FALSE) {
   stopifnot(is.character(x))
+  stopifnot(is_flag(strict))
   r <- ebirdst::ebirdst_runs
   r <- r[!stringr::str_detect(r$species_code, "example"), ]
+  x_orig <- x
   x <- tolower(trimws(x))
 
   # species code
@@ -249,6 +254,14 @@ get_species <- function(x) {
   # looked up in ebirdst_runs, which only lists real species
   is_example <- stringr::str_detect(x, "-example$")
   codes[is_example] <- x[is_example]
+
+  if (strict && anyNA(codes)) {
+    stop(
+      "The following species were not modeled by eBird Status and Trends. ",
+      "Consult ebirdst_runs for a complete list of available species.\n  ",
+      paste(x_orig[is.na(codes)], collapse = ", ")
+    )
+  }
   return(codes)
 }
 
@@ -273,4 +286,107 @@ is_count <- function(x) {
 
 is_flag <- function(x) {
   return(isTRUE(is.logical(x) && length(x) == 1 && !is.na(x)))
+}
+
+
+prop_pop_download_check <- function(species_codes, period, resolution, path) {
+  # mean file sizes (MB) per species by period × resolution × migrant/resident
+  # weekly: migrants and residents have similar sizes (both have 52 layers);
+  # seasonal: migrants are ~4-5x larger (4 season layers vs 1 for residents)
+  size_mb <- list(
+    weekly = list(
+      "27km" = c(migrant = 2.00, resident = 1.41),
+      "9km" = c(migrant = 11.49, resident = 8.19),
+      "3km" = c(migrant = 74.75, resident = 57.22)
+    ),
+    seasonal = list(
+      "27km" = c(migrant = 0.22, resident = 0.05),
+      "9km" = c(migrant = 1.33, resident = 0.27),
+      "3km" = c(migrant = 8.73, resident = 1.78)
+    )
+  )
+
+  v <- ebirdst_version()[["status_version_year"]]
+  if (period == "weekly") {
+    file_suffix <- sprintf(
+      "proportion-population_median_%s_%s.tif",
+      resolution,
+      v
+    )
+    sub_dir <- "weekly"
+  } else {
+    file_suffix <- sprintf(
+      "proportion-population_seasonal_mean_%s_%s.tif",
+      resolution,
+      v
+    )
+    sub_dir <- "seasonal"
+  }
+
+  needs_dl <- vapply(
+    species_codes,
+    function(sc) {
+      fpath <- file.path(
+        path,
+        v,
+        sc,
+        sub_dir,
+        sprintf("%s_%s", sc, file_suffix)
+      )
+      return(!file.exists(fpath))
+    },
+    FUN.VALUE = logical(1)
+  )
+  n_to_download <- sum(needs_dl)
+  n_spp <- length(species_codes)
+
+  is_res <- ebirdst::ebirdst_runs$is_resident[
+    match(species_codes, ebirdst::ebirdst_runs$species_code)
+  ]
+  is_res[is.na(is_res)] <- FALSE
+  mb_lookup <- size_mb[[period]][[resolution]]
+  mb_per_spp <- ifelse(is_res, mb_lookup[["resident"]], mb_lookup[["migrant"]])
+  est_mb <- round(sum(mb_per_spp[needs_dl]))
+
+  # compute thresholds for warnings
+  if (resolution == "27km") {
+    casual_n <- 100L
+    aggressive_n <- 500L
+  } else if (resolution == "9km") {
+    casual_n <- 50L
+    aggressive_n <- 250L
+  } else {
+    casual_n <- 25L
+    aggressive_n <- 125L
+  }
+
+  # download thresholds for warnings
+  casual_mb <- 250
+  aggressive_mb <- 1000
+
+  # no warning needed
+  if (n_spp <= casual_n && est_mb <= casual_mb) {
+    return(invisible(NULL))
+  }
+
+  msg <- stringr::str_glue(
+    "{n_spp} requested at {resolution} resolution requires downloading ",
+    "data for {n_to_download} species (~{est_mb} MB) and processing ",
+    "{n_spp} raster.\n",
+    "This may require significant compute, RAM, or disk space resources."
+  )
+  if (n_spp <= aggressive_n && est_mb <= aggressive_mb) {
+    return(invisible(NULL))
+  }
+
+  if (interactive()) {
+    message(msg)
+    answer <- readline("Continue? [y/n]: ")
+    if (!grepl("^[Yy]", answer)) {
+      stop("Operation cancelled.")
+    }
+  } else {
+    warning(msg)
+  }
+  return(invisible(NULL))
 }

@@ -86,7 +86,7 @@
 #' each checklist. For categorical datasets, two variables are generated for
 #' each class describing the percent cover (`pland`) and edge density (`ed`).
 #'
-#' @format A data frame with 150 rows and 4 columns:
+#' @format A data frame with 4 columns:
 #' - `predictor`: predictor name.
 #' - `dataset`: dataset name, which can be cross referenced in
 #' [ebirdst_predictor_descriptions] for further details.
@@ -99,7 +99,7 @@
 #' Details on the eBird Status and Trends predictor variables or, for variables
 #' all derived from the same dataset, details on the dataset.
 #'
-#' @format A data frame with 37 rows and 4 columns
+#' @format A data frame with 4 columns
 #' - `dataset`: dataset name.
 #' - `predictor`: predictor name or, if multiple variables are derived from
 #' this dataset, the pattern used to generate the names.

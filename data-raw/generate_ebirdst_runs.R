@@ -30,7 +30,7 @@ status_review <- glue(
   filter(status == "REVIEWED", full_year_quality > 0) |>
   filter(!is.na(species_code)) |>
   rename(resident_quality = full_year_quality) |>
-  mutate(ocean_modeled = (land == "OCEAN"))
+  mutate(ocean_modeled = (land == "WATER"))
 
 # species passing review but missing from S3
 filter(status_review, !species_code %in% species_codes)

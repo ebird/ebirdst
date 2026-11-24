@@ -19,7 +19,7 @@ analysis used to generate these data.
 
 This vignette gives an overview of the eBird Status Data Products, which
 estimate the full annual cycle distributions, relative abundances, and
-habitat associations for 5,192 species for the year 2025. For each
+habitat associations for 5,188 species for the year 2025. For each
 species, distribution and abundance estimates are available for all 52
 weeks of the year across a regular 3 km by 3 km square grid of cells
 covering the globe. Variation in detectability associated with the
@@ -139,13 +139,13 @@ Products available for download.
 ``` r
 
 glimpse(ebirdst_runs)
-#> Rows: 5,193
+#> Rows: 5,189
 #> Columns: 33
 #> $ species_code                   <chr> "yebsap-example", "ostric2", "emu1", "s…
 #> $ taxon_concept_id               <chr> "avibase-9BE68BD3", "avibase-2247CB05",…
 #> $ scientific_name                <chr> "Sphyrapicus varius", "Struthio camelus…
 #> $ common_name                    <chr> "Yellow-bellied Sapsucker", "Common Ost…
-#> $ taxonomic_order                <dbl> 11126, 2, 15, 21, 24, 25, 27, 29, 32, 3…
+#> $ taxonomic_order                <dbl> 11197, 2, 15, 21, 24, 25, 27, 29, 32, 3…
 #> $ is_resident                    <lgl> FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TR…
 #> $ ocean_modeled                  <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FALS…
 #> $ breeding_quality               <chr> "3", NA, NA, NA, NA, NA, NA, NA, NA, NA…
@@ -235,7 +235,7 @@ ebirdst_runs |>
 #> $ taxon_concept_id               <chr> "avibase-9BE68BD3"
 #> $ scientific_name                <chr> "Sphyrapicus varius"
 #> $ common_name                    <chr> "Yellow-bellied Sapsucker"
-#> $ taxonomic_order                <dbl> 11126
+#> $ taxonomic_order                <dbl> 11197
 #> $ is_resident                    <lgl> FALSE
 #> $ ocean_modeled                  <lgl> FALSE
 #> $ breeding_quality               <chr> "3"

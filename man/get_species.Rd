@@ -4,16 +4,20 @@
 \alias{get_species}
 \title{Get eBird species code for a set of species}
 \usage{
-get_species(x)
+get_species(x, strict = FALSE)
 }
 \arguments{
 \item{x}{character; vector of species codes, common names, and/or scientific
 names.}
+
+\item{strict}{logical; if \code{TRUE}, raise an error for any element of \code{x} that
+does not match a modeled species. If \code{FALSE} (the default), unmatched
+elements are returned as \code{NA}.}
 }
 \value{
 A character vector of eBird species codes, the same length as \code{x}.
-Elements of \code{x} that don't match any modeled species are returned as
-\code{NA}.
+Elements of \code{x} that don't match any modeled species are returned as \code{NA}
+when \code{strict = FALSE}, or cause an error when \code{strict = TRUE}.
 }
 \description{
 Give a vector of species codes, common names, and/or scientific names, return

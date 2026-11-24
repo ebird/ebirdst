@@ -19,7 +19,7 @@ ebirdst_predictors
 
 ## Format
 
-A data frame with 150 rows and 4 columns:
+A data frame with 4 columns:
 
 - `predictor`: predictor name.
 

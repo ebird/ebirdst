@@ -7,6 +7,7 @@
 seasonal_proportion_population(
   species,
   region,
+  reference_region = NULL,
   resolution = c("27km", "9km", "3km"),
   bind_regions = FALSE,
   path = ebirdst_data_dir(),
@@ -19,9 +20,22 @@ seasonal_proportion_population(
 common names, or six-letter species codes. Mixes of name types are
 accepted. The full list of valid species is in \link{ebirdst_runs}.}
 
-\item{region}{\link[sf:sf]{sf} or \link[terra:SpatVector]{SpatVector}; polygon
-features defining the region(s) of interest. Each row (feature) is
-treated as a separate region.}
+\item{region}{\link[sf:sf]{sf}, \link[sf:sfc]{sfc}, or
+\link[terra:SpatVector]{SpatVector}; polygon features defining the region(s) of
+interest. Each feature is treated as a separate region.}
+
+\item{reference_region}{\code{NULL}, \link[sf:sf]{sf}, \link[sf:sfc]{sfc}, or
+\link[terra:SpatVector]{SpatVector}; optional polygon defining the reference
+population relative to which proportions are calculated. If multiple
+features are present, they are unioned into a single polygon. When
+supplied, proportions are calculated for both \code{region} and
+\code{reference_region}, and \code{proportion_population} is computed as the
+proportion in \code{region} divided by the proportion in \code{reference_region}
+(returning \code{0} when both are \code{0}, and \code{NA} when only the reference
+proportion is \code{0}). This can be used, for example, to calculate
+continental proportions, such as the proportion of the North American
+population within the given \code{region}. Defaults to \code{NULL} (proportions are
+relative to the global modeled population).}
 
 \item{resolution}{character; resolution of the raster data: \code{"27km"}
 (default), \code{"9km"}, or \code{"3km"}. Note that the example dataset only
@@ -30,7 +44,8 @@ species that require downloading, a warning is issued; in an interactive
 session confirmation is required before the downloads begin.}
 
 \item{bind_regions}{logical; if \code{TRUE}, all non-geometry attribute columns
-from \code{region} are appended to the output. Defaults to \code{FALSE}.}
+from \code{region} are appended to the output (ignored if \code{region} is an
+\link[sf:sfc]{sfc} object, which has no attributes). Defaults to \code{FALSE}.}
 
 \item{path}{character; directory to download the data to. All downloaded
 files will be placed in a sub-directory of this directory named for the
@@ -55,20 +70,26 @@ region polygon. Columns:
 \code{"prebreeding_migration"}, \code{"postbreeding_migration"}, or
 \code{"resident"}). Only seasons that passed expert review are included.
 \item \code{proportion_population}: proportion of the species' global modeled
-population within the region during that season. Computed as a weighted
-sum of proportion-of-population raster cells, where boundary cells are
-weighted by the fraction of the cell area covered by the polygon.
+population (or the population within \code{reference_region}, if supplied)
+within the region during that season. Computed as a weighted sum of
+proportion-of-population raster cells, where boundary cells are weighted
+by the fraction of the cell area covered by the polygon.
+\item \code{proportion_population_reference}: proportion of the species' global
+modeled population within \code{reference_region} during that season. Only
+present when \code{reference_region} is supplied.
 \item \code{.region_number}: integer (1-indexed) indicating which polygon in
-\code{region} the row corresponds to. Only present when \code{nrow(region) > 1}.
+\code{region} the row corresponds to. Only present when \code{region} has more than
+one feature.
 \item Additional columns from \code{region} if \code{bind_regions = TRUE}.
 }
 }
 \description{
-Given one or more species and a region (defined as an \link[sf:sf]{sf} or
-\link[terra:SpatVector]{SpatVector} polygon object), compute the proportion of
-each species' global modeled population that falls within each region
-polygon for each season. The proportion-of-population raster data are
-downloaded automatically on first use.
+Given one or more species and a region (defined as an \link[sf:sf]{sf},
+\link[sf:sfc]{sfc}, or \link[terra:SpatVector]{SpatVector} polygon object), compute
+the proportion of each species' global modeled population (or the population
+within \code{reference_region}, if supplied) that falls within each region polygon
+for each season. The proportion-of-population raster data are downloaded
+automatically on first use.
 }
 \examples{
 \dontrun{

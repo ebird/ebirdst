@@ -11,7 +11,7 @@ ebirdst_predictor_descriptions
 
 ## Format
 
-A data frame with 37 rows and 4 columns
+A data frame with 4 columns
 
 - `dataset`: dataset name.
 

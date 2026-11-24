@@ -9,6 +9,7 @@
 <url><loc>https://ebird.github.io/ebirdst/articles/index.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/articles/product-changelog.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/articles/status.html</loc></url>
+<url><loc>https://ebird.github.io/ebirdst/articles/stewardship.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/articles/trends.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/authors.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/index.html</loc></url>
@@ -34,6 +35,7 @@
 <url><loc>https://ebird.github.io/ebirdst/reference/get_species.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/get_species_path.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/grid_sample.html</loc></url>
+<url><loc>https://ebird.github.io/ebirdst/reference/importance_breaks.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/index.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/load_config.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/load_data_coverage.html</loc></url>
@@ -49,6 +51,7 @@
 <url><loc>https://ebird.github.io/ebirdst/reference/rasterize_trends.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/seasonal_proportion_population.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.html</loc></url>
+<url><loc>https://ebird.github.io/ebirdst/reference/stewardship_connections.html</loc></url>
 <url><loc>https://ebird.github.io/ebirdst/reference/vectorize_trends.html</loc></url>
 </urlset>
 

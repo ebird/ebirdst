@@ -24,6 +24,7 @@ codes for species for which eBird Status and Trends results exist."></head><body
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="../articles/status.html">Introduction to eBird Status Data Products</a></li>
     <li><a class="dropdown-item" href="../articles/applications.html">eBird Status Data Products Applications</a></li>
+    <li><a class="dropdown-item" href="../articles/stewardship.html">Migratory Bird Stewardship Connections</a></li>
     <li><a class="dropdown-item" href="../articles/trends.html">eBird Trends Data Products</a></li>
     <li><a class="dropdown-item" href="../articles/api.html">eBird Status and Trends Data Products API</a></li>
   </ul></li>
@@ -52,7 +53,7 @@ codes for species for which eBird Status and Trends results exist.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_species</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_species</span><span class="op">(</span><span class="va">x</span>, strict <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,12 +64,18 @@ codes for species for which eBird Status and Trends results exist.</p>
 <dd><p>character; vector of species codes, common names, and/or scientific
 names.</p></dd>
 
+
+<dt id="arg-strict">strict<a class="anchor" aria-label="anchor" href="#arg-strict"></a></dt>
+<dd><p>logical; if <code>TRUE</code>, raise an error for any element of <code>x</code> that
+does not match a modeled species. If <code>FALSE</code> (the default), unmatched
+elements are returned as <code>NA</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A character vector of eBird species codes, the same length as <code>x</code>.
-Elements of <code>x</code> that don't match any modeled species are returned as
-<code>NA</code>.</p>
+Elements of <code>x</code> that don't match any modeled species are returned as <code>NA</code>
+when <code>strict = FALSE</code>, or cause an error when <code>strict = TRUE</code>.</p>
     </div>
 
     <div class="section level2">
@@ -82,7 +89,7 @@ Elements of <code>x</code> that don't match any modeled species are returned as
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Tom Auer, Daniel Fink.</p>
+  <p>Developed by <a href="http://strimas.com" class="external-link">Matthew Strimas-Mackey</a>, Shawn Ligocki, Myles Stokowski, Valentine Herrmann, Tom Auer, Daniel Fink.</p>
 </div>
 
 <div class="pkgdown-footer-right">

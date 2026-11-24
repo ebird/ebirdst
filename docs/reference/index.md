@@ -44,6 +44,8 @@
 - [`grid_sample()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
   [`grid_sample_stratified()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
   : Spatiotemporal grid sampling of observation data
+- [`importance_breaks()`](https://ebird.github.io/ebirdst/reference/importance_breaks.md)
+  : Compute importance breaks for a stewardship connections raster
 - [`load_config()`](https://ebird.github.io/ebirdst/reference/load_config.md)
   : Load eBird Status Data Products configuration file
 - [`load_data_coverage()`](https://ebird.github.io/ebirdst/reference/load_data_coverage.md)
@@ -71,5 +73,7 @@
   : Compute seasonal proportion of population within regions
 - [`set_ebirdst_access_key()`](https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.md)
   : Store the eBird Status and Trends access key
+- [`stewardship_connections()`](https://ebird.github.io/ebirdst/reference/stewardship_connections.md)
+  : Shared stewardship connections for migratory birds
 - [`vectorize_trends()`](https://ebird.github.io/ebirdst/reference/vectorize_trends.md)
   : Convert Trends Data Products to points or circles

@@ -135,22 +135,6 @@ is_partial_download <- function(path) {
 }
 
 
-# resolve a species name/code to its eBird species code, raising an error for
-# any species not modeled by status and trends; all internal callers that need
-# a valid code should use this so the error message is consistent
-resolve_species <- function(species) {
-  species_code <- get_species(species)
-  if (anyNA(species_code)) {
-    stop(
-      "The following species were not modeled by eBird Status and Trends. ",
-      "Consult ebirdst_runs for a complete list of available species.\n  ",
-      paste(species[is.na(species_code)], collapse = ", ")
-    )
-  }
-  return(species_code)
-}
-
-
 # create the data directory if it doesn't already exist
 ensure_data_dir <- function(path) {
   if (!dir.exists(path)) {
@@ -234,10 +218,10 @@ list_object_keys <- function(species_code, dataset = c("status", "trends")) {
     }
 
     if (is.null(keys)) {
-      reason <- if (nzchar(attempt$reason)) {
-        paste0("\nThe following error occurred:\n  ", attempt$reason)
+      if (nzchar(attempt$reason)) {
+        reason <- paste0("\nThe following error occurred:\n  ", attempt$reason)
       } else {
-        ""
+        reason <- ""
       }
       stop(
         "Cannot access Status and Trends data URL. Ensure that you have ",

@@ -8,7 +8,7 @@ exist.
 ## Usage
 
 ``` r
-get_species(x)
+get_species(x, strict = FALSE)
 ```
 
 ## Arguments
@@ -18,11 +18,17 @@ get_species(x)
   character; vector of species codes, common names, and/or scientific
   names.
 
+- strict:
+
+  logical; if `TRUE`, raise an error for any element of `x` that does
+  not match a modeled species. If `FALSE` (the default), unmatched
+  elements are returned as `NA`.
+
 ## Value
 
 A character vector of eBird species codes, the same length as `x`.
 Elements of `x` that don't match any modeled species are returned as
-`NA`.
+`NA` when `strict = FALSE`, or cause an error when `strict = TRUE`.
 
 ## Examples
 

@@ -341,10 +341,10 @@ print.ebirdst_inventory <- function(x, ...) {
     cat(sprintf("\n%d %s Data Products (%s)\n", yr, ds_label, grp_size))
 
     for (j in seq_len(nrow(grp))) {
-      nm <- if (!is.na(grp$common_name[j])) {
-        sprintf("%s (%s)", grp$common_name[j], grp$species_code[j])
+      if (!is.na(grp$common_name[j])) {
+        nm <- sprintf("%s (%s)", grp$common_name[j], grp$species_code[j])
       } else {
-        grp$species_code[j]
+        nm <- grp$species_code[j]
       }
       sp_size <- format_size(grp$size_mb[j] * 1e6)
       cat(sprintf("  %s: %d files, %s\n", nm, grp$n_files[j], sp_size))

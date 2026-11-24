@@ -113,7 +113,7 @@ load_raster <- function(
 
   check_gtiff_support()
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # load config file, downloading it on demand if necessary
   p <- load_config(
@@ -288,7 +288,7 @@ load_trends <- function(
   v <- ebirdst_version()[["trends_version_year"]]
 
   # trends species and seaons
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
   trends_runs <- ebirdst::ebirdst_runs[ebirdst::ebirdst_runs$has_trends, ]
   season <- trends_runs$trends_season[match(
     species_code,
@@ -475,7 +475,7 @@ load_ranges <- function(
   stopifnot(is_flag(force), is_flag(show_progress))
   resolution <- match.arg(resolution)
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # load config file, downloading it on demand if necessary
   p <- load_config(
@@ -572,7 +572,7 @@ load_regional_stats <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # download the regional stats on demand if they aren't already present
   file <- fetch_data(
@@ -675,7 +675,7 @@ load_config <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # download the config file on demand if it isn't already present
   cfg_file <- fetch_data(
@@ -737,7 +737,7 @@ load_fac_map_parameters <- function(
   stopifnot(is_flag(force), is_flag(show_progress))
 
   # load config file, downloading it on demand if necessary
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
   p <- load_config(
     species = species_code,
     path = path,
@@ -821,7 +821,7 @@ load_pi <- function(
 
   check_gtiff_support()
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # construct file name; load_config() downloads config on demand and provides
   # the data version year
@@ -859,7 +859,7 @@ list_available_pis <- function(
   stopifnot(is.character(path), length(path) == 1)
   stopifnot(is_flag(force), is_flag(show_progress))
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # download the pi rank csv on demand if it isn't already present; this does
   # not require downloading any of the pi rasters themselves
@@ -1001,7 +1001,7 @@ load_ppm <- function(
 
   check_gtiff_support()
 
-  species_code <- resolve_species(species)
+  species_code <- get_species(species, strict = TRUE)
 
   # construct file name; load_config() downloads config on demand and provides
   # the data version year

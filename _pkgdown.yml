@@ -17,6 +17,8 @@ navbar:
         href: articles/status.html
       - text: eBird Status Data Products Applications
         href: articles/applications.html
+      - text: Migratory Bird Stewardship Connections
+        href: articles/stewardship.html
       - text: eBird Trends Data Products
         href: articles/trends.html
       - text: eBird Status and Trends Data Products API

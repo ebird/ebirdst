@@ -7,7 +7,7 @@ project](https://science.ebird.org/en/status-and-trends) at the [Cornell
 Lab of Ornithology](https://www.birds.cornell.edu/home) uses
 machine-learning models to estimate distributions, relative abundances,
 and population trends at high spatial and temporal resolution across the
-full annual cycle of 5,192 bird species globally. These models learn the
+full annual cycle of 5,188 bird species globally. These models learn the
 relationships between bird observations collected through
 [eBird](https://ebird.org/home) and a suite of remotely sensed habitat
 variables, while accounting for the noise and bias inherent in community
@@ -294,6 +294,8 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
 - [`grid_sample()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
   [`grid_sample_stratified()`](https://ebird.github.io/ebirdst/reference/grid_sample.md)
   : Spatiotemporal grid sampling of observation data
+- [`importance_breaks()`](https://ebird.github.io/ebirdst/reference/importance_breaks.md)
+  : Compute importance breaks for a stewardship connections raster
 - [`load_config()`](https://ebird.github.io/ebirdst/reference/load_config.md)
   : Load eBird Status Data Products configuration file
 - [`load_data_coverage()`](https://ebird.github.io/ebirdst/reference/load_data_coverage.md)
@@ -321,6 +323,8 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
   : Compute seasonal proportion of population within regions
 - [`set_ebirdst_access_key()`](https://ebird.github.io/ebirdst/reference/set_ebirdst_access_key.md)
   : Store the eBird Status and Trends access key
+- [`stewardship_connections()`](https://ebird.github.io/ebirdst/reference/stewardship_connections.md)
+  : Shared stewardship connections for migratory birds
 - [`vectorize_trends()`](https://ebird.github.io/ebirdst/reference/vectorize_trends.md)
   : Convert Trends Data Products to points or circles
 
@@ -336,5 +340,7 @@ image.plot(zlim = c(0, 1), breaks = label_breaks, col = pal,
   Changelog](https://ebird.github.io/ebirdst/articles/product-changelog.md):
 - [Introduction to eBird Status Data
   Products](https://ebird.github.io/ebirdst/articles/status.md):
+- [Shared stewardship connections for migratory
+  birds](https://ebird.github.io/ebirdst/articles/stewardship.md):
 - [eBird Trends Data
   Products](https://ebird.github.io/ebirdst/articles/trends.md):

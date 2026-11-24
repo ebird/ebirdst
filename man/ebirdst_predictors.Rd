@@ -5,7 +5,7 @@
 \alias{ebirdst_predictors}
 \title{eBird Status and Trends predictor variables}
 \format{
-A data frame with 150 rows and 4 columns:
+A data frame with 4 columns:
 \itemize{
 \item \code{predictor}: predictor name.
 \item \code{dataset}: dataset name, which can be cross referenced in
